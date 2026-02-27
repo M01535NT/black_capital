@@ -1,0 +1,83 @@
+version: "2"
+type: frontend
+tech_stack:
+  - TypeScript
+  - Next.js (App Router)
+  - React
+  - TailwindCSS
+  - shadcn/ui
+  - Supabase
+  - React Hook Form
+  - Zod
+routes:
+  - path: /
+    file: src/app/(public)/page.tsx
+    auth_required: false
+    description: Public Home Page
+  - path: /inventario
+    file: src/app/(public)/inventario/page.tsx
+    auth_required: false
+    description: Public Property Catalog
+  - path: /inventario/[id]
+    file: src/app/(public)/inventario/[id]/page.tsx
+    auth_required: false
+    description: Public Property Details Page
+  - path: /admin/properties
+    file: src/app/(admin)/admin/properties/page.tsx
+    auth_required: false
+    description: Admin Properties Management (Authentication mocked/RLS for now)
+  - path: /admin/leads
+    file: src/app/(admin)/admin/leads/page.tsx
+    auth_required: false
+    description: Admin Leads Management
+features:
+  - name: Browse Property Catalog
+    description: Browse available real estate properties with search and filters
+    files:
+      - src/app/(public)/inventario/page.tsx
+      - src/components/public/catalog-filter.tsx
+    entry_route: /inventario
+    user_interactions:
+      - Type search terms in text input
+      - Select Use type (Uso) from dropdown
+      - Select Business type (Negocio) from dropdown
+      - Select Property type (Tipo) from dropdown
+      - See filtered properties mapped on grid
+    api_calls:
+      - method: GET
+        endpoint: Supabase properties table
+  - name: Lead Capture / Gated Content
+    description: Collect user data before allowing PDF brochure download
+    files:
+      - src/app/(public)/inventario/[id]/page.tsx
+      - src/components/public/gated-brochure.tsx
+    entry_route: /inventario/[id]
+    user_interactions:
+      - Click Descargar Brochure button
+      - Fill name field
+      - Fill email field
+      - Fill phone field
+      - Click submit button
+      - See success toast notification
+      - See unlocked brochure content
+    api_calls:
+      - method: POST
+        endpoint: Supabase leads table
+      - method: POST
+        endpoint: /api/send-brochure
+  - name: Admin Properties CRUD
+    description: Management panel for properties
+    files:
+      - src/app/(admin)/admin/properties/page.tsx
+      - src/app/(admin)/admin/properties/new/page.tsx
+    entry_route: /admin/properties
+    user_interactions:
+      - Navigate to add new property
+      - Fill property form items
+      - Upload property images
+      - Submit form
+      - View properties in Admin Table
+    api_calls:
+      - method: GET, POST, PUT, DELETE
+        endpoint: Supabase properties and storage
+known_limitations: []

@@ -1,0 +1,8 @@
+{
+    "testScope": "codebase",
+    "projectType": "frontend",
+    "localPort": 3000,
+    "testPlanPath": "testsprite_tests\\testsprite_frontend_test_plan.json",
+    "testSummaryPath": "testsprite_tests\\tmp\\code_summary.yaml",
+    "pathname": "/"
+}

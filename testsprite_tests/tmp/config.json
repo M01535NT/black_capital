@@ -1,0 +1,22 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000",
+  "executionArgs": {
+    "projectName": "black_corporativo",
+    "projectPath": "c:\\Páginas Web\\black_corporativo",
+    "testIds": [
+      "TC008",
+      "TC010",
+      "TC016",
+      "TC021"
+    ],
+    "additionalInstruction": "Only execute these 4 test cases. The app is running at http://localhost:3000. TC008 checks for aria-label='Property results' div and 'No se encontraron' text. TC010 checks for 'Gracias' text after lead form submission. TC016 checks property creation from admin panel. TC021 checks that typing 'abc' in m2 field shows error text containing 'Invalid'.",
+    "envs": {
+      "API_KEY": "sk-user-11dgffOj7NYEDPXcIom9hGmheZMexccwLa3FPjYUGpLLr5hCdc29B6TENHgB0Lpntlrw2c2vxlJxzPVkki0sjHDseOHrkLs5VrzzU-pu-rphkrNIos9ao9YL2k2SACO9YHQ"
+    }
+  },
+  "serverPort": 52480,
+  "proxy": "http://04e9b004-3f4e-448e-9de7-8bb3f54ccb8d:pCfde4uloFTRNQHu5h0o47BLOaD5cmqo@tun.testsprite.com:8080"
+}

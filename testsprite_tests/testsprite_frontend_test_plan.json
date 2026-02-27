@@ -1,0 +1,763 @@
+[
+  {
+    "id": "TC001",
+    "title": "Search and apply all catalog filters to narrow results",
+    "description": "Verifies that typing a search term and selecting Uso, Negocio, and Tipo filters updates the property grid to show matching properties.",
+    "category": "Browse Property Catalog",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/inventario\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"casa\" into the search text input"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Habitacional\" from the \"Uso\" dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Venta\" from the \"Negocio\" dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Casa\" from the \"Tipo\" dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Property results grid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one property card in the results grid\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Search-only filtering updates results grid",
+    "description": "Verifies that using only the search input filters the catalog and shows a results grid.",
+    "category": "Browse Property Catalog",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Search text input\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"departamento\" into the search text input"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Property results grid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one property card in the results grid\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Single dropdown filter (Uso) updates results grid",
+    "description": "Verifies that selecting only the Uso filter updates the property grid without requiring other filters.",
+    "category": "Browse Property Catalog",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Uso\" dropdown is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Comercial\" from the \"Uso\" dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Property results grid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one property card in the results grid\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Single dropdown filter (Negocio) updates results grid",
+    "description": "Verifies that selecting only the Negocio filter updates the property grid.",
+    "category": "Browse Property Catalog",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Negocio\" dropdown is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Renta\" from the \"Negocio\" dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Property results grid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one property card in the results grid\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Single dropdown filter (Tipo) updates results grid",
+    "description": "Verifies that selecting only the Tipo filter updates the property grid.",
+    "category": "Browse Property Catalog",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Tipo\" dropdown is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Terreno\" from the \"Tipo\" dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Property results grid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one property card in the results grid\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "No-results state appears for unmatched search + filters",
+    "description": "Verifies that when search and filters yield no matches, the catalog shows a no-results message with guidance to broaden filters.",
+    "category": "Browse Property Catalog",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Search text input\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"zzzz-no-existe-12345\" into the search text input"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Comercial\" from the \"Uso\" dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Venta\" from the \"Negocio\" dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Bodega\" from the \"Tipo\" dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"No se encontraron\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Intenta ampliar\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "No-results state provides a visible call-to-action to broaden filters",
+    "description": "Verifies that the no-results view includes a visible suggestion/call-to-action that encourages broadening filters or adjusting the search.",
+    "category": "Browse Property Catalog",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "action",
+        "description": "Type \"zzzz-no-existe-12345\" into the search text input"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Habitacional\" from the \"Uso\" dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Renta\" from the \"Negocio\" dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Departamento\" from the \"Tipo\" dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"No se encontraron\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"No-results call-to-action to broaden filters\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Search term change updates from no-results back to results",
+    "description": "Verifies that after reaching a no-results state, updating the search term can restore visible results in the grid.",
+    "category": "Browse Property Catalog",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "action",
+        "description": "Type \"zzzz-no-existe-12345\" into the search text input"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"No se encontraron\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"casa\" into the search text input"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Property results grid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one property card in the results grid\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Open gated lead form from a property detail page",
+    "description": "Verifies the brochure download button opens the lead-capture modal on a property details page.",
+    "category": "Lead Capture / Gated Content (Brochure Download)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Inventario\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first visible property card in the catalog list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Descargar Brochure\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Descargar Brochure\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Nombre\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Email\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Teléfono\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Successful lead submission shows success confirmation in UI",
+    "description": "Verifies submitting valid lead data shows a success toast/confirmation message.",
+    "category": "Lead Capture / Gated Content (Brochure Download)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first visible property card in the catalog list"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Descargar Brochure\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"Juan Pérez\" into the \"Nombre\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"juan.perez.qa+brochure@example.com\" into the \"Email\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"5512345678\" into the \"Teléfono\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the submit button in the brochure form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Gracias\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Disposable email domain is blocked with validation message",
+    "description": "Verifies the form blocks disposable email domains and shows a visible validation error.",
+    "category": "Lead Capture / Gated Content (Brochure Download)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first visible property card in the catalog list"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Descargar Brochure\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"María López\" into the \"Nombre\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"maria.lopez@tempmail.com\" into the \"Email\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"5598765432\" into the \"Teléfono\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the submit button in the brochure form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"email\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Required field validation: empty submit shows errors",
+    "description": "Verifies submitting the brochure form with empty required fields displays visible validation errors.",
+    "category": "Lead Capture / Gated Content (Brochure Download)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first visible property card in the catalog list"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Descargar Brochure\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the submit button in the brochure form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Nombre\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Email\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Teléfono\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"requer\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Email format validation: invalid email shows error",
+    "description": "Verifies an invalid email format is rejected and a visible error message appears.",
+    "category": "Lead Capture / Gated Content (Brochure Download)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first visible property card in the catalog list"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Descargar Brochure\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"Carlos Gómez\" into the \"Nombre\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"carlos.gomez@\" into the \"Email\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"5511122233\" into the \"Teléfono\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the submit button in the brochure form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Email\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"válid\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Phone validation: non-numeric phone shows error",
+    "description": "Verifies the phone field rejects clearly invalid input and shows a visible validation error.",
+    "category": "Lead Capture / Gated Content (Brochure Download)",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first visible property card in the catalog list"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Descargar Brochure\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"Andrea Ruiz\" into the \"Nombre\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"andrea.ruiz.qa@example.com\" into the \"Email\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"abcde\" into the \"Teléfono\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the submit button in the brochure form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Teléfono\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"válid\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Modal close behavior does not submit lead",
+    "description": "Verifies the user can dismiss the brochure modal without submission and return to the property page state.",
+    "category": "Lead Capture / Gated Content (Brochure Download)",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /inventario"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first visible property card in the catalog list"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Descargar Brochure\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Nombre\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the modal close button (X) or \"Cerrar\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Nombre\" is not visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Descargar Brochure\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Create a new property successfully and verify it appears in the Admin Table",
+    "description": "Verifies an admin can create a new property with valid form data and then see it listed in the properties table.",
+    "category": "Admin Properties CRUD",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin/properties"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Properties\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Add new property\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"New Property\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Title\" with \"E2E Test Property - Unique\""
+      },
+      {
+        "type": "action",
+        "description": "Select \"Uso\" option \"Residencial\" from dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Submit\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"E2E Test Property - Unique\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Create property form shows required-field validation errors when submitted empty",
+    "description": "Verifies inline validation is displayed when required fields are missing on submit.",
+    "category": "Admin Properties CRUD",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin/properties"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Add new property\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"New Property\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Submit\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Title\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "Admin properties list loads and displays a table of properties",
+    "description": "Verifies the properties management page renders and shows the admin table for existing properties.",
+    "category": "Admin Properties CRUD",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin/properties"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Properties\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Admin Table\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Add new property\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC019",
+    "title": "Cancel out of new property creation without submitting",
+    "description": "Verifies an admin can leave the new property form and return to the properties list without creating an item.",
+    "category": "Admin Properties CRUD",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin/properties"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Add new property\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"New Property\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Cancel\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/properties\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Admin Table\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC020",
+    "title": "Form retains entered values when submission is blocked by validation",
+    "description": "Verifies that when validation errors occur, previously entered values remain visible for correction.",
+    "category": "Admin Properties CRUD",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin/properties"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Add new property\""
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Title\" with \"E2E Draft Property\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Submit\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"E2E Draft Property\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC021",
+    "title": "Numeric fields reject non-numeric input (m2 or price)",
+    "description": "Verifies the form prevents or flags invalid non-numeric values for numeric fields.",
+    "category": "Admin Properties CRUD",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin/properties"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Add new property\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"New Property\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"abc\" into \"m2\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Submit\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"m2\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Invalid\" is visible"
+      }
+    ]
+  }
+]

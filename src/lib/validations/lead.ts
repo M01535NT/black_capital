@@ -1,0 +1,19 @@
+import { z } from "zod";
+
+export const leadSchema = z.object({
+    full_name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
+    email: z.string()
+        .email("Debe ser un correo electrónico válido")
+        .refine(
+            (val) => !val.toLowerCase().includes("tempmail"),
+            { message: "Por favor, utiliza un dominio de correo corporativo o personal real" }
+        ),
+    phone: z.string().min(10, "El teléfono debe tener al menos 10 caracteres"),
+    privacy_accepted: z.boolean().refine(val => val === true, { message: "Debes aceptar el aviso de privacidad" }),
+    source: z.enum(["organic", "campaign", "referral", "other"]),
+    property_id: z.string().uuid().optional().nullable(),
+    notes: z.string().optional().nullable(),
+    status: z.enum(["new", "contacted", "qualified", "lost", "won"]),
+});
+
+export type LeadFormValues = z.infer<typeof leadSchema>;
