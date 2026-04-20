@@ -17,6 +17,12 @@
   --color-gold-600: oklch(0.66 0.13 83);
   --color-gold-700: oklch(0.52 0.11 82);
 
+  /* Industrial accent — cold steel blue-grey */
+  --color-steel-400: oklch(0.55 0.03 250);
+  --color-steel-500: oklch(0.45 0.02 250);
+  --color-steel-600: oklch(0.35 0.02 250);
+  --color-steel-700: oklch(0.25 0.01 250);
+
   --font-sans: var(--font-inter), sans-serif;
   --font-display: var(--font-inter), sans-serif;
   --font-mono: var(--font-news-cycle), monospace;

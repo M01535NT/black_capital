@@ -36,6 +36,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
     const supabase = createClient();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [files, setFiles] = useState<File[]>([]);
+    const [pdfFile, setPdfFile] = useState<File | null>(null);
 
     // Omitted standard form hook due to the import error fixing needed next. Let's fix the import.
     const form = useForm<PropertyFormValues>({
@@ -54,12 +55,23 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             currency: "MXN",
             description: "",
             status: "Available",
+            video_url: "",
+            tour_url: "",
+            agent_name: "",
+            agent_phone: "",
+            agent_email: "",
         },
     });
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             setFiles(Array.from(e.target.files));
+        }
+    };
+
+    const handlePdfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setPdfFile(e.target.files[0]);
         }
     };
 
@@ -97,6 +109,26 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
         return urls;
     };
 
+    const uploadPdf = async (propertyId: string) => {
+        if (!pdfFile) return null;
+        try {
+            const fileName = `${propertyId}/${Date.now()}-${pdfFile.name.replace(/[^a-zA-Z0-9.\-_]/g, '')}`;
+            const { error } = await supabase.storage
+                .from("public")
+                .upload(fileName, pdfFile, {
+                    contentType: "application/pdf",
+                    upsert: false,
+                });
+
+            if (error) throw error;
+            const { data: publicUrlData } = supabase.storage.from("public").getPublicUrl(fileName);
+            return publicUrlData.publicUrl;
+        } catch (error) {
+            console.error("Error uploading PDF:", error);
+            return null;
+        }
+    };
+
     async function onSubmit(data: PropertyFormValues) {
         setIsSubmitting(true);
         try {
@@ -123,18 +155,33 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 propertyData = json.property;
             }
 
-            // Upload Images if any
+            // Upload Images and PDF if any
+            let pdfUrl = null;
+            if (pdfFile && propertyData) {
+                pdfUrl = await uploadPdf(propertyData.id);
+            }
+
             if (files.length > 0 && propertyData) {
                 const imageUrls = await uploadImages(propertyData.id);
 
-                // Update Property with Cover Image via API
-                if (imageUrls.length > 0) {
+                // Update Property with Cover Image and/or PDF via API
+                if (imageUrls.length > 0 || pdfUrl) {
                     await fetch('/api/properties', {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id: propertyData.id, cover_image: imageUrls[0] }),
+                        body: JSON.stringify({ 
+                            id: propertyData.id, 
+                            ...(imageUrls.length > 0 && { cover_image: imageUrls[0] }),
+                            ...(pdfUrl && { pdf_url: pdfUrl })
+                        }),
                     });
                 }
+            } else if (pdfUrl && propertyData) {
+                 await fetch('/api/properties', {
+                     method: 'PUT',
+                     headers: { 'Content-Type': 'application/json' },
+                     body: JSON.stringify({ id: propertyData.id, pdf_url: pdfUrl }),
+                 });
             }
 
             router.push("/admin/properties");
@@ -380,6 +427,82 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     )}
                 />
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                        control={form.control}
+                        name="video_url"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Video Promocional (Link Youtube/Vimeo)</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="https://youtube.com/..." value={field.value ?? ""} onChange={field.onChange} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="tour_url"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Virtual Tour 360 (Matterport Link)</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="https://my.matterport.com/..." value={field.value ?? ""} onChange={field.onChange} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
+                <div className="border border-foreground/10 rounded-lg p-6 space-y-6">
+                    <h3 className="text-lg font-bold">Asignación de Asesor</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <FormField
+                            control={form.control}
+                            name="agent_name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Nombre del Agente</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Ej. Roberto Sánchez" value={field.value ?? ""} onChange={field.onChange} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="agent_phone"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Teléfono / WhatsApp</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Ej. 5512345678" value={field.value ?? ""} onChange={field.onChange} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="agent_email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Correo Electrónico</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="agente@blackcorporativo.com" value={field.value ?? ""} onChange={field.onChange} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                </div>
+
+
+
                 <div className="flex flex-wrap gap-6 p-4 border border-foreground/10 flex-col md:flex-row rounded-lg items-center">
                     <FormField
                         control={form.control}
@@ -440,10 +563,18 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     />
                 </div>
 
-                <div className="space-y-4">
-                    <FormLabel>Imágenes</FormLabel>
-                    <Input type="file" multiple accept="image/*" onChange={handleFileChange} className="cursor-pointer file:bg-gold-500 file:text-black file:border-none file:mr-4 file:-ml-3 file:py-1 file:px-4 file:rounded-md hover:file:bg-gold-600" />
-                    <FormDescription>Se comprimirán automáticamente a WebP antes de subir.</FormDescription>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                        <FormLabel>Imágenes (JPG, PNG, WEBP)</FormLabel>
+                        <Input type="file" multiple accept="image/*" onChange={handleFileChange} className="cursor-pointer file:bg-gold-500 file:text-black file:border-none file:mr-4 file:-ml-3 file:py-1 file:px-4 file:rounded-md hover:file:bg-gold-600" />
+                        <FormDescription>Se comprimirán automáticamente a WebP antes de subir.</FormDescription>
+                    </div>
+
+                    <div className="space-y-4">
+                        <FormLabel>Brochure (Documento PDF)</FormLabel>
+                        <Input type="file" accept="application/pdf" onChange={handlePdfChange} className="cursor-pointer file:bg-steel-500 file:text-black file:border-none file:mr-4 file:-ml-3 file:py-1 file:px-4 file:rounded-md hover:file:bg-steel-600" />
+                        <FormDescription>Sube el brochure ejecutivo. Se guardará sin compresión y atado a esta propiedad.</FormDescription>
+                    </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4">

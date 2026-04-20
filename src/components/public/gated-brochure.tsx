@@ -9,6 +9,7 @@ import posthog from "posthog-js";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
     DialogContent,
@@ -32,9 +33,10 @@ import { leadSchema, LeadFormValues } from "@/lib/validations/lead";
 interface GatedBrochureProps {
     propertyId: string;
     propertyName: string;
+    pdfUrl?: string | null;
 }
 
-export function GatedBrochure({ propertyId, propertyName }: GatedBrochureProps) {
+export function GatedBrochure({ propertyId, propertyName, pdfUrl }: GatedBrochureProps) {
     const [open, setOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -46,7 +48,7 @@ export function GatedBrochure({ propertyId, propertyName }: GatedBrochureProps) 
             full_name: "",
             email: "",
             phone: "",
-            privacy_accepted: true,
+            privacy_accepted: false,
             source: "organic",
             property_id: propertyId,
             status: "new",
@@ -89,11 +91,15 @@ export function GatedBrochure({ propertyId, propertyName }: GatedBrochureProps) 
             setIsSuccess(true);
             toast.success("¡Hemos procesado tu solicitud con éxito!");
 
+            if (pdfUrl) {
+                window.open(pdfUrl, '_blank');
+            }
+
             // Mock Resend integraton call
             fetch('/api/send-brochure', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: data.email, propertyId, name: data.full_name })
+                body: JSON.stringify({ email: data.email, propertyId, name: data.full_name, pdfUrl })
             }).catch(console.error);
 
         } catch (error) {
@@ -163,6 +169,32 @@ export function GatedBrochure({ propertyId, propertyName }: GatedBrochureProps) 
                                                 <Input type="tel" placeholder="10 dígitos" {...field} />
                                             </FormControl>
                                             <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="privacy_accepted"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 pt-2">
+                                            <FormControl>
+                                                <Checkbox
+                                                    id="brochure-privacy"
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                    className="border-gold-500/20 data-[state=checked]:bg-gold-500 data-[state=checked]:text-black mt-0.5"
+                                                />
+                                            </FormControl>
+                                            <div className="space-y-1 leading-none">
+                                                <label htmlFor="brochure-privacy" className="text-xs text-muted-foreground cursor-pointer">
+                                                    Acepto el{" "}
+                                                    <a href="/legal/privacidad" className="text-gold-500 hover:underline" target="_blank">
+                                                        Aviso de Privacidad
+                                                    </a>{" "}
+                                                    y consiento el tratamiento de mis datos para prospección comercial.
+                                                </label>
+                                                <FormMessage />
+                                            </div>
                                         </FormItem>
                                     )}
                                 />

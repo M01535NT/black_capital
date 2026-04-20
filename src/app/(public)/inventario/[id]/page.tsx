@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Download, Ruler, Building2, Calendar, ShieldCheck, Mail } from "lucide-react";
+import { MapPin, Download, Ruler, Building2, Calendar, ShieldCheck, Mail, Video, Phone, Compass } from "lucide-react";
 import { GatedBrochure } from "@/components/public/gated-brochure";
 
 export const revalidate = 60;
@@ -100,6 +100,28 @@ export default async function PropertyDetailPage({
                         <div className="prose prose-invert prose-lg max-w-none text-muted-foreground whitespace-pre-wrap leading-relaxed">
                             {property.description}
                         </div>
+
+                        {/* Media Links */}
+                        {(property.video_url || property.tour_url) && (
+                            <div className="flex flex-wrap gap-4 mt-12 pt-8 border-t border-foreground/10">
+                                {property.video_url && (
+                                    <Button asChild className="bg-steel-500 text-black hover:bg-steel-600 font-bold px-8" size="lg">
+                                        <a href={property.video_url} target="_blank" rel="noreferrer">
+                                            <Video className="w-5 h-5 mr-2" />
+                                            Ver Video Promocional
+                                        </a>
+                                    </Button>
+                                )}
+                                {property.tour_url && (
+                                    <Button asChild variant="outline" className="border-gold-500/30 hover:border-gold-500 text-gold-500 font-bold px-8" size="lg">
+                                        <a href={property.tour_url} target="_blank" rel="noreferrer">
+                                            <Compass className="w-5 h-5 mr-2" />
+                                            Virtual Tour 360
+                                        </a>
+                                    </Button>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -111,7 +133,7 @@ export default async function PropertyDetailPage({
                             Obtén información detallada, planos y proyecciones financieras descargando nuestro brochure ejecutivo.
                         </p>
 
-                        <GatedBrochure propertyId={property.id} propertyName={property.title} />
+                        <GatedBrochure propertyId={property.id} propertyName={property.title} pdfUrl={property.pdf_url} />
 
                         <Button variant="outline" className="w-full font-bold py-6 text-lg border-foreground/20 hover:bg-muted">
                             <Mail className="mr-2 h-5 w-5" />
@@ -124,6 +146,32 @@ export default async function PropertyDetailPage({
                             </p>
                         </div>
                     </div>
+
+                    {/* Agent Information Card */}
+                    {property.agent_name && (
+                        <div className="bg-zinc-950 border border-gold-500/10 p-6 rounded-2xl flex flex-col gap-4 shadow-xl">
+                            <h3 className="text-sm font-bold uppercase tracking-widest text-foreground/50 border-b border-foreground/10 pb-4">Asesor Comercial</h3>
+                            <div className="flex flex-col gap-3 pt-2">
+                                <p className="font-display font-bold text-xl text-gold-500">{property.agent_name}</p>
+                                {property.agent_phone && (
+                                    <a href={`https://wa.me/${property.agent_phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-white transition-colors group">
+                                        <div className="w-8 h-8 rounded-full bg-zinc-900 flex items-center justify-center group-hover:bg-gold-500 group-hover:text-black transition-colors">
+                                            <Phone className="w-4 h-4" />
+                                        </div>
+                                        {property.agent_phone}
+                                    </a>
+                                )}
+                                {property.agent_email && (
+                                    <a href={`mailto:${property.agent_email}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-white transition-colors group">
+                                        <div className="w-8 h-8 rounded-full bg-zinc-900 flex items-center justify-center group-hover:bg-steel-500 group-hover:text-black transition-colors">
+                                            <Mail className="w-4 h-4" />
+                                        </div>
+                                        {property.agent_email}
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
