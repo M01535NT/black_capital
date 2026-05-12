@@ -87,7 +87,7 @@ export const columns: ColumnDef<PropertyRow>[] = [
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                         <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(property.id)}
+                            onClick={() => navigator.clipboard.writeText(property.id).catch(() => {})}
                         >
                             Copiar ID de Propiedad
                         </DropdownMenuItem>

@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { Resend } from "resend";
 
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { email, propertyId, name } = body;
+        const { email, propertyId, name, pdfUrl } = body;
 
         if (!email || !propertyId) {
             return NextResponse.json(
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
 
         const supabase = await createClient();
 
-        // 1. Fetch Property info to include in email
+        // 1. Fetch Property info
         const { data: property, error: propertyError } = await supabase
             .from("properties")
             .select("title")
@@ -29,21 +30,29 @@ export async function POST(req: Request) {
             );
         }
 
-        // 2. Here you would integrate with Resend API
-        // Example:
-        // import { Resend } from 'resend';
-        // const resend = new Resend(process.env.RESEND_API_KEY);
-        // await resend.emails.send({
-        //     from: 'Black Corporativo <noreply@blackcorporativo.com>',
-        //     to: [email],
-        //     subject: `Brochure: ${property.title}`,
-        //     html: `<p>Hola ${name},</p><p>Gracias por tu interés en <strong>${property.title}</strong>.</p><p><a href="[URL_FIRMED]">Descarga tu brochure aquí</a>.</p>`,
-        // });
+        // 2. Send email via Resend API
+        const resendApiKey = process.env.RESEND_API_KEY;
+        if (resendApiKey) {
+            const resend = new Resend(resendApiKey);
+            await resend.emails.send({
+                from: "Black Corporativo <noreply@blackcorporativo.com>",
+                to: [email],
+                subject: `Brochure: ${property.title}`,
+                html: `<body style="background:#0A0A0A;color:#FAFAFA;font-family:Inter,sans-serif;padding:40px">
+                    <h2 style="color:#C4956A">Black Corporativo</h2>
+                    <p>Hola <strong>${name || "Inversionista"}</strong>,</p>
+                    <p>Gracias por tu interés en <strong>${property.title}</strong>.</p>
+                    <p>Adjunto encontrarás el brochure con información detallada de la propiedad.</p>
+                    ${pdfUrl ? `<p><a href="${pdfUrl}" style="color:#C4956A">Descargar brochure aquí</a></p>` : ""}
+                    <hr style="border-color:#333;margin:24px 0" />
+                    <p style="color:#888;font-size:12px">Black Corporativo — Boutique Inmobiliaria de Alto Nivel</p>
+                </body>`,
+            });
+        } else {
+            console.log(`[Resend] API key not configured — skipping email to ${email}`);
+        }
 
-        console.log(`[Mock Resend] Enviando brochure de ${property.title} a ${email}`);
-
-        // 3. Update lead status if necessary, or just return success
-        return NextResponse.json({ success: true, message: "Brochure enviado en simulación." });
+        return NextResponse.json({ success: true, message: "Brochure enviado correctamente." });
 
     } catch (error) {
         console.error("Error sending brochure:", error);

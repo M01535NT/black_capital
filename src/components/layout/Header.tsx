@@ -27,8 +27,8 @@ const verticals = [
 ];
 
 const attributes = [
-    { name: "Cesiones", href: "/cesiones" },
-    { name: "Proyectos", href: "/proyectos" },
+    { name: "Legal", href: "/legal/privacidad" },
+    { name: "Nosotros", href: "/nosotros" },
 ];
 
 export function Header() {
@@ -123,7 +123,7 @@ export function Header() {
                                     {/* Atributos */}
                                     <div className="space-y-4">
                                         <h3 className="text-sm tracking-widest text-foreground/50 font-bold uppercase mb-4">
-                                            Oportunidades
+                                            Corporativo
                                         </h3>
                                         <div className="flex flex-col gap-4">
                                             {attributes.map((link) => (

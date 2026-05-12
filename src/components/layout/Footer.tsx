@@ -47,6 +47,7 @@ export function Footer() {
                             <li><Link href="/nosotros" className="text-sm text-foreground/70 hover:text-gold-500 transition-colors">Nosotros</Link></li>
                             <li><Link href="/herramientas" className="text-sm text-foreground/70 hover:text-gold-500 transition-colors">Herramientas Inversionistas</Link></li>
                             <li><Link href="/legal/privacidad" className="text-sm text-foreground/70 hover:text-gold-500 transition-colors">Aviso de Privacidad</Link></li>
+                            <li><Link href="/admin" className="text-sm text-foreground/70 hover:text-gold-500 transition-colors">Panel Admin</Link></li>
                         </ul>
                     </div>
 

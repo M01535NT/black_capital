@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
     {
         title: "Dashboard",
-        href: "/admin/dashboard",
+        href: "/admin",
         icon: LayoutDashboard,
     },
     {
@@ -35,11 +35,11 @@ export function AdminSidebar() {
             </div>
             <div className="flex-1 overflow-auto py-4">
                 <div className="grid items-start px-2 text-sm font-medium lg:px-4">
-                    {navItems.map((item, index) => {
+                    {navItems.map((item) => {
                         const isActive = pathname.startsWith(item.href);
                         return (
                             <Link
-                                key={index}
+                                key={item.href}
                                 href={item.href}
                                 className={cn(
                                     "flex items-center gap-3 rounded-lg px-3 py-2 text-foreground/70 transition-all hover:text-foreground mb-1",
