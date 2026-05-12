@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -41,6 +41,37 @@ export function GatedBrochure({ propertyId, propertyName, pdfUrl }: GatedBrochur
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const supabase = createClient();
+
+    // ── Background sync: flush pending leads when coming online ──
+    useEffect(() => {
+        const flushPendingLeads = async () => {
+            const raw = localStorage.getItem("bgSync_leads");
+            if (!raw) return;
+            const pendingLeads = JSON.parse(raw) as LeadFormValues[];
+            if (pendingLeads.length === 0) return;
+
+            toast.info(`Sincronizando ${pendingLeads.length} solicitud(es) pendiente(s)...`);
+            for (const lead of pendingLeads) {
+                try {
+                    await supabase.from("leads").insert([{ ...lead, downloaded_at: new Date().toISOString() }]);
+                    await fetch("/api/send-brochure", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email: lead.email, propertyId: lead.property_id, name: lead.full_name }),
+                    });
+                } catch (err) {
+                    console.error("Error syncing offline lead:", err);
+                }
+            }
+            localStorage.removeItem("bgSync_leads");
+            toast.success("Solicitudes sincronizadas correctamente.");
+        };
+
+        window.addEventListener("online", flushPendingLeads);
+        // Also flush on mount if already online
+        if (navigator.onLine) flushPendingLeads();
+        return () => window.removeEventListener("online", flushPendingLeads);
+    }, [supabase]);
 
     const form = useForm<LeadFormValues>({
         resolver: zodResolver(leadSchema),

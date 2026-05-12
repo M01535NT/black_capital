@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { createClient } from "@/lib/supabase/client";
 import posthog from "posthog-js";
 import { toast } from "sonner";
@@ -12,22 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FadeIn } from "@/components/ui/motion";
 import { Loader2, CheckCircle2 } from "lucide-react";
-
-const leadMagnetSchema = z.object({
-    fullName: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
-    company: z.string().optional(),
-    email: z
-        .string()
-        .email("Debe ser un correo electrónico válido")
-        .refine(
-            (val) => !/(tempmail|mailinator|guerrilla|yopmail|throwaway|10minute|trashmail)/i.test(val),
-            { message: "Por favor, utiliza un correo corporativo o personal real" }
-        ),
-    phone: z.string().optional(),
-    privacy: z.boolean().refine((val) => val === true, { message: "Debes aceptar el aviso de privacidad" }),
-});
-
-type LeadMagnetFormValues = z.infer<typeof leadMagnetSchema>;
+import { leadSchema, LeadFormValues } from "@/lib/validations/lead";
 
 export function LeadMagnet() {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,39 +25,44 @@ export function LeadMagnet() {
         setValue,
         watch,
         formState: { errors },
-    } = useForm<LeadMagnetFormValues>({
-        resolver: zodResolver(leadMagnetSchema),
+    } = useForm<LeadFormValues>({
+        resolver: zodResolver(leadSchema),
         defaultValues: {
-            fullName: "",
-            company: "",
+            full_name: "",
             email: "",
             phone: "",
-            privacy: false,
+            privacy_accepted: false,
+            source: "organic",
+            status: "new",
+            notes: "",
         },
     });
 
-    const privacyValue = watch("privacy");
+    const privacyValue = watch("privacy_accepted");
+    const [company, setCompany] = useState("");
 
-    async function onSubmit(data: LeadMagnetFormValues) {
+    async function onSubmit(data: LeadFormValues) {
         setIsSubmitting(true);
 
         posthog.capture("lead_magnet_submitted", {
             source: "homepage_cta",
-            has_company: !!data.company,
+            has_company: !!company,
         });
 
         try {
+            const notes = company
+                ? `Lead Magnet Homepage — Empresa: ${company}`
+                : "Lead Magnet Homepage";
+
             const { error } = await supabase.from("leads").insert([
                 {
-                    full_name: data.fullName,
+                    full_name: data.full_name,
                     email: data.email,
                     phone: data.phone || null,
                     privacy_accepted: true,
                     source: "organic",
                     status: "new",
-                    notes: data.company
-                        ? `Lead Magnet Homepage — Empresa: ${data.company}`
-                        : "Lead Magnet Homepage",
+                    notes,
                 },
             ]);
 
@@ -121,22 +111,23 @@ export function LeadMagnet() {
                                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div className="space-y-1">
-                                                <Input
-                                                    placeholder="Nombre Completo"
-                                                    className="bg-black/50 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-gold-500"
-                                                    {...register("fullName")}
-                                                />
-                                                {errors.fullName && (
-                                                    <p className="text-xs text-red-400">{errors.fullName.message}</p>
-                                                )}
-                                            </div>
-                                            <div className="space-y-1">
-                                                <Input
-                                                    placeholder="Empresa o Fondo"
-                                                    className="bg-black/50 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-gold-500"
-                                                    {...register("company")}
-                                                />
-                                            </div>
+                                                        <Input
+                                                            placeholder="Nombre Completo"
+                                                            className="bg-black/50 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-gold-500"
+                                                            {...register("full_name")}
+                                                        />
+                                                        {errors.full_name && (
+                                                            <p className="text-xs text-red-400">{errors.full_name.message}</p>
+                                                        )}
+                                                    </div>
+                                                    <div className="space-y-1">
+                                                        <Input
+                                                            placeholder="Empresa o Fondo"
+                                                            className="bg-black/50 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-gold-500"
+                                                            value={company}
+                                                            onChange={(e) => setCompany(e.target.value)}
+                                                        />
+                                                    </div>
                                         </div>
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -166,7 +157,7 @@ export function LeadMagnet() {
                                                 id="privacy"
                                                 checked={privacyValue}
                                                 onCheckedChange={(checked) =>
-                                                    setValue("privacy", checked === true, { shouldValidate: true })
+                                                    setValue("privacy_accepted", checked === true, { shouldValidate: true })
                                                 }
                                                 className="border-white/20 data-[state=checked]:bg-gold-500 data-[state=checked]:text-black mt-1"
                                             />

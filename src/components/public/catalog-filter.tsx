@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,10 +23,25 @@ type Property = {
 };
 
 export function CatalogFilter({ properties }: { properties: Property[] }) {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [selectedUse, setSelectedUse] = useState<string | null>(null);
-    const [selectedType, setSelectedType] = useState<string | null>(null);
-    const [selectedBusinessType, setSelectedBusinessType] = useState<string | null>(null);
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
+
+    const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
+    const [selectedUse, setSelectedUse] = useState<string | null>(searchParams.get("uso") || null);
+    const [selectedType, setSelectedType] = useState<string | null>(searchParams.get("tipo") || null);
+    const [selectedBusinessType, setSelectedBusinessType] = useState<string | null>(searchParams.get("negocio") || null);
+
+    // ── Sync filters to URL params ──
+    useEffect(() => {
+        const params = new URLSearchParams();
+        if (searchTerm) params.set("q", searchTerm);
+        if (selectedUse) params.set("uso", selectedUse);
+        if (selectedType) params.set("tipo", selectedType);
+        if (selectedBusinessType) params.set("negocio", selectedBusinessType);
+        const queryString = params.toString();
+        router.replace(`${pathname}${queryString ? `?${queryString}` : ""}`, { scroll: false });
+    }, [searchTerm, selectedUse, selectedType, selectedBusinessType, pathname, router]);
 
     const filteredProperties = useMemo(() => {
         return properties.filter((prop) => {
@@ -44,6 +60,13 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
 
     const formatPrice = (price: number, currency: string) => {
         return new Intl.NumberFormat("es-MX", { style: "currency", currency }).format(price);
+    };
+
+    const clearAllFilters = () => {
+        setSearchTerm("");
+        setSelectedUse(null);
+        setSelectedType(null);
+        setSelectedBusinessType(null);
     };
 
     return (
@@ -70,7 +93,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             <Badge
                                 key={use}
                                 variant={selectedUse === use ? "default" : "outline"}
-                                className={`cursor-pointer ${selectedUse === use ? 'bg-gold-500 text-black hover:bg-gold-600' : 'hover:bg-foreground/5'}`}
+                                className={`cursor-pointer min-h-[44px] px-4 flex items-center ${selectedUse === use ? 'bg-gold-500 text-black hover:bg-gold-600' : 'hover:bg-foreground/5'}`}
                                 onClick={() => setSelectedUse(selectedUse === use ? null : use)}
                             >
                                 {use}
@@ -86,7 +109,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             <Badge
                                 key={type}
                                 variant={selectedBusinessType === type ? "default" : "outline"}
-                                className={`cursor-pointer ${selectedBusinessType === type ? 'bg-gold-500 text-black hover:bg-gold-600' : 'hover:bg-foreground/5'}`}
+                                className={`cursor-pointer min-h-[44px] px-4 flex items-center ${selectedBusinessType === type ? 'bg-gold-500 text-black hover:bg-gold-600' : 'hover:bg-foreground/5'}`}
                                 onClick={() => setSelectedBusinessType(selectedBusinessType === type ? null : type)}
                             >
                                 {type}
@@ -102,7 +125,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             <Badge
                                 key={type}
                                 variant={selectedType === type ? "default" : "outline"}
-                                className={`cursor-pointer ${selectedType === type ? 'bg-gold-500 text-black hover:bg-gold-600' : 'hover:bg-foreground/5'}`}
+                                className={`cursor-pointer min-h-[44px] px-4 flex items-center ${selectedType === type ? 'bg-gold-500 text-black hover:bg-gold-600' : 'hover:bg-foreground/5'}`}
                                 onClick={() => setSelectedType(selectedType === type ? null : type)}
                             >
                                 {type}
@@ -125,12 +148,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                         <Button
                             variant="link"
                             className="mt-4 text-gold-500"
-                            onClick={() => {
-                                setSearchTerm("");
-                                setSelectedUse(null);
-                                setSelectedType(null);
-                                setSelectedBusinessType(null);
-                            }}
+                            onClick={clearAllFilters}
                         >
                             Limpiar filtros
                         </Button>

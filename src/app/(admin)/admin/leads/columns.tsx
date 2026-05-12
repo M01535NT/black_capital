@@ -94,7 +94,7 @@ export const columns: ColumnDef<LeadRow>[] = [
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                         <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(lead.email)}
+                            onClick={() => navigator.clipboard.writeText(lead.email).catch(() => {})}
                         >
                             Copiar Correo
                         </DropdownMenuItem>
