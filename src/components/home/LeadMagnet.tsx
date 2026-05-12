@@ -171,8 +171,8 @@ export function LeadMagnet() {
                                                 y consiento el tratamiento de mis datos para prospección comercial.
                                             </label>
                                         </div>
-                                        {errors.privacy && (
-                                            <p className="text-xs text-red-400">{errors.privacy.message}</p>
+                                        {errors.privacy_accepted && (
+                                            <p className="text-xs text-red-400">{errors.privacy_accepted.message}</p>
                                         )}
 
                                         <Button
