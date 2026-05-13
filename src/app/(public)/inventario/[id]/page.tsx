@@ -2,8 +2,11 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Download, Ruler, Building2, Calendar, ShieldCheck, Mail, Video, Phone, Compass } from "lucide-react";
+import { Ruler, Building2, Calendar, ShieldCheck, Mail, Phone } from "lucide-react";
 import { GatedBrochure } from "@/components/public/gated-brochure";
+import { ImageGallery } from "@/components/public/image-gallery";
+import { VideoEmbed } from "@/components/public/video-embed";
+import { TourEmbed } from "@/components/public/tour-embed";
 
 export const revalidate = 60;
 
@@ -31,44 +34,35 @@ export default async function PropertyDetailPage({
 
     return (
         <div className="w-full bg-background min-h-screen">
-            {/* Header Hero Area */}
-            <div className="w-full h-[50vh] md:h-[60vh] relative bg-zinc-900 border-b border-foreground/10">
-                {property.cover_image ? (
-                    <img
-                        src={property.cover_image}
-                        alt={property.title}
-                        className="w-full h-full object-cover opacity-70"
-                    />
-                ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-zinc-600">Imagen no disponible</span>
-                    </div>
-                )}
-
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-
-                <div className="absolute bottom-0 left-0 w-full p-6 md:p-12">
-                    <div className="container mx-auto">
-                        <div className="flex flex-wrap gap-2 mb-4">
-                            <Badge className="bg-gold-500 text-black uppercase tracking-wider">{property.business_type}</Badge>
-                            <Badge variant="outline" className="bg-background/50 backdrop-blur-md uppercase tracking-wider">{property.property_use}</Badge>
-                            <Badge variant="outline" className="bg-background/50 backdrop-blur-md uppercase tracking-wider">{property.property_type}</Badge>
-                            {property.is_project && <Badge className="bg-blue-600 text-white">Proyecto VIP</Badge>}
-                        </div>
-                        <h1 className="text-4xl md:text-6xl font-display font-bold text-foreground mb-4 max-w-4xl leading-tight">
-                            {property.title}
-                        </h1>
-                        <p className="text-3xl font-numerics font-bold text-gold-500">
-                            {formatPrice(property.price, property.currency)}
-                        </p>
-                    </div>
+            {/* Badges + Title */}
+            <div className="container mx-auto px-4 pt-8 md:pt-12">
+                <div className="flex flex-wrap gap-2 mb-4">
+                    <Badge className="bg-gold-500 text-black uppercase tracking-wider">{property.business_type}</Badge>
+                    <Badge variant="outline" className="uppercase tracking-wider">{property.property_use}</Badge>
+                    <Badge variant="outline" className="uppercase tracking-wider">{property.property_type}</Badge>
+                    {property.is_project && <Badge className="bg-blue-600 text-white">Proyecto VIP</Badge>}
                 </div>
+                <h1 className="text-3xl md:text-5xl font-display font-bold text-foreground mb-2 max-w-4xl leading-tight">
+                    {property.title}
+                </h1>
+                <p className="text-2xl md:text-3xl font-numerics font-bold text-gold-500 mb-8">
+                    {formatPrice(property.price, property.currency)}
+                </p>
+            </div>
+
+            {/* Image Gallery */}
+            <div className="container mx-auto px-4 mb-12">
+                <ImageGallery
+                    images={property.images || []}
+                    title={property.title}
+                    coverImage={property.cover_image}
+                />
             </div>
 
             {/* Main Content */}
-            <div className="container mx-auto px-4 py-16 grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-12">
                 <div className="lg:col-span-2 space-y-12">
-                    {/* Overview */}
+                    {/* Overview Metrics */}
                     <div className="bg-muted/30 p-8 rounded-2xl border border-foreground/5 grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x divide-foreground/10">
                         <div className="flex flex-col items-center justify-center space-y-2">
                             <Ruler className="text-gold-500 w-6 h-6" />
@@ -94,38 +88,22 @@ export default async function PropertyDetailPage({
                         </div>
                     </div>
 
-                    {/* Full Description */}
+                    {/* Description */}
                     <div>
                         <h2 className="text-2xl font-bold border-b border-foreground/10 pb-4 mb-6">Descripción de la Propiedad</h2>
                         <div className="prose prose-invert prose-lg max-w-none text-muted-foreground whitespace-pre-wrap leading-relaxed">
                             {property.description}
                         </div>
-
-                        {/* Media Links */}
-                        {(property.video_urls?.length > 0 || property.tour_embeds?.length > 0) && (
-                            <div className="flex flex-wrap gap-4 mt-12 pt-8 border-t border-foreground/10">
-                                {property.video_urls?.map((url: string, i: number) => (
-                                    <Button key={i} asChild className="bg-steel-500 text-black hover:bg-steel-600 font-bold px-8" size="lg">
-                                        <a href={url} target="_blank" rel="noreferrer">
-                                            <Video className="w-5 h-5 mr-2" />
-                                            Ver Video Promocional
-                                        </a>
-                                    </Button>
-                                ))}
-                                {property.tour_embeds?.map((url: string, i: number) => (
-                                    <Button key={i} asChild variant="outline" className="border-gold-500/30 hover:border-gold-500 text-gold-500 font-bold px-8" size="lg">
-                                        <a href={url} target="_blank" rel="noreferrer">
-                                            <Compass className="w-5 h-5 mr-2" />
-                                            Virtual Tour 360
-                                        </a>
-                                    </Button>
-                                ))}
-                            </div>
-                        )}
                     </div>
+
+                    {/* Embedded Video */}
+                    <VideoEmbed urls={property.video_urls || []} />
+
+                    {/* Embedded 360 Tour */}
+                    <TourEmbed urls={property.tour_embeds || []} />
                 </div>
 
-                {/* Sidebar Call to Actions */}
+                {/* Sidebar */}
                 <div className="space-y-6">
                     <div className="bg-background border border-foreground/10 p-8 rounded-2xl sticky top-24 shadow-2xl shadow-black/50">
                         <h3 className="text-xl font-bold mb-2">¿Te interesa esta propiedad?</h3>
@@ -146,32 +124,6 @@ export default async function PropertyDetailPage({
                             </p>
                         </div>
                     </div>
-
-                    {/* Agent Information Card */}
-                    {property.agent_name && (
-                        <div className="bg-zinc-950 border border-gold-500/10 p-6 rounded-2xl flex flex-col gap-4 shadow-xl">
-                            <h3 className="text-sm font-bold uppercase tracking-widest text-foreground/50 border-b border-foreground/10 pb-4">Asesor Comercial</h3>
-                            <div className="flex flex-col gap-3 pt-2">
-                                <p className="font-display font-bold text-xl text-gold-500">{property.agent_name}</p>
-                                {property.agent_phone && (
-                                    <a href={`https://wa.me/${property.agent_phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-white transition-colors group">
-                                        <div className="w-8 h-8 rounded-full bg-zinc-900 flex items-center justify-center group-hover:bg-gold-500 group-hover:text-black transition-colors">
-                                            <Phone className="w-4 h-4" />
-                                        </div>
-                                        {property.agent_phone}
-                                    </a>
-                                )}
-                                {property.agent_email && (
-                                    <a href={`mailto:${property.agent_email}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-white transition-colors group">
-                                        <div className="w-8 h-8 rounded-full bg-zinc-900 flex items-center justify-center group-hover:bg-steel-500 group-hover:text-black transition-colors">
-                                            <Mail className="w-4 h-4" />
-                                        </div>
-                                        {property.agent_email}
-                                    </a>
-                                )}
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>
