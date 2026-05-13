@@ -2,19 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
 function getSupabase() {
-    const supabaseKey =
+    const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim();
+    const supabaseKey = (
         process.env.SUPABASE_SERVICE_ROLE_KEY ||
         process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-        "";
+        ""
+    ).trim();
 
-    if (!supabaseKey) {
-        throw new Error("Missing Supabase key — set SUPABASE_SERVICE_ROLE_KEY or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY");
+    if (!supabaseUrl || !supabaseKey) {
+        throw new Error("Missing Supabase credentials — check Vercel env vars");
     }
 
     return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        supabaseUrl,
         supabaseKey,
-        // Use service_role auth only when we have the service key
         process.env.SUPABASE_SERVICE_ROLE_KEY ? {
             auth: { autoRefreshToken: false, persistSession: false },
         } : undefined
