@@ -73,7 +73,7 @@ export function Header() {
     return (
         <>
             {/* ── Pill Navbar ── */}
-            <div className={`navbar-pill ${scrolled ? "scrolled" : ""}`}>
+            <div className={`navbar-pill backdrop-blur-xl ${scrolled ? "scrolled" : ""}`}>
                 <div className="flex items-center justify-between gap-2">
                     {/* Left: Logo */}
                     <Link href="/" className="flex-shrink-0">
@@ -102,7 +102,7 @@ export function Header() {
                                 Venta
                             </Link>
                             {openDropdown === "venta" && (
-                                <div className="nav-dropdown" onMouseLeave={() => setOpenDropdown(null)}>
+                                <div className="nav-dropdown backdrop-blur-2xl" onMouseLeave={() => setOpenDropdown(null)}>
                                     {ventaDropdown.map((item) => (
                                         <Link
                                             key={item.name}
@@ -128,7 +128,7 @@ export function Header() {
                                 Renta
                             </Link>
                             {openDropdown === "renta" && (
-                                <div className="nav-dropdown" onMouseLeave={() => setOpenDropdown(null)}>
+                                <div className="nav-dropdown backdrop-blur-2xl" onMouseLeave={() => setOpenDropdown(null)}>
                                     {rentaDropdown.map((item) => (
                                         <Link
                                             key={item.name}
@@ -154,7 +154,7 @@ export function Header() {
                                 Herramientas
                             </Link>
                             {openDropdown === "herramientas" && (
-                                <div className="nav-dropdown" onMouseLeave={() => setOpenDropdown(null)}>
+                                <div className="nav-dropdown backdrop-blur-2xl" onMouseLeave={() => setOpenDropdown(null)}>
                                     {herramientasDropdown.map((item) => (
                                         <Link
                                             key={item.name}
