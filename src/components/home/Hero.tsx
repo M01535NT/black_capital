@@ -95,7 +95,7 @@ export function Hero() {
                 playsInline
                 className="absolute inset-0 w-full h-full object-cover z-[-2]"
             >
-                <source src="/hero.mp4" type="video/mp4" />
+                <source src="/hero.webm" type="video/webm" />
             </video>
 
             {/* ── Dark Overlay ── */}
