@@ -30,7 +30,7 @@ export default function AdminLayout({
                                 <span className="sr-only">Abrir menú de navegación</span>
                             </Button>
                         </DrawerTrigger>
-                        <DrawerContent className="w-64 sm:max-w-xs h-full rounded-none">
+                        <DrawerContent className="w-64 sm:max-w-xs h-full rounded-none bg-card border-r border-foreground/10">
                             <div className="flex h-14 items-center border-b px-4 lg:h-[60px]">
                                 <Link href="/" className="font-display font-bold text-xl tracking-tight text-foreground">
                                     BLACK <span className="text-gold-500">CORP</span>
