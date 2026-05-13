@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 // Columnas que existen realmente en la tabla 'properties' de Supabase
 const ALLOWED_COLUMNS = new Set([
-    "title", "property_use", "property_type", "business_type",
+    "title", "slug", "property_use", "property_type", "business_type",
     "is_project", "is_assignment", "is_featured",
     "m2_terrain", "m2_construction", "price", "currency",
     "address", "description", "status",
