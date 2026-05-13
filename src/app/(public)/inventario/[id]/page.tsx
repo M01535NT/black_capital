@@ -2,8 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Ruler, Building2, Calendar, ShieldCheck, Mail, Phone } from "lucide-react";
-import { GatedBrochure } from "@/components/public/gated-brochure";
+import { Ruler, Building2, Calendar, ShieldCheck, Mail } from "lucide-react";
+import { DocDownload } from "@/components/public/doc-download";
 import { ImageGallery } from "@/components/public/image-gallery";
 import { VideoEmbed } from "@/components/public/video-embed";
 import { TourEmbed } from "@/components/public/tour-embed";
@@ -108,10 +108,10 @@ export default async function PropertyDetailPage({
                     <div className="bg-background border border-foreground/10 p-8 rounded-2xl sticky top-24 shadow-2xl shadow-black/50">
                         <h3 className="text-xl font-bold mb-2">¿Te interesa esta propiedad?</h3>
                         <p className="text-muted-foreground text-sm mb-6">
-                            Obtén información detallada, planos y proyecciones financieras descargando nuestro brochure ejecutivo.
+                            Descarga la ficha técnica y brochure ejecutivo sin restricciones.
                         </p>
 
-                        <GatedBrochure propertyId={property.id} propertyName={property.title} pdfUrl={property.brochure_path} />
+                        <DocDownload url={property.brochure_path} label="Descargar Brochure" />
 
                         <Button variant="outline" className="w-full font-bold py-6 text-lg border-foreground/20 hover:bg-muted">
                             <Mail className="mr-2 h-5 w-5" />
