@@ -17,7 +17,7 @@ function StaggeredWord({ word, className }: { word: string; className?: string }
             initial="hidden"
             animate="visible"
             exit="exit"
-            className={className}
+            className="whitespace-nowrap"
             aria-label={word}
         >
             {letters.map((letter, i) => (
@@ -87,6 +87,20 @@ export function Hero() {
 
     return (
         <section className="relative w-full min-h-[95vh] flex flex-col items-center justify-center overflow-hidden">
+            {/* ── Video Background ── */}
+            <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover z-[-2]"
+            >
+                <source src="/hero.mp4" type="video/mp4" />
+            </video>
+
+            {/* ── Dark Overlay ── */}
+            <div className="absolute inset-0 bg-black/60 z-[-1]" />
+
             {/* ── Animated Gradient Background ── */}
             <div
                 className="absolute inset-0 animate-gradient-shift"
@@ -128,7 +142,7 @@ export function Hero() {
                         Impulsamos <br />
                         tu{" "}
                         {/* ── Staggered Letter Reveal (PRD requirement) ── */}
-                        <span className="inline" style={{ perspective: "600px" }}>
+                        <span className="inline whitespace-nowrap" style={{ perspective: "600px" }}>
                             {shouldReduceMotion ? (
                                 <span className="metallic-gold">{words[index]}</span>
                             ) : (
