@@ -135,38 +135,60 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             const isEditing = !!initialData?.id;
             let propertyData;
 
-            if (isEditing) {
-                const res = await fetch('/api/properties', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: initialData.id, ...data }),
-                });
-                const json = await res.json();
-                if (!res.ok) throw new Error(json.error || 'Error al actualizar');
-                propertyData = json.property;
-            } else {
-                const res = await fetch('/api/properties', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data),
-                });
-                const json = await res.json();
-                if (!res.ok) throw new Error(json.error || 'Error al crear');
-                propertyData = json.property;
+            // Step 1: Create/Update property record via API
+            try {
+                if (isEditing) {
+                    const res = await fetch('/api/properties', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: initialData.id, ...data }),
+                    });
+                    const json = await res.json();
+                    if (!res.ok) throw new Error(json.error || 'Error al actualizar');
+                    propertyData = json.property;
+                } else {
+                    const res = await fetch('/api/properties', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                    });
+                    const json = await res.json();
+                    if (!res.ok) throw new Error(json.error || 'Error al crear');
+                    propertyData = json.property;
+                }
+            } catch (error) {
+                if (error instanceof TypeError && error.message === 'fetch failed') {
+                    throw new Error('Error de conexión al guardar. Verifica tu internet y vuelve a intentar.');
+                }
+                throw new Error(`Error al ${isEditing ? 'actualizar' : 'crear'} propiedad: ${error instanceof Error ? error.message : 'Error desconocido'}`);
             }
 
-            // Upload Images and PDF if any
+            // Step 2: Upload PDF if present
             let pdfUrl = null;
             if (pdfFile && propertyData) {
-                pdfUrl = await uploadPdf(propertyData.id);
+                try {
+                    pdfUrl = await uploadPdf(propertyData.id);
+                } catch (error) {
+                    console.error('Error uploading PDF:', error);
+                    // Continue even if PDF fails — the property is already saved
+                }
             }
 
+            // Step 3: Upload images if present
+            let imageUrls: string[] = [];
             if (files.length > 0 && propertyData) {
-                const imageUrls = await uploadImages(propertyData.id);
+                try {
+                    imageUrls = await uploadImages(propertyData.id);
+                } catch (error) {
+                    console.error('Error uploading images:', error);
+                    // Continue even if images fail
+                }
+            }
 
-                // Update Property with Cover Image and/or PDF via API
-                if (imageUrls.length > 0 || pdfUrl) {
-                    await fetch('/api/properties', {
+            // Step 4: Update property with file URLs if any uploaded
+            if ((imageUrls.length > 0 || pdfUrl) && propertyData) {
+                try {
+                    const updateRes = await fetch('/api/properties', {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
@@ -175,20 +197,20 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                             ...(pdfUrl && { pdf_url: pdfUrl })
                         }),
                     });
+                    if (!updateRes.ok) {
+                        const errJson = await updateRes.json().catch(() => ({}));
+                        console.error('Error updating property with files:', errJson);
+                    }
+                } catch (error) {
+                    console.error('Error linking files to property:', error);
                 }
-            } else if (pdfUrl && propertyData) {
-                 await fetch('/api/properties', {
-                     method: 'PUT',
-                     headers: { 'Content-Type': 'application/json' },
-                     body: JSON.stringify({ id: propertyData.id, pdf_url: pdfUrl }),
-                 });
             }
 
             router.push("/admin/properties");
             router.refresh();
         } catch (error) {
             console.error("Error submitting property:", error);
-            alert(`Error al guardar la propiedad: ${error instanceof Error ? error.message : 'Error desconocido'}`);
+            alert(`Error al guardar: ${error instanceof Error ? error.message : 'Error desconocido'}`);
         } finally {
             setIsSubmitting(false);
         }

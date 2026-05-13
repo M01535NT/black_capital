@@ -1,12 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-// Now that RLS policy allows anonymous writes, we can use the anon key
-// The /api/properties route serves the admin panel property CRUD
 function getSupabase() {
+    const supabaseKey =
+        process.env.SUPABASE_SERVICE_ROLE_KEY ||
+        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+        "";
+
+    if (!supabaseKey) {
+        throw new Error("Missing Supabase key — set SUPABASE_SERVICE_ROLE_KEY or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY");
+    }
+
     return createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        supabaseKey,
+        // Use service_role auth only when we have the service key
+        process.env.SUPABASE_SERVICE_ROLE_KEY ? {
+            auth: { autoRefreshToken: false, persistSession: false },
+        } : undefined
     );
 }
 
