@@ -9,8 +9,7 @@ const ALLOWED_COLUMNS = new Set([
     "m2_terrain", "m2_construction", "price", "currency",
     "address", "description", "status",
     "video_urls", "tour_embeds", "brochure_path", "cover_image",
-    "custom_attributes", "images",
-    // Campos del agente se guardan en custom_attributes (ver abajo)
+    "custom_attributes", "images", "documents",
 ]);
 
 async function getSupabase() {

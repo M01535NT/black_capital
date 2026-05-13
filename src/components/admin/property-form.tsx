@@ -29,16 +29,20 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, UploadCloud } from "lucide-react";
+import { Loader2, UploadCloud, X, Plus } from "lucide-react";
+
+interface PdfEntry {
+    file: File;
+    label: string;
+}
 
 export function PropertyForm({ initialData }: { initialData?: any }) {
     const router = useRouter();
     const supabase = createClient();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [files, setFiles] = useState<File[]>([]);
-    const [pdfFile, setPdfFile] = useState<File | null>(null);
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [pdfEntries, setPdfEntries] = useState<PdfEntry[]>([]);
 
-    // Omitted standard form hook due to the import error fixing needed next. Let's fix the import.
     const form = useForm<PropertyFormValues>({
         resolver: zodResolver(propertySchema),
         defaultValues: initialData || {
@@ -63,22 +67,37 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
         },
     });
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // ── Image handlers ──
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            setFiles(Array.from(e.target.files));
+            setImageFiles(Array.from(e.target.files));
         }
     };
 
+    // ── PDF handlers ──
     const handlePdfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setPdfFile(e.target.files[0]);
+        if (e.target.files) {
+            const newEntries = Array.from(e.target.files).map(f => ({
+                file: f,
+                label: f.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
+            }));
+            setPdfEntries(prev => [...prev, ...newEntries]);
         }
     };
 
+    const removePdfEntry = (index: number) => {
+        setPdfEntries(prev => prev.filter((_, i) => i !== index));
+    };
+
+    const updatePdfLabel = (index: number, label: string) => {
+        setPdfEntries(prev => prev.map((e, i) => i === index ? { ...e, label } : e));
+    };
+
+    // ── Upload functions ──
     const uploadImages = async (propertyId: string) => {
         const urls: string[] = [];
         const errors: string[] = [];
-        for (const file of files) {
+        for (const file of imageFiles) {
             const options = {
                 maxSizeMB: 1,
                 maxWidthOrHeight: 1920,
@@ -119,26 +138,30 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
         return urls;
     };
 
-    const uploadPdf = async (propertyId: string) => {
-        if (!pdfFile) return null;
-        try {
-            const fileName = `${propertyId}/${Date.now()}-${pdfFile.name.replace(/[^a-zA-Z0-9.\-_]/g, '')}`;
-            const { error } = await supabase.storage
-                .from("public")
-                .upload(fileName, pdfFile, {
-                    contentType: "application/pdf",
-                    upsert: false,
-                });
+    const uploadDocuments = async (propertyId: string) => {
+        const docs: { label: string; url: string }[] = [];
+        for (const entry of pdfEntries) {
+            try {
+                const safeName = entry.file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_");
+                const fileName = `${propertyId}/${Date.now()}-${safeName}`;
+                const { error } = await supabase.storage
+                    .from("public")
+                    .upload(fileName, entry.file, {
+                        contentType: "application/pdf",
+                        upsert: false,
+                    });
 
-            if (error) throw error;
-            const { data: publicUrlData } = supabase.storage.from("public").getPublicUrl(fileName);
-            return publicUrlData.publicUrl;
-        } catch (error) {
-            console.error("Error uploading PDF:", error);
-            return null;
+                if (error) throw error;
+                const { data: publicUrlData } = supabase.storage.from("public").getPublicUrl(fileName);
+                docs.push({ label: entry.label, url: publicUrlData.publicUrl });
+            } catch (err) {
+                console.error(`Error uploading ${entry.file.name}:`, err);
+            }
         }
+        return docs;
     };
 
+    // ── Submit ──
     async function onSubmit(data: PropertyFormValues) {
         setIsSubmitting(true);
         try {
@@ -173,42 +196,42 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 throw new Error(`Error al ${isEditing ? 'actualizar' : 'crear'} propiedad: ${error instanceof Error ? error.message : 'Error desconocido'}`);
             }
 
-            // Step 2: Upload PDF if present
-            let pdfUrl = null;
-            if (pdfFile && propertyData) {
+            // Step 2: Upload documents (multiple PDFs)
+            let documents: { label: string; url: string }[] = [];
+            if (pdfEntries.length > 0 && propertyData) {
                 try {
-                    pdfUrl = await uploadPdf(propertyData.id);
+                    documents = await uploadDocuments(propertyData.id);
                 } catch (error) {
-                    console.error('Error uploading PDF:', error);
-                    // Continue even if PDF fails — the property is already saved
+                    console.error('Error uploading documents:', error);
                 }
             }
 
-            // Step 3: Upload images if present
+            // Step 3: Upload images
             let imageUrls: string[] = [];
-            if (files.length > 0 && propertyData) {
+            if (imageFiles.length > 0 && propertyData) {
                 try {
                     imageUrls = await uploadImages(propertyData.id);
                 } catch (error) {
                     console.error('Error uploading images:', error);
-                    // Continue even if images fail
                 }
             }
 
-            // Step 4: Update property with file URLs if any uploaded
-            if ((imageUrls.length > 0 || pdfUrl) && propertyData) {
+            // Step 4: Update property with file URLs
+            const hasFiles = imageUrls.length > 0 || documents.length > 0;
+            if (hasFiles && propertyData) {
                 try {
+                    const payload: Record<string, unknown> = { id: propertyData.id };
+                    if (imageUrls.length > 0) {
+                        payload.cover_image = imageUrls[0];
+                        payload.images = imageUrls;
+                    }
+                    if (documents.length > 0) {
+                        payload.documents = documents;
+                    }
                     const updateRes = await fetch('/api/properties', {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            id: propertyData.id, 
-                            ...(imageUrls.length > 0 && { 
-                                cover_image: imageUrls[0],
-                                images: imageUrls 
-                            }),
-                            ...(pdfUrl && { brochure_path: pdfUrl })
-                        }),
+                        body: JSON.stringify(payload),
                     });
                     if (!updateRes.ok) {
                         const errJson = await updateRes.json().catch(() => ({}));
@@ -232,7 +255,6 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                {/* ... form fields will go here ... */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                         control={form.control}
@@ -411,7 +433,6 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                                             const raw = e.target.value;
                                             if (raw === "") { field.onChange(null); return; }
                                             const num = parseFloat(raw);
-                                            // Pass NaN as number so Zod's invalid_type_error fires
                                             field.onChange(num);
                                         }}
                                     />
@@ -437,7 +458,6 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                                             const raw = e.target.value;
                                             if (raw === "") { field.onChange(null); return; }
                                             const num = parseFloat(raw);
-                                            // Pass NaN as number so Zod's invalid_type_error fires
                                             field.onChange(num);
                                         }}
                                     />
@@ -481,9 +501,9 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         name="tour_url"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Virtual Tour 360 (Matterport Link)</FormLabel>
+                                <FormLabel>Virtual Tour 360 (Kuula / Matterport)</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="https://my.matterport.com/..." value={field.value ?? ""} onChange={field.onChange} />
+                                    <Input placeholder="https://kuula.co/..." value={field.value ?? ""} onChange={field.onChange} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -536,8 +556,6 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     </div>
                 </div>
 
-
-
                 <div className="flex flex-wrap gap-6 p-4 border border-foreground/10 flex-col md:flex-row rounded-lg items-center">
                     <FormField
                         control={form.control}
@@ -545,15 +563,10 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         render={({ field }) => (
                             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                 <FormControl>
-                                    <Checkbox
-                                        checked={field.value}
-                                        onCheckedChange={field.onChange}
-                                    />
+                                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                                 </FormControl>
                                 <div className="space-y-1 leading-none">
-                                    <FormLabel>
-                                        Destacada
-                                    </FormLabel>
+                                    <FormLabel>Destacada</FormLabel>
                                 </div>
                             </FormItem>
                         )}
@@ -564,15 +577,10 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         render={({ field }) => (
                             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                 <FormControl>
-                                    <Checkbox
-                                        checked={field.value}
-                                        onCheckedChange={field.onChange}
-                                    />
+                                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                                 </FormControl>
                                 <div className="space-y-1 leading-none">
-                                    <FormLabel>
-                                        Proyecto (Preventa)
-                                    </FormLabel>
+                                    <FormLabel>Proyecto (Preventa)</FormLabel>
                                 </div>
                             </FormItem>
                         )}
@@ -583,33 +591,62 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         render={({ field }) => (
                             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                 <FormControl>
-                                    <Checkbox
-                                        checked={field.value}
-                                        onCheckedChange={field.onChange}
-                                    />
+                                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                                 </FormControl>
                                 <div className="space-y-1 leading-none">
-                                    <FormLabel>
-                                        Cesión de Derechos
-                                    </FormLabel>
+                                    <FormLabel>Cesión de Derechos</FormLabel>
                                 </div>
                             </FormItem>
                         )}
                     />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-4">
-                        <FormLabel>Imágenes (JPG, PNG, WEBP)</FormLabel>
-                        <Input type="file" multiple accept="image/*" onChange={handleFileChange} className="cursor-pointer file:bg-gold-500 file:text-black file:border-none file:mr-4 file:-ml-3 file:py-1 file:px-4 file:rounded-md hover:file:bg-gold-600" />
-                        <FormDescription>Se comprimirán automáticamente a WebP antes de subir.</FormDescription>
-                    </div>
+                {/* ── Imágenes ── */}
+                <div className="space-y-4">
+                    <FormLabel>Imágenes (JPG, PNG, WEBP)</FormLabel>
+                    <Input type="file" multiple accept="image/*" onChange={handleImageChange} className="cursor-pointer file:bg-gold-500 file:text-black file:border-none file:mr-4 file:-ml-3 file:py-1 file:px-4 file:rounded-md hover:file:bg-gold-600" />
+                    <FormDescription>Se comprimirán automáticamente a WebP antes de subir.</FormDescription>
+                </div>
 
-                    <div className="space-y-4">
-                        <FormLabel>Brochure (Documento PDF)</FormLabel>
-                        <Input type="file" accept="application/pdf" onChange={handlePdfChange} className="cursor-pointer file:bg-steel-500 file:text-black file:border-none file:mr-4 file:-ml-3 file:py-1 file:px-4 file:rounded-md hover:file:bg-steel-600" />
-                        <FormDescription>Sube el brochure ejecutivo. Se guardará sin compresión y atado a esta propiedad.</FormDescription>
-                    </div>
+                {/* ── Documentos PDF (múltiples) ── */}
+                <div className="space-y-4">
+                    <FormLabel>Documentos (PDF) — Ficha técnica, escrituras, avalúos, etc.</FormLabel>
+                    <Input
+                        type="file"
+                        multiple
+                        accept="application/pdf"
+                        onChange={handlePdfChange}
+                        className="cursor-pointer file:bg-steel-500 file:text-black file:border-none file:mr-4 file:-ml-3 file:py-1 file:px-4 file:rounded-md hover:file:bg-steel-600"
+                    />
+                    <FormDescription>
+                        Puedes subir varios archivos. Asígnales una etiqueta para identificarlos.
+                    </FormDescription>
+
+                    {/* PDF entries list with editable labels */}
+                    {pdfEntries.length > 0 && (
+                        <div className="space-y-2 mt-3">
+                            {pdfEntries.map((entry, i) => (
+                                <div key={i} className="flex items-center gap-2 bg-muted/30 rounded-lg p-2 pl-3 border border-foreground/10">
+                                    <span className="text-xs text-muted-foreground truncate flex-1 min-w-0">
+                                        {entry.file.name}
+                                    </span>
+                                    <Input
+                                        value={entry.label}
+                                        onChange={e => updatePdfLabel(i, e.target.value)}
+                                        placeholder="Ej. Ficha Técnica"
+                                        className="w-40 h-8 text-xs"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removePdfEntry(i)}
+                                        className="p-1 min-w-[32px] min-h-[32px] text-muted-foreground hover:text-red-400 flex items-center justify-center"
+                                    >
+                                        <X className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -618,7 +655,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     </Button>
                     <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto flex-1 bg-gold-500 text-black hover:bg-gold-600 font-bold">
                         {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <UploadCloud className="mr-2 h-4 w-4" />}
-                        {isSubmitting ? "Guardando y subiendo imágenes..." : "Guardar Propiedad"}
+                        {isSubmitting ? "Guardando y subiendo archivos..." : "Guardar Propiedad"}
                     </Button>
                 </div>
             </form>

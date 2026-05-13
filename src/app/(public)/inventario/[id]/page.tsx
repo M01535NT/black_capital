@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Ruler, Building2, Calendar, ShieldCheck, Mail } from "lucide-react";
-import { DocDownload } from "@/components/public/doc-download";
+import { DocList } from "@/components/public/doc-list";
 import { ImageGallery } from "@/components/public/image-gallery";
 import { VideoEmbed } from "@/components/public/video-embed";
 import { TourEmbed } from "@/components/public/tour-embed";
@@ -31,6 +31,19 @@ export default async function PropertyDetailPage({
     const formatPrice = (price: number, currency: string) => {
         return new Intl.NumberFormat("es-MX", { style: "currency", currency }).format(price);
     };
+
+    // Build documents list from both sources
+    const documents: { label: string; url: string }[] = [];
+    if (property.documents && Array.isArray(property.documents)) {
+        documents.push(...property.documents);
+    }
+    // Backward compat: old brochure_path as a doc if not already in documents
+    if (property.brochure_path) {
+        const alreadyInDocs = documents.some(d => d.url === property.brochure_path);
+        if (!alreadyInDocs) {
+            documents.push({ label: "Brochure Ejecutivo", url: property.brochure_path });
+        }
+    }
 
     return (
         <div className="w-full bg-background min-h-screen">
@@ -108,12 +121,12 @@ export default async function PropertyDetailPage({
                     <div className="bg-background border border-foreground/10 p-8 rounded-2xl sticky top-24 shadow-2xl shadow-black/50">
                         <h3 className="text-xl font-bold mb-2">¿Te interesa esta propiedad?</h3>
                         <p className="text-muted-foreground text-sm mb-6">
-                            Descarga la ficha técnica y brochure ejecutivo sin restricciones.
+                            Descarga los documentos sin restricciones.
                         </p>
 
-                        <DocDownload url={property.brochure_path} label="Descargar Brochure" />
+                        <DocList documents={documents} />
 
-                        <Button variant="outline" className="w-full font-bold py-6 text-lg border-foreground/20 hover:bg-muted">
+                        <Button variant="outline" className="w-full font-bold py-6 text-lg border-foreground/20 hover:bg-muted mt-6">
                             <Mail className="mr-2 h-5 w-5" />
                             Agendar Recorrido
                         </Button>
