@@ -1,17 +1,21 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "NOT SET";
-    const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY 
-        ? `${process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.substring(0, 20)}...` 
-        : "NOT SET";
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY 
-        ? `${process.env.SUPABASE_SERVICE_ROLE_KEY.substring(0, 20)}...` 
-        : "NOT SET";
+    const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "NOT SET";
+    const trimmedUrl = rawUrl.trim();
+    const urlHex = Buffer.from(rawUrl).toString("hex");
+    
+    const rawKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "NOT SET";
+    const trimmedKey = rawKey.trim();
+    const keyHex = Buffer.from(rawKey).toString("hex").substring(0, 40) + "...";
 
     return NextResponse.json({
-        supabaseUrl: url,
-        publishableKey,
-        serviceRoleKey,
+        rawUrlLength: rawUrl.length,
+        trimmedUrlLength: trimmedUrl.length,
+        urlHex,
+        rawKeyLength: rawKey.length,
+        trimmedKeyLength: trimmedKey.length,
+        keyHex,
+        serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY ? "SET" : "NOT SET",
     });
 }
