@@ -10,18 +10,18 @@
   --color-foreground: oklch(0.95 0 0);
   /* Off-white */
 
-  /* Metallic Gold — BlackLuxury palette (D4AF37 / FFD700 / 996515) */
+  /* Metallic Gold — WhatsApp gold reference: D4AF37 / FFD700 / 996515 */
   --color-gold-solid: #D4AF37;
-  --color-gold-300: oklch(0.89 0.12 87);
-  /* ≈ #F5E6B8 light */
-  --color-gold-400: oklch(0.82 0.14 85);
-  /* ≈ #D4AF37 mid-light */
-  --color-gold-500: oklch(0.72 0.14 82);
-  /* ≈ #D4AF37 main */
-  --color-gold-600: oklch(0.62 0.12 78);
-  /* ≈ #996515 mid-dark */
-  --color-gold-700: oklch(0.50 0.10 72);
-  /* ≈ #8B7030 dark */
+  --color-gold-300: #F5E6B8;
+  /* lightest */
+  --color-gold-400: #E8C55A;
+  /* light gold */
+  --color-gold-500: #D4AF37;
+  /* MAIN GOLD — matches WhatsApp button */
+  --color-gold-600: #B8942F;
+  /* dark gold */
+  --color-gold-700: #8B7030;
+  /* darkest */
 
   /* Industrial accent — cold steel blue-grey */
   --color-steel-400: oklch(0.55 0.03 250);
@@ -44,7 +44,7 @@
   --glass-border: oklch(1 0 0 / 8%);
   --glass-shadow: 0 8px 32px oklch(0 0 0 / 40%);
 
-  /* Gold gradient — BlackLuxury style */
+  /* Gold gradient — WhatsApp gold reference */
   --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #996515 100%);
   --gradient-gold-text: linear-gradient(90deg, #8B7030 0%, #D4AF37 25%, #F5E6B8 50%, #D4AF37 75%, #8B7030 100%);
 
@@ -161,10 +161,10 @@ h6 {
 
   .animate-gold-shimmer {
     background: linear-gradient(110deg,
-        var(--color-gold-700) 0%,
-        var(--color-gold-300) 45%,
-        var(--color-gold-500) 55%,
-        var(--color-gold-700) 100%);
+        #8B7030 0%,
+        #F5E6B8 45%,
+        #D4AF37 55%,
+        #8B7030 100%);
     background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -235,15 +235,15 @@ h6 {
     mix-blend-mode: overlay;
   }
 
-  /* ── Metallic Reflective Gold ── */
+  /* ── Metallic Reflective Gold (WhatsApp gold palette) ── */
   .metallic-gold {
     background: linear-gradient(to right,
-        oklch(0.52 0.11 82) 0%,
-        oklch(0.89 0.11 86) 20%,
-        oklch(0.76 0.15 84) 40%,
-        oklch(0.82 0.14 85) 60%,
-        oklch(0.89 0.11 86) 80%,
-        oklch(0.52 0.11 82) 100%);
+        #8B7030 0%,
+        #F5E6B8 20%,
+        #D4AF37 40%,
+        #E8C55A 60%,
+        #F5E6B8 80%,
+        #8B7030 100%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
