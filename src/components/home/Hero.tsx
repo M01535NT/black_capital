@@ -101,18 +101,6 @@ export function Hero() {
             {/* ── Dark Overlay ── */}
             <div className="absolute inset-0 bg-black/60 z-[-1]" />
 
-            {/* ── Animated Gradient Background ── */}
-            <div
-                className="absolute inset-0 animate-gradient-shift"
-                style={{
-                    background:
-                        "linear-gradient(135deg, oklch(0.12 0 0) 0%, oklch(0.18 0.04 78) 35%, oklch(0.10 0 0) 70%, oklch(0.08 0 0) 100%)",
-                }}
-            />
-
-            {/* ── Noise/Grain Overlay ── */}
-            <div className="grain-overlay" />
-
             {/* ── Cursor Follow Glow ── */}
             {!shouldReduceMotion && (
                 <motion.div
@@ -124,10 +112,6 @@ export function Hero() {
                     transition={{ type: "spring", damping: 30, stiffness: 150 }}
                 />
             )}
-
-            {/* ── Floating Orbs ── */}
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-gold-400/5 blur-[100px] animate-float-slow pointer-events-none" />
-            <div className="absolute bottom-1/3 right-1/6 w-72 h-72 rounded-full bg-gold-600/5 blur-[80px] animate-float pointer-events-none" />
 
             {/* ── Content ── */}
             <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12">
