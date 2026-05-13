@@ -193,8 +193,11 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
                             id: propertyData.id, 
-                            ...(imageUrls.length > 0 && { cover_image: imageUrls[0] }),
-                            ...(pdfUrl && { pdf_url: pdfUrl })
+                            ...(imageUrls.length > 0 && { 
+                                cover_image: imageUrls[0],
+                                images: imageUrls 
+                            }),
+                            ...(pdfUrl && { brochure_path: pdfUrl })
                         }),
                     });
                     if (!updateRes.ok) {

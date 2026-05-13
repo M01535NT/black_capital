@@ -102,24 +102,24 @@ export default async function PropertyDetailPage({
                         </div>
 
                         {/* Media Links */}
-                        {(property.video_url || property.tour_url) && (
+                        {(property.video_urls?.length > 0 || property.tour_embeds?.length > 0) && (
                             <div className="flex flex-wrap gap-4 mt-12 pt-8 border-t border-foreground/10">
-                                {property.video_url && (
-                                    <Button asChild className="bg-steel-500 text-black hover:bg-steel-600 font-bold px-8" size="lg">
-                                        <a href={property.video_url} target="_blank" rel="noreferrer">
+                                {property.video_urls?.map((url: string, i: number) => (
+                                    <Button key={i} asChild className="bg-steel-500 text-black hover:bg-steel-600 font-bold px-8" size="lg">
+                                        <a href={url} target="_blank" rel="noreferrer">
                                             <Video className="w-5 h-5 mr-2" />
                                             Ver Video Promocional
                                         </a>
                                     </Button>
-                                )}
-                                {property.tour_url && (
-                                    <Button asChild variant="outline" className="border-gold-500/30 hover:border-gold-500 text-gold-500 font-bold px-8" size="lg">
-                                        <a href={property.tour_url} target="_blank" rel="noreferrer">
+                                ))}
+                                {property.tour_embeds?.map((url: string, i: number) => (
+                                    <Button key={i} asChild variant="outline" className="border-gold-500/30 hover:border-gold-500 text-gold-500 font-bold px-8" size="lg">
+                                        <a href={url} target="_blank" rel="noreferrer">
                                             <Compass className="w-5 h-5 mr-2" />
                                             Virtual Tour 360
                                         </a>
                                     </Button>
-                                )}
+                                ))}
                             </div>
                         )}
                     </div>
@@ -133,7 +133,7 @@ export default async function PropertyDetailPage({
                             Obtén información detallada, planos y proyecciones financieras descargando nuestro brochure ejecutivo.
                         </p>
 
-                        <GatedBrochure propertyId={property.id} propertyName={property.title} pdfUrl={property.pdf_url} />
+                        <GatedBrochure propertyId={property.id} propertyName={property.title} pdfUrl={property.brochure_path} />
 
                         <Button variant="outline" className="w-full font-bold py-6 text-lg border-foreground/20 hover:bg-muted">
                             <Mail className="mr-2 h-5 w-5" />
