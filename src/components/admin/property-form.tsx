@@ -60,13 +60,13 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             currency: "MXN",
             description: "",
             status: "Available",
-            video_url: "",
-            tour_url: "",
             agent_name: "",
             agent_phone: "",
             agent_email: "",
             ...(initialData || {}),
             agent_ids: initialData?.agent_ids || [],
+            video_url: initialData?.video_urls?.[0] || "",
+            tour_url: initialData?.tour_embeds?.[0] || "",
         },
     });
 

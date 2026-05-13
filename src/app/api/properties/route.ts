@@ -51,9 +51,11 @@ function filterPayload(data: Record<string, unknown>): Record<string, unknown> {
         if (key === "pdf_url") {
             filtered["brochure_path"] = value;
         } else if (key === "video_url") {
-            filtered["video_urls"] = value ? [value] : [];
+            if (value) filtered["video_urls"] = [value];
+            // si está vacío, no se incluye → no sobreescribe lo existente
         } else if (key === "tour_url") {
-            filtered["tour_embeds"] = value ? [value] : [];
+            if (value) filtered["tour_embeds"] = [value];
+            // si está vacío, no se incluye → no sobreescribe lo existente
         } else if (ALLOWED_COLUMNS.has(key)) {
             filtered[key] = value;
         }
