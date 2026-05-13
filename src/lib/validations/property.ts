@@ -31,6 +31,9 @@ export const propertySchema = z.object({
     pdf_url: z.string().optional().nullable(),
     tour_url: z.string().optional().nullable(),
     video_url: z.string().optional().nullable(),
+    // Agent assignment — array of agent UUIDs from the agents table
+    agent_ids: z.array(z.string().uuid()).default([]),
+    // Legacy fields kept for backward compat (not persisted to DB)
     agent_name: z.string().optional().nullable(),
     agent_phone: z.string().optional().nullable(),
     agent_email: z.string().optional().nullable(),

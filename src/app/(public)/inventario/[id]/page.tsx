@@ -2,13 +2,23 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Ruler, Building2, Calendar, ShieldCheck, Mail } from "lucide-react";
+import { Ruler, Building2, Calendar, ShieldCheck, Mail, Phone, User } from "lucide-react";
 import { DocList } from "@/components/public/doc-list";
 import { ImageGallery } from "@/components/public/image-gallery";
 import { VideoEmbed } from "@/components/public/video-embed";
 import { TourEmbed } from "@/components/public/tour-embed";
+import Link from "next/link";
 
 export const revalidate = 60;
+
+type AgentInfo = {
+    id: string;
+    full_name: string;
+    email: string | null;
+    phone: string | null;
+    photo_url: string | null;
+    license_number: string | null;
+};
 
 export default async function PropertyDetailPage({
     params
@@ -26,6 +36,23 @@ export default async function PropertyDetailPage({
 
     if (error || !property) {
         return notFound();
+    }
+
+    // Fetch assigned agents from junction table
+    const { data: assignedAgents } = await supabase
+        .from("property_agents")
+        .select("agent_id")
+        .eq("property_id", id);
+
+    let agents: AgentInfo[] = [];
+    if (assignedAgents && assignedAgents.length > 0) {
+        const agentIds = assignedAgents.map(pa => pa.agent_id);
+        const { data: agentData } = await supabase
+            .from("agents")
+            .select("id, full_name, email, phone, photo_url, license_number")
+            .in("id", agentIds)
+            .eq("is_active", true);
+        if (agentData) agents = agentData;
     }
 
     const formatPrice = (price: number, currency: string) => {
@@ -118,6 +145,63 @@ export default async function PropertyDetailPage({
 
                 {/* Sidebar */}
                 <div className="space-y-6">
+                    {/* Agent Cards */}
+                    {agents.length > 0 && (
+                        <div className="space-y-4">
+                            <h3 className="text-sm tracking-widest text-foreground/50 font-bold uppercase">
+                                {agents.length === 1 ? "Asesor a Cargo" : "Asesores a Cargo"}
+                            </h3>
+                            {agents.map((agent) => (
+                                <div
+                                    key={agent.id}
+                                    className="bg-card border border-foreground/10 rounded-2xl p-5 shadow-lg shadow-black/30"
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-14 h-14 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 text-xl font-bold shrink-0 border-2 border-gold-500/20">
+                                            {agent.photo_url ? (
+                                                <img
+                                                    src={agent.photo_url}
+                                                    alt={agent.full_name}
+                                                    className="w-full h-full rounded-full object-cover"
+                                                />
+                                            ) : (
+                                                agent.full_name.charAt(0).toUpperCase()
+                                            )}
+                                        </div>
+                                        <div className="min-w-0">
+                                            <p className="font-bold text-foreground text-base truncate">{agent.full_name}</p>
+                                            {agent.license_number && (
+                                                <p className="text-xs text-foreground/50">Céd. {agent.license_number}</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 space-y-2">
+                                        {agent.email && (
+                                            <a
+                                                href={`mailto:${agent.email}`}
+                                                className="flex items-center gap-2 text-sm text-foreground/70 hover:text-gold-500 transition-colors"
+                                            >
+                                                <Mail className="w-3.5 h-3.5 text-gold-500/70" />
+                                                {agent.email}
+                                            </a>
+                                        )}
+                                        {agent.phone && (
+                                            <a
+                                                href={`https://wa.me/${agent.phone.replace(/[^0-9]/g, "")}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 text-sm text-foreground/70 hover:text-gold-500 transition-colors"
+                                            >
+                                                <Phone className="w-3.5 h-3.5 text-gold-500/70" />
+                                                {agent.phone}
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
                     <div className="bg-background border border-foreground/10 p-8 rounded-2xl sticky top-24 shadow-2xl shadow-black/50">
                         <h3 className="text-xl font-bold mb-2">¿Te interesa esta propiedad?</h3>
                         <p className="text-muted-foreground text-sm mb-6">

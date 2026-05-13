@@ -1,7 +1,8 @@
 "use client";
 
 export function WhatsAppFloat() {
-    const phoneNumber = "521234567890"; // Reemplazar con número real
+    // Configura el número en .env.local: NEXT_PUBLIC_WHATSAPP_NUMBER=521234567890
+    const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "521234567890";
     const message = encodeURIComponent("Hola, me gustaría recibir información sobre propiedades de inversión.");
 
     return (

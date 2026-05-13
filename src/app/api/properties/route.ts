@@ -46,11 +46,11 @@ function filterPayload(data: Record<string, unknown>): Record<string, unknown> {
     const filtered: Record<string, unknown> = {};
 
     for (const [key, value] of Object.entries(data)) {
+        if (key === "agent_ids") continue; // handled separately
         // Mapear nombres viejos a nuevos
         if (key === "pdf_url") {
             filtered["brochure_path"] = value;
         } else if (key === "video_url") {
-            // Si ya hay video_urls, append; si no, crear array
             filtered["video_urls"] = value ? [value] : [];
         } else if (key === "tour_url") {
             filtered["tour_embeds"] = value ? [value] : [];
@@ -63,9 +63,32 @@ function filterPayload(data: Record<string, unknown>): Record<string, unknown> {
     return filtered;
 }
 
+/** Sincroniza property_agents: reemplaza todos los agentes asignados */
+async function syncPropertyAgents(
+    supabase: ReturnType<typeof createServerClient>,
+    propertyId: string,
+    agentIds: string[]
+) {
+    // Delete existing
+    await supabase.from("property_agents").delete().eq("property_id", propertyId);
+
+    // Insert new
+    if (agentIds.length > 0) {
+        const rows = agentIds.map(agentId => ({
+            property_id: propertyId,
+            agent_id: agentId,
+        }));
+        const { error } = await supabase.from("property_agents").insert(rows);
+        if (error) {
+            console.error("[API /properties] Error syncing property_agents:", error);
+        }
+    }
+}
+
 export async function POST(req: NextRequest) {
     try {
         const data = await req.json();
+        const { agent_ids } = data;
         const slug = generateSlug(data.title);
         const payload = filterPayload({ ...data, slug });
         const supabase = await getSupabase();
@@ -81,6 +104,11 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: error.message }, { status: 400 });
         }
 
+        // Sync agent assignments
+        if (agent_ids && Array.isArray(agent_ids)) {
+            await syncPropertyAgents(supabase, property.id, agent_ids);
+        }
+
         return NextResponse.json({ property }, { status: 201 });
     } catch (err) {
         console.error("[API /properties POST] Unexpected error:", err);
@@ -91,7 +119,7 @@ export async function POST(req: NextRequest) {
 export async function PUT(req: NextRequest) {
     try {
         const data = await req.json();
-        const { id, ...rest } = data;
+        const { id, agent_ids, ...rest } = data;
         const supabase = await getSupabase();
 
         if (!id) {
@@ -113,6 +141,11 @@ export async function PUT(req: NextRequest) {
         if (error) {
             console.error("[API /properties PUT] Supabase error:", error);
             return NextResponse.json({ error: error.message }, { status: 400 });
+        }
+
+        // Sync agent assignments
+        if (agent_ids && Array.isArray(agent_ids)) {
+            await syncPropertyAgents(supabase, id, agent_ids);
         }
 
         return NextResponse.json({ property }, { status: 200 });

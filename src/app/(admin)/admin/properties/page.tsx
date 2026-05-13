@@ -33,7 +33,19 @@ export default async function PropertiesPage() {
                 </Link>
             </div>
 
-            <DataTable columns={columns} data={data} />
+            <div className="bg-card border border-foreground/10 rounded-xl overflow-hidden shadow-sm">
+                <DataTable
+                    columns={columns}
+                    data={data}
+                    searchPlaceholder="Buscar por título..."
+                    searchFields={["title"]}
+                    filters={[
+                        { id: "property_use", label: "Uso", options: ["Residencial", "Comercial", "Industrial", "Habitacional"] },
+                        { id: "business_type", label: "Negocio", options: ["Venta", "Renta", "Aportación", "Cesión"] },
+                        { id: "status", label: "Estatus", options: ["Available", "Under_Offer", "Sold", "Rented"] },
+                    ]}
+                />
+            </div>
         </div>
     );
 }

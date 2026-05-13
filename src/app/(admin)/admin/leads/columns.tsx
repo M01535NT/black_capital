@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -21,28 +22,44 @@ export type LeadRow = {
     source: string;
     status: string;
     created_at: string;
+    notes?: string | null;
 };
 
 export const columns: ColumnDef<LeadRow>[] = [
     {
         accessorKey: "name",
         header: "Nombre",
-        cell: ({ row }) => <div className="font-bold text-foreground">{row.getValue("name")}</div>,
+        cell: ({ row }) => (
+            <Link href={`/admin/leads/${row.original.id}`} className="font-bold text-foreground hover:text-gold-500 transition-colors">
+                {row.getValue("name")}
+            </Link>
+        ),
     },
     {
         accessorKey: "email",
         header: "Correo",
+        cell: ({ row }) => <span className="text-foreground/70 text-sm">{row.getValue("email")}</span>,
     },
     {
         accessorKey: "phone",
         header: "Teléfono",
+        cell: ({ row }) => <span className="text-foreground/70 text-sm">{row.getValue("phone")}</span>,
     },
     {
         accessorKey: "source",
         header: "Origen",
         cell: ({ row }) => {
             const source = row.getValue("source") as string;
-            return <div className="capitalize">{source}</div>;
+            const labels: Record<string, string> = {
+                organic: "Orgánico",
+                campaign: "Campaña",
+                referral: "Referido",
+                other: "Otro",
+                landing_luxury: "Luxury",
+                landing_business: "Business",
+                landing_industrial: "Industrial",
+            };
+            return <div className="capitalize text-sm">{labels[source] || source}</div>;
         },
     },
     {
@@ -75,7 +92,7 @@ export const columns: ColumnDef<LeadRow>[] = [
                 year: "numeric"
             }).format(date);
 
-            return <div className="text-right text-muted-foreground">{formatted}</div>;
+            return <div className="text-right text-muted-foreground text-sm">{formatted}</div>;
         },
     },
     {
@@ -93,13 +110,17 @@ export const columns: ColumnDef<LeadRow>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuItem asChild>
+                            <Link href={`/admin/leads/${lead.id}`}>
+                                <Eye className="w-3.5 h-3.5 mr-2" /> Ver Detalle
+                            </Link>
+                        </DropdownMenuItem>
                         <DropdownMenuItem
                             onClick={() => navigator.clipboard.writeText(lead.email).catch(() => {})}
                         >
                             Copiar Correo
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>Ver detalles y notas</DropdownMenuItem>
                         <DropdownMenuItem>Cambiar estado</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

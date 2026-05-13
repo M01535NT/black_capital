@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Eye, Edit, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -28,7 +28,14 @@ export const columns: ColumnDef<PropertyRow>[] = [
     {
         accessorKey: "title",
         header: "Propiedad",
-        cell: ({ row }) => <div className="font-bold text-foreground">{row.getValue("title")}</div>,
+        cell: ({ row }) => (
+            <Link
+                href={`/admin/properties/${row.original.id}`}
+                className="font-bold text-foreground hover:text-gold-500 transition-colors"
+            >
+                {row.getValue("title")}
+            </Link>
+        ),
     },
     {
         accessorKey: "property_use",
@@ -66,8 +73,20 @@ export const columns: ColumnDef<PropertyRow>[] = [
         header: "Estatus",
         cell: ({ row }) => {
             const status = row.getValue("status") as string;
+            const statusColors: Record<string, string> = {
+                Available: "bg-emerald-500/10 text-emerald-500",
+                Under_Offer: "bg-yellow-500/10 text-yellow-500",
+                Sold: "bg-red-500/10 text-red-500",
+                Rented: "bg-blue-500/10 text-blue-500",
+            };
             return (
-                <Badge variant="secondary" className="bg-foreground/5">{status}</Badge>
+                <Badge variant="secondary" className={statusColors[status] || "bg-foreground/5"}>
+                    {status === "Available" ? "Disponible"
+                        : status === "Under_Offer" ? "Bajo Oferta"
+                        : status === "Sold" ? "Vendido"
+                        : status === "Rented" ? "Rentado"
+                        : status}
+                </Badge>
             );
         }
     },
@@ -86,15 +105,24 @@ export const columns: ColumnDef<PropertyRow>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuItem asChild>
+                            <Link href={`/admin/properties/${property.id}`}>
+                                <Eye className="w-3.5 h-3.5 mr-2" />
+                                Ver Detalle
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <Link href={`/admin/properties/${property.id}/edit`}>
+                                <Edit className="w-3.5 h-3.5 mr-2" />
+                                Editar Propiedad
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
                         <DropdownMenuItem
                             onClick={() => navigator.clipboard.writeText(property.id).catch(() => {})}
                         >
-                            Copiar ID de Propiedad
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>Ver detalles</DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link href={`/admin/properties/${property.id}/edit`}>Editar Propiedad</Link>
+                            <Copy className="w-3.5 h-3.5 mr-2" />
+                            Copiar ID
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

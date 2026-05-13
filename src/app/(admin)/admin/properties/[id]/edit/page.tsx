@@ -20,6 +20,14 @@ export default async function EditPropertyPage({
         return notFound();
     }
 
+    // Fetch assigned agent IDs from junction table
+    const { data: assignments } = await supabase
+        .from("property_agents")
+        .select("agent_id")
+        .eq("property_id", id);
+
+    const agentIds = (assignments || []).map(a => a.agent_id);
+
     return (
         <div className="space-y-6">
             <div>
@@ -30,7 +38,12 @@ export default async function EditPropertyPage({
             </div>
 
             <div className="bg-background border border-foreground/10 rounded-xl p-6 relative">
-                <PropertyForm initialData={property} />
+                <PropertyForm
+                    initialData={{
+                        ...property,
+                        agent_ids: agentIds,
+                    }}
+                />
             </div>
         </div>
     );

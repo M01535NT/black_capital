@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2, UploadCloud, X, Plus } from "lucide-react";
+import { AgentSelect } from "./agent-select";
 
 interface PdfEntry {
     file: File;
@@ -44,8 +45,8 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
     const [pdfEntries, setPdfEntries] = useState<PdfEntry[]>([]);
 
     const form = useForm<PropertyFormValues>({
-        resolver: zodResolver(propertySchema),
-        defaultValues: initialData || {
+        resolver: zodResolver(propertySchema) as any,
+        defaultValues: {
             title: "",
             property_use: "Residencial",
             property_type: "Casa",
@@ -64,6 +65,8 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             agent_name: "",
             agent_phone: "",
             agent_email: "",
+            ...(initialData || {}),
+            agent_ids: initialData?.agent_ids || [],
         },
     });
 
@@ -511,49 +514,31 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     />
                 </div>
 
-                <div className="border border-foreground/10 rounded-lg p-6 space-y-6">
-                    <h3 className="text-lg font-bold">Asignación de Asesor</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <FormField
-                            control={form.control}
-                            name="agent_name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Nombre del Agente</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Ej. Roberto Sánchez" value={field.value ?? ""} onChange={field.onChange} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="agent_phone"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Teléfono / WhatsApp</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Ej. 5512345678" value={field.value ?? ""} onChange={field.onChange} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="agent_email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Correo Electrónico</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="agente@blackcorporativo.com" value={field.value ?? ""} onChange={field.onChange} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
+                {/* ── Agent Assignment (Multi-select from registered agents) ── */}
+                <div className="border border-foreground/10 rounded-lg p-6 space-y-4">
+                    <h3 className="text-lg font-bold">Asignación de Asesores</h3>
+                    <p className="text-sm text-foreground/50">
+                        Selecciona uno o varios agentes del equipo. Solo aparecen agentes activos.
+                    </p>
+                    <FormField
+                        control={form.control}
+                        name="agent_ids"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Agente(s)</FormLabel>
+                                <FormControl>
+                                    <AgentSelect
+                                        value={field.value || []}
+                                        onChange={field.onChange}
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                    Puedes seleccionar múltiples agentes para una misma propiedad.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                 </div>
 
                 <div className="flex flex-wrap gap-6 p-4 border border-foreground/10 flex-col md:flex-row rounded-lg items-center">
