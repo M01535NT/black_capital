@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Building2, Users } from "lucide-react";
+import { LayoutDashboard, Building2, Users, UserCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -17,6 +17,11 @@ const navItems = [
         icon: Building2,
     },
     {
+        title: "Agentes",
+        href: "/admin/agents",
+        icon: UserCircle,
+    },
+    {
         title: "Leads B2B/B2C",
         href: "/admin/leads",
         icon: Users,
@@ -27,7 +32,7 @@ export function AdminSidebar() {
     const pathname = usePathname();
 
     return (
-        <nav className="hidden border-r border-foreground/10 bg-muted/40 md:block w-64 h-full">
+        <nav className="hidden border-r border-foreground/10 bg-card md:block w-64 h-full">
             <div className="flex h-14 items-center border-b border-foreground/10 px-4 lg:h-[60px] lg:px-6">
                 <Link href="/" className="font-display font-bold text-xl tracking-tight text-foreground">
                     BLACK <span className="text-gold-500">CORP</span>
