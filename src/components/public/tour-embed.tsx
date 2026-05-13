@@ -8,18 +8,13 @@ function getEmbedUrl(url: string): string | null {
     try {
         const u = new URL(url);
 
-        // Kuula: https://kuula.co/share/XXXXX → https://kuula.co/share/XXXXX?embed=1
+        // Kuula: https://kuula.co/share/XXXXX → add embed param
         if (u.hostname.includes("kuula.co")) {
             u.searchParams.set("embed", "1");
             return u.toString();
         }
 
-        // Matterport: https://my.matterport.com/show/?m=XXXXX
-        if (u.hostname.includes("matterport.com")) {
-            return url;
-        }
-
-        // Any other URL — try to embed as-is
+        // Matterport or any other platform
         return url;
     } catch {
         return null;
@@ -34,25 +29,27 @@ export function TourEmbed({ urls }: TourEmbedProps) {
             <h2 className="text-2xl font-bold border-b border-foreground/10 pb-4">
                 Recorrido Virtual 360°
             </h2>
-            {urls.map((url, i) => {
-                const embedUrl = getEmbedUrl(url);
-                if (!embedUrl) return null;
+            <div className="space-y-4">
+                {urls.map((url, i) => {
+                    const embedUrl = getEmbedUrl(url);
+                    if (!embedUrl) return null;
 
-                return (
-                    <div
-                        key={i}
-                        className="aspect-video md:aspect-[16/10] rounded-xl overflow-hidden bg-zinc-900 border border-foreground/10"
-                    >
-                        <iframe
-                            src={embedUrl}
-                            title={`Recorrido virtual ${i + 1}`}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; xr-spatial-tracking"
-                            allowFullScreen
-                            className="w-full h-full"
-                        />
-                    </div>
-                );
-            })}
+                    return (
+                        <div
+                            key={i}
+                            className="w-full aspect-video rounded-xl overflow-hidden bg-zinc-900 border border-foreground/10"
+                        >
+                            <iframe
+                                src={embedUrl}
+                                title={`Recorrido virtual ${i + 1}`}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; xr-spatial-tracking"
+                                allowFullScreen
+                                className="w-full h-full"
+                            />
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 }
