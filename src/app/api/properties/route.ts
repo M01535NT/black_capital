@@ -1,25 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
-const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim();
-const SUPABASE_KEY = (
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-    ""
-).trim();
-
-async function supabaseFetch(path: string, options: RequestInit = {}) {
-    const url = `${SUPABASE_URL}/rest/v1/${path}`;
-    const res = await fetch(url, {
-        ...options,
-        headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization": `Bearer ${SUPABASE_KEY}`,
-            "Content-Type": "application/json",
-            "Prefer": "return=representation",
-            ...options.headers,
-        },
-    });
-    return res;
+async function getSupabase() {
+    const cookieStore = await cookies();
+    return createServerClient(
+        (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim(),
+        (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "").trim(),
+        {
+            cookies: {
+                getAll() { return cookieStore.getAll(); },
+                setAll(cookiesToSet) {
+                    try {
+                        cookiesToSet.forEach(({ name, value, options }) =>
+                            cookieStore.set(name, value, options)
+                        );
+                    } catch {}
+                },
+            },
+        }
+    );
 }
 
 function generateSlug(title: string): string {
@@ -35,20 +35,20 @@ export async function POST(req: NextRequest) {
     try {
         const data = await req.json();
         const slug = generateSlug(data.title);
+        const supabase = await getSupabase();
 
-        const res = await supabaseFetch("properties", {
-            method: "POST",
-            body: JSON.stringify({ ...data, slug }),
-        });
+        const { data: property, error } = await supabase
+            .from("properties")
+            .insert([{ ...data, slug }])
+            .select()
+            .single();
 
-        if (!res.ok) {
-            const err = await res.text();
-            console.error("[API /properties POST] Supabase error:", res.status, err);
-            return NextResponse.json({ error: `Supabase error ${res.status}: ${err}` }, { status: 400 });
+        if (error) {
+            console.error("[API /properties POST] Supabase error:", error);
+            return NextResponse.json({ error: error.message }, { status: 400 });
         }
 
-        const property = await res.json();
-        return NextResponse.json({ property: Array.isArray(property) ? property[0] : property }, { status: 201 });
+        return NextResponse.json({ property }, { status: 201 });
     } catch (err) {
         console.error("[API /properties POST] Unexpected error:", err);
         return NextResponse.json({ error: err instanceof Error ? err.message : "Internal server error" }, { status: 500 });
@@ -59,6 +59,7 @@ export async function PUT(req: NextRequest) {
     try {
         const data = await req.json();
         const { id, ...rest } = data;
+        const supabase = await getSupabase();
 
         if (!id) {
             return NextResponse.json({ error: "Missing property id" }, { status: 400 });
@@ -69,19 +70,19 @@ export async function PUT(req: NextRequest) {
             updatePayload.slug = generateSlug(rest.title);
         }
 
-        const res = await supabaseFetch(`properties?id=eq.${encodeURIComponent(id)}`, {
-            method: "PATCH",
-            body: JSON.stringify(updatePayload),
-        });
+        const { data: property, error } = await supabase
+            .from("properties")
+            .update(updatePayload)
+            .eq("id", id)
+            .select()
+            .single();
 
-        if (!res.ok) {
-            const err = await res.text();
-            console.error("[API /properties PUT] Supabase error:", res.status, err);
-            return NextResponse.json({ error: `Supabase error ${res.status}: ${err}` }, { status: 400 });
+        if (error) {
+            console.error("[API /properties PUT] Supabase error:", error);
+            return NextResponse.json({ error: error.message }, { status: 400 });
         }
 
-        const property = await res.json();
-        return NextResponse.json({ property: Array.isArray(property) ? property[0] : property }, { status: 200 });
+        return NextResponse.json({ property }, { status: 200 });
     } catch (err) {
         console.error("[API /properties PUT] Unexpected error:", err);
         return NextResponse.json({ error: err instanceof Error ? err.message : "Internal server error" }, { status: 500 });
