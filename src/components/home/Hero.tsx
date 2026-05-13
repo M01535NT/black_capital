@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { TopMarquee } from "./Marquees";
 
-const words = ["Legado", "Rentabilidad", "Expansión"];
+const words = ["Legado", "Futuro", "Expansión"];
 
 /* ── Staggered Letter Reveal Component ── */
 function StaggeredWord({ word, className }: { word: string; className?: string }) {
