@@ -10,12 +10,18 @@
   --color-foreground: oklch(0.95 0 0);
   /* Off-white */
 
-  /* Classic Jewelry Gold — warm yellow-gold matching Black Luxury */
-  --color-gold-300: oklch(0.89 0.11 86);
+  /* Metallic Gold — BlackLuxury palette (D4AF37 / FFD700 / 996515) */
+  --color-gold-solid: #D4AF37;
+  --color-gold-300: oklch(0.89 0.12 87);
+  /* ≈ #F5E6B8 light */
   --color-gold-400: oklch(0.82 0.14 85);
-  --color-gold-500: oklch(0.76 0.15 84);
-  --color-gold-600: oklch(0.66 0.13 83);
-  --color-gold-700: oklch(0.52 0.11 82);
+  /* ≈ #D4AF37 mid-light */
+  --color-gold-500: oklch(0.72 0.14 82);
+  /* ≈ #D4AF37 main */
+  --color-gold-600: oklch(0.62 0.12 78);
+  /* ≈ #996515 mid-dark */
+  --color-gold-700: oklch(0.50 0.10 72);
+  /* ≈ #8B7030 dark */
 
   /* Industrial accent — cold steel blue-grey */
   --color-steel-400: oklch(0.55 0.03 250);
@@ -37,6 +43,10 @@
   --glass-bg: oklch(0.15 0 0 / 40%);
   --glass-border: oklch(1 0 0 / 8%);
   --glass-shadow: 0 8px 32px oklch(0 0 0 / 40%);
+
+  /* Gold gradient — BlackLuxury style */
+  --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #996515 100%);
+  --gradient-gold-text: linear-gradient(90deg, #8B7030 0%, #D4AF37 25%, #F5E6B8 50%, #D4AF37 75%, #8B7030 100%);
 
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -319,4 +329,233 @@ h6 {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ── Pill Navbar ── */
+.navbar-pill {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 1280px;
+  z-index: 1000;
+  padding: 0.5rem 1.5rem;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  transition: all 0.3s ease;
+}
+
+.navbar-pill.scrolled {
+  background: rgba(0, 0, 0, 0.92);
+  border-color: rgba(212, 175, 55, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* ── Nav Link ── */
+.nav-link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--color-foreground);
+  position: relative;
+  padding: 0.4rem 0;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  text-transform: uppercase;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gradient-gold);
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.nav-link:hover {
+  color: var(--color-gold-solid);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link.active {
+  color: var(--color-gold-solid);
+}
+
+/* ── Nav Item (dropdown container) ── */
+.nav-item {
+  position: relative;
+}
+
+.nav-item.has-dropdown > .nav-link {
+  padding-right: 14px;
+}
+
+.nav-item.has-dropdown > .nav-link::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  transition: transform 0.3s ease;
+}
+
+.nav-item.has-dropdown:hover > .nav-link::before {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* ── Dropdown Menu ── */
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  min-width: 220px;
+  background: rgba(26, 26, 26, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 0.75rem 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.nav-item.has-dropdown:hover .nav-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(8px);
+}
+
+.nav-dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1.5rem;
+  color: var(--color-foreground);
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-dropdown-link:hover {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--color-gold-solid);
+  padding-left: 2rem;
+}
+
+.nav-dropdown-link i,
+.nav-dropdown-link svg {
+  width: 18px;
+  color: var(--color-gold-solid);
+  flex-shrink: 0;
+}
+
+/* ── Nav Button (gold outline) ── */
+.nav-btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.2rem;
+  border: 1px solid var(--color-gold-solid);
+  border-radius: 50px;
+  color: var(--color-gold-solid);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.nav-btn-gold:hover {
+  background: var(--color-gold-solid);
+  color: #000;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+}
+
+/* ── WhatsApp Floating Button ── */
+.whatsapp-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #996515 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  box-shadow: 0 4px 24px rgba(212, 175, 55, 0.35);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 40px rgba(212, 175, 55, 0.5);
+}
+
+.whatsapp-float svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* ── Luminous Flow animation (gold text hero) ── */
+@keyframes luminous-flow {
+  0% {
+    background-position: -200% center;
+    opacity: 0;
+    filter: blur(15px);
+    transform: translateY(20px) scale(0.95);
+  }
+  20% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px) scale(1);
+  }
+  100% {
+    background-position: 200% center;
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px) scale(1);
+  }
+}
+
+.animate-luminous-flow {
+  background: var(--gradient-gold-text);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: luminous-flow 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* ── Glass panel utility (BlackLuxury style) ── */
+.glass-panel {
+  background: rgba(26, 26, 26, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
 }

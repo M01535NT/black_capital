@@ -1,5 +1,6 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { ForceDark } from "@/components/force-dark";
 
 export default function PublicLayout({
@@ -13,6 +14,7 @@ export default function PublicLayout({
             <Header />
             <main className="flex-1 flex flex-col">{children}</main>
             <Footer />
+            <WhatsAppFloat />
         </div>
     );
 }
