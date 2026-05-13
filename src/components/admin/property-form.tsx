@@ -77,6 +77,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
 
     const uploadImages = async (propertyId: string) => {
         const urls: string[] = [];
+        const errors: string[] = [];
         for (const file of files) {
             const options = {
                 maxSizeMB: 1,
@@ -95,16 +96,25 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         upsert: false,
                     });
 
-                if (error) throw error;
+                if (error) {
+                    errors.push(`${file.name}: ${error.message}`);
+                    continue;
+                }
 
                 const { data: publicUrlData } = supabase.storage
                     .from("public")
                     .getPublicUrl(fileName);
 
                 urls.push(publicUrlData.publicUrl);
-            } catch (error) {
-                console.error("Error uploading image:", error);
+            } catch (err) {
+                errors.push(`${file.name}: ${err instanceof Error ? err.message : "Error desconocido"}`);
             }
+        }
+        if (errors.length > 0 && urls.length === 0) {
+            throw new Error(`No se pudo subir ninguna imagen: ${errors.join("; ")}`);
+        }
+        if (errors.length > 0) {
+            console.warn("Algunas imágenes no se subieron:", errors);
         }
         return urls;
     };
