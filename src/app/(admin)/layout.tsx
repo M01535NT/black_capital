@@ -31,14 +31,13 @@ export default function AdminLayout({
                             </Button>
                         </DrawerTrigger>
                         <DrawerContent className="w-64 sm:max-w-xs h-full rounded-none">
-                            {/* Mobile Sidebar Logic */}
                             <div className="flex h-14 items-center border-b px-4 lg:h-[60px]">
                                 <Link href="/" className="font-display font-bold text-xl tracking-tight text-foreground">
                                     BLACK <span className="text-gold-500">CORP</span>
                                 </Link>
                             </div>
                             <div className="p-4 flex flex-col gap-2">
-                                <Link href="/admin/dashboard" className="rounded-lg px-3 py-2 text-foreground/70 hover:text-foreground hover:bg-muted font-bold">Dashboard</Link>
+                                <Link href="/admin" className="rounded-lg px-3 py-2 text-foreground/70 hover:text-foreground hover:bg-muted font-bold">Dashboard</Link>
                                 <Link href="/admin/properties" className="rounded-lg px-3 py-2 text-foreground/70 hover:text-foreground hover:bg-muted font-bold">Inventario</Link>
                                 <Link href="/admin/leads" className="rounded-lg px-3 py-2 text-foreground/70 hover:text-foreground hover:bg-muted font-bold">Leads</Link>
                             </div>
