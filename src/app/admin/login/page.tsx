@@ -33,8 +33,9 @@ function LoginForm() {
         const data = await res.json();
         setError(data.error || "Contraseña incorrecta");
       }
-    } catch {
-      setError("Error de conexión");
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Error de conexion");
     } finally {
       setLoading(false);
     }

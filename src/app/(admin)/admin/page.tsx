@@ -262,7 +262,7 @@ export default async function AdminDashboard() {
                             >
                                 <div className="aspect-[16/9] bg-muted overflow-hidden">
                                     {prop.cover_image ? (
-                                        <img src={prop.cover_image} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        <img src={prop.cover_image} alt={prop.title || "Propiedad"} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-foreground/10">
                                             <Building2 className="w-8 h-8" />

@@ -166,7 +166,7 @@ export default async function AgentDetailPage({
                                     {/* Thumbnail */}
                                     <div className="w-16 h-16 rounded-xl bg-muted overflow-hidden shrink-0 border border-foreground/5">
                                         {prop.cover_image ? (
-                                            <img src={prop.cover_image} alt="" className="w-full h-full object-cover" />
+                                            <img src={prop.cover_image} alt={prop.title || "Propiedad"} className="w-full h-full object-cover" />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center text-foreground/20">
                                                 <Building2 className="w-5 h-5" />

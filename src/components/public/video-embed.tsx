@@ -19,7 +19,8 @@ function extractYoutubeId(url: string): string | null {
         if (u.hostname.includes("youtube.com") && u.pathname.startsWith("/shorts/")) {
             return u.pathname.split("/")[2];
         }
-    } catch {
+    } catch (parseErr) {
+        console.warn("Failed to parse video URL, trying regex fallback:", parseErr);
         const match = url.match(
             /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
         );

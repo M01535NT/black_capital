@@ -97,10 +97,10 @@ export function LeadMagnet() {
                                     <span className="animate-gold-shimmer font-bold uppercase tracking-widest text-sm">
                                         Acceso Privilegiado
                                     </span>
-                                    <h2 className="section-heading text-3xl md:text-5xl text-white">
+                                    <h2 className="section-heading text-3xl md:text-5xl text-foreground">
                                         Únete al Directorio de Inversores
                                     </h2>
-                                    <p className="text-white/70 text-lg max-w-md">
+                                    <p className="text-foreground/70 text-lg max-w-md">
                                         Recibe análisis de mercado exclusivos, proyecciones financieras estructuradas y acceso a inventario Off-Market antes de su publicación general.
                                     </p>
                                 </div>
@@ -112,7 +112,7 @@ export function LeadMagnet() {
                                             <div className="space-y-1">
                                                         <Input
                                                             placeholder="Nombre Completo"
-                                                            className="bg-black/50 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-gold-500"
+                                                            className="bg-black/50 border-white/10 text-foreground placeholder:text-foreground/30 focus-visible:ring-gold-500"
                                                             {...register("full_name")}
                                                         />
                                                         {errors.full_name && (
@@ -122,7 +122,7 @@ export function LeadMagnet() {
                                                     <div className="space-y-1">
                                                         <Input
                                                             placeholder="Empresa o Fondo"
-                                                            className="bg-black/50 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-gold-500"
+                                                            className="bg-black/50 border-white/10 text-foreground placeholder:text-foreground/30 focus-visible:ring-gold-500"
                                                             value={company}
                                                             onChange={(e) => setCompany(e.target.value)}
                                                         />
@@ -134,7 +134,7 @@ export function LeadMagnet() {
                                                 <Input
                                                     type="email"
                                                     placeholder="Correo Corporativo"
-                                                    className="bg-black/50 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-gold-500"
+                                                    className="bg-black/50 border-white/10 text-foreground placeholder:text-foreground/30 focus-visible:ring-gold-500"
                                                     {...register("email")}
                                                 />
                                                 {errors.email && (
@@ -145,7 +145,7 @@ export function LeadMagnet() {
                                                 <Input
                                                     type="tel"
                                                     placeholder="Teléfono (Opcional)"
-                                                    className="bg-black/50 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-gold-500"
+                                                    className="bg-black/50 border-white/10 text-foreground placeholder:text-foreground/30 focus-visible:ring-gold-500"
                                                     {...register("phone")}
                                                 />
                                             </div>
@@ -162,7 +162,7 @@ export function LeadMagnet() {
                                             />
                                             <label
                                                 htmlFor="privacy"
-                                                className="text-sm text-white/60 leading-tight cursor-pointer"
+                                                className="text-sm text-foreground/60 leading-tight cursor-pointer"
                                             >
                                                 Acepto el{" "}
                                                 <a href="/legal/privacidad" className="text-gold-500 hover:underline">
@@ -193,10 +193,10 @@ export function LeadMagnet() {
                                 <div className="w-16 h-16 bg-gold-500/20 rounded-full flex items-center justify-center mb-4">
                                     <CheckCircle2 className="w-8 h-8 text-gold-500" />
                                 </div>
-                                <h3 className="text-2xl font-bold text-white">
+                                <h3 className="text-2xl font-bold text-foreground">
                                     ¡Gracias por tu interés!
                                 </h3>
-                                <p className="text-white/70 max-w-md">
+                                <p className="text-foreground/70 max-w-md">
                                     Tu solicitud ha sido registrada exitosamente. Nuestro equipo de inversiones se pondrá en contacto contigo en las próximas 24 horas con acceso a nuestro directorio exclusivo.
                                 </p>
                             </div>

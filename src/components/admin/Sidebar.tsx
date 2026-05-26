@@ -27,8 +27,8 @@ export function AdminSidebar() {
                     .select("*", { count: "exact", head: true })
                     .eq("status", "new");
                 setNewLeadsCount(count);
-            } catch {
-                // fail silently
+            } catch (err) {
+                console.error("Error fetching new leads count:", err);
             }
         }
         fetchNewLeads();

@@ -65,8 +65,8 @@ export function BrandsGrid() {
                                 <div className="absolute inset-0 rounded-xl ring-1 ring-gold-500/0 group-hover:ring-gold-500/30 transition-all duration-500 pointer-events-none" />
 
                                 <div className="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                    <h3 className="text-2xl font-bold font-display text-white mb-2">{brand.name}</h3>
-                                    <p className="text-white/70 text-sm mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                                    <h3 className="text-2xl font-bold font-display text-foreground mb-2">{brand.name}</h3>
+                                    <p className="text-foreground/70 text-sm mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
                                         {brand.description}
                                     </p>
                                     <div className="inline-flex items-center gap-2 text-gold-500 font-bold uppercase tracking-widest text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">

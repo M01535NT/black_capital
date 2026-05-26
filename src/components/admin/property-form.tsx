@@ -257,7 +257,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                         control={form.control}
@@ -515,7 +515,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 </div>
 
                 {/* ── Agent Assignment (Multi-select from registered agents) ── */}
-                <div className="border border-foreground/10 rounded-lg p-6 space-y-4">
+                <div className="border border-foreground/10 rounded-lg p-6 flex flex-col gap-4">
                     <h3 className="text-lg font-bold">Asignación de Asesores</h3>
                     <p className="text-sm text-foreground/50">
                         Selecciona uno o varios agentes del equipo. Solo aparecen agentes activos.
@@ -546,7 +546,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         control={form.control}
                         name="is_featured"
                         render={({ field }) => (
-                            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormItem className="flex flex-row items-start gap-3">
                                 <FormControl>
                                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                                 </FormControl>
@@ -560,7 +560,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         control={form.control}
                         name="is_project"
                         render={({ field }) => (
-                            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormItem className="flex flex-row items-start gap-3">
                                 <FormControl>
                                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                                 </FormControl>
@@ -574,7 +574,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         control={form.control}
                         name="is_assignment"
                         render={({ field }) => (
-                            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormItem className="flex flex-row items-start gap-3">
                                 <FormControl>
                                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                                 </FormControl>
@@ -587,14 +587,14 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 </div>
 
                 {/* ── Imágenes ── */}
-                <div className="space-y-4">
+                <div className="flex flex-col gap-4">
                     <FormLabel>Imágenes (JPG, PNG, WEBP)</FormLabel>
                     <Input type="file" multiple accept="image/*" onChange={handleImageChange} className="cursor-pointer file:bg-gold-500 file:text-black file:border-none file:mr-4 file:-ml-3 file:py-1 file:px-4 file:rounded-md hover:file:bg-gold-600" />
                     <FormDescription>Se comprimirán automáticamente a WebP antes de subir.</FormDescription>
                 </div>
 
                 {/* ── Documentos PDF (múltiples) ── */}
-                <div className="space-y-4">
+                <div className="flex flex-col gap-4">
                     <FormLabel>Documentos (PDF) — Ficha técnica, escrituras, avalúos, etc.</FormLabel>
                     <Input
                         type="file"

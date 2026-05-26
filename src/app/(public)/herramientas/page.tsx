@@ -53,7 +53,7 @@ export default function HerramientasPage() {
                         <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-[0.5em] mb-6 inline-block">
                             Recursos Exclusivos
                         </span>
-                        <h1 className="section-heading text-4xl md:text-6xl text-white mb-6">
+                        <h1 className="section-heading text-4xl md:text-6xl text-foreground mb-6">
                             Herramientas para{" "}
                             <span className="metallic-gold">Inversionistas</span>
                         </h1>

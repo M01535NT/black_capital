@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, Home, Building2, Warehouse, Calculator, ArrowRightLeft, Percent, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
     Drawer,
     DrawerContent,
@@ -49,9 +51,16 @@ const attributes = [
 ];
 
 export function Header() {
+    const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const isActive = (href: string) => {
+        if (href === "/") return pathname === "/";
+        return pathname.startsWith(href);
+    };
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 60);
@@ -86,7 +95,7 @@ export function Header() {
                     <nav className="hidden lg:flex items-center gap-5" ref={dropdownRef}>
                         {baseLinks.map((link) => (
                             <span key={link.name} className="nav-item">
-                                <Link href={link.href} className="nav-link">
+                                <Link href={link.href} className={cn("nav-link", isActive(link.href) && "active")}>
                                     {link.name}
                                 </Link>
                             </span>
@@ -178,7 +187,7 @@ export function Header() {
                             Contacto
                         </Link>
 
-                        <Drawer direction="right">
+                        <Drawer direction="right" open={drawerOpen} onOpenChange={setDrawerOpen}>
                             <DrawerTrigger asChild>
                                 <Button variant="ghost" size="icon" className="hover:text-gold-solid text-foreground">
                                     <Menu className="h-5 w-5" />
@@ -201,17 +210,15 @@ export function Header() {
                                             </h3>
                                             <div className="flex flex-col gap-4">
                                                 {baseLinks.map((link) => (
-                                                    <Link key={link.name} href={link.href} className="text-lg font-bold hover:text-gold-solid transition-colors">
-                                                        <DrawerClose asChild>
-                                                            <span>{link.name}</span>
-                                                        </DrawerClose>
+                                                    <Link key={link.name} href={link.href} className="text-lg font-bold hover:text-gold-solid transition-colors" onClick={() => setDrawerOpen(false)}>
+                                                        <span>{link.name}</span>
                                                     </Link>
                                                 ))}
-                                                <Link href="/inventario?tipo=venta" className="text-lg font-bold hover:text-gold-solid transition-colors">
-                                                    <DrawerClose asChild><span>Venta</span></DrawerClose>
+                                                <Link href="/inventario?tipo=venta" className="text-lg font-bold hover:text-gold-solid transition-colors" onClick={() => setDrawerOpen(false)}>
+                                                    <span>Venta</span>
                                                 </Link>
-                                                <Link href="/inventario?tipo=renta" className="text-lg font-bold hover:text-gold-solid transition-colors">
-                                                    <DrawerClose asChild><span>Renta</span></DrawerClose>
+                                                <Link href="/inventario?tipo=renta" className="text-lg font-bold hover:text-gold-solid transition-colors" onClick={() => setDrawerOpen(false)}>
+                                                    <span>Renta</span>
                                                 </Link>
                                             </div>
                                         </div>
@@ -224,14 +231,13 @@ export function Header() {
                                             <div className="flex flex-col gap-4">
                                                 {verticals.map((link) => (
                                                     <Link key={link.name} href={link.href} className="group">
-                                                        <DrawerClose asChild>
-                                                            <div>
+                                                        <div onClick={() => setDrawerOpen(false)}>
                                                                 <span className="text-lg font-bold text-foreground group-hover:text-gold-solid transition-colors">
                                                                     {link.name}
                                                                 </span>
                                                                 <p className="text-xs text-foreground/50 mt-0.5">{link.desc}</p>
                                                             </div>
-                                                        </DrawerClose>
+                                                        
                                                     </Link>
                                                 ))}
                                             </div>
@@ -245,12 +251,11 @@ export function Header() {
                                             <div className="flex flex-col gap-3">
                                                 {herramientasDropdown.map((item) => (
                                                     <Link key={item.name} href={item.href} className="flex items-center gap-3 text-sm font-medium text-foreground/80 hover:text-gold-solid transition-colors">
-                                                        <DrawerClose asChild>
-                                                            <span className="flex items-center gap-3">
+                                                        <span className="flex items-center gap-3" onClick={() => setDrawerOpen(false)}>
                                                                 <item.icon className="w-4 h-4 text-gold-solid" />
                                                                 {item.name}
                                                             </span>
-                                                        </DrawerClose>
+                                                        
                                                     </Link>
                                                 ))}
                                             </div>
@@ -264,9 +269,8 @@ export function Header() {
                                             <div className="flex flex-col gap-3">
                                                 {attributes.map((link) => (
                                                     <Link key={link.name} href={link.href} className="text-sm font-medium text-foreground/80 hover:text-gold-solid transition-colors">
-                                                        <DrawerClose asChild>
-                                                            <span>{link.name}</span>
-                                                        </DrawerClose>
+                                                        <span onClick={() => setDrawerOpen(false)}>{link.name}</span>
+                                                        
                                                     </Link>
                                                 ))}
                                             </div>

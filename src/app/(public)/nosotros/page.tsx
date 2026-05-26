@@ -46,7 +46,7 @@ export default function NosotrosPage() {
                         <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-[0.5em] mb-6 inline-block">
                             Acerca de Nosotros
                         </span>
-                        <h1 className="section-heading text-4xl md:text-6xl text-white mb-6">
+                        <h1 className="section-heading text-4xl md:text-6xl text-foreground mb-6">
                             La Boutique Inmobiliaria{" "}
                             <span className="metallic-gold">del Futuro</span>
                         </h1>

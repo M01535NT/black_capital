@@ -64,7 +64,7 @@ export default function ContactoPage() {
                         <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-[0.5em] mb-6 inline-block">
                             Contacto Directo
                         </span>
-                        <h1 className="section-heading text-4xl md:text-6xl text-white mb-6">
+                        <h1 className="section-heading text-4xl md:text-6xl text-foreground mb-6">
                             Hablemos de{" "}
                             <span className="metallic-gold">Inversión</span>
                         </h1>
@@ -121,7 +121,7 @@ export default function ContactoPage() {
             <div className="container mx-auto px-4 pb-24">
                 <FadeIn>
                     <div className="max-w-3xl mx-auto text-center p-12 rounded-2xl border border-gold-500/20 bg-zinc-950/60 backdrop-blur-sm">
-                        <h2 className="section-heading text-3xl text-white mb-6">
+                        <h2 className="section-heading text-3xl text-foreground mb-6">
                             ¿Listo para invertir?
                         </h2>
                         <p className="text-foreground/50 text-lg leading-relaxed mb-8">

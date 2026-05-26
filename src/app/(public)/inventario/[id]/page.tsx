@@ -7,6 +7,7 @@ import { DocList } from "@/components/public/doc-list";
 import { ImageGallery } from "@/components/public/image-gallery";
 import { VideoEmbed } from "@/components/public/video-embed";
 import { TourEmbed } from "@/components/public/tour-embed";
+import { Breadcrumbs } from "@/components/public/breadcrumbs";
 import Link from "next/link";
 
 export const revalidate = 60;
@@ -74,8 +75,16 @@ export default async function PropertyDetailPage({
 
     return (
         <div className="w-full bg-background min-h-screen">
-            {/* Badges + Title */}
+            {/* Breadcrumbs */}
             <div className="container mx-auto px-4 pt-8 md:pt-12">
+                <Breadcrumbs items={[
+                    { label: "Inventario", href: "/inventario" },
+                    { label: property.title },
+                ]} />
+            </div>
+
+            {/* Badges + Title */}
+            <div className="container mx-auto px-4 pt-4">
                 <div className="flex flex-wrap gap-2 mb-4">
                     <Badge className="bg-gold-500 text-black uppercase tracking-wider">{property.business_type}</Badge>
                     <Badge variant="outline" className="uppercase tracking-wider">{property.property_use}</Badge>
