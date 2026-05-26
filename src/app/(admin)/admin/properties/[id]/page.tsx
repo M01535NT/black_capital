@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, Edit, Ruler, Building2, Calendar, ShieldCheck, Mail, Phone, ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { DocList } from "@/components/public/doc-list";
+import { DocDownload } from "@/components/public/doc-download";
 import { ImageGallery } from "@/components/public/image-gallery";
 
 export const revalidate = 0;
