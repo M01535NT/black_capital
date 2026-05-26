@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/ui/motion";
+import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 export const metadata: Metadata = {
     title: "Aviso de Privacidad | Black Corporativo",
@@ -101,7 +102,7 @@ export default function PrivacidadPage() {
                                 <a href="mailto:contacto@blackcorporativo.com" className="text-gold-500 hover:underline">
                                     contacto@blackcorporativo.com
                                 </a>{" "}
-                                o llamar al +52 (55) 1234 5678.
+                                o llamar al {CONTACT_CONFIG.phone}.
                             </p>
                         </section>
                     </div>

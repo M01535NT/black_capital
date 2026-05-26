@@ -17,13 +17,25 @@ function Counter({
     suffix?: string;
     prefix?: string;
 }) {
-    const [count, setCount] = useState(from);
+    const shouldReduceMotion = useReducedMotion();
+    const [count, setCount] = useState(shouldReduceMotion ? to : from);
     const ref = useRef<HTMLSpanElement>(null);
     const isInView = useInView(ref, { once: true, margin: "-100px" });
-    const shouldReduceMotion = useReducedMotion();
+    const hasAnimated = useRef(false);
 
     useEffect(() => {
-        if (isInView && !shouldReduceMotion) {
+        if (hasAnimated.current) return;
+
+        // Reduced motion: skip animation entirely
+        if (shouldReduceMotion) {
+            hasAnimated.current = true;
+            setCount(to);
+            return;
+        }
+
+        // In view: run animation
+        if (isInView) {
+            hasAnimated.current = true;
             let startTime: number;
             const step = (timestamp: number) => {
                 if (!startTime) startTime = timestamp;
@@ -37,10 +49,19 @@ function Counter({
                 }
             };
             window.requestAnimationFrame(step);
-        } else if (isInView && shouldReduceMotion) {
-            setCount(to);
+            return;
         }
-    }, [isInView, from, to, duration, shouldReduceMotion]);
+
+        // Fallback: if after 3 seconds we still haven't animated, force final value
+        const timer = setTimeout(() => {
+            if (!hasAnimated.current) {
+                hasAnimated.current = true;
+                setCount(to);
+            }
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, [isInView, shouldReduceMotion, from, to, duration]);
 
     return (
         <span ref={ref}>

@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/lib/supabase/client";
 import posthog from "posthog-js";
 import { toast } from "sonner";
+import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -205,7 +206,7 @@ export function GatedBrochure({
                                             <FormControl>
                                                 <Input
                                                     type="tel"
-                                                    placeholder="+52 55 1234 5678"
+                                                    placeholder={CONTACT_CONFIG.phone}
                                                     {...field}
                                                     className="bg-foreground/[0.04] border-foreground/10 h-11 rounded-xl focus:border-gold-500/50"
                                                     autoComplete="tel"

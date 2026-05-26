@@ -1,8 +1,10 @@
 "use client";
 
+import { CONTACT_CONFIG } from "@/lib/contact-config";
+
 export function WhatsAppFloat() {
-    // Configura el número en .env.local: NEXT_PUBLIC_WHATSAPP_NUMBER=521234567890
-    const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "521234567890";
+    // Configura el número en .env.local: NEXT_PUBLIC_WHATSAPP_NUMBER=526640000000
+    const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || CONTACT_CONFIG.phoneRaw;
     const message = encodeURIComponent("Hola, me gustaría recibir información sobre propiedades de inversión.");
 
     return (

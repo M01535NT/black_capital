@@ -106,7 +106,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
     const filtered = useMemo(() => {
         let result = properties.filter((p) => {
             const matchSearch = p.title.toLowerCase().includes(searchTerm.toLowerCase());
-            const matchBusiness = activeBusiness ? p.business_type === activeBusiness : true;
+            const matchBusiness = activeBusiness ? p.business_type.toLowerCase() === activeBusiness.toLowerCase() : true;
             const matchUse = activeUse ? p.property_use === activeUse : true;
             return matchSearch && matchBusiness && matchUse;
         });

@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { Linkedin, Instagram, Twitter } from "lucide-react";
 import { FadeIn } from "@/components/ui/motion";
+import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 const socialLinks = [
-    { name: "LinkedIn", icon: Linkedin, href: "#" },
-    { name: "Instagram", icon: Instagram, href: "#" },
-    { name: "X", icon: Twitter, href: "#" },
+    { name: "LinkedIn", icon: Linkedin, href: CONTACT_CONFIG.social.linkedin },
+    { name: "Instagram", icon: Instagram, href: CONTACT_CONFIG.social.instagram },
+    { name: "X", icon: Twitter, href: CONTACT_CONFIG.social.x },
 ];
 
 export function Footer() {
@@ -55,9 +56,9 @@ export function Footer() {
                     <div className="space-y-4">
                         <h4 className="font-bold tracking-widest text-sm uppercase text-foreground">Contacto</h4>
                         <ul className="space-y-2 text-sm text-foreground/70">
-                            <li>Corporativo Torre XYZ, CDMX.</li>
-                            <li>+52 (55) 1234 5678</li>
-                            <li>contacto@blackcorporativo.com</li>
+                            <li>{CONTACT_CONFIG.address}</li>
+                            <li>{CONTACT_CONFIG.phone}</li>
+                            <li>{CONTACT_CONFIG.email}</li>
                         </ul>
                     </div>
                 </div>

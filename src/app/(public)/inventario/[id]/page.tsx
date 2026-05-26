@@ -9,6 +9,7 @@ import { TourEmbed } from "@/components/public/tour-embed";
 import { DocDownload } from "@/components/public/doc-download";
 import { GatedBrochure } from "@/components/public/gated-brochure";
 import { Breadcrumbs } from "@/components/public/breadcrumbs";
+import { CONTACT_CONFIG } from "@/lib/contact-config";
 import Link from "next/link";
 
 export const revalidate = 60;
@@ -37,6 +38,12 @@ export default async function PropertyDetailPage({
         .single();
 
     if (error || !property) {
+        return notFound();
+    }
+
+    // Hide test properties from public view
+    const titleLower = (property.title || "").toLowerCase();
+    if (titleLower.includes("prueba") || titleLower.includes("test")) {
         return notFound();
     }
 
@@ -301,7 +308,7 @@ export default async function PropertyDetailPage({
                         <Separator className="bg-foreground/5" />
                         <div className="py-10">
                             <h2 className="text-[1.25rem] font-semibold tracking-tight text-foreground mb-4">
-                                Ubicacion
+                                Ubicación
                             </h2>
                             <p className="text-sm text-foreground/50 mb-4">{property.address}</p>
                             <div className="rounded-2xl overflow-hidden border border-foreground/5 aspect-[16/9] bg-foreground/[0.02]">
@@ -368,7 +375,7 @@ export default async function PropertyDetailPage({
                     <p className="text-gold-500 font-numerics font-semibold text-sm">{formatShortPrice(property.price, property.currency)}</p>
                 </div>
                 <a
-                    href={`https://wa.me/521234567890?text=${encodeURIComponent(`Hola, me interesa la propiedad: ${property.title}`)}`}
+                    href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(`Hola, me interesa la propiedad: ${property.title}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="shrink-0 px-5 py-2.5 bg-gold-500 text-black rounded-full text-sm font-semibold hover:bg-gold-400 transition-colors"

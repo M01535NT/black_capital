@@ -3,6 +3,7 @@ import { FadeIn, StaggerChildren, StaggerItem } from "@/components/ui/motion";
 import { Phone, Mail, MapPin, Clock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 export const metadata: Metadata = {
     title: "Contacto | Black Corporativo",
@@ -22,33 +23,33 @@ const contactCards = [
     {
         icon: Phone,
         title: "WhatsApp Directo",
-        lines: ["+52 (55) 1234 5678"],
+        lines: [CONTACT_CONFIG.phone],
         action: {
             label: "Enviar Mensaje",
-            href: "https://wa.me/521234567890?text=Hola%2C%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20sobre%20propiedades%20de%20inversi%C3%B3n.",
+            href: `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, me gustaría recibir información sobre propiedades de inversión.")}`,
             external: true,
         },
     },
     {
         icon: Mail,
         title: "Correo Electrónico",
-        lines: ["contacto@blackcorporativo.com"],
+        lines: [CONTACT_CONFIG.email],
         action: {
             label: "Escribir",
-            href: "mailto:contacto@blackcorporativo.com",
+            href: `mailto:${CONTACT_CONFIG.email}`,
             external: true,
         },
     },
     {
         icon: MapPin,
         title: "Oficina Corporativa",
-        lines: ["Torre XYZ, Piso 12", "Av. Paseo de la Reforma", "Ciudad de México, 06600"],
+        lines: CONTACT_CONFIG.addressLines,
         action: null,
     },
     {
         icon: Clock,
         title: "Horario de Atención",
-        lines: ["Lunes a Viernes", "9:00 AM — 6:00 PM (CT)", "Sábados con cita previa"],
+        lines: CONTACT_CONFIG.hours,
         action: null,
     },
 ];

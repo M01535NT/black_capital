@@ -1,8 +1,14 @@
 import { createClient } from "@/lib/supabase/server";
 import { CatalogFilter } from "@/components/public/catalog-filter";
 import { Suspense } from "react";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+    title: "Inventario de Propiedades | Black Corporativo",
+    description: "Explora nuestro portafolio de propiedades comerciales, industriales y residenciales premium con análisis financiero estructurado. Venta y renta de propiedades exclusivas.",
+};
 
 function InventorySkeleton() {
     return (
@@ -31,6 +37,8 @@ async function InventoryContent() {
         .from("properties")
         .select("id, title, property_use, property_type, business_type, price, currency, m2_terrain, m2_construction, cover_image, status")
         .eq("status", "Available")
+        .not("title", "ilike", "%prueba%")
+        .not("title", "ilike", "%test%")
         .order("created_at", { ascending: false });
 
     if (error) {
