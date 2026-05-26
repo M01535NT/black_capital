@@ -30,9 +30,8 @@
   --color-steel-700: oklch(0.25 0.01 250);
 
   --font-sans: var(--font-inter), sans-serif;
-  --font-display: var(--font-inter), sans-serif;
-  --font-mono: var(--font-news-cycle), monospace;
-  --font-numerics: var(--font-news-cycle), sans-serif;
+  --font-display: var(--font-cinzel), serif;
+  --font-numerics: var(--font-inter), sans-serif;
 }
 
 :root {
@@ -89,20 +88,59 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Base headings */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+/* ── Tipografia: Cinzel (display) + Inter (body) ── */
+/* Jerarquia: Hero > h1 > h2 > h3 > body > caption */
+
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
-/* Custom class for numeric data */
+/* Hero title — maximo impacto */
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+}
+
+/* Section heading */
+.section-heading {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Card title */
+.card-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Label / overline */
+.label-overline {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+/* Body text */
+.body-text {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Numeric data (stats, prices) */
 .font-numerics {
-  font-family: var(--font-numerics);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 @layer utilities {

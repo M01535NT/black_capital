@@ -77,7 +77,7 @@ export function LuxuryHero() {
                         initial={shouldReduceMotion ? {} : { opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-5xl md:text-7xl lg:text-[100px] font-display font-bold text-foreground leading-[0.92] tracking-[-0.03em]"
+                        className="hero-title text-5xl md:text-7xl lg:text-[100px] text-foreground"
                     >
                         Donde el Lujo
                         <br />

@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Black Corporativo
 
-## Getting Started
+Plataforma digital inmobiliaria de alta gama. Boutique matriz de tres marcas especializadas:
 
-First, run the development server:
+- **Black Luxury** — Residencias trofeo y super lujo
+- **Black Business** — Activos corporativos clase A (oficinas, locales, plazas)
+- **Black Industrial** — Naves logisticas, bodegas y parques industriales
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Estructurada para inversores B2B y HNWI con interes en el mercado mexicano.
+
+## Stack
+
+| Capa | Tecnologia |
+|------|-----------|
+| Framework | Next.js 16 (App Router) |
+| Estilos | Tailwind CSS v4 + shadcn/ui |
+| Base de datos | Supabase (PostgreSQL + RLS) |
+| Animaciones | Framer Motion |
+| Formularios | React Hook Form + Zod |
+| Emails | Resend API |
+| Analytics | PostHog |
+| Tests | Playwright + TestSprite |
+| PWA | @ducanh2912/next-pwa |
+
+## Estructura
+
+```
+src/
+  app/
+    (public)/           # Rutas publicas
+      page.tsx          # Home
+      black-luxury/     # Landing Luxury
+      black-business/   # Landing Business
+      black-industrial/ # Landing Industrial
+      inventario/       # Catalogo unificado
+      herramientas/     # Herramientas financieras
+      nosotros/         # About
+      contacto/         # Contacto
+      legal/            # Aviso de privacidad
+    (admin)/            # Backoffice (/admin)
+    admin/login/        # Login admin
+    api/                # API routes
+  components/
+    home/               # Componentes del Home
+    luxury/             # Componentes Black Luxury
+    business/           # Componentes Black Business
+    industrial/         # Componentes Black Industrial
+    layout/             # Header, Footer, WhatsAppFloat
+    public/             # Componentes compartidos (catalogo, brochure)
+    admin/              # Sidebar, DataTable, formularios
+    ui/                 # shadcn/ui components
+  lib/
+    supabase/           # Clientes (client, server, admin)
+    validations/        # Schemas Zod
+supabase/
+  migrations/           # Migraciones SQL
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Variables de Entorno
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copiar `.env.example` a `.env.local`:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cp .env.example .env.local
+```
 
-## Learn More
+| Variable | Descripcion |
+|----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | URL del proyecto Supabase |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key (anon) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key (solo server-side) |
+| `ADMIN_PASSWORD` | Contrasena de acceso a /admin |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Numero WhatsApp (sin +) |
+| `RESEND_API_KEY` | API key de Resend para emails |
+| `NEXT_PUBLIC_POSTHOG_KEY` | Key de PostHog (opcional) |
+| `NEXT_PUBLIC_POSTHOG_HOST` | Host de PostHog (opcional) |
 
-To learn more about Next.js, take a look at the following resources:
+## Desarrollo
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # Build de produccion
+npm run lint       # ESLint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
+El proyecto se despliega automaticamente en Vercel al hacer push a la rama master.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Seguridad
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- API de escritura usa `SUPABASE_SERVICE_ROLE_KEY` (nunca expuesto al cliente)
+- Middleware protege rutas `/admin` con cookie de sesion
+- Validacion Zod con bloqueo de disposable emails
+- Row Level Security en Supabase
+
+## Licencia
+
+Privado. Todos los derechos reservados — Black Corporativo.

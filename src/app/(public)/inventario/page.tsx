@@ -47,7 +47,7 @@ export default function InventoryPage() {
             <div className="bg-zinc-950 py-16 border-b border-gold-500/20 mb-12 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.05,_transparent_50%)]" />
                 <div className="container mx-auto px-4 relative z-10">
-                    <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">Nuestro Inventario</h1>
+                    <h1 className="section-heading text-4xl md:text-5xl text-white mb-4">Nuestro Inventario</h1>
                     <p className="text-gold-500/80 max-w-2xl text-lg">
                         Explora nuestro portafolio de propiedades comerciales, industriales y residenciales premium.
                     </p>

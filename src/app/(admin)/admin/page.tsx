@@ -94,7 +94,7 @@ export default async function AdminDashboard() {
             {/* Header + Quick Actions */}
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-3xl font-display font-bold text-foreground">Dashboard</h2>
+                    <h2 className="section-heading text-3xl text-foreground">Dashboard</h2>
                     <p className="text-foreground/50">Panel de control de Black Corporativo.</p>
                 </div>
                 <div className="flex flex-wrap gap-2">

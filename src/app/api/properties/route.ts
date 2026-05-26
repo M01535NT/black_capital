@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 // Columnas que existen realmente en la tabla 'properties' de Supabase
 const ALLOWED_COLUMNS = new Set([
@@ -12,24 +11,8 @@ const ALLOWED_COLUMNS = new Set([
     "custom_attributes", "images", "documents",
 ]);
 
-async function getSupabase() {
-    const cookieStore = await cookies();
-    return createServerClient(
-        (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim(),
-        (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "").trim(),
-        {
-            cookies: {
-                getAll() { return cookieStore.getAll(); },
-                setAll(cookiesToSet) {
-                    try {
-                        cookiesToSet.forEach(({ name, value, options }) =>
-                            cookieStore.set(name, value, options)
-                        );
-                    } catch {}
-                },
-            },
-        }
-    );
+function getAdminSupabase() {
+    return createAdminClient();
 }
 
 function generateSlug(title: string): string {
@@ -67,7 +50,7 @@ function filterPayload(data: Record<string, unknown>): Record<string, unknown> {
 
 /** Sincroniza property_agents: reemplaza todos los agentes asignados */
 async function syncPropertyAgents(
-    supabase: ReturnType<typeof createServerClient>,
+    supabase: ReturnType<typeof createAdminClient>,
     propertyId: string,
     agentIds: string[]
 ) {
@@ -93,7 +76,7 @@ export async function POST(req: NextRequest) {
         const { agent_ids } = data;
         const slug = generateSlug(data.title);
         const payload = filterPayload({ ...data, slug });
-        const supabase = await getSupabase();
+        const supabase = getAdminSupabase();
 
         const { data: property, error } = await supabase
             .from("properties")
@@ -122,7 +105,7 @@ export async function PUT(req: NextRequest) {
     try {
         const data = await req.json();
         const { id, agent_ids, ...rest } = data;
-        const supabase = await getSupabase();
+        const supabase = getAdminSupabase();
 
         if (!id) {
             return NextResponse.json({ error: "Missing property id" }, { status: 400 });

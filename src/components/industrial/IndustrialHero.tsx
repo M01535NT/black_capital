@@ -65,7 +65,7 @@ export function IndustrialHero() {
                         initial={shouldReduceMotion ? {} : { opacity: 0, x: -40 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-5xl md:text-7xl lg:text-[96px] font-display font-bold text-foreground leading-[0.92] tracking-[-0.03em] uppercase"
+                        className="hero-title text-5xl md:text-7xl lg:text-[96px] text-foreground uppercase"
                     >
                         Infraestructura
                         <br />
