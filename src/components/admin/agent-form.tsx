@@ -91,7 +91,10 @@ export function AgentForm({ initialData }: AgentFormProps) {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8">
+            <form onSubmit={form.handleSubmit(onSubmit, () => {
+                const firstError = document.querySelector('[aria-invalid="true"]');
+                if (firstError) firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+            })} className="flex flex-col gap-8" noValidate>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                         control={form.control}
