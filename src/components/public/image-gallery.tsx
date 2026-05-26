@@ -82,11 +82,12 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
             {/* Main gallery */}
             <div className="space-y-3">
                 {/* Main image */}
-                <div className="relative aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9] bg-zinc-900 rounded-xl overflow-hidden group">
+                <div className="relative aspect-[4/3] md:aspect-[16/10] max-h-[70vh] bg-zinc-900 rounded-xl overflow-hidden group">
                     <img
                         src={currentImage}
                         alt={title}
                         className="w-full h-full object-cover"
+                        loading="eager"
                     />
                     {/* Expand button — always visible on mobile */}
                     <button
@@ -142,6 +143,7 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
                                     src={img}
                                     alt={`${title} ${i + 1}`}
                                     className="w-full h-full object-cover"
+                                    loading="lazy"
                                 />
                             </button>
                         ))}

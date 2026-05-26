@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import posthog from "posthog-js";
 import { toast } from "sonner";
 
@@ -27,51 +26,29 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Download, Loader2, Lock } from "lucide-react";
+import { Download, Loader2, Lock, CheckCircle2, Mail, Smartphone } from "lucide-react";
 import { leadSchema, LeadFormValues } from "@/lib/validations/lead";
 
 interface GatedBrochureProps {
     propertyId: string;
     propertyName: string;
     pdfUrl?: string | null;
+    /** Label for the download button */
+    label?: string;
+    /** Document type for analytics */
+    docType?: string;
 }
 
-export function GatedBrochure({ propertyId, propertyName, pdfUrl }: GatedBrochureProps) {
+export function GatedBrochure({
+    propertyId,
+    propertyName,
+    pdfUrl,
+    label = "Descargar Documento",
+    docType = "brochure",
+}: GatedBrochureProps) {
     const [open, setOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
-    const supabase = createClient();
-
-    // ── Background sync: flush pending leads when coming online ──
-    useEffect(() => {
-        const flushPendingLeads = async () => {
-            const raw = localStorage.getItem("bgSync_leads");
-            if (!raw) return;
-            const pendingLeads = JSON.parse(raw) as LeadFormValues[];
-            if (pendingLeads.length === 0) return;
-
-            toast.info(`Sincronizando ${pendingLeads.length} solicitud(es) pendiente(s)...`);
-            for (const lead of pendingLeads) {
-                try {
-                    await supabase.from("leads").insert([{ ...lead, downloaded_at: new Date().toISOString() }]);
-                    await fetch("/api/send-brochure", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ email: lead.email, propertyId: lead.property_id, name: lead.full_name }),
-                    });
-                } catch (err) {
-                    console.error("Error syncing offline lead:", err);
-                }
-            }
-            localStorage.removeItem("bgSync_leads");
-            toast.success("Solicitudes sincronizadas correctamente.");
-        };
-
-        window.addEventListener("online", flushPendingLeads);
-        // Also flush on mount if already online
-        if (navigator.onLine) flushPendingLeads();
-        return () => window.removeEventListener("online", flushPendingLeads);
-    }, [supabase]);
 
     const form = useForm<LeadFormValues>({
         resolver: zodResolver(leadSchema),
@@ -83,59 +60,60 @@ export function GatedBrochure({ propertyId, propertyName, pdfUrl }: GatedBrochur
             source: "organic",
             property_id: propertyId,
             status: "new",
-            notes: `Solicitó brochure de: ${propertyName}`,
+            notes: `Solicito ${docType} de: ${propertyName}`,
         },
     });
+
+    // Reset form when dialog opens
+    useEffect(() => {
+        if (open) {
+            form.reset();
+            setIsSuccess(false);
+        }
+    }, [open, form]);
 
     async function onSubmit(data: LeadFormValues) {
         setIsSubmitting(true);
 
-        // Tracking funnel
-        posthog.capture('lead_form_submitted', {
+        // Track funnel event
+        posthog.capture("lead_form_submitted", {
             property_id: propertyId,
             property_name: propertyName,
-            source: data.source
+            doc_type: docType,
+            source: data.source,
         });
 
-        if (!navigator.onLine) {
-            // Guardar para sincronizar luego (Background Sync Simulation)
-            const pendingLeads = JSON.parse(localStorage.getItem('bgSync_leads') || '[]');
-            pendingLeads.push(data);
-            localStorage.setItem('bgSync_leads', JSON.stringify(pendingLeads));
-
-            toast.warning("Estás sin conexión. Tu solicitud ha sido guardada y se enviará en segundo plano cuando recuperes el internet.");
-            setIsSuccess(true);
-            setIsSubmitting(false);
-            return;
-        }
+        // Strip non-numeric from phone for clean storage
+        const cleanPhone = data.phone.replace(/[^0-9+]/g, "");
 
         try {
-            // 1. Insert lead into Supabase
+            // Insert lead into Supabase
             const { error } = await supabase.from("leads").insert([{
                 ...data,
+                phone: cleanPhone,
                 downloaded_at: new Date().toISOString(),
             }]);
 
             if (error) throw error;
 
-            // 2. Success state
+            // Send document via email (fire-and-forget, don't block UI)
+            fetch("/api/send-brochure", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: data.email,
+                    propertyId,
+                    name: data.full_name,
+                    pdfUrl,
+                    docType,
+                }),
+            }).catch((err) => console.error("Error sending brochure email:", err));
+
             setIsSuccess(true);
-            toast.success("¡Hemos procesado tu solicitud con éxito!");
-
-            if (pdfUrl) {
-                window.open(pdfUrl, '_blank');
-            }
-
-            // Mock Resend integraton call
-            fetch('/api/send-brochure', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: data.email, propertyId, name: data.full_name, pdfUrl })
-            }).catch(console.error);
-
+            toast.success("Documento enviado a tu correo");
         } catch (error) {
             console.error("Error capturing lead:", error);
-            toast.error("Ocurrió un error. Por favor intenta nuevamente.");
+            toast.error("Ocurrio un error. Intenta nuevamente.");
         } finally {
             setIsSubmitting(false);
         }
@@ -144,34 +122,50 @@ export function GatedBrochure({ propertyId, propertyName, pdfUrl }: GatedBrochur
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="w-full bg-gold-500 text-black hover:bg-gold-600 font-bold mb-4 py-6 text-lg">
+                <Button className="w-full bg-gold-500 text-black hover:bg-gold-400 font-semibold py-6 text-base rounded-xl shadow-lg shadow-gold-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/30 hover:-translate-y-0.5">
                     <Download className="mr-2 h-5 w-5" />
-                    Descargar Brochure
+                    {label}
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+
+            <DialogContent
+                className="sm:max-w-[440px] !bg-card border-gold-500/10 shadow-2xl"
+                showCloseButton={!isSuccess}
+            >
                 {!isSuccess ? (
                     <>
-                        <DialogHeader>
-                            <DialogTitle className="flex items-center text-xl font-bold">
-                                <Lock className="w-5 h-5 mr-2 text-gold-500" />
-                                Contenido Exclusivo
-                            </DialogTitle>
-                            <DialogDescription>
-                                Para descargar el brochure de <strong>{propertyName}</strong>, por favor compártenos tus datos. Te lo enviaremos a tu correo de inmediato.
-                            </DialogDescription>
+                        <DialogHeader className="text-left">
+                            <div className="flex items-center gap-3 mb-2">
+                                <div className="size-10 rounded-xl bg-gold-500/10 flex items-center justify-center">
+                                    <Lock className="size-5 text-gold-500" />
+                                </div>
+                                <div>
+                                    <DialogTitle className="text-lg font-semibold">
+                                        Documento Exclusivo
+                                    </DialogTitle>
+                                    <DialogDescription className="text-sm">
+                                        Para acceder al documento de <strong className="text-foreground">{propertyName}</strong>,
+                                        compartenos tus datos y te lo enviamos a tu correo.
+                                    </DialogDescription>
+                                </div>
+                            </div>
                         </DialogHeader>
 
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-2">
                                 <FormField
                                     control={form.control}
                                     name="full_name"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Nombre completo</FormLabel>
+                                            <FormLabel className="text-xs uppercase tracking-wider text-foreground/60">Nombre completo</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Tu nombre" {...field} />
+                                                <Input
+                                                    placeholder="Tu nombre completo"
+                                                    {...field}
+                                                    className="bg-foreground/[0.04] border-foreground/10 h-11 rounded-xl focus:border-gold-500/50"
+                                                    autoComplete="name"
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -182,9 +176,18 @@ export function GatedBrochure({ propertyId, propertyName, pdfUrl }: GatedBrochur
                                     name="email"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Correo electrónico</FormLabel>
+                                            <FormLabel className="text-xs uppercase tracking-wider text-foreground/60">
+                                                <Mail className="size-3 inline mr-1.5 -mt-0.5" />
+                                                Correo electronico
+                                            </FormLabel>
                                             <FormControl>
-                                                <Input type="email" placeholder="tucorreo@empresa.com" {...field} />
+                                                <Input
+                                                    type="email"
+                                                    placeholder="tu@correo.com"
+                                                    {...field}
+                                                    className="bg-foreground/[0.04] border-foreground/10 h-11 rounded-xl focus:border-gold-500/50"
+                                                    autoComplete="email"
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -195,9 +198,18 @@ export function GatedBrochure({ propertyId, propertyName, pdfUrl }: GatedBrochur
                                     name="phone"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Teléfono</FormLabel>
+                                            <FormLabel className="text-xs uppercase tracking-wider text-foreground/60">
+                                                <Smartphone className="size-3 inline mr-1.5 -mt-0.5" />
+                                                WhatsApp / Telefono
+                                            </FormLabel>
                                             <FormControl>
-                                                <Input type="tel" placeholder="10 dígitos" {...field} />
+                                                <Input
+                                                    type="tel"
+                                                    placeholder="+52 55 1234 5678"
+                                                    {...field}
+                                                    className="bg-foreground/[0.04] border-foreground/10 h-11 rounded-xl focus:border-gold-500/50"
+                                                    autoComplete="tel"
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -207,48 +219,68 @@ export function GatedBrochure({ propertyId, propertyName, pdfUrl }: GatedBrochur
                                     control={form.control}
                                     name="privacy_accepted"
                                     render={({ field }) => (
-                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 pt-2">
+                                        <FormItem className="flex flex-row items-start gap-3 pt-2">
                                             <FormControl>
                                                 <Checkbox
                                                     id="brochure-privacy"
                                                     checked={field.value}
                                                     onCheckedChange={field.onChange}
-                                                    className="border-gold-500/20 data-[state=checked]:bg-gold-500 data-[state=checked]:text-black mt-0.5"
+                                                    className="border-gold-500/30 data-[state=checked]:bg-gold-500 data-[state=checked]:text-black mt-0.5 rounded"
                                                 />
                                             </FormControl>
-                                            <div className="space-y-1 leading-none">
-                                                <label htmlFor="brochure-privacy" className="text-xs text-muted-foreground cursor-pointer">
+                                            <div className="space-y-1 leading-tight">
+                                                <label htmlFor="brochure-privacy" className="text-xs text-foreground/50 cursor-pointer leading-relaxed">
                                                     Acepto el{" "}
-                                                    <a href="/legal/privacidad" className="text-gold-500 hover:underline" target="_blank">
+                                                    <a href="/legal/privacidad" className="text-gold-500 hover:underline font-medium" target="_blank">
                                                         Aviso de Privacidad
-                                                    </a>{" "}
-                                                    y consiento el tratamiento de mis datos para prospección comercial.
+                                                    </a>
+                                                    {" "}y autorizo que me contacten para prospeccion comercial.
                                                 </label>
                                                 <FormMessage />
                                             </div>
                                         </FormItem>
                                     )}
                                 />
-                                <Button type="submit" disabled={isSubmitting} className="w-full bg-gold-500 text-black hover:bg-gold-600 font-bold mt-4">
-                                    {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-2 h-4 w-4" />}
-                                    {isSubmitting ? "Procesando..." : "Enviar y Descargar PDF"}
+                                <Button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="w-full bg-gold-500 text-black hover:bg-gold-400 font-semibold py-5 rounded-xl mt-2 transition-all duration-300"
+                                >
+                                    {isSubmitting ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            Enviando...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Mail className="mr-2 h-4 w-4" />
+                                            Enviar documento a mi correo
+                                        </>
+                                    )}
                                 </Button>
-                                <p className="text-xs text-center text-muted-foreground mt-4">
-                                    Tus datos están protegidos por nuestra política de privacidad corporativa.
+                                <p className="text-[11px] text-center text-foreground/30 pt-1">
+                                    Tus datos estan protegidos. No compartimos tu informacion con terceros.
                                 </p>
                             </form>
                         </Form>
                     </>
                 ) : (
-                    <div className="py-12 flex flex-col items-center justify-center text-center space-y-4">
-                        <div className="w-16 h-16 bg-gold-500/20 rounded-full flex items-center justify-center mb-4">
-                            <Download className="w-8 h-8 text-gold-500" />
+                    <div className="py-8 flex flex-col items-center justify-center text-center">
+                        <div className="size-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-5">
+                            <CheckCircle2 className="size-8 text-emerald-500" />
                         </div>
-                        <h3 className="text-2xl font-bold">Gracias — ¡Brochure Desbloqueado!</h3>
-                        <p className="text-muted-foreground" role="status" aria-live="polite">
-                            Gracias por tu interés. Hemos enviado el enlace de descarga oficial a tu correo electrónico. Además, iniciaremos la descarga directa en unos momentos guiados por nuestros protocolos de seguridad.
+                        <h3 className="text-xl font-semibold text-foreground mb-2">
+                            Documento Enviado
+                        </h3>
+                        <p className="text-sm text-foreground/50 max-w-xs leading-relaxed mb-6">
+                            El documento ha sido enviado a tu correo electronico.
+                            Revisa tu bandeja de entrada (y spam) en los proximos minutos.
                         </p>
-                        <Button variant="outline" className="mt-8" onClick={() => setOpen(false)}>
+                        <Button
+                            variant="outline"
+                            className="border-gold-500/30 text-gold-500 hover:bg-gold-500/10 rounded-xl"
+                            onClick={() => setOpen(false)}
+                        >
                             Cerrar
                         </Button>
                     </div>

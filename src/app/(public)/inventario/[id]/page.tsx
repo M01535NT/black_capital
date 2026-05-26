@@ -6,8 +6,9 @@ import { Ruler, Building2, Calendar, ShieldCheck, MapPin, ArrowLeft } from "luci
 import { ImageGallery } from "@/components/public/image-gallery";
 import { VideoEmbed } from "@/components/public/video-embed";
 import { TourEmbed } from "@/components/public/tour-embed";
-import { Breadcrumbs } from "@/components/public/breadcrumbs";
+import { DocDownload } from "@/components/public/doc-download";
 import { GatedBrochure } from "@/components/public/gated-brochure";
+import { Breadcrumbs } from "@/components/public/breadcrumbs";
 import Link from "next/link";
 
 export const revalidate = 60;
@@ -71,6 +72,19 @@ export default async function PropertyDetailPage({
     if (property.images && Array.isArray(property.images)) {
         for (const img of property.images) {
             if (!allImages.includes(img)) allImages.push(img);
+        }
+    }
+
+    // Build documents list
+    const documents: { label: string; url: string }[] = [];
+    if (property.documents && Array.isArray(property.documents)) {
+        documents.push(...property.documents);
+    }
+    // Backward compat: old brochure_path as a doc if not already in documents
+    if (property.brochure_path) {
+        const alreadyInDocs = documents.some(d => d.url === property.brochure_path);
+        if (!alreadyInDocs) {
+            documents.push({ label: "Brochure Ejecutivo", url: property.brochure_path });
         }
     }
 
@@ -186,8 +200,10 @@ export default async function PropertyDetailPage({
                             </p>
                         </div>
                     </div>
-                    {property.custom_attributes && typeof property.custom_attributes === "object" && Object.keys(property.custom_attributes).length > 0 && (
-                        Object.entries(property.custom_attributes as Record<string, string>).slice(0, 2).map(([key, value]) => (
+                {/* ── Custom Attributes ── */}
+                {property.custom_attributes && typeof property.custom_attributes === "object" && Object.keys(property.custom_attributes as Record<string, string>).length > 0 && (
+                    <div className="flex flex-wrap items-center gap-8 md:gap-12 py-8 text-sm">
+                        {Object.entries(property.custom_attributes as Record<string, string>).map(([key, value]) => (
                             <div key={key} className="flex items-center gap-3">
                                 <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0">
                                     <ShieldCheck className="size-4 text-gold-500" />
@@ -197,8 +213,9 @@ export default async function PropertyDetailPage({
                                     <p className="font-numerics font-semibold text-foreground">{value}</p>
                                 </div>
                             </div>
-                        ))
-                    )}
+                        ))}
+                    </div>
+                )}
                 </div>
 
                 <Separator className="bg-foreground/5" />
@@ -274,6 +291,45 @@ export default async function PropertyDetailPage({
                                     </div>
                                 ))}
                             </div>
+                        </div>
+                    </>
+                )}
+
+                {/* ── Map ── */}
+                {property.address && (
+                    <>
+                        <Separator className="bg-foreground/5" />
+                        <div className="py-10">
+                            <h2 className="text-[1.25rem] font-semibold tracking-tight text-foreground mb-4">
+                                Ubicacion
+                            </h2>
+                            <p className="text-sm text-foreground/50 mb-4">{property.address}</p>
+                            <div className="rounded-2xl overflow-hidden border border-foreground/5 aspect-[16/9] bg-foreground/[0.02]">
+                                <iframe
+                                    title={`Mapa de ${property.title}`}
+                                    width="100%"
+                                    height="100%"
+                                    loading="lazy"
+                                    style={{ border: 0 }}
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(property.address)}&output=embed&z=15`}
+                                    allowFullScreen
+                                />
+                            </div>
+                        </div>
+                    </>
+                )}
+
+                {/* ── Documents (gated) ── */}
+                {documents.length > 0 && (
+                    <>
+                        <Separator className="bg-foreground/5" />
+                        <div className="py-10">
+                            <DocDownload
+                                documents={documents}
+                                propertyId={property.id}
+                                propertyName={property.title}
+                            />
                         </div>
                     </>
                 )}
