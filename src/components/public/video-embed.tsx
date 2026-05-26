@@ -34,7 +34,7 @@ export function VideoEmbed({ urls }: VideoEmbedProps) {
 
     return (
         <div className="space-y-6">
-            <h2 className="text-2xl font-bold border-b border-foreground/10 pb-4">
+            <h2 className="section-heading text-2xl tracking-tight border-b border-foreground/10 pb-4">
                 Video Promocional
             </h2>
             <div className="space-y-4">
@@ -45,13 +45,14 @@ export function VideoEmbed({ urls }: VideoEmbedProps) {
                     return (
                         <div
                             key={i}
-                            className="w-full aspect-video rounded-xl overflow-hidden bg-zinc-900 border border-foreground/10"
+                            className="w-full aspect-video rounded-xl overflow-hidden bg-zinc-900 border border-foreground/5 shadow-lg"
                         >
                             <iframe
                                 src={`https://www.youtube.com/embed/${videoId}`}
                                 title={`Video promocional ${i + 1}`}
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
+                                loading="lazy"
                                 className="w-full h-full"
                             />
                         </div>

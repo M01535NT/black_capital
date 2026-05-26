@@ -35,7 +35,7 @@ export default async function AdminPropertyDetailPage({
 
     let agents: { id: string; full_name: string; email: string | null; phone: string | null }[] = [];
     if (assignments && assignments.length > 0) {
-        const agentIds = assignments.map(a => a.agent_id);
+        const agentIds = assignments.map((a: any) => a.agent_id);
         const { data: agentData } = await supabase
             .from("agents")
             .select("id, full_name, email, phone")

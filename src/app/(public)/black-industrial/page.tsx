@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { IndustrialHero } from "@/components/industrial/IndustrialHero";
 import { IndustrialValue } from "@/components/industrial/IndustrialValue";
 import { IndustrialStats } from "@/components/industrial/IndustrialStats";
-import { IndustrialInventory } from "@/components/industrial/IndustrialInventory";
+import { BrandInventory } from "@/components/shared/BrandInventory";
 import { IndustrialCTA } from "@/components/industrial/IndustrialCTA";
 
 export const metadata: Metadata = {
@@ -25,7 +25,15 @@ export default function BlackIndustrialPage() {
             <IndustrialHero />
             <IndustrialValue />
             <IndustrialStats />
-            <IndustrialInventory />
+            <BrandInventory
+                brandSlug="industrial"
+                propertyUse="Industrial"
+                title="Inventario"
+                highlight="Industrial"
+                subtitle="Activos seleccionados con análisis financiero completo y documentación verificada."
+                ctaText="Ver Todo el Inventario Industrial"
+                accentColor="steel"
+            />
             <IndustrialCTA />
         </>
     );

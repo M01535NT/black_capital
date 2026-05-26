@@ -32,7 +32,7 @@ export default async function AgentDetailPage({
         .select("property_id")
         .eq("agent_id", id);
 
-    const propertyIds = (assignments || []).map(a => a.property_id);
+    const propertyIds = (assignments || []).map((a: any) => a.property_id);
 
     let properties: any[] = [];
     if (propertyIds.length > 0) {

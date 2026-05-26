@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { BusinessHero } from "@/components/business/BusinessHero";
 import { BusinessValue } from "@/components/business/BusinessValue";
 import { BusinessStats } from "@/components/business/BusinessStats";
-import { BusinessInventory } from "@/components/business/BusinessInventory";
+import { BrandInventory } from "@/components/shared/BrandInventory";
 import { BusinessCTA } from "@/components/business/BusinessCTA";
 
 export const metadata: Metadata = {
@@ -25,7 +25,15 @@ export default function BlackBusinessPage() {
             <BusinessHero />
             <BusinessValue />
             <BusinessStats />
-            <BusinessInventory />
+            <BrandInventory
+                brandSlug="business"
+                propertyUse="Comercial"
+                title="Espacios"
+                highlight="Estratégicos"
+                subtitle="Cada activo comercial ha sido evaluado por nuestro comité de inversiones bajo estándares institucionales."
+                ctaText="Ver Portafolio Completo"
+                accentColor="gold"
+            />
             <BusinessCTA />
         </>
     );

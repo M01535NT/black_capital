@@ -26,7 +26,7 @@ export default async function EditPropertyPage({
         .select("agent_id")
         .eq("property_id", id);
 
-    const agentIds = (assignments || []).map(a => a.agent_id);
+    const agentIds = (assignments || []).map((a: any) => a.agent_id);
 
     return (
         <div className="space-y-6">

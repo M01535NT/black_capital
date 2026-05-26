@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Ruler, Building2, Calendar, ShieldCheck, MapPin, ArrowLeft } from "lucide-react";
+import { Ruler, Building2, Calendar, ShieldCheck, MapPin, ArrowLeft, MessageCircle, Phone } from "lucide-react";
 import { ImageGallery } from "@/components/public/image-gallery";
 import { VideoEmbed } from "@/components/public/video-embed";
 import { TourEmbed } from "@/components/public/tour-embed";
@@ -21,6 +21,16 @@ type AgentInfo = {
     phone: string | null;
     photo_url: string | null;
     license_number: string | null;
+};
+
+type SimilarProperty = {
+    id: string;
+    title: string;
+    price: number;
+    currency: string;
+    cover_image: string | null;
+    business_type: string;
+    m2_construction: number | null;
 };
 
 export default async function PropertyDetailPage({
@@ -54,13 +64,29 @@ export default async function PropertyDetailPage({
 
     let agents: AgentInfo[] = [];
     if (assignedAgents && assignedAgents.length > 0) {
-        const agentIds = assignedAgents.map(pa => pa.agent_id);
+        const agentIds = assignedAgents.map((pa: any) => pa.agent_id);
         const { data: agentData } = await supabase
             .from("agents")
             .select("id, full_name, email, phone, photo_url, license_number")
             .in("id", agentIds)
             .eq("is_active", true);
         if (agentData) agents = agentData;
+    }
+
+    // Fetch similar properties
+    let similar: SimilarProperty[] = [];
+    if (property.property_use) {
+        const { data: similarData } = await supabase
+            .from("properties")
+            .select("id, title, price, currency, cover_image, business_type, m2_construction")
+            .eq("property_use", property.property_use)
+            .eq("status", "Available")
+            .neq("id", id)
+            .not("title", "ilike", "%prueba%")
+            .not("title", "ilike", "%test%")
+            .order("created_at", { ascending: false })
+            .limit(3);
+        if (similarData) similar = similarData;
     }
 
     const formatPrice = (price: number, currency: string) => {
@@ -157,7 +183,7 @@ export default async function PropertyDetailPage({
                 </div>
 
                 {/* Title + Price */}
-                <h1 className="text-[2rem] md:text-[2.75rem] font-semibold tracking-tight text-foreground leading-[1.08] mb-3">
+                <h1 className="font-display text-[2rem] md:text-[2.75rem] font-semibold tracking-tight text-foreground leading-[1.08] mb-3">
                     {property.title}
                 </h1>
                 {property.address && (
@@ -172,11 +198,11 @@ export default async function PropertyDetailPage({
 
                 <Separator className="bg-foreground/5" />
 
-                {/* ── Inline Metrics Row ── */}
-                <div className="flex flex-wrap items-center gap-8 md:gap-12 py-8 text-sm">
+                {/* ── Premium Metrics Row ── */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 py-8">
                     {property.m2_terrain ? (
-                        <div className="flex items-center gap-3">
-                            <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0">
+                        <div className="glass rounded-2xl p-4 flex flex-col items-center text-center gap-2">
+                            <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0 border border-gold-500/20">
                                 <Ruler className="size-4 text-gold-500" />
                             </div>
                             <div>
@@ -186,8 +212,8 @@ export default async function PropertyDetailPage({
                         </div>
                     ) : null}
                     {property.m2_construction ? (
-                        <div className="flex items-center gap-3">
-                            <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0">
+                        <div className="glass rounded-2xl p-4 flex flex-col items-center text-center gap-2">
+                            <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0 border border-gold-500/20">
                                 <Building2 className="size-4 text-gold-500" />
                             </div>
                             <div>
@@ -196,8 +222,8 @@ export default async function PropertyDetailPage({
                             </div>
                         </div>
                     ) : null}
-                    <div className="flex items-center gap-3">
-                        <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0">
+                    <div className="glass rounded-2xl p-4 flex flex-col items-center text-center gap-2">
+                        <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0 border border-gold-500/20">
                             <Calendar className="size-4 text-gold-500" />
                         </div>
                         <div>
@@ -207,12 +233,25 @@ export default async function PropertyDetailPage({
                             </p>
                         </div>
                     </div>
+                    {property.property_type && (
+                        <div className="glass rounded-2xl p-4 flex flex-col items-center text-center gap-2">
+                            <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0 border border-gold-500/20">
+                                <ShieldCheck className="size-4 text-gold-500" />
+                            </div>
+                            <div>
+                                <p className="text-[11px] uppercase tracking-widest text-foreground/40 font-semibold">Tipo</p>
+                                <p className="font-numerics font-semibold text-foreground">{property.property_type}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
                 {/* ── Custom Attributes ── */}
                 {property.custom_attributes && typeof property.custom_attributes === "object" && Object.keys(property.custom_attributes as Record<string, string>).length > 0 && (
-                    <div className="flex flex-wrap items-center gap-8 md:gap-12 py-8 text-sm">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pb-8">
                         {Object.entries(property.custom_attributes as Record<string, string>).map(([key, value]) => (
-                            <div key={key} className="flex items-center gap-3">
-                                <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0">
+                            <div key={key} className="glass rounded-2xl p-4 flex flex-col items-center text-center gap-2">
+                                <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0 border border-gold-500/20">
                                     <ShieldCheck className="size-4 text-gold-500" />
                                 </div>
                                 <div>
@@ -223,13 +262,12 @@ export default async function PropertyDetailPage({
                         ))}
                     </div>
                 )}
-                </div>
 
                 <Separator className="bg-foreground/5" />
 
                 {/* ── Description ── */}
                 <div className="py-10">
-                    <h2 className="text-[1.25rem] font-semibold tracking-tight text-foreground mb-5">
+                    <h2 className="section-heading text-[1.25rem] tracking-tight text-foreground mb-5">
                         Descripción
                     </h2>
                     <div className="text-[0.9375rem] text-foreground/60 leading-relaxed whitespace-pre-wrap">
@@ -253,16 +291,16 @@ export default async function PropertyDetailPage({
                     <>
                         <Separator className="bg-foreground/5" />
                         <div className="py-10">
-                            <h2 className="text-[1.25rem] font-semibold tracking-tight text-foreground mb-6">
+                            <h2 className="section-heading text-[1.25rem] tracking-tight text-foreground mb-6">
                                 {agents.length === 1 ? "Asesor a Cargo" : "Asesores a Cargo"}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {agents.map((agent) => (
                                     <div
                                         key={agent.id}
-                                        className="flex items-center gap-4 p-4 rounded-2xl border border-foreground/5 bg-card hover:border-gold-500/20 transition-all duration-300"
+                                        className="flex items-center gap-5 p-5 rounded-2xl border border-foreground/5 bg-card hover:border-gold-500/20 transition-all duration-300"
                                     >
-                                        <div className="size-12 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 font-semibold shrink-0 border border-gold-500/20 overflow-hidden">
+                                        <div className="size-16 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 font-semibold shrink-0 border border-gold-500/20 overflow-hidden text-lg">
                                             {agent.photo_url ? (
                                                 <img src={agent.photo_url} alt={agent.full_name} className="size-full object-cover" />
                                             ) : (
@@ -270,26 +308,28 @@ export default async function PropertyDetailPage({
                                             )}
                                         </div>
                                         <div className="min-w-0 flex-1">
-                                            <p className="font-semibold text-foreground text-sm truncate">{agent.full_name}</p>
+                                            <p className="font-semibold text-foreground text-base truncate">{agent.full_name}</p>
                                             {agent.license_number && (
                                                 <p className="text-[11px] text-foreground/40">Céd. {agent.license_number}</p>
                                             )}
-                                            <div className="flex items-center gap-3 mt-1.5">
+                                            <div className="flex items-center gap-3 mt-2.5">
                                                 {agent.phone && (
                                                     <a
                                                         href={`https://wa.me/${agent.phone.replace(/[^0-9]/g, "")}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="text-[11px] text-gold-500 hover:text-gold-400 transition-colors font-medium"
+                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold hover:bg-emerald-500/20 transition-colors"
                                                     >
+                                                        <MessageCircle className="size-3" />
                                                         WhatsApp
                                                     </a>
                                                 )}
                                                 {agent.email && (
                                                     <a
                                                         href={`mailto:${agent.email}`}
-                                                        className="text-[11px] text-foreground/40 hover:text-foreground/70 transition-colors"
+                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-foreground/5 text-foreground/50 border border-foreground/10 text-xs font-medium hover:text-foreground/70 hover:border-foreground/20 transition-colors"
                                                     >
+                                                        <Phone className="size-3" />
                                                         Email
                                                     </a>
                                                 )}
@@ -307,11 +347,11 @@ export default async function PropertyDetailPage({
                     <>
                         <Separator className="bg-foreground/5" />
                         <div className="py-10">
-                            <h2 className="text-[1.25rem] font-semibold tracking-tight text-foreground mb-4">
+                            <h2 className="section-heading text-[1.25rem] tracking-tight text-foreground mb-4">
                                 Ubicación
                             </h2>
                             <p className="text-sm text-foreground/50 mb-4">{property.address}</p>
-                            <div className="rounded-2xl overflow-hidden border border-foreground/5 aspect-[16/9] bg-foreground/[0.02]">
+                            <div className="rounded-2xl overflow-hidden border border-foreground/5 aspect-[16/7] md:aspect-[21/9] bg-foreground/[0.02]">
                                 <iframe
                                     title={`Mapa de ${property.title}`}
                                     width="100%"
@@ -341,35 +381,92 @@ export default async function PropertyDetailPage({
                     </>
                 )}
 
+                {/* ── Similar Properties ── */}
+                {similar.length > 0 && (
+                    <>
+                        <Separator className="bg-foreground/5" />
+                        <div className="py-10">
+                            <h2 className="section-heading text-[1.25rem] tracking-tight text-foreground mb-6">
+                                Propiedades Similares
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {similar.map((sp) => (
+                                    <Link
+                                        key={sp.id}
+                                        href={`/inventario/${sp.id}`}
+                                        className="group block bg-card border border-foreground/5 rounded-2xl overflow-hidden hover:border-gold-500/30 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.12)] transition-all duration-500"
+                                    >
+                                        <div className="aspect-[4/3] relative overflow-hidden bg-foreground/[0.03]">
+                                            {sp.cover_image ? (
+                                                <img
+                                                    src={sp.cover_image}
+                                                    alt={sp.title}
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                    loading="lazy"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center">
+                                                    <span className="text-foreground/15 text-sm font-medium">Sin imagen</span>
+                                                </div>
+                                            )}
+                                            <div className="absolute top-3 left-3 flex gap-2">
+                                                <span className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider bg-gold-500 text-black rounded-full">
+                                                    {sp.business_type}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="p-4">
+                                            <h3 className="font-semibold text-sm leading-snug line-clamp-2 group-hover:text-gold-500 transition-colors mb-2">
+                                                {sp.title}
+                                            </h3>
+                                            <div className="flex items-center justify-between gap-2">
+                                                <span className="text-[11px] text-foreground/40 font-medium uppercase tracking-wider">
+                                                    {sp.m2_construction ? `${sp.m2_construction.toLocaleString()} m²` : ""}
+                                                </span>
+                                                <span className="text-sm font-semibold font-numerics text-gold-500 whitespace-nowrap">
+                                                    {formatShortPrice(sp.price, sp.currency)}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </>
+                )}
+
                 {/* ── CTA Section ── */}
                 <Separator className="bg-foreground/5" />
                 <div className="py-10">
-                    <div className="bg-card border border-foreground/5 rounded-2xl p-8 md:p-10 text-center">
-                        <h2 className="text-[1.5rem] font-semibold tracking-tight text-foreground mb-2">
-                            ¿Te interesa esta propiedad?
-                        </h2>
-                        <p className="text-foreground/50 text-sm mb-8 max-w-md mx-auto">
-                            Descarga el brochure ejecutivo con información financiera detallada y análisis de mercado.
-                        </p>
-                        <div className="max-w-sm mx-auto">
-                            <GatedBrochure
-                                propertyId={property.id}
-                                propertyName={property.title}
-                                pdfUrl={property.brochure_path || null}
-                            />
+                    <div className="bg-card border border-foreground/5 rounded-2xl p-8 md:p-12 text-center relative overflow-hidden">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--color-gold-500)/0.06,_transparent_70%)]" />
+                        <div className="relative z-10">
+                            <h2 className="section-heading text-[1.5rem] md:text-[1.75rem] tracking-tight text-foreground mb-3">
+                                ¿Te interesa esta propiedad?
+                            </h2>
+                            <p className="text-foreground/50 text-sm md:text-base mb-8 max-w-lg mx-auto leading-relaxed">
+                                Agenda una visita privada o descarga el brochure ejecutivo con análisis financiero detallado, comparables de mercado y proyección de rendimiento.
+                            </p>
+                            <div className="max-w-sm mx-auto">
+                                <GatedBrochure
+                                    propertyId={property.id}
+                                    propertyName={property.title}
+                                    pdfUrl={property.brochure_path || null}
+                                />
+                            </div>
+                            <p className="text-[11px] text-foreground/30 mt-6">
+                                Operación gestionada como <strong className="text-foreground/50">{property.business_type}</strong> — Black Corporativo
+                            </p>
                         </div>
-                        <p className="text-[11px] text-foreground/30 mt-6">
-                            Operación gestionada como <strong className="text-foreground/50">{property.business_type}</strong> — Black Corporativo
-                        </p>
                     </div>
                 </div>
 
                 {/* Spacer */}
-                <div className="h-8" />
+                <div className="h-8 md:h-16" />
             </div>
 
             {/* ── Mobile Sticky CTA ── */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-xl border-t border-foreground/10 p-4 flex items-center gap-3">
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-xl border-t border-foreground/10 p-4 flex items-center gap-3 shadow-[0_-8px_32px_rgba(0,0,0,0.4)]">
                 <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-foreground truncate">{property.title}</p>
                     <p className="text-gold-500 font-numerics font-semibold text-sm">{formatShortPrice(property.price, property.currency)}</p>
@@ -378,8 +475,9 @@ export default async function PropertyDetailPage({
                     href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(`Hola, me interesa la propiedad: ${property.title}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="shrink-0 px-5 py-2.5 bg-gold-500 text-black rounded-full text-sm font-semibold hover:bg-gold-400 transition-colors"
+                    className="shrink-0 px-6 py-3 bg-gold-500 text-black rounded-full text-sm font-bold hover:bg-gold-400 transition-colors flex items-center gap-2 shadow-lg shadow-gold-500/25"
                 >
+                    <MessageCircle className="size-4" />
                     Contactar
                 </a>
             </div>

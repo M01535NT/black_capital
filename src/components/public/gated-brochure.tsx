@@ -27,7 +27,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Download, Loader2, Lock, CheckCircle2, Mail, Smartphone } from "lucide-react";
+import { Download, Loader2, Lock, CheckCircle2, Mail, Smartphone, ArrowRight } from "lucide-react";
 import { leadSchema, LeadFormValues } from "@/lib/validations/lead";
 
 interface GatedBrochureProps {
@@ -114,7 +114,7 @@ export function GatedBrochure({
             toast.success("Documento enviado a tu correo");
         } catch (error) {
             console.error("Error capturing lead:", error);
-            toast.error("Ocurrio un error. Intenta nuevamente.");
+            toast.error("Ocurrió un error. Intenta nuevamente.");
         } finally {
             setIsSubmitting(false);
         }
@@ -123,9 +123,10 @@ export function GatedBrochure({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="w-full bg-gold-500 text-black hover:bg-gold-400 font-semibold py-6 text-base rounded-xl shadow-lg shadow-gold-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/30 hover:-translate-y-0.5">
+                <Button className="w-full bg-gold-500 text-black hover:bg-gold-400 font-semibold py-7 text-base rounded-xl shadow-lg shadow-gold-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/30 hover:-translate-y-0.5">
                     <Download className="mr-2 h-5 w-5" />
                     {label}
+                    <ArrowRight className="ml-2 h-4 w-4 opacity-60" />
                 </Button>
             </DialogTrigger>
 
@@ -137,16 +138,16 @@ export function GatedBrochure({
                     <>
                         <DialogHeader className="text-left">
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="size-10 rounded-xl bg-gold-500/10 flex items-center justify-center">
+                                <div className="size-10 rounded-xl bg-gold-500/10 flex items-center justify-center border border-gold-500/20">
                                     <Lock className="size-5 text-gold-500" />
                                 </div>
                                 <div>
-                                    <DialogTitle className="text-lg font-semibold">
+                                    <DialogTitle className="font-display text-lg font-semibold uppercase tracking-tight">
                                         Documento Exclusivo
                                     </DialogTitle>
-                                    <DialogDescription className="text-sm">
+                                    <DialogDescription className="text-sm text-foreground/50">
                                         Para acceder al documento de <strong className="text-foreground">{propertyName}</strong>,
-                                        compartenos tus datos y te lo enviamos a tu correo.
+                                        compártenos tus datos y te lo enviamos a tu correo.
                                     </DialogDescription>
                                 </div>
                             </div>
@@ -159,12 +160,12 @@ export function GatedBrochure({
                                     name="full_name"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-xs uppercase tracking-wider text-foreground/60">Nombre completo</FormLabel>
+                                            <FormLabel className="label-overline text-foreground/60">Nombre completo</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     placeholder="Tu nombre completo"
                                                     {...field}
-                                                    className="bg-foreground/[0.04] border-foreground/10 h-11 rounded-xl focus:border-gold-500/50"
+                                                    className="bg-foreground/[0.04] border-foreground/10 h-12 rounded-xl focus:border-gold-500/50 focus:ring-gold-500/10 transition-all"
                                                     autoComplete="name"
                                                 />
                                             </FormControl>
@@ -177,16 +178,16 @@ export function GatedBrochure({
                                     name="email"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-xs uppercase tracking-wider text-foreground/60">
+                                            <FormLabel className="label-overline text-foreground/60">
                                                 <Mail className="size-3 inline mr-1.5 -mt-0.5" />
-                                                Correo electronico
+                                                Correo electrónico
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     type="email"
                                                     placeholder="tu@correo.com"
                                                     {...field}
-                                                    className="bg-foreground/[0.04] border-foreground/10 h-11 rounded-xl focus:border-gold-500/50"
+                                                    className="bg-foreground/[0.04] border-foreground/10 h-12 rounded-xl focus:border-gold-500/50 focus:ring-gold-500/10 transition-all"
                                                     autoComplete="email"
                                                 />
                                             </FormControl>
@@ -199,16 +200,16 @@ export function GatedBrochure({
                                     name="phone"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-xs uppercase tracking-wider text-foreground/60">
+                                            <FormLabel className="label-overline text-foreground/60">
                                                 <Smartphone className="size-3 inline mr-1.5 -mt-0.5" />
-                                                WhatsApp / Telefono
+                                                WhatsApp / Teléfono
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     type="tel"
                                                     placeholder={CONTACT_CONFIG.phone}
                                                     {...field}
-                                                    className="bg-foreground/[0.04] border-foreground/10 h-11 rounded-xl focus:border-gold-500/50"
+                                                    className="bg-foreground/[0.04] border-foreground/10 h-12 rounded-xl focus:border-gold-500/50 focus:ring-gold-500/10 transition-all"
                                                     autoComplete="tel"
                                                 />
                                             </FormControl>
@@ -235,7 +236,7 @@ export function GatedBrochure({
                                                     <a href="/legal/privacidad" className="text-gold-500 hover:underline font-medium" target="_blank">
                                                         Aviso de Privacidad
                                                     </a>
-                                                    {" "}y autorizo que me contacten para prospeccion comercial.
+                                                    {" "}y autorizo que me contacten para prospección comercial.
                                                 </label>
                                                 <FormMessage />
                                             </div>
@@ -245,7 +246,7 @@ export function GatedBrochure({
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full bg-gold-500 text-black hover:bg-gold-400 font-semibold py-5 rounded-xl mt-2 transition-all duration-300"
+                                    className="w-full bg-gold-500 text-black hover:bg-gold-400 font-semibold py-6 rounded-xl mt-2 transition-all duration-300"
                                 >
                                     {isSubmitting ? (
                                         <>
@@ -256,30 +257,31 @@ export function GatedBrochure({
                                         <>
                                             <Mail className="mr-2 h-4 w-4" />
                                             Enviar documento a mi correo
+                                            <ArrowRight className="ml-2 h-4 w-4" />
                                         </>
                                     )}
                                 </Button>
                                 <p className="text-[11px] text-center text-foreground/30 pt-1">
-                                    Tus datos estan protegidos. No compartimos tu informacion con terceros.
+                                    Tus datos están protegidos. No compartimos tu información con terceros.
                                 </p>
                             </form>
                         </Form>
                     </>
                 ) : (
                     <div className="py-8 flex flex-col items-center justify-center text-center">
-                        <div className="size-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-5">
+                        <div className="size-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-5 border border-emerald-500/20">
                             <CheckCircle2 className="size-8 text-emerald-500" />
                         </div>
-                        <h3 className="text-xl font-semibold text-foreground mb-2">
+                        <h3 className="font-display text-xl font-semibold text-foreground mb-2 uppercase tracking-tight">
                             Documento Enviado
                         </h3>
                         <p className="text-sm text-foreground/50 max-w-xs leading-relaxed mb-6">
-                            El documento ha sido enviado a tu correo electronico.
-                            Revisa tu bandeja de entrada (y spam) en los proximos minutos.
+                            El documento ha sido enviado a tu correo electrónico.
+                            Revisa tu bandeja de entrada (y spam) en los próximos minutos.
                         </p>
                         <Button
                             variant="outline"
-                            className="border-gold-500/30 text-gold-500 hover:bg-gold-500/10 rounded-xl"
+                            className="border-gold-500/30 text-gold-500 hover:bg-gold-500/10 rounded-xl px-8"
                             onClick={() => setOpen(false)}
                         >
                             Cerrar

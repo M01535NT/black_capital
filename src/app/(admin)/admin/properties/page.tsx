@@ -23,8 +23,8 @@ export default async function PropertiesPage() {
         <div className="space-y-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
-                    <h2 className="section-heading text-3xl text-foreground">Inventario</h2>
-                    <p className="text-foreground/50">Gestiona las propiedades activas e inactivas.</p>
+                    <h2 className="font-display uppercase tracking-wider text-3xl text-foreground">Inventario</h2>
+                    <p className="text-foreground/50 text-sm">Gestiona las propiedades activas e inactivas.</p>
                 </div>
                 <Link href="/admin/properties/new">
                     <Button className="bg-gold-500 text-black hover:bg-gold-600 gap-2">

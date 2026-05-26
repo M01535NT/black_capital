@@ -20,6 +20,7 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
     const [activeIndex, setActiveIndex] = useState(0);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     // Touch/swipe state for lightbox
     const touchStartX = useRef(0);
@@ -86,13 +87,18 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
                     <img
                         src={currentImage}
                         alt={title}
-                        className="w-full h-full object-cover"
+                        className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? "opacity-100" : "opacity-0"}`}
                         loading="eager"
+                        onLoad={() => setIsLoaded(true)}
                     />
+                    {/* Skeleton loader */}
+                    {!isLoaded && (
+                        <div className="absolute inset-0 bg-zinc-800 animate-pulse" />
+                    )}
                     {/* Expand button — always visible on mobile */}
                     <button
                         onClick={() => openLightbox(activeIndex)}
-                        className="absolute top-3 right-3 p-2.5 min-w-[44px] min-h-[44px] bg-black/60 hover:bg-black/90 text-white rounded-lg transition-colors flex items-center justify-center"
+                        className="absolute top-3 right-3 p-2.5 min-w-[44px] min-h-[44px] bg-black/60 hover:bg-black/90 text-white rounded-lg transition-all duration-300 flex items-center justify-center backdrop-blur-sm border border-white/10"
                         aria-label="Ver en pantalla completa"
                     >
                         <Expand className="w-5 h-5" />
@@ -103,14 +109,14 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
                         <>
                             <button
                                 onClick={(e) => { e.stopPropagation(); goTo(activeIndex - 1); }}
-                                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 p-2.5 min-w-[44px] min-h-[44px] bg-black/60 hover:bg-black/90 text-white rounded-full transition-colors flex items-center justify-center md:opacity-0 md:group-hover:opacity-100"
+                                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 p-2.5 min-w-[44px] min-h-[44px] bg-black/60 hover:bg-black/90 text-white rounded-full transition-all duration-300 flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 backdrop-blur-sm border border-white/10"
                                 aria-label="Imagen anterior"
                             >
                                 <ChevronLeft className="w-5 h-5" />
                             </button>
                             <button
                                 onClick={(e) => { e.stopPropagation(); goTo(activeIndex + 1); }}
-                                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-2.5 min-w-[44px] min-h-[44px] bg-black/60 hover:bg-black/90 text-white rounded-full transition-colors flex items-center justify-center md:opacity-0 md:group-hover:opacity-100"
+                                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-2.5 min-w-[44px] min-h-[44px] bg-black/60 hover:bg-black/90 text-white rounded-full transition-all duration-300 flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 backdrop-blur-sm border border-white/10"
                                 aria-label="Imagen siguiente"
                             >
                                 <ChevronRight className="w-5 h-5" />
@@ -120,7 +126,7 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
 
                     {/* Counter */}
                     {allImages.length > 1 && (
-                        <div className="absolute bottom-3 left-3 px-3 py-1.5 bg-black/70 text-white text-xs md:text-sm rounded-full">
+                        <div className="absolute bottom-3 left-3 px-3 py-1.5 bg-black/70 text-white text-xs md:text-sm rounded-full backdrop-blur-sm border border-white/10 font-numerics">
                             {activeIndex + 1} / {allImages.length}
                         </div>
                     )}
@@ -128,14 +134,14 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
 
                 {/* Thumbnails — scrollable on mobile */}
                 {allImages.length > 1 && (
-                    <div className="flex gap-2 overflow-x-auto pb-1 snap-x scrollbar-hide">
+                    <div className="flex gap-2.5 overflow-x-auto pb-1 snap-x scrollbar-hide px-1">
                         {allImages.map((img, i) => (
                             <button
                                 key={i}
                                 onClick={() => goTo(i)}
-                                className={`flex-shrink-0 w-16 h-12 md:w-20 md:h-14 rounded-lg overflow-hidden border-2 transition-all snap-start ${
+                                className={`flex-shrink-0 w-16 h-12 md:w-20 md:h-14 rounded-lg overflow-hidden border-2 transition-all duration-300 snap-start ${
                                     i === activeIndex
-                                        ? "border-gold-500 opacity-100"
+                                        ? "border-gold-500 opacity-100 shadow-[0_0_12px_rgba(212,175,55,0.3)]"
                                         : "border-transparent opacity-60 hover:opacity-100"
                                 }`}
                             >
@@ -154,7 +160,7 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
             {/* Lightbox — Fullscreen overlay */}
             {lightboxOpen && (
                 <div
-                    className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
+                    className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center animate-in fade-in duration-200"
                     onClick={closeLightbox}
                     onTouchStart={handleTouchStart}
                     onTouchEnd={handleTouchEnd}
@@ -162,14 +168,14 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
                     {/* Close button */}
                     <button
                         onClick={closeLightbox}
-                        className="absolute top-3 right-3 md:top-4 md:right-4 p-3 min-w-[44px] min-h-[44px] text-white hover:bg-white/10 rounded-full z-10 flex items-center justify-center"
+                        className="absolute top-3 right-3 md:top-4 md:right-4 p-3 min-w-[44px] min-h-[44px] text-white hover:bg-white/10 rounded-full z-10 flex items-center justify-center transition-colors border border-white/10"
                         aria-label="Cerrar"
                     >
                         <X className="w-6 h-6" />
                     </button>
 
                     {/* Counter */}
-                    <div className="absolute top-3 left-3 md:top-4 md:left-4 px-3 py-1.5 bg-white/10 text-white text-sm rounded-full z-10">
+                    <div className="absolute top-3 left-3 md:top-4 md:left-4 px-3 py-1.5 bg-white/10 text-white text-sm rounded-full z-10 backdrop-blur-sm border border-white/10 font-numerics">
                         {lightboxIndex + 1} / {allImages.length}
                     </div>
 
@@ -178,14 +184,14 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
                         <>
                             <button
                                 onClick={(e) => { e.stopPropagation(); goTo(lightboxIndex - 1); }}
-                                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 p-3 min-w-[48px] min-h-[48px] bg-white/10 hover:bg-white/20 text-white rounded-full z-10 flex items-center justify-center"
+                                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 p-3 min-w-[48px] min-h-[48px] bg-white/10 hover:bg-white/20 text-white rounded-full z-10 flex items-center justify-center transition-colors border border-white/10"
                                 aria-label="Anterior"
                             >
                                 <ChevronLeft className="w-6 h-6" />
                             </button>
                             <button
                                 onClick={(e) => { e.stopPropagation(); goTo(lightboxIndex + 1); }}
-                                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-3 min-w-[48px] min-h-[48px] bg-white/10 hover:bg-white/20 text-white rounded-full z-10 flex items-center justify-center"
+                                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-3 min-w-[48px] min-h-[48px] bg-white/10 hover:bg-white/20 text-white rounded-full z-10 flex items-center justify-center transition-colors border border-white/10"
                                 aria-label="Siguiente"
                             >
                                 <ChevronRight className="w-6 h-6" />
@@ -197,20 +203,20 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
                     <img
                         src={currentImage}
                         alt={title}
-                        className="max-w-[95vw] max-h-[80vh] md:max-h-[90vh] object-contain select-none"
+                        className="max-w-[95vw] max-h-[80vh] md:max-h-[90vh] object-contain select-none animate-in zoom-in-95 duration-200"
                         onClick={(e) => e.stopPropagation()}
                     />
 
                     {/* Thumbnail strip at bottom */}
                     {allImages.length > 1 && (
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 max-w-[90vw] overflow-x-auto pb-1">
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 max-w-[90vw] overflow-x-auto pb-1 px-2">
                             {allImages.map((img, i) => (
                                 <button
                                     key={i}
                                     onClick={(e) => { e.stopPropagation(); goTo(i); }}
-                                    className={`flex-shrink-0 w-14 h-10 md:w-16 md:h-12 rounded-md overflow-hidden border-2 transition-all ${
+                                    className={`flex-shrink-0 w-14 h-10 md:w-16 md:h-12 rounded-md overflow-hidden border-2 transition-all duration-300 ${
                                         i === lightboxIndex
-                                            ? "border-gold-500 opacity-100"
+                                            ? "border-gold-500 opacity-100 shadow-[0_0_12px_rgba(212,175,55,0.3)]"
                                             : "border-white/20 opacity-50 hover:opacity-80"
                                     }`}
                                 >

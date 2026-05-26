@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LuxuryHero } from "@/components/luxury/LuxuryHero";
 import { LuxuryValue } from "@/components/luxury/LuxuryValue";
 import { LuxuryStats } from "@/components/luxury/LuxuryStats";
-import { LuxuryInventory } from "@/components/luxury/LuxuryInventory";
+import { BrandInventory } from "@/components/shared/BrandInventory";
 import { LuxuryCTA } from "@/components/luxury/LuxuryCTA";
 
 export const metadata: Metadata = {
@@ -25,7 +25,15 @@ export default function BlackLuxuryPage() {
             <LuxuryHero />
             <LuxuryValue />
             <LuxuryStats />
-            <LuxuryInventory />
+            <BrandInventory
+                brandSlug="luxury"
+                propertyUse="Residencial"
+                title="Propiedades de"
+                highlight="Súper Lujo"
+                subtitle="Cada propiedad ha sido verificada, analizada financieramente y aprobada por nuestro comité de inversiones."
+                ctaText="Ver Portafolio Completo"
+                accentColor="gold"
+            />
             <LuxuryCTA />
         </>
     );

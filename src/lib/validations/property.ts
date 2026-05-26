@@ -28,6 +28,8 @@ export const propertySchema = z.object({
     currency: z.enum(["MXN", "USD"]),
     description: z.string().min(20, "La descripción debe tener al menos 20 caracteres"),
     status: z.enum(["Available", "Under_Offer", "Sold", "Rented"]),
+    address: z.string().optional().nullable(),
+    cover_image: z.string().optional().nullable(),
     pdf_url: z.string().optional().nullable(),
     tour_url: z.string().optional().nullable(),
     video_url: z.string().optional().nullable(),

@@ -121,7 +121,7 @@ export function Hero() {
                         initial={shouldReduceMotion ? {} : { opacity: 0, x: -50 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                        className="hero-title text-5xl md:text-7xl lg:text-[100px] text-foreground uppercase"
+                        className="hero-title text-foreground"
                     >
                         Impulsamos <br />
                         tu{" "}
@@ -157,7 +157,7 @@ export function Hero() {
                             delay: shouldReduceMotion ? 0 : 0.5,
                             ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="text-sm md:text-base text-foreground/40 max-w-xl uppercase tracking-[0.4em] font-medium leading-relaxed"
+                        className="body-text text-foreground/40 max-w-xl uppercase tracking-[0.4em] font-medium"
                     >
                         Generando valor para ti.
                     </motion.p>

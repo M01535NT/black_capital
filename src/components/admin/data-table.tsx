@@ -36,7 +36,7 @@ interface DataTableProps<TData> {
     filters?: FilterConfig[];
 }
 
-export function DataTable<TData extends Record<string, unknown>>({
+export function DataTable<TData extends object>({
     columns,
     data,
     searchPlaceholder = "Buscar...",
@@ -56,7 +56,7 @@ export function DataTable<TData extends Record<string, unknown>>({
             const q = globalSearch.toLowerCase();
             result = result.filter((row) => {
                 // Search through specified fields, or all string fields
-                const fields = searchFields || (Object.keys(row).filter(k => typeof row[k] === "string") as (keyof TData)[]);
+                const fields = searchFields || (Object.keys(row as any).filter((k: any) => typeof (row as any)[k] === "string") as (keyof TData)[]);
                 return fields.some((key) => {
                     const val = row[key];
                     return typeof val === "string" && val.toLowerCase().includes(q);

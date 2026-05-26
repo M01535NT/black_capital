@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Building2, Users, UserCircle } from "lucide-react";
+import { LayoutDashboard, Building2, Users, UserCircle, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 
@@ -12,6 +12,7 @@ const navItems = [
     { title: "Inventario", href: "/admin/properties", icon: Building2 },
     { title: "Agentes", href: "/admin/agents", icon: UserCircle },
     { title: "Leads B2B/B2C", href: "/admin/leads", icon: Users },
+    { title: "Configuración", href: "/admin/settings", icon: Settings },
 ];
 
 export function AdminSidebar() {
@@ -32,7 +33,6 @@ export function AdminSidebar() {
             }
         }
         fetchNewLeads();
-        // Poll every 30s
         const interval = setInterval(fetchNewLeads, 30000);
         return () => clearInterval(interval);
     }, []);
@@ -45,8 +45,8 @@ export function AdminSidebar() {
     return (
         <nav className="hidden border-r border-foreground/10 bg-card md:block w-64 h-full">
             <div className="flex h-14 items-center border-b border-foreground/10 px-4 lg:h-[60px] lg:px-6">
-                <Link href="/" className="font-display font-bold text-xl tracking-tight text-foreground">
-                    BLACK <span className="text-gold-500">CORP</span>
+                <Link href="/" className="font-display font-bold text-xl tracking-tight text-foreground uppercase">
+                    Black <span className="text-gold-500">Corp</span>
                 </Link>
             </div>
             <div className="flex-1 overflow-auto py-4">
@@ -59,11 +59,13 @@ export function AdminSidebar() {
                                 key={item.href}
                                 href={item.href}
                                 className={cn(
-                                    "flex items-center gap-3 rounded-lg px-3 py-2 text-foreground/70 transition-all hover:text-foreground mb-1",
-                                    active ? "bg-muted text-foreground font-bold" : ""
+                                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-foreground/70 transition-all hover:text-foreground mb-1 uppercase text-xs tracking-wider font-display",
+                                    active
+                                        ? "bg-gold-500/10 text-gold-500 font-bold border-l-2 border-gold-500"
+                                        : "hover:bg-muted/30"
                                 )}
                             >
-                                <item.icon className={cn("h-4 w-4", active ? "text-gold-500" : "")} />
+                                <item.icon className={cn("h-4 w-4", active ? "text-gold-500" : "text-foreground/50")} />
                                 <span className="flex-1">{item.title}</span>
                                 {showBadge && (
                                     <span className="bg-gold-500 text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">

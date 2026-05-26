@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, Eye, Edit, Copy } from "lucide-react";
+import { MoreHorizontal, Eye, Edit, Copy, Trash2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -13,6 +15,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { createClient } from "@/lib/supabase/client";
 
 export type PropertyRow = {
     id: string;
@@ -23,6 +26,37 @@ export type PropertyRow = {
     price: number;
     currency: string;
 };
+
+function DeleteButton({ propertyId }: { propertyId: string }) {
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
+    async function handleDelete() {
+        if (!window.confirm("¿Estás seguro de eliminar esta propiedad? Esta acción no se puede deshacer.")) return;
+        setLoading(true);
+        try {
+            const supabase = createClient();
+            const { error } = await supabase.from("properties").delete().eq("id", propertyId);
+            if (error) throw error;
+            router.refresh();
+        } catch (err) {
+            alert(err instanceof Error ? err.message : "Error al eliminar");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return (
+        <DropdownMenuItem
+            onClick={handleDelete}
+            disabled={loading}
+            className="text-red-400 focus:text-red-400 focus:bg-red-500/10"
+        >
+            {loading ? <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" /> : <Trash2 className="w-3.5 h-3.5 mr-2" />}
+            Eliminar
+        </DropdownMenuItem>
+    );
+}
 
 export const columns: ColumnDef<PropertyRow>[] = [
     {
@@ -46,8 +80,9 @@ export const columns: ColumnDef<PropertyRow>[] = [
                 Residencial: "bg-blue-500/10 text-blue-500 border-blue-500/20",
                 Comercial: "bg-gold-500/10 text-gold-500 border-gold-500/20",
                 Industrial: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
+                Habitacional: "bg-purple-500/10 text-purple-500 border-purple-500/20",
             };
-            return <Badge variant="outline" className={colorMap[use] || ""}>{use}</Badge>;
+            return <Badge variant="outline" className={colorMap[use] || "border-foreground/10"}>{use}</Badge>;
         },
     },
     {
@@ -62,10 +97,10 @@ export const columns: ColumnDef<PropertyRow>[] = [
             const currency = row.original.currency;
             const formatted = new Intl.NumberFormat("es-MX", {
                 style: "currency",
-                currency: currency,
+                currency,
             }).format(amount);
 
-            return <div className="text-right font-numerics font-bold">{formatted}</div>;
+            return <div className="text-right font-numerics font-bold text-gold-500">{formatted}</div>;
         },
     },
     {
@@ -74,13 +109,13 @@ export const columns: ColumnDef<PropertyRow>[] = [
         cell: ({ row }) => {
             const status = row.getValue("status") as string;
             const statusColors: Record<string, string> = {
-                Available: "bg-emerald-500/10 text-emerald-500",
-                Under_Offer: "bg-yellow-500/10 text-yellow-500",
-                Sold: "bg-red-500/10 text-red-500",
-                Rented: "bg-blue-500/10 text-blue-500",
+                Available: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
+                Under_Offer: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
+                Sold: "bg-red-500/10 text-red-500 border-red-500/20",
+                Rented: "bg-blue-500/10 text-blue-500 border-blue-500/20",
             };
             return (
-                <Badge variant="secondary" className={statusColors[status] || "bg-foreground/5"}>
+                <Badge variant="outline" className={statusColors[status] || "border-foreground/10"}>
                     {status === "Available" ? "Disponible"
                         : status === "Under_Offer" ? "Bajo Oferta"
                         : status === "Sold" ? "Vendido"
@@ -104,16 +139,16 @@ export const columns: ColumnDef<PropertyRow>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuLabel className="uppercase text-[10px] tracking-wider font-display">Acciones</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
                             <Link href={`/admin/properties/${property.id}`}>
-                                <Eye className="w-3.5 h-3.5 mr-2" />
+                                <Eye className="w-3.5 h-3.5 mr-2 text-gold-500" />
                                 Ver Detalle
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                             <Link href={`/admin/properties/${property.id}/edit`}>
-                                <Edit className="w-3.5 h-3.5 mr-2" />
+                                <Edit className="w-3.5 h-3.5 mr-2 text-gold-500" />
                                 Editar Propiedad
                             </Link>
                         </DropdownMenuItem>
@@ -124,6 +159,8 @@ export const columns: ColumnDef<PropertyRow>[] = [
                             <Copy className="w-3.5 h-3.5 mr-2" />
                             Copiar ID
                         </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DeleteButton propertyId={property.id} />
                     </DropdownMenuContent>
                 </DropdownMenu>
             );

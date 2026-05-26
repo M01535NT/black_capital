@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { FileText, FileCheck, FileSearch, Ruler, Lock } from "lucide-react";
+import { FileText, FileCheck, FileSearch, Ruler } from "lucide-react";
 import { GatedBrochure } from "@/components/public/gated-brochure";
 
 interface Document {
@@ -51,12 +50,12 @@ export function DocDownload({ documents, propertyId, propertyName }: DocDownload
 
     return (
         <div>
-            <h2 className="text-[1.125rem] font-semibold tracking-tight text-foreground mb-4">
+            <h2 className="section-heading text-[1.125rem] tracking-tight text-foreground mb-4">
                 Documentos Disponibles
             </h2>
             <p className="text-[0.8125rem] text-foreground/40 mb-6 leading-relaxed">
                 Para acceder a cualquier documento, comparte tus datos y te lo enviamos
-                directamente a tu correo electronico.
+                directamente a tu correo electrónico.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {documents.map((doc, i) => {
@@ -65,9 +64,9 @@ export function DocDownload({ documents, propertyId, propertyName }: DocDownload
                     return (
                         <div
                             key={i}
-                            className={`group flex items-center gap-4 p-4 rounded-2xl border border-foreground/5 bg-card hover:border-gold-500/20 transition-all duration-300`}
+                            className="group flex items-center gap-4 p-4 rounded-2xl border border-foreground/5 bg-card hover:border-gold-500/30 hover:shadow-[0_0_32px_-8px_rgba(212,175,55,0.12)] transition-all duration-300"
                         >
-                            <div className={`size-11 rounded-xl flex items-center justify-center shrink-0 border ${colorClasses}`}>
+                            <div className={`size-11 rounded-xl flex items-center justify-center shrink-0 border transition-colors duration-300 ${colorClasses}`}>
                                 <Icon className="size-5" />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -75,7 +74,7 @@ export function DocDownload({ documents, propertyId, propertyName }: DocDownload
                                     {doc.label}
                                 </p>
                                 <p className="text-[11px] text-foreground/40 mt-0.5">
-                                    PDF · Recibiras en tu correo
+                                    PDF · Recibirás en tu correo
                                 </p>
                             </div>
                             <GatedBrochure

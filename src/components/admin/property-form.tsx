@@ -31,6 +31,8 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2, UploadCloud, X, Plus } from "lucide-react";
 import { AgentSelect } from "./agent-select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 interface PdfEntry {
     file: File;
@@ -59,6 +61,8 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             price: 0,
             currency: "MXN",
             description: "",
+            address: "",
+            cover_image: "",
             status: "Available",
             agent_name: "",
             agent_phone: "",
@@ -495,6 +499,36 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         </FormItem>
                     )}
                 />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                        control={form.control}
+                        name="address"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Dirección</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Ej. Av. Paseo de la Reforma 222, Ciudad de México" value={field.value ?? ""} onChange={field.onChange} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="cover_image"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Imagen de Portada (URL)</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="https://..." value={field.value ?? ""} onChange={field.onChange} />
+                                </FormControl>
+                                <FormDescription>URL externa o deja en blanco para usar la primera imagen subida.</FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
