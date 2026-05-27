@@ -6,7 +6,7 @@ import { AUTH_COOKIE, isValidTokenFormat } from "@/lib/auth";
 const PUBLIC_ADMIN_PATHS = ["/admin/login", "/api/admin/login"];
 
 // API routes that are public (lead capture, brochure send)
-const PUBLIC_API_PATHS = ["/api/send-brochure", "/api/diag"];
+const PUBLIC_API_PATHS = ["/api/send-brochure"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
