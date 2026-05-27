@@ -177,26 +177,30 @@ export function LeadsPageClient({ leads, agents }: LeadsPageClientProps) {
     const supabase = createClient();
 
     const updateStatus = useCallback(async (id: string, status: string) => {
+        // Save original status for rollback
+        const originalStatus = data.find(l => l.id === id)?.status || "new";
         setData(prev => prev.map(l => l.id === id ? { ...l, status } : l));
         try {
             const { error: updErr } = await supabase.from("leads").update({ status }).eq("id", id);
             if (updErr) throw updErr;
         } catch (err) {
             console.error(err);
-            setData(prev => prev.map(l => l.id === id ? { ...l, status: leads.find(x => x.id === id)?.status || l.status } : l));
+            // Rollback using the snapshot we captured
+            setData(prev => prev.map(l => l.id === id ? { ...l, status: originalStatus } : l));
         }
-    }, [supabase, leads]);
+    }, [supabase, data]);
 
     const updateAgent = useCallback(async (id: string, agentId: string | null) => {
+        const originalAgentId = data.find(l => l.id === id)?.assigned_agent_id ?? null;
         setData(prev => prev.map(l => l.id === id ? { ...l, assigned_agent_id: agentId } : l));
         try {
             const { error: updErr } = await supabase.from("leads").update({ assigned_agent_id: agentId }).eq("id", id);
             if (updErr) throw updErr;
         } catch (err) {
             console.error(err);
-            setData(prev => prev.map(l => l.id === id ? { ...l, assigned_agent_id: leads.find(x => x.id === id)?.assigned_agent_id } : l));
+            setData(prev => prev.map(l => l.id === id ? { ...l, assigned_agent_id: originalAgentId } : l));
         }
-    }, [supabase, leads]);
+    }, [supabase, data]);
 
     const columns = useMemo<ColumnDef<Lead>[]>(() => [
         {

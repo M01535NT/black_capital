@@ -105,24 +105,53 @@ export async function POST(req: Request) {
             html,
         };
 
-        // Attach PDF if URL is accessible
+        // Attach PDF — only if URL is from our Supabase storage (SSRF prevention)
         if (pdfUrl) {
+            const allowedDomains = [
+                "supabase.co",
+                "tewfdfmicifpdecxcpfy.supabase.co",
+            ];
+            let pdfHost: string | null = null;
             try {
-                const pdfResponse = await fetch(pdfUrl, { signal: AbortSignal.timeout(10000) });
-                if (pdfResponse.ok) {
-                    const pdfBuffer = await pdfResponse.arrayBuffer();
-                    const pdfBase64 = Buffer.from(pdfBuffer).toString("base64");
-                    resendPayload.attachments = [{
-                        filename: `${docLabel.toLowerCase().replace(/\s+/g, "-")}-${property.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "")}.pdf`,
-                        content: pdfBase64,
-                    }];
+                pdfHost = new URL(pdfUrl).hostname;
+            } catch {
+                console.warn("[Resend] Invalid pdfUrl, skipping attachment");
+            }
+
+            const isAllowed = pdfHost && allowedDomains.some(d =>
+                pdfHost === d || pdfHost.endsWith("." + d)
+            );
+
+            if (!isAllowed) {
+                console.warn("[Resend] pdfUrl domain not allowed:", pdfHost);
+            } else {
+                try {
+                    const pdfResponse = await fetch(pdfUrl, { signal: AbortSignal.timeout(15000) });
+                    if (pdfResponse.ok) {
+                        const contentLength = Number(pdfResponse.headers.get("content-length") || "0");
+                        // Reject files larger than 10 MB
+                        if (contentLength > 10 * 1024 * 1024) {
+                            console.warn("[Resend] PDF too large, skipping attachment");
+                        } else {
+                            const pdfBuffer = await pdfResponse.arrayBuffer();
+                            // Double-check actual size
+                            if (pdfBuffer.byteLength <= 10 * 1024 * 1024) {
+                                const pdfBase64 = Buffer.from(pdfBuffer).toString("base64");
+                                resendPayload.attachments = [{
+                                    filename: `${docLabel.toLowerCase().replace(/\s+/g, "-")}-${property.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "")}.pdf`,
+                                    content: pdfBase64,
+                                }];
+                            }
+                        }
+                    }
+                } catch (attachErr) {
+                    console.warn("[Resend] Could not attach PDF, sending email with link only:", attachErr);
                 }
-            } catch (attachErr) {
-                console.warn("[Resend] Could not attach PDF, sending email with link only:", attachErr);
             }
         }
 
-        await fetch("https://api.resend.com/emails", {
+        // Verify Resend API response
+        const resendResponse = await fetch("https://api.resend.com/emails", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${resendApiKey}`,
@@ -130,6 +159,15 @@ export async function POST(req: Request) {
             },
             body: JSON.stringify(resendPayload),
         });
+
+        if (!resendResponse.ok) {
+            const resendBody = await resendResponse.text();
+            console.error("[Resend] API error:", resendResponse.status, resendBody);
+            return NextResponse.json(
+                { error: "No se pudo enviar el documento. Intenta nuevamente." },
+                { status: 502 }
+            );
+        }
 
         return NextResponse.json({ success: true, message: "Documento enviado correctamente" });
 

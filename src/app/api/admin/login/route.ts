@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { AUTH_COOKIE, deriveToken, timingSafeEqual } from "@/lib/auth";
 
-const ADMIN_AUTH_COOKIE = "bc_admin_session";
 const SESSION_DURATION_SECONDS = 60 * 60 * 8; // 8 horas
 
 export async function POST(request: Request) {
@@ -16,15 +16,18 @@ export async function POST(request: Request) {
       );
     }
 
-    if (password !== adminPassword) {
+    // Constant-time comparison for admin password
+    if (!timingSafeEqual(password || "", adminPassword)) {
       return NextResponse.json(
         { error: "Contraseña incorrecta" },
         { status: 401 }
       );
     }
 
+    // Set httpOnly cookie with derived token (not plain text password)
+    const token = await deriveToken(adminPassword);
     const cookieStore = await cookies();
-    cookieStore.set(ADMIN_AUTH_COOKIE, "authenticated", {
+    cookieStore.set(AUTH_COOKIE, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

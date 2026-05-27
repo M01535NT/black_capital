@@ -1,26 +1,47 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { AUTH_COOKIE, isValidTokenFormat } from "@/lib/auth";
 
-const ADMIN_AUTH_COOKIE = "bc_admin_session";
+// Paths that don't require auth
 const PUBLIC_ADMIN_PATHS = ["/admin/login", "/api/admin/login"];
+
+// API routes that are public (lead capture, brochure send)
+const PUBLIC_API_PATHS = ["/api/send-brochure"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (!pathname.startsWith("/admin")) {
+  // Only handle /admin and /api routes
+  const isAdmin = pathname.startsWith("/admin");
+  const isApi = pathname.startsWith("/api");
+
+  if (!isAdmin && !isApi) {
     return NextResponse.next();
   }
 
-  if (PUBLIC_ADMIN_PATHS.some((p) => pathname.startsWith(p))) {
-    const session = request.cookies.get(ADMIN_AUTH_COOKIE);
-    if (session?.value === "authenticated" && pathname === "/admin/login") {
+  // Allow public paths
+  if (PUBLIC_ADMIN_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"))) {
+    // Redirect already-logged-in users away from login page
+    const session = request.cookies.get(AUTH_COOKIE);
+    if (session?.value && isValidTokenFormat(session.value) && pathname === "/admin/login") {
       return NextResponse.redirect(new URL("/admin", request.url));
     }
     return NextResponse.next();
   }
 
-  const session = request.cookies.get(ADMIN_AUTH_COOKIE);
-  if (!session || session.value !== "authenticated") {
+  // Allow public API endpoints
+  if (PUBLIC_API_PATHS.some((p) => pathname.startsWith(p))) {
+    return NextResponse.next();
+  }
+
+  // Check auth for all other admin & API routes
+  const session = request.cookies.get(AUTH_COOKIE);
+  if (!session?.value || !isValidTokenFormat(session.value)) {
+    // For API routes, return 401 JSON
+    if (isApi) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+    // For admin pages, redirect to login
     const loginUrl = new URL("/admin/login", request.url);
     loginUrl.searchParams.set("from", pathname);
     return NextResponse.redirect(loginUrl);
@@ -30,5 +51,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/:path*"],
 };

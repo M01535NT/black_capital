@@ -25,16 +25,19 @@ function Counter({ from, to, duration = 2, suffix = "" }: { from: number; to: nu
         if (isInView) {
             hasAnimated.current = true;
             let startTime: number;
+            let rafHandle: number;
             const step = (timestamp: number) => {
                 if (!startTime) startTime = timestamp;
                 const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
                 setCount(Math.floor(progress * (to - from) + from));
                 if (progress < 1) {
-                    window.requestAnimationFrame(step);
+                    rafHandle = window.requestAnimationFrame(step);
                 }
             };
-            window.requestAnimationFrame(step);
-            return;
+            rafHandle = window.requestAnimationFrame(step);
+            return () => {
+                if (rafHandle) window.cancelAnimationFrame(rafHandle);
+            };
         }
 
         // Fallback: if after 3 seconds we still haven't animated, force final value

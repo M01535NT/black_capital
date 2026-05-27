@@ -55,10 +55,14 @@ export default async function AdminPropertyDetailPage({
         Rented: "bg-blue-500/10 text-blue-500 border-blue-500/20",
     };
 
-    // Documents
+    // Documents — validate each entry
     const documents: { label: string; url: string }[] = [];
     if (property.documents && Array.isArray(property.documents)) {
-        documents.push(...property.documents);
+        for (const d of property.documents) {
+            if (d && typeof d === "object" && d.url) {
+                documents.push({ label: d.label || "Documento", url: d.url });
+            }
+        }
     }
     if (property.brochure_path) {
         if (!documents.some(d => d.url === property.brochure_path)) {

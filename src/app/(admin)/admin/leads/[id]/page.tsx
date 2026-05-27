@@ -66,7 +66,7 @@ export default async function LeadDetailPage({
                         </Button>
                     </Link>
                     <div>
-                        <h2 className="card-title text-2xl text-foreground">{lead.name}</h2>
+                        <h2 className="card-title text-2xl text-foreground">{lead.full_name}</h2>
                         <p className="text-foreground/50 text-sm">
                             Registrado {new Date(lead.created_at).toLocaleDateString("es-MX", { dateStyle: "long" })}
                         </p>

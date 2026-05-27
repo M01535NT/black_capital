@@ -207,7 +207,12 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     propertyData = json.property;
                 }
             } catch (error) {
-                if (error instanceof TypeError && error.message === 'fetch failed') {
+                if (error instanceof TypeError && (
+                    error.message === 'fetch failed' ||
+                    error.message.includes('NetworkError') ||
+                    error.message.includes('Load failed') ||
+                    error.message.includes('network')
+                )) {
                     throw new Error('Error de conexión al guardar. Verifica tu internet y vuelve a intentar.');
                 }
                 throw new Error(`Error al ${isEditing ? 'actualizar' : 'crear'} propiedad: ${error instanceof Error ? error.message : 'Error desconocido'}`);
@@ -215,11 +220,12 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
 
             // Step 2: Upload documents (multiple PDFs)
             let documents: { label: string; url: string }[] = [];
+            let uploadWarnings: string[] = [];
             if (pdfEntries.length > 0 && propertyData) {
                 try {
                     documents = await uploadDocuments(propertyData.id);
                 } catch (error) {
-                    // Document upload error silently handled
+                    uploadWarnings.push(`Documentos: ${error instanceof Error ? error.message : 'falló la subida'}`);
                 }
             }
 
@@ -229,7 +235,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 try {
                     imageUrls = await uploadImages(propertyData.id);
                 } catch (error) {
-                    // Image upload error silently handled
+                    uploadWarnings.push(`Imágenes: ${error instanceof Error ? error.message : 'falló la subida'}`);
                 }
             }
 
@@ -251,15 +257,18 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         body: JSON.stringify(payload),
                     });
                     if (!updateRes.ok) {
-                        const errJson = await updateRes.json().catch(() => ({}));
-                        // File link error silently handled
+                        uploadWarnings.push('Los archivos se subieron pero no se pudieron vincular a la propiedad.');
                     }
                 } catch (error) {
-                    // File link error silently handled
+                    uploadWarnings.push(`Error al vincular archivos: ${error instanceof Error ? error.message : 'desconocido'}`);
                 }
             }
 
-            router.push("/admin/properties");
+            if (uploadWarnings.length > 0) {
+                alert(`Propiedad guardada, pero con advertencias:\n${uploadWarnings.join('\n')}`);
+            } else {
+                router.push("/admin/properties");
+            }
             router.refresh();
         } catch (error) {
             // Submit error silently handled
