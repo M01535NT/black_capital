@@ -3,11 +3,11 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Ruler, Building2, Calendar, ShieldCheck, MapPin, ArrowLeft, MessageCircle, Phone } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Ruler, Building2, Calendar, ShieldCheck, MapPin, ArrowLeft, MessageCircle, Mail, Phone, Download, FileText, Eye, Bed, Bath, Layers, Car, ArrowUpRight } from "lucide-react";
 import { ImageGallery } from "@/components/public/image-gallery";
 import { VideoEmbed } from "@/components/public/video-embed";
 import { TourEmbed } from "@/components/public/tour-embed";
-import { DocDownload } from "@/components/public/doc-download";
 import { GatedBrochure } from "@/components/public/gated-brochure";
 import { Breadcrumbs } from "@/components/public/breadcrumbs";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
@@ -59,19 +59,42 @@ export async function generateMetadata({
     }
 
     if (!property) {
-        return {
-            title: "Propiedad no encontrada | Black Corporativo",
-        };
+        return { title: "Propiedad no encontrada | Black Corporativo" };
     }
 
     return {
         title: `${property.title} | Black Corporativo`,
-        description: property.description || `Propiedad en venta: ${property.title}`,
-        openGraph: property.cover_image ? {
-            images: [{ url: property.cover_image }],
-        } : undefined,
+        description: (property.description || `Propiedad en venta: ${property.title}`).slice(0, 160),
+        openGraph: property.cover_image ? { images: [{ url: property.cover_image }] } : undefined,
     };
 }
+
+const STATUS_LABELS: Record<string, string> = {
+    Available: "Disponible",
+    Under_Offer: "Bajo Oferta",
+    Sold: "Vendido",
+    Rented: "Rentado",
+};
+
+const STATUS_COLORS: Record<string, string> = {
+    Available: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    Under_Offer: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+    Sold: "bg-red-500/10 text-red-400 border-red-500/20",
+    Rented: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+};
+
+// ── Icons for property attributes ──
+const attributeIcons: Record<string, React.ReactNode> = {
+    habitaciones: <Bed className="size-4" />,
+    dormitorios: <Bed className="size-4" />,
+    recamaras: <Bed className="size-4" />,
+    baños: <Bath className="size-4" />,
+    banos: <Bath className="size-4" />,
+    pisos: <Layers className="size-4" />,
+    niveles: <Layers className="size-4" />,
+    estacionamiento: <Car className="size-4" />,
+    cajones: <Car className="size-4" />,
+};
 
 export default async function PropertyDetailPage({
     params
@@ -81,7 +104,6 @@ export default async function PropertyDetailPage({
     const { slug } = await params;
     const supabase = await createClient();
 
-    // Try to find by slug first, then fallback to id (for backward compat)
     let propertyQuery = supabase
         .from("properties")
         .select("*")
@@ -90,7 +112,6 @@ export default async function PropertyDetailPage({
 
     let { data: property, error } = await propertyQuery;
 
-    // Fallback: if no slug match and the slug looks like a UUID, search by id
     if (!property && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug)) {
         const fallback = await supabase
             .from("properties")
@@ -101,16 +122,12 @@ export default async function PropertyDetailPage({
         error = fallback.error;
     }
 
-    if (error || !property) {
-        return notFound();
-    }
+    if (error || !property) return notFound();
 
-    // Hide test properties from public view
     const titleLower = (property.title || "").toLowerCase();
-    if (titleLower.includes("prueba") || titleLower.includes("test")) {
-        return notFound();
-    }
+    if (titleLower.includes("prueba") || titleLower.includes("test")) return notFound();
 
+    // ── Agents ──
     const { data: assignedAgents } = await supabase
         .from("property_agents")
         .select("agent_id")
@@ -127,7 +144,7 @@ export default async function PropertyDetailPage({
         if (agentData) agents = agentData;
     }
 
-    // Fetch similar properties
+    // ── Similar properties ──
     let similar: SimilarProperty[] = [];
     if (property.property_use) {
         const { data: similarData } = await supabase
@@ -143,398 +160,470 @@ export default async function PropertyDetailPage({
         if (similarData) similar = similarData;
     }
 
+    // ── Documents ──
+    const documents: { label: string; url: string }[] = [];
+    if (property.documents && Array.isArray(property.documents)) {
+        for (const d of property.documents) {
+            if (d && typeof d === "object" && d.url) {
+                documents.push({ label: d.label || "Documento", url: d.url });
+            }
+        }
+    }
+    if (property.brochure_path) {
+        const alreadyInDocs = documents.some(d => d.url === property.brochure_path);
+        if (!alreadyInDocs) documents.push({ label: "Brochure Ejecutivo", url: property.brochure_path });
+    }
+
     const formatPrice = (price: number, currency: string) => {
         return new Intl.NumberFormat("es-MX", { style: "currency", currency, maximumFractionDigits: 0 }).format(price);
     };
 
     const formatShortPrice = (price: number, currency: string) => {
-        if (price >= 1_000_000) {
-            return `$${(price / 1_000_000).toFixed(1)} M ${currency}`;
-        }
+        if (price >= 1_000_000) return `$${(price / 1_000_000).toFixed(1)} M ${currency}`;
         return `$${price.toLocaleString("es-MX")} ${currency}`;
     };
 
-    const allImages: string[] = [];
-    if (property.cover_image) allImages.push(property.cover_image);
-    if (property.images && Array.isArray(property.images)) {
-        for (const img of property.images) {
-            if (!allImages.includes(img)) allImages.push(img);
-        }
-    }
+    const hasMedia = (property.video_urls?.length > 0 || property.tour_embeds?.length > 0);
 
-    // Build documents list
-    const documents: { label: string; url: string }[] = [];
-    if (property.documents && Array.isArray(property.documents)) {
-        documents.push(...property.documents);
+    // ── Custom attributes with icons ──
+    const customAttrs: Record<string, string> = {};
+    if (property.custom_attributes && typeof property.custom_attributes === "object") {
+        Object.assign(customAttrs, property.custom_attributes);
     }
-    // Backward compat: old brochure_path as a doc if not already in documents
-    if (property.brochure_path) {
-        const alreadyInDocs = documents.some(d => d.url === property.brochure_path);
-        if (!alreadyInDocs) {
-            documents.push({ label: "Brochure Ejecutivo", url: property.brochure_path });
-        }
-    }
-
-    const statusLabels: Record<string, string> = {
-        Available: "Disponible",
-        Under_Offer: "Bajo Oferta",
-        Sold: "Vendido",
-        Rented: "Rentado",
-    };
-
-    const statusColors: Record<string, string> = {
-        Available: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-        Under_Offer: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
-        Sold: "bg-red-500/10 text-red-400 border-red-500/20",
-        Rented: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-    };
 
     return (
         <div className="w-full bg-background min-h-screen">
-            {/* ── Full-Bleed Image Gallery ── */}
-            <div className="w-full">
-                <ImageGallery
-                    images={property.images || []}
-                    title={property.title}
-                    coverImage={property.cover_image}
-                />
-            </div>
+            {/* ─── FULL-BLEED GALLERY ─── */}
+            <ImageGallery
+                images={property.images || []}
+                title={property.title}
+                coverImage={property.cover_image}
+            />
 
-            {/* ── Content: editorial centered ── */}
-            <div className="max-w-4xl mx-auto px-4 md:px-6">
-                {/* Breadcrumbs + Back */}
-                <div className="flex items-center justify-between pt-8 pb-4">
+            {/* ── Back navigation (desktop) ── */}
+            <div className="max-w-6xl mx-auto px-4 md:px-6 pt-6">
+                <div className="flex items-center justify-between">
                     <Breadcrumbs items={[
                         { label: "Inventario", href: "/inventario" },
                         { label: property.title },
                     ]} />
                     <Link
                         href="/inventario"
-                        className="hidden md:flex items-center gap-1.5 text-sm text-foreground/40 hover:text-gold-500 transition-colors"
+                        className="hidden md:inline-flex items-center gap-1.5 text-sm text-foreground/40 hover:text-gold-500 transition-colors shrink-0"
                     >
                         <ArrowLeft className="size-3.5" />
-                        Volver
+                        Volver al inventario
                     </Link>
                 </div>
+            </div>
 
-                {/* Badges row */}
-                <div className="flex flex-wrap items-center gap-2 mb-6">
-                    <Badge className="bg-gold-500 text-black font-semibold uppercase tracking-wider text-[11px]">
-                        {property.business_type}
-                    </Badge>
-                    <Badge variant="outline" className="uppercase tracking-wider text-[11px] border-foreground/15">
-                        {property.property_use}
-                    </Badge>
-                    <Badge variant="outline" className="uppercase tracking-wider text-[11px] border-foreground/15">
-                        {property.property_type}
-                    </Badge>
-                    {property.is_project && (
-                        <Badge className="bg-blue-600 text-white text-[11px] uppercase tracking-wider">Proyecto</Badge>
-                    )}
-                    <span className={`ml-auto text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${statusColors[property.status] || "text-foreground/50 border-foreground/15"}`}>
-                        {statusLabels[property.status] || property.status}
-                    </span>
-                </div>
+            {/* ─── MAIN LAYOUT: 2 columns ─── */}
+            <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-10">
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
 
-                {/* Title + Price */}
-                <h1 className="font-display text-[2rem] md:text-[2.75rem] font-semibold tracking-tight text-foreground leading-[1.08] mb-3">
-                    {property.title}
-                </h1>
-                {property.address && (
-                    <div className="flex items-center gap-1.5 text-foreground/40 text-sm mb-4">
-                        <MapPin className="size-3.5" />
-                        {property.address}
-                    </div>
-                )}
-                <p className="text-[1.75rem] md:text-[2.25rem] font-numerics font-semibold tracking-tight text-gold-500 mb-10">
-                    {formatPrice(property.price, property.currency)}
-                </p>
+                    {/* ═══════════════ COLUMNA PRINCIPAL ═══════════════ */}
+                    <div className="flex-1 min-w-0 space-y-8">
 
-                <Separator className="bg-foreground/5" />
-
-                {/* ── Premium Metrics Row ── */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 py-8">
-                    {property.m2_terrain ? (
-                        <div className="glass rounded-2xl p-4 flex flex-col items-center text-center gap-2">
-                            <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0 border border-gold-500/20">
-                                <Ruler className="size-4 text-gold-500" />
-                            </div>
-                            <div>
-                                <p className="text-[11px] uppercase tracking-widest text-foreground/40 font-semibold">Terreno</p>
-                                <p className="font-numerics font-semibold text-foreground">{property.m2_terrain.toLocaleString()} m²</p>
-                            </div>
+                        {/* Badges row */}
+                        <div className="flex flex-wrap items-center gap-2">
+                            <Badge className="bg-gold-500 text-black font-semibold uppercase tracking-wider text-[10px] px-2.5 py-0.5">
+                                {property.business_type}
+                            </Badge>
+                            <Badge variant="outline" className="uppercase tracking-wider text-[10px] border-foreground/15 px-2.5 py-0.5">
+                                {property.property_use}
+                            </Badge>
+                            <Badge variant="outline" className="uppercase tracking-wider text-[10px] border-foreground/15 px-2.5 py-0.5">
+                                {property.property_type}
+                            </Badge>
+                            {property.is_project && (
+                                <Badge className="bg-blue-600 text-white text-[10px] uppercase tracking-wider px-2.5 py-0.5">
+                                    Proyecto
+                                </Badge>
+                            )}
+                            <span className={`ml-auto text-[10px] font-semibold px-2.5 py-0.5 rounded-full border ${STATUS_COLORS[property.status] || "text-foreground/50 border-foreground/15"}`}>
+                                {STATUS_LABELS[property.status] || property.status}
+                            </span>
                         </div>
-                    ) : null}
-                    {property.m2_construction ? (
-                        <div className="glass rounded-2xl p-4 flex flex-col items-center text-center gap-2">
-                            <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0 border border-gold-500/20">
-                                <Building2 className="size-4 text-gold-500" />
+
+                        {/* Title */}
+                        <h1 className="font-display text-[1.75rem] md:text-[2.25rem] lg:text-[2.5rem] font-semibold uppercase tracking-wider text-foreground leading-[1.08]">
+                            {property.title}
+                        </h1>
+
+                        {/* Address */}
+                        {property.address && (
+                            <div className="flex items-start gap-2 text-foreground/40 text-sm -mt-4">
+                                <MapPin className="size-4 mt-0.5 shrink-0" />
+                                <span>{property.address}</span>
                             </div>
-                            <div>
-                                <p className="text-[11px] uppercase tracking-widest text-foreground/40 font-semibold">Construcción</p>
-                                <p className="font-numerics font-semibold text-foreground">{property.m2_construction.toLocaleString()} m²</p>
-                            </div>
-                        </div>
-                    ) : null}
-                    <div className="glass rounded-2xl p-4 flex flex-col items-center text-center gap-2">
-                        <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0 border border-gold-500/20">
-                            <Calendar className="size-4 text-gold-500" />
-                        </div>
-                        <div>
-                            <p className="text-[11px] uppercase tracking-widest text-foreground/40 font-semibold">Publicado</p>
-                            <p className="font-numerics font-semibold text-foreground">
-                                {new Date(property.created_at).toLocaleDateString("es-MX", { month: "short", year: "numeric" })}
+                        )}
+
+                        {/* Price — prominent */}
+                        <div className="flex items-baseline gap-3">
+                            <p className="text-[2rem] md:text-[2.5rem] font-numerics font-semibold tracking-tight text-gold-500">
+                                {formatPrice(property.price, property.currency)}
                             </p>
+                            {property.price_mxn && property.currency !== "MXN" && (
+                                <span className="text-sm text-foreground/40">
+                                    ≈ {new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(property.price_mxn)}
+                                </span>
+                            )}
                         </div>
-                    </div>
-                    {property.property_type && (
-                        <div className="glass rounded-2xl p-4 flex flex-col items-center text-center gap-2">
-                            <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0 border border-gold-500/20">
-                                <ShieldCheck className="size-4 text-gold-500" />
-                            </div>
-                            <div>
-                                <p className="text-[11px] uppercase tracking-widest text-foreground/40 font-semibold">Tipo</p>
-                                <p className="font-numerics font-semibold text-foreground">{property.property_type}</p>
-                            </div>
-                        </div>
-                    )}
-                </div>
 
-                {/* ── Custom Attributes ── */}
-                {property.custom_attributes && typeof property.custom_attributes === "object" && Object.keys(property.custom_attributes as Record<string, string>).length > 0 && (
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pb-8">
-                        {Object.entries(property.custom_attributes as Record<string, string>).map(([key, value]) => (
-                            <div key={key} className="glass rounded-2xl p-4 flex flex-col items-center text-center gap-2">
-                                <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0 border border-gold-500/20">
-                                    <ShieldCheck className="size-4 text-gold-500" />
-                                </div>
-                                <div>
-                                    <p className="text-[11px] uppercase tracking-widest text-foreground/40 font-semibold">{key}</p>
-                                    <p className="font-numerics font-semibold text-foreground">{value}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                <Separator className="bg-foreground/5" />
-
-                {/* ── Description ── */}
-                <div className="py-10">
-                    <h2 className="section-heading text-[1.25rem] tracking-tight text-foreground mb-5">
-                        Descripción
-                    </h2>
-                    <div className="text-[0.9375rem] text-foreground/60 leading-relaxed whitespace-pre-wrap">
-                        {property.description}
-                    </div>
-                </div>
-
-                {/* ── Video + Tour ── */}
-                {(property.video_urls?.length > 0 || property.tour_embeds?.length > 0) && (
-                    <>
                         <Separator className="bg-foreground/5" />
-                        <div className="py-10 space-y-10">
-                            <VideoEmbed urls={property.video_urls || []} />
-                            <TourEmbed urls={property.tour_embeds || []} />
-                        </div>
-                    </>
-                )}
 
-                {/* ── Agents ── */}
-                {agents.length > 0 && (
-                    <>
-                        <Separator className="bg-foreground/5" />
-                        <div className="py-10">
-                            <h2 className="section-heading text-[1.25rem] tracking-tight text-foreground mb-6">
-                                {agents.length === 1 ? "Asesor a Cargo" : "Asesores a Cargo"}
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {agents.map((agent) => (
-                                    <div
-                                        key={agent.id}
-                                        className="flex items-center gap-5 p-5 rounded-2xl border border-foreground/5 bg-card hover:border-gold-500/20 transition-all duration-300"
-                                    >
-                                        <div className="size-16 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 font-semibold shrink-0 border border-gold-500/20 overflow-hidden text-lg">
-                                            {agent.photo_url ? (
-                                                <img src={agent.photo_url} alt={agent.full_name} className="size-full object-cover" />
-                                            ) : (
-                                                agent.full_name.charAt(0).toUpperCase()
-                                            )}
-                                        </div>
-                                        <div className="min-w-0 flex-1">
-                                            <p className="font-semibold text-foreground text-base truncate">{agent.full_name}</p>
-                                            {agent.license_number && (
-                                                <p className="text-[11px] text-foreground/40">Céd. {agent.license_number}</p>
-                                            )}
-                                            <div className="flex items-center gap-3 mt-2.5">
-                                                {agent.phone && (
-                                                    <a
-                                                        href={`https://wa.me/${agent.phone.replace(/[^0-9]/g, "")}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold hover:bg-emerald-500/20 transition-colors"
-                                                    >
-                                                        <MessageCircle className="size-3" />
-                                                        WhatsApp
-                                                    </a>
-                                                )}
-                                                {agent.email && (
-                                                    <a
-                                                        href={`mailto:${agent.email}`}
-                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-foreground/5 text-foreground/50 border border-foreground/10 text-xs font-medium hover:text-foreground/70 hover:border-foreground/20 transition-colors"
-                                                    >
-                                                        <Phone className="size-3" />
-                                                        Email
-                                                    </a>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </>
-                )}
-
-                {/* ── Map ── */}
-                {property.address && (
-                    <>
-                        <Separator className="bg-foreground/5" />
-                        <div className="py-10">
-                            <h2 className="section-heading text-[1.25rem] tracking-tight text-foreground mb-4">
-                                Ubicación
-                            </h2>
-                            <p className="text-sm text-foreground/50 mb-4">{property.address}</p>
-                            <div className="rounded-2xl overflow-hidden border border-foreground/5 aspect-[16/7] md:aspect-[21/9] bg-foreground/[0.02]">
-                                <iframe
-                                    title={`Mapa de ${property.title}`}
-                                    width="100%"
-                                    height="100%"
-                                    loading="lazy"
-                                    style={{ border: 0 }}
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(property.address)}&output=embed&z=15`}
-                                    allowFullScreen
+                        {/* ── Premium Metrics ── */}
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                            {property.m2_terrain ? (
+                                <MetricCard icon={<Ruler className="size-4 text-gold-500" />} label="Terreno" value={`${property.m2_terrain.toLocaleString()} m²`} />
+                            ) : null}
+                            {property.m2_construction ? (
+                                <MetricCard icon={<Building2 className="size-4 text-gold-500" />} label="Construcción" value={`${property.m2_construction.toLocaleString()} m²`} />
+                            ) : null}
+                            {Object.entries(customAttrs).map(([key, value]) => (
+                                <MetricCard
+                                    key={key}
+                                    icon={attributeIcons[key.toLowerCase()] || <ShieldCheck className="size-4 text-gold-500" />}
+                                    label={key.charAt(0).toUpperCase() + key.slice(1)}
+                                    value={value}
                                 />
-                            </div>
-                        </div>
-                    </>
-                )}
-
-                {/* ── Documents (gated) ── */}
-                {documents.length > 0 && (
-                    <>
-                        <Separator className="bg-foreground/5" />
-                        <div className="py-10">
-                            <DocDownload
-                                documents={documents}
-                                propertyId={property.id}
-                                propertyName={property.title}
+                            ))}
+                            <MetricCard
+                                icon={<Calendar className="size-4 text-gold-500" />}
+                                label="Publicado"
+                                value={new Date(property.created_at).toLocaleDateString("es-MX", { month: "short", year: "numeric" })}
                             />
-                        </div>
-                    </>
-                )}
-
-                {/* ── Similar Properties ── */}
-                {similar.length > 0 && (
-                    <>
-                        <Separator className="bg-foreground/5" />
-                        <div className="py-10">
-                            <h2 className="section-heading text-[1.25rem] tracking-tight text-foreground mb-6">
-                                Propiedades Similares
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                {similar.map((sp) => (
-                                    <Link
-                                        key={sp.id}
-                                        href={`/inventario/${sp.slug || sp.id}`}
-                                        className="group block bg-card border border-foreground/5 rounded-2xl overflow-hidden hover:border-gold-500/30 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.12)] transition-all duration-500"
-                                    >
-                                        <div className="aspect-[4/3] relative overflow-hidden bg-foreground/[0.03]">
-                                            {sp.cover_image ? (
-                                                <img
-                                                    src={sp.cover_image}
-                                                    alt={sp.title}
-                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                                    loading="lazy"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center">
-                                                    <span className="text-foreground/15 text-sm font-medium">Sin imagen</span>
-                                                </div>
-                                            )}
-                                            <div className="absolute top-3 left-3 flex gap-2">
-                                                <span className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider bg-gold-500 text-black rounded-full">
-                                                    {sp.business_type}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="p-4">
-                                            <h3 className="font-semibold text-sm leading-snug line-clamp-2 group-hover:text-gold-500 transition-colors mb-2">
-                                                {sp.title}
-                                            </h3>
-                                            <div className="flex items-center justify-between gap-2">
-                                                <span className="text-[11px] text-foreground/40 font-medium uppercase tracking-wider">
-                                                    {sp.m2_construction ? `${sp.m2_construction.toLocaleString()} m²` : ""}
-                                                </span>
-                                                <span className="text-sm font-semibold font-numerics text-gold-500 whitespace-nowrap">
-                                                    {formatShortPrice(sp.price, sp.currency)}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                ))}
-                            </div>
-                        </div>
-                    </>
-                )}
-
-                {/* ── CTA Section ── */}
-                <Separator className="bg-foreground/5" />
-                <div className="py-10">
-                    <div className="bg-card border border-foreground/5 rounded-2xl p-8 md:p-12 text-center relative overflow-hidden">
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--color-gold-500)/0.06,_transparent_70%)]" />
-                        <div className="relative z-10">
-                            <h2 className="section-heading text-[1.5rem] md:text-[1.75rem] tracking-tight text-foreground mb-3">
-                                ¿Te interesa esta propiedad?
-                            </h2>
-                            <p className="text-foreground/50 text-sm md:text-base mb-8 max-w-lg mx-auto leading-relaxed">
-                                Agenda una visita privada o descarga el brochure ejecutivo con análisis financiero detallado, comparables de mercado y proyección de rendimiento.
-                            </p>
-                            <div className="max-w-sm mx-auto">
-                                <GatedBrochure
-                                    propertyId={property.id}
-                                    propertyName={property.title}
-                                    pdfUrl={property.brochure_path || null}
+                            {property.property_type && (
+                                <MetricCard
+                                    icon={<ShieldCheck className="size-4 text-gold-500" />}
+                                    label="Tipo"
+                                    value={property.property_type}
                                 />
+                            )}
+                        </div>
+
+                        <Separator className="bg-foreground/5" />
+
+                        {/* ── Description ── */}
+                        {property.description && (
+                            <section>
+                                <h2 className="font-display text-lg font-semibold uppercase tracking-wider text-foreground mb-4">
+                                    Descripción
+                                </h2>
+                                <div className="text-[0.9375rem] text-foreground/60 leading-relaxed whitespace-pre-wrap space-y-4">
+                                    {property.description}
+                                </div>
+                            </section>
+                        )}
+
+                        {/* ── Video + Tour ── */}
+                        {hasMedia && (
+                            <>
+                                <Separator className="bg-foreground/5" />
+                                <div className="space-y-8">
+                                    <VideoEmbed urls={property.video_urls || []} />
+                                    <TourEmbed urls={property.tour_embeds || []} />
+                                </div>
+                            </>
+                        )}
+
+                        {/* ── Map ── */}
+                        {property.address && (
+                            <>
+                                <Separator className="bg-foreground/5" />
+                                <section>
+                                    <h2 className="font-display text-lg font-semibold uppercase tracking-wider text-foreground mb-4">
+                                        Ubicación
+                                    </h2>
+                                    <div className="rounded-2xl overflow-hidden border border-foreground/5 aspect-[16/7] md:aspect-[21/9] bg-foreground/[0.02]">
+                                        <iframe
+                                            title={`Mapa de ${property.title}`}
+                                            width="100%"
+                                            height="100%"
+                                            loading="lazy"
+                                            style={{ border: 0 }}
+                                            referrerPolicy="no-referrer-when-downgrade"
+                                            src={`https://maps.google.com/maps?q=${encodeURIComponent(property.address)}&output=embed&z=15`}
+                                            allowFullScreen
+                                        />
+                                    </div>
+                                </section>
+                            </>
+                        )}
+
+                        {/* ── Similar Properties ── */}
+                        {similar.length > 0 && (
+                            <>
+                                <Separator className="bg-foreground/5" />
+                                <section>
+                                    <h2 className="font-display text-lg font-semibold uppercase tracking-wider text-foreground mb-5">
+                                        Propiedades Similares
+                                    </h2>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {similar.map((sp) => (
+                                            <Link
+                                                key={sp.id}
+                                                href={`/inventario/${sp.slug || sp.id}`}
+                                                className="group block bg-card border border-foreground/5 rounded-2xl overflow-hidden hover:border-gold-500/30 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.12)] transition-all duration-500"
+                                            >
+                                                <div className="aspect-[4/3] relative overflow-hidden bg-foreground/[0.03]">
+                                                    {sp.cover_image ? (
+                                                        <img
+                                                            src={sp.cover_image}
+                                                            alt={sp.title}
+                                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                            loading="lazy"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-full h-full flex items-center justify-center">
+                                                            <span className="text-foreground/15 text-xs font-medium uppercase tracking-wider">Sin imagen</span>
+                                                        </div>
+                                                    )}
+                                                    <div className="absolute top-3 left-3">
+                                                        <span className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider bg-gold-500 text-black rounded-full">
+                                                            {sp.business_type}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div className="p-4">
+                                                    <h3 className="font-display font-semibold text-sm uppercase tracking-wider leading-snug line-clamp-2 group-hover:text-gold-500 transition-colors mb-2">
+                                                        {sp.title}
+                                                    </h3>
+                                                    <div className="flex items-center justify-between gap-2">
+                                                        <span className="text-[11px] text-foreground/40 font-medium uppercase tracking-wider">
+                                                            {sp.m2_construction ? `${sp.m2_construction.toLocaleString()} m²` : ""}
+                                                        </span>
+                                                        <span className="text-sm font-semibold font-numerics text-gold-500 whitespace-nowrap">
+                                                            {formatShortPrice(sp.price, sp.currency)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </section>
+                            </>
+                        )}
+                    </div>
+
+                    {/* ═══════════════ SIDEBAR ═══════════════ */}
+                    <div className="lg:w-[340px] shrink-0">
+                        <div className="lg:sticky lg:top-24 space-y-5">
+
+                            {/* ── Agent Card ── */}
+                            {agents.length > 0 && (
+                                <div className="bg-card border border-foreground/10 rounded-2xl p-5 space-y-4">
+                                    <h3 className="font-display text-xs font-bold uppercase tracking-[0.15em] text-foreground/40">
+                                        {agents.length === 1 ? "Asesor a Cargo" : "Asesores a Cargo"}
+                                    </h3>
+                                    {agents.map((agent) => (
+                                        <div key={agent.id} className="flex items-start gap-4">
+                                            <div className="size-14 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 font-semibold shrink-0 border border-gold-500/20 overflow-hidden">
+                                                {agent.photo_url ? (
+                                                    <img src={agent.photo_url} alt={agent.full_name} className="size-full object-cover" />
+                                                ) : (
+                                                    <span className="text-lg">{agent.full_name.charAt(0).toUpperCase()}</span>
+                                                )}
+                                            </div>
+                                            <div className="min-w-0 flex-1 space-y-1.5">
+                                                <p className="font-semibold text-foreground text-sm leading-tight">{agent.full_name}</p>
+                                                {agent.license_number && (
+                                                    <p className="text-[11px] text-foreground/40 uppercase tracking-wider">Céd. {agent.license_number}</p>
+                                                )}
+                                                <div className="flex flex-col gap-1.5 pt-1">
+                                                    {agent.phone && (
+                                                        <a
+                                                            href={`https://wa.me/${agent.phone.replace(/[^0-9]/g, "")}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold hover:bg-emerald-500/20 transition-colors w-fit"
+                                                        >
+                                                            <MessageCircle className="size-3" />
+                                                            WhatsApp
+                                                        </a>
+                                                    )}
+                                                    {agent.email && (
+                                                        <a
+                                                            href={`mailto:${agent.email}`}
+                                                            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-foreground/5 text-foreground/50 border border-foreground/10 text-xs font-medium hover:text-foreground/70 hover:border-foreground/20 transition-colors w-fit"
+                                                        >
+                                                            <Mail className="size-3" />
+                                                            Email
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* ── Property Specs Card ── */}
+                            <div className="bg-card border border-foreground/10 rounded-2xl p-5 space-y-3">
+                                <h3 className="font-display text-xs font-bold uppercase tracking-[0.15em] text-foreground/40">
+                                    Ficha Técnica
+                                </h3>
+                                <div className="space-y-2.5">
+                                    {property.m2_terrain && (
+                                        <SpecRow label="Terreno" value={`${property.m2_terrain.toLocaleString()} m²`} />
+                                    )}
+                                    {property.m2_construction && (
+                                        <SpecRow label="Construcción" value={`${property.m2_construction.toLocaleString()} m²`} />
+                                    )}
+                                    {property.property_type && (
+                                        <SpecRow label="Tipo" value={property.property_type} />
+                                    )}
+                                    {property.business_type && (
+                                        <SpecRow label="Operación" value={property.business_type} />
+                                    )}
+                                    {property.property_use && (
+                                        <SpecRow label="Uso" value={property.property_use} />
+                                    )}
+                                    <SpecRow label="ID" value={property.id?.slice(0, 8) || "—"} mono />
+                                </div>
                             </div>
-                            <p className="text-[11px] text-foreground/30 mt-6">
-                                Operación gestionada como <strong className="text-foreground/50">{property.business_type}</strong> — Black Corporativo
-                            </p>
+
+                            {/* ── Documents ── */}
+                            {documents.length > 0 && (
+                                <div className="bg-card border border-foreground/10 rounded-2xl p-5 space-y-4">
+                                    <h3 className="font-display text-xs font-bold uppercase tracking-[0.15em] text-foreground/40">
+                                        Documentos
+                                    </h3>
+                                    <div className="space-y-2">
+                                        {documents.map((doc, i) => (
+                                            <a
+                                                key={i}
+                                                href={doc.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-3 p-3 rounded-xl border border-foreground/5 hover:border-gold-500/20 hover:bg-gold-500/[0.03] transition-all group"
+                                            >
+                                                <div className="size-9 rounded-lg bg-gold-500/10 flex items-center justify-center shrink-0 border border-gold-500/20">
+                                                    <FileText className="size-4 text-gold-500" />
+                                                </div>
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="text-sm font-medium text-foreground truncate group-hover:text-gold-500 transition-colors">
+                                                        {doc.label}
+                                                    </p>
+                                                    <p className="text-[11px] text-foreground/40 uppercase tracking-wider">PDF</p>
+                                                </div>
+                                                <ArrowUpRight className="size-3.5 text-foreground/30 group-hover:text-gold-500 transition-colors shrink-0" />
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* ── Contact CTA ── */}
+                            <div className="bg-card border border-foreground/10 rounded-2xl p-5 space-y-4 relative overflow-hidden">
+                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--color-gold-500)/0.04,_transparent_60%)]" />
+                                <div className="relative z-10 space-y-4">
+                                    <h3 className="font-display text-xs font-bold uppercase tracking-[0.15em] text-foreground/40">
+                                        ¿Te interesa?
+                                    </h3>
+                                    <p className="text-sm text-foreground/50 leading-relaxed">
+                                        Solicita información detallada o agenda una visita.
+                                    </p>
+                                    <div className="space-y-2">
+                                        {agents.length > 0 && agents[0]?.phone ? (
+                                            <a
+                                                href={`https://wa.me/${agents[0].phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hola, me interesa la propiedad: ${property.title}`)}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center justify-center gap-2 w-full py-3 rounded-full bg-gold-500 text-black font-semibold text-sm hover:bg-gold-400 transition-colors shadow-lg shadow-gold-500/25"
+                                            >
+                                                <MessageCircle className="size-4" />
+                                                Contactar por WhatsApp
+                                            </a>
+                                        ) : (
+                                            <a
+                                                href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(`Hola, me interesa la propiedad: ${property.title}`)}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center justify-center gap-2 w-full py-3 rounded-full bg-gold-500 text-black font-semibold text-sm hover:bg-gold-400 transition-colors shadow-lg shadow-gold-500/25"
+                                            >
+                                                <MessageCircle className="size-4" />
+                                                Contactar por WhatsApp
+                                            </a>
+                                        )}
+                                        {property.brochure_path && (
+                                            <GatedBrochure
+                                                propertyId={property.id}
+                                                propertyName={property.title}
+                                                pdfUrl={property.brochure_path}
+                                                label="Descargar Brochure Ejecutivo"
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-
-                {/* Spacer */}
-                <div className="h-8 md:h-16" />
             </div>
 
             {/* ── Mobile Sticky CTA ── */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-xl border-t border-foreground/10 p-4 flex items-center gap-3 shadow-[0_-8px_32px_rgba(0,0,0,0.4)]">
-                <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-foreground truncate">{property.title}</p>
-                    <p className="text-gold-500 font-numerics font-semibold text-sm">{formatShortPrice(property.price, property.currency)}</p>
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 p-3 bg-background/95 backdrop-blur-xl border-t border-foreground/10">
+                <div className="flex items-center gap-3">
+                    <div className="flex-1 min-w-0">
+                        <p className="font-numerics font-semibold text-gold-500 text-lg">
+                            {formatPrice(property.price, property.currency)}
+                        </p>
+                    </div>
+                    {agents.length > 0 && agents[0]?.phone ? (
+                        <a
+                            href={`https://wa.me/${agents[0].phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hola, me interesa: ${property.title}`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-5 py-3 rounded-full bg-gold-500 text-black font-semibold text-sm hover:bg-gold-400 transition-colors shrink-0 shadow-lg shadow-gold-500/25"
+                        >
+                            <MessageCircle className="size-4" />
+                            Contactar
+                        </a>
+                    ) : (
+                        <a
+                            href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(`Hola, me interesa: ${property.title}`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-5 py-3 rounded-full bg-gold-500 text-black font-semibold text-sm hover:bg-gold-400 transition-colors shrink-0 shadow-lg shadow-gold-500/25"
+                        >
+                            <MessageCircle className="size-4" />
+                            Contactar
+                        </a>
+                    )}
                 </div>
-                <a
-                    href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(`Hola, me interesa la propiedad: ${property.title}`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="shrink-0 px-6 py-3 bg-gold-500 text-black rounded-full text-sm font-bold hover:bg-gold-400 transition-colors flex items-center gap-2 shadow-lg shadow-gold-500/25"
-                >
-                    <MessageCircle className="size-4" />
-                    Contactar
-                </a>
             </div>
+
+            {/* Spacer for sticky mobile CTA */}
+            <div className="lg:hidden h-20" />
+        </div>
+    );
+}
+
+// ── Helper Components ──
+
+function MetricCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+    return (
+        <div className="flex items-center gap-3 p-4 rounded-2xl bg-card border border-foreground/5 hover:border-gold-500/15 transition-all duration-300">
+            <div className="size-10 rounded-full bg-gold-500/10 flex items-center justify-center shrink-0 border border-gold-500/20">
+                {icon}
+            </div>
+            <div className="min-w-0">
+                <p className="text-[10px] uppercase tracking-[0.12em] text-foreground/40 font-semibold">{label}</p>
+                <p className="font-numerics font-semibold text-foreground text-sm">{value}</p>
+            </div>
+        </div>
+    );
+}
+
+function SpecRow({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+    return (
+        <div className="flex items-center justify-between gap-3">
+            <span className="text-xs text-foreground/40 uppercase tracking-wider">{label}</span>
+            <span className={`text-sm font-medium text-foreground text-right ${mono ? "font-mono text-xs" : ""}`}>
+                {value}
+            </span>
         </div>
     );
 }
