@@ -31,15 +31,19 @@ export function AgentForm({ initialData }: AgentFormProps) {
 
     const form = useForm<AgentFormValues>({
         resolver: zodResolver(agentSchema),
-        defaultValues: initialData || {
-            full_name: "",
-            email: "",
-            phone: "",
-            photo_url: "",
-            license_number: "",
-            bio: "",
-            is_active: true,
-        },
+        defaultValues: (() => {
+            if (!initialData) return {
+                full_name: "",
+                email: "",
+                phone: "",
+                photo_url: "",
+                license_number: "",
+                bio: "",
+                is_active: true,
+            };
+            const { id, ...rest } = initialData;
+            return rest;
+        })(),
     });
 
     async function onSubmit(data: AgentFormValues) {

@@ -63,6 +63,14 @@ async function writeSettings(settings: AppSettings) {
 
 export async function GET() {
   try {
+    // Auth check
+    const { cookies } = await import("next/headers");
+    const cookieStore = await cookies();
+    const session = cookieStore.get("bc_admin_session");
+    if (!session?.value || !(await validateSessionToken(session.value))) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+
     const settings = await readSettings();
     return NextResponse.json(settings);
   } catch (err) {

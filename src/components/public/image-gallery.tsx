@@ -79,6 +79,19 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
         return () => window.removeEventListener("keydown", handleKey);
     }, [lightboxOpen, next, prev, closeLightbox]);
 
+    // Cleanup body overflow on unmount if lightbox was open
+    useEffect(() => {
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, []);
+
+    // Reset state when props change
+    useEffect(() => {
+        setIsLoaded(new Array(allImages.length).fill(false));
+        setActiveIndex(0);
+    }, [images, coverImage]);
+
     // Touch handlers
     const handleTouchStart = (e: React.TouchEvent) => {
         touchStartX.current = e.touches[0].clientX;

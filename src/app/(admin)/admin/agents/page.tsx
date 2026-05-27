@@ -1,4 +1,5 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdminSession } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { UserPlus, Mail, Phone, Shield, ChevronRight, Building2, Users, BarChart3, Edit, Eye } from "lucide-react";
@@ -7,7 +8,8 @@ import Link from "next/link";
 export const revalidate = 0;
 
 export default async function AgentsPage() {
-    const supabase = await createClient();
+    await requireAdminSession();
+    const supabase = createAdminClient();
 
     const { data: agents, error } = await supabase
         .from("agents")
@@ -89,15 +91,10 @@ export default async function AgentsPage() {
                                 key={agent.id}
                                 className="group bg-card border border-foreground/10 rounded-2xl p-5 hover:border-gold-500/30 hover:shadow-lg hover:shadow-gold-500/5 transition-all duration-300 flex flex-col"
                             >
-                                {/* Photo / Avatar */}
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-14 h-14 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 text-xl font-bold shrink-0 border-2 border-gold-500/20 group-hover:border-gold-500/50 transition-colors overflow-hidden">
                                         {agent.photo_url ? (
-                                            <img
-                                                src={agent.photo_url}
-                                                alt={agent.full_name}
-                                                className="w-full h-full object-cover"
-                                            />
+                                            <img src={agent.photo_url} alt={agent.full_name} className="w-full h-full object-cover" />
                                         ) : (
                                             agent.full_name.charAt(0).toUpperCase()
                                         )}
@@ -108,14 +105,11 @@ export default async function AgentsPage() {
                                         </Link>
                                         {agent.license_number && (
                                             <p className="text-xs text-foreground/50 flex items-center gap-1 mt-0.5">
-                                                <Shield className="w-3 h-3" />
-                                                Céd. {agent.license_number}
+                                                <Shield className="w-3 h-3" /> Céd. {agent.license_number}
                                             </p>
                                         )}
                                     </div>
                                 </div>
-
-                                {/* Contact Info */}
                                 <div className="space-y-1.5 mb-4">
                                     {agent.email && (
                                         <div className="flex items-center gap-2 text-xs text-foreground/60 truncate">
@@ -130,8 +124,6 @@ export default async function AgentsPage() {
                                         </div>
                                     )}
                                 </div>
-
-                                {/* Metrics */}
                                 <div className="grid grid-cols-2 gap-2 mb-4">
                                     <div className="bg-muted/20 rounded-lg p-2 text-center border border-foreground/5">
                                         <p className="text-lg font-numerics font-bold text-gold-500">{propsCount}</p>
@@ -142,8 +134,6 @@ export default async function AgentsPage() {
                                         <p className="text-[10px] text-foreground/50 uppercase tracking-wider font-display">Cierres</p>
                                     </div>
                                 </div>
-
-                                {/* Status + Quick Actions */}
                                 <div className="flex items-center justify-between pt-3 border-t border-foreground/5 mt-auto">
                                     <div className="flex items-center gap-2">
                                         <span className={`w-2 h-2 rounded-full ${agent.is_active ? "bg-emerald-500" : "bg-foreground/20"}`} />

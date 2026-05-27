@@ -1,4 +1,5 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdminSession } from "@/lib/auth";
 import { DataTable } from "@/components/admin/data-table";
 import { columns, PropertyRow } from "./columns";
 import { Button } from "@/components/ui/button";
@@ -6,7 +7,8 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 
 export default async function PropertiesPage() {
-    const supabase = await createClient();
+    await requireAdminSession();
+    const supabase = createAdminClient();
 
     const { data: properties, error } = await supabase
         .from("properties")

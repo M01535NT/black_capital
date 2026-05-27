@@ -40,3 +40,19 @@ export async function validateSessionToken(token: string): Promise<boolean> {
   const expected = await deriveToken(adminPassword);
   return timingSafeEqual(token, expected);
 }
+
+/**
+ * Server-component auth guard. Call at the top of admin pages.
+ * Redirects to /admin/login if the session is invalid.
+ * Only works in Node.js runtime (NOT Edge middleware).
+ */
+export async function requireAdminSession(): Promise<void> {
+  const { cookies } = await import("next/headers");
+  const { redirect } = await import("next/navigation");
+  const cookieStore = await cookies();
+  const session = cookieStore.get(AUTH_COOKIE);
+
+  if (!session?.value || !(await validateSessionToken(session.value))) {
+    redirect("/admin/login");
+  }
+}

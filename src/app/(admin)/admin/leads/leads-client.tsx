@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { DataTable } from "@/components/admin/data-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -174,33 +173,41 @@ export function LeadsPageClient({ leads, agents }: LeadsPageClientProps) {
     });
     const [error, setError] = useState("");
     const router = useRouter();
-    const supabase = createClient();
 
     const updateStatus = useCallback(async (id: string, status: string) => {
         // Save original status for rollback
         const originalStatus = data.find(l => l.id === id)?.status || "new";
         setData(prev => prev.map(l => l.id === id ? { ...l, status } : l));
         try {
-            const { error: updErr } = await supabase.from("leads").update({ status }).eq("id", id);
-            if (updErr) throw updErr;
+            const res = await fetch("/api/leads", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, status }),
+            });
+            if (!res.ok) throw new Error("Error al actualizar estado");
         } catch (err) {
             console.error(err);
-            // Rollback using the snapshot we captured
+            // Rollback using the snapshot
             setData(prev => prev.map(l => l.id === id ? { ...l, status: originalStatus } : l));
         }
-    }, [supabase, data]);
+    }, [data]);
 
     const updateAgent = useCallback(async (id: string, agentId: string | null) => {
         const originalAgentId = data.find(l => l.id === id)?.assigned_agent_id ?? null;
         setData(prev => prev.map(l => l.id === id ? { ...l, assigned_agent_id: agentId } : l));
         try {
-            const { error: updErr } = await supabase.from("leads").update({ assigned_agent_id: agentId }).eq("id", id);
-            if (updErr) throw updErr;
+            // Leads agent assignment is done via the leads API
+            const res = await fetch("/api/leads", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, assigned_agent_id: agentId }),
+            });
+            if (!res.ok) throw new Error("Error al asignar agente");
         } catch (err) {
             console.error(err);
             setData(prev => prev.map(l => l.id === id ? { ...l, assigned_agent_id: originalAgentId } : l));
         }
-    }, [supabase, data]);
+    }, [data]);
 
     const columns = useMemo<ColumnDef<Lead>[]>(() => [
         {
@@ -279,9 +286,16 @@ export function LeadsPageClient({ leads, agents }: LeadsPageClientProps) {
             if (form.assigned_agent_id) {
                 payload.assigned_agent_id = form.assigned_agent_id;
             }
-            const { error: insertError } = await supabase.from("leads").insert(payload);
+            const res = await fetch("/api/leads", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
 
-            if (insertError) throw insertError;
+            if (!res.ok) {
+                const body = await res.json().catch(() => ({}));
+                throw new Error(body.error || "Error al registrar lead");
+            }
 
             setOpen(false);
             setForm({ full_name: "", email: "", phone: "", source: "organic", notes: "", status: "new", assigned_agent_id: undefined });

@@ -2,10 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { validateSessionToken } from "@/lib/auth";
 
+const ALLOWED_BUCKETS = new Set(["public"]);
+
 export async function POST(req: NextRequest) {
   try {
-    // Auth check
-    const session = req.cookies.get("bc_admin_session");
+    // Auth check (using await cookies() instead of req.cookies.get())
+    const { cookies } = await import("next/headers");
+    const cookieStore = await cookies();
+    const session = cookieStore.get("bc_admin_session");
     if (!session?.value || !(await validateSessionToken(session.value))) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
@@ -14,6 +18,14 @@ export async function POST(req: NextRequest) {
     const file = formData.get("file") as File | null;
     const propertyId = formData.get("propertyId") as string | null;
     const bucket = (formData.get("bucket") as string) || "public";
+
+    // Validate bucket whitelist
+    if (!ALLOWED_BUCKETS.has(bucket)) {
+      return NextResponse.json(
+        { error: `Bucket "${bucket}" no permitido. Solo se permite: ${[...ALLOWED_BUCKETS].join(", ")}` },
+        { status: 400 }
+      );
+    }
 
     if (!file || !propertyId) {
       return NextResponse.json({ error: "Faltan file o propertyId" }, { status: 400 });

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Building2, Check, Loader2, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -24,12 +23,11 @@ export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertie
         if (open) {
             setSelected(assignedIds);
             async function load() {
-                const supabase = createClient();
-                const { data } = await supabase
-                    .from("properties")
-                    .select("id, title, business_type, price, currency")
-                    .order("title", { ascending: true });
-                if (data) setProperties(data);
+                const res = await fetch("/api/properties", { headers: { "Content-Type": "application/json" } });
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.properties) setProperties(json.properties);
+                }
             }
             load();
         }
@@ -38,23 +36,27 @@ export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertie
     async function save() {
         setLoading(true);
         try {
-            const supabase = createClient();
-
             // Remove unselected
             const toRemove = assignedIds.filter(id => !selected.includes(id));
             if (toRemove.length > 0) {
-                await supabase
-                    .from("property_agents")
-                    .delete()
-                    .eq("agent_id", agentId)
-                    .in("property_id", toRemove);
+                for (const pid of toRemove) {
+                    await fetch(`/api/property-agents?agent_id=${agentId}&property_id=${pid}`, {
+                        method: "DELETE",
+                        headers: { "Content-Type": "application/json" },
+                    });
+                }
             }
 
             // Add new
             const toAdd = selected.filter(id => !assignedIds.includes(id));
             if (toAdd.length > 0) {
-                const rows = toAdd.map(propertyId => ({ property_id: propertyId, agent_id: agentId }));
-                await supabase.from("property_agents").insert(rows);
+                for (const pid of toAdd) {
+                    await fetch("/api/property-agents", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ agent_id: agentId, property_id: pid }),
+                    });
+                }
             }
 
             setOpen(false);

@@ -1,4 +1,5 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdminSession } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -20,7 +21,8 @@ import Link from "next/link";
 export const revalidate = 0;
 
 export default async function AdminDashboard() {
-    const supabase = await createClient();
+    await requireAdminSession();
+    const supabase = createAdminClient();
 
     // ── Stats ──
     const { count: totalProperties } = await supabase

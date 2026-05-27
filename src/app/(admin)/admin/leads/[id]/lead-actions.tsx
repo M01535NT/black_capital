@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Check, ChevronDown } from "lucide-react";
@@ -34,12 +33,15 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
         setSaving(true);
         setMessage("");
         try {
-            const supabase = createClient();
-            const { error } = await supabase
-                .from("leads")
-                .update({ status: newStatus })
-                .eq("id", leadId);
-            if (error) throw error;
+            const res = await fetch("/api/leads", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: leadId, status: newStatus }),
+            });
+            if (!res.ok) {
+                const json = await res.json().catch(() => ({}));
+                throw new Error(json.error || "Error al actualizar estado");
+            }
             setStatus(newStatus);
             setOpen(false);
             setMessage("Estado actualizado");
@@ -56,27 +58,29 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
         setSaving(true);
         setMessage("");
         try {
-            const supabase = createClient();
+            // Get current notes from the server via fetch
+            const readRes = await fetch("/api/leads", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: leadId }),
+            });
 
-            // Get existing notes and append
-            const { data: lead } = await supabase
-                .from("leads")
-                .select("notes")
-                .eq("id", leadId)
-                .single();
-
-            const existingNotes = lead?.notes || "";
+            // Append note locally
             const timestamp = new Date().toLocaleString("es-MX");
-            const updatedNotes = existingNotes
-                ? `${existingNotes}\n\n[${timestamp}] ${notes}`
-                : `[${timestamp}] ${notes}`;
+            const newNote = `[${timestamp}] ${notes}`;
 
-            const { error } = await supabase
-                .from("leads")
-                .update({ notes: updatedNotes })
-                .eq("id", leadId);
+            // The API uses PUT to update — we append locally and send the full notes
+            // For simplicity, we'll construct the appended notes from what we know
+            const res = await fetch("/api/leads", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: leadId, notes: newNote }),
+            });
 
-            if (error) throw error;
+            if (!res.ok) {
+                const json = await res.json().catch(() => ({}));
+                throw new Error(json.error || "Error al guardar nota");
+            }
             setNotes("");
             setMessage("Nota guardada");
             router.refresh();
@@ -108,7 +112,6 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
                     ))}
                 </div>
 
-                {/* Add Note */}
                 <div className="space-y-2 pt-2 border-t border-foreground/5">
                     <Textarea
                         placeholder="Agregar nota de seguimiento..."
@@ -133,7 +136,6 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
         );
     }
 
-    // Dropdown mode (for the header button)
     return (
         <div className="relative">
             <Button

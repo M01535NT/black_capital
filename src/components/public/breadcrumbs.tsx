@@ -16,6 +16,8 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
         ...items,
     ];
 
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || (typeof window !== "undefined" ? window.location.origin : "");
+
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -23,7 +25,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
             "@type": "ListItem",
             position: i + 1,
             name: item.label,
-            ...(item.href ? { item: `https://blackcorporativo.com${item.href}` } : {}),
+            ...(item.href ? { item: `${siteUrl}${item.href}` } : {}),
         })),
     };
 

@@ -129,6 +129,11 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: "Missing property id" }, { status: 400 });
     }
 
+    // Validate title if provided
+    if ("title" in rest && (!rest.title || typeof rest.title !== "string" || !rest.title.trim())) {
+      return NextResponse.json({ error: "El título no puede estar vacío" }, { status: 400 });
+    }
+
     const updatePayload = filterPayload(rest);
     if (rest.title && !rest.slug) {
       updatePayload.slug = generateSlug(rest.title as string);

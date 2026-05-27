@@ -46,7 +46,9 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [pdfEntries, setPdfEntries] = useState<PdfEntry[]>([]);
 
-    const form = useForm<PropertyFormValues>({
+    const form = useForm({
+        // zodResolver + useForm generics have a known type mismatch between zod infer and RHF Resolver type.
+        // Using type assertion to avoid false TS errors while validation works correctly at runtime.
         resolver: zodResolver(propertySchema) as any,
         defaultValues: {
             title: "",

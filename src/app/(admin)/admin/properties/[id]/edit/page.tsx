@@ -1,4 +1,5 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdminSession } from "@/lib/auth";
 import { PropertyForm } from "@/components/admin/property-form";
 import { notFound } from "next/navigation";
 
@@ -7,8 +8,9 @@ export default async function EditPropertyPage({
 }: {
     params: Promise<{ id: string }>;
 }) {
+    await requireAdminSession();
     const { id } = await params;
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     const { data: property, error } = await supabase
         .from("properties")

@@ -1,4 +1,5 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdminSession } from "@/lib/auth";
 import { AgentForm } from "@/components/admin/agent-form";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
@@ -10,8 +11,9 @@ export default async function EditAgentPage({
 }: {
     params: Promise<{ id: string }>;
 }) {
+    await requireAdminSession();
     const { id } = await params;
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     const { data: agent, error } = await supabase
         .from("agents")

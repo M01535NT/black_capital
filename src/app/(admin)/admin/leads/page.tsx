@@ -1,10 +1,12 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdminSession } from "@/lib/auth";
 import { LeadsPageClient } from "./leads-client";
 
 export const revalidate = 0;
 
 export default async function LeadsPage() {
-    const supabase = await createClient();
+    await requireAdminSession();
+    const supabase = createAdminClient();
 
     const { data: leads, error } = await supabase
         .from("leads")

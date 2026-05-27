@@ -1,4 +1,5 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdminSession } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,8 +15,9 @@ export default async function AdminPropertyDetailPage({
 }: {
     params: Promise<{ id: string }>;
 }) {
+    await requireAdminSession();
     const { id } = await params;
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     const { data: property, error } = await supabase
         .from("properties")

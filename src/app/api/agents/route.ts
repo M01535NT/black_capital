@@ -50,6 +50,12 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "No autorizado" }, { status: 401 });
         }
         const data = await req.json();
+
+        // Validate required fields
+        if (!data.full_name || typeof data.full_name !== "string" || !data.full_name.trim()) {
+            return NextResponse.json({ error: "El nombre completo es requerido" }, { status: 400 });
+        }
+
         const supabase = createAdminClient();
 
         const email = normalizeEmail(data.email);
