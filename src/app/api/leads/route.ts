@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { full_name, email, phone, source, status, notes, assigned_agent_id, property_id, privacy_accepted } = body;
+    const { full_name, email, phone, source, status, notes, property_id, privacy_accepted } = body;
 
     if (!full_name) {
       return NextResponse.json({ error: "El nombre es requerido" }, { status: 400 });
@@ -46,7 +46,6 @@ export async function POST(req: NextRequest) {
         source: source || "organic",
         status: status || "new",
         notes: notes?.trim() || null,
-        assigned_agent_id: assigned_agent_id || null,
         property_id: property_id || null,
         privacy_accepted: privacy_accepted ?? true,
       })
@@ -72,7 +71,7 @@ export async function PUT(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { id, status, notes, assigned_agent_id } = body;
+    const { id, status, notes } = body;
 
     if (!id) {
       return NextResponse.json({ error: "Se requiere el ID del lead" }, { status: 400 });
@@ -83,7 +82,6 @@ export async function PUT(req: NextRequest) {
 
     if (status) updateData.status = status;
     if (notes !== undefined) updateData.notes = notes;
-    if (assigned_agent_id !== undefined) updateData.assigned_agent_id = assigned_agent_id;
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json({ error: "No hay campos para actualizar" }, { status: 400 });

@@ -35,20 +35,7 @@ export default async function AgentsPage() {
     });
 
     // Count leads won per agent (if assigned_agent_id exists)
-    const { data: leadsWon } = agentIds.length > 0
-        ? await supabase
-            .from("leads")
-            .select("assigned_agent_id")
-            .in("assigned_agent_id", agentIds)
-            .eq("status", "won")
-        : { data: [] };
-
-    const leadsWonCounts = new Map<string, number>();
-    (leadsWon || []).forEach((l: any) => {
-        if (l.assigned_agent_id) {
-            leadsWonCounts.set(l.assigned_agent_id, (leadsWonCounts.get(l.assigned_agent_id) || 0) + 1);
-        }
-    });
+    let leadsWonCounts = new Map<string, number>();
 
     const activeAgents = (agents || []).filter((a: any) => a.is_active);
     const inactiveAgents = (agents || []).filter((a: any) => !a.is_active);
