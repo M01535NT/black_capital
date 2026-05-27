@@ -116,7 +116,7 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
             <div className="relative w-full bg-black">
                 <div
                     ref={carouselRef}
-                    className="relative w-full aspect-[16/9] md:aspect-[21/9] lg:aspect-[21/9] overflow-hidden cursor-pointer group"
+                    className="relative w-full aspect-[16/9] overflow-hidden cursor-pointer group"
                     onClick={() => openLightbox(activeIndex)}
                     onTouchStart={handleTouchStart}
                     onTouchEnd={handleTouchEnd}

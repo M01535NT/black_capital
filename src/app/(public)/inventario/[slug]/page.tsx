@@ -220,27 +220,27 @@ export default async function PropertyDetailPage({
 
                         {/* Badges row */}
                         <div className="flex flex-wrap items-center gap-2">
-                            <Badge className="bg-gold-500 text-black font-semibold uppercase tracking-wider text-[10px] px-2.5 py-0.5">
+                            <Badge className="bg-gold-500 text-black font-semibold uppercase tracking-wider text-xs px-2.5 py-0.5">
                                 {property.business_type}
                             </Badge>
-                            <Badge variant="outline" className="uppercase tracking-wider text-[10px] border-foreground/15 px-2.5 py-0.5">
+                            <Badge variant="outline" className="uppercase tracking-wider text-xs border-foreground/15 px-2.5 py-0.5">
                                 {property.property_use}
                             </Badge>
-                            <Badge variant="outline" className="uppercase tracking-wider text-[10px] border-foreground/15 px-2.5 py-0.5">
+                            <Badge variant="outline" className="uppercase tracking-wider text-xs border-foreground/15 px-2.5 py-0.5">
                                 {property.property_type}
                             </Badge>
                             {property.is_project && (
-                                <Badge className="bg-blue-600 text-white text-[10px] uppercase tracking-wider px-2.5 py-0.5">
+                                <Badge className="bg-blue-600 text-white text-xs uppercase tracking-wider px-2.5 py-0.5">
                                     Proyecto
                                 </Badge>
                             )}
-                            <span className={`ml-auto text-[10px] font-semibold px-2.5 py-0.5 rounded-full border ${STATUS_COLORS[property.status] || "text-foreground/50 border-foreground/15"}`}>
+                            <span className={`ml-auto text-xs font-semibold px-2.5 py-0.5 rounded-full border ${STATUS_COLORS[property.status] || "text-foreground/50 border-foreground/15"}`}>
                                 {STATUS_LABELS[property.status] || property.status}
                             </span>
                         </div>
 
                         {/* Title */}
-                        <h1 className="font-display text-[1.25rem] md:text-[1.5rem] lg:text-[1.75rem] font-semibold uppercase tracking-wider text-foreground leading-[1.15]">
+                        <h1 className="font-display text-xl font-semibold uppercase tracking-wider text-foreground leading-[1.15]">
                             {property.title}
                         </h1>
 
@@ -254,7 +254,7 @@ export default async function PropertyDetailPage({
 
                         {/* Price — prominent */}
                         <div className="flex items-baseline gap-3">
-                            <p className="text-[1.5rem] md:text-[1.75rem] font-numerics font-semibold tracking-tight text-gold-500">
+                            <p className="text-2xl font-numerics font-semibold tracking-tight text-gold-500">
                                 {formatPrice(property.price, property.currency)}
                             </p>
                             {property.price_mxn && property.currency !== "MXN" && (
@@ -301,10 +301,10 @@ export default async function PropertyDetailPage({
                         {/* ── Description ── */}
                         {property.description && (
                             <section>
-                                <h2 className="font-display text-lg font-semibold uppercase tracking-wider text-foreground mb-4">
+                                <h2 className="font-display text-base font-semibold uppercase tracking-wider text-foreground mb-3">
                                     Descripción
                                 </h2>
-                                <div className="text-[0.875rem] text-foreground/60 leading-relaxed whitespace-pre-wrap space-y-4">
+                                <div className="text-sm text-foreground/60 leading-relaxed whitespace-pre-wrap space-y-4">
                                     {property.description}
                                 </div>
                             </section>
@@ -326,7 +326,7 @@ export default async function PropertyDetailPage({
                             <>
                                 <Separator className="bg-foreground/5" />
                                 <section>
-                                    <h2 className="font-display text-lg font-semibold uppercase tracking-wider text-foreground mb-4">
+                                    <h2 className="font-display text-base font-semibold uppercase tracking-wider text-foreground mb-3">
                                         Ubicación
                                     </h2>
                                     <div className="rounded-2xl overflow-hidden border border-foreground/5 aspect-[16/7] md:aspect-[21/9] bg-foreground/[0.02]">
@@ -350,7 +350,7 @@ export default async function PropertyDetailPage({
                             <>
                                 <Separator className="bg-foreground/5" />
                                 <section>
-                                    <h2 className="font-display text-lg font-semibold uppercase tracking-wider text-foreground mb-5">
+                                    <h2 className="font-display text-base font-semibold uppercase tracking-wider text-foreground mb-3">
                                         Propiedades Similares
                                     </h2>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -374,7 +374,7 @@ export default async function PropertyDetailPage({
                                                         </div>
                                                     )}
                                                     <div className="absolute top-3 left-3">
-                                                        <span className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider bg-gold-500 text-black rounded-full">
+                                                        <span className="px-2.5 py-1 text-xs font-semibold uppercase tracking-wider bg-gold-500 text-black rounded-full">
                                                             {sp.business_type}
                                                         </span>
                                                     </div>
@@ -384,7 +384,7 @@ export default async function PropertyDetailPage({
                                                         {sp.title}
                                                     </h3>
                                                     <div className="flex items-center justify-between gap-2">
-                                                        <span className="text-[11px] text-foreground/40 font-medium uppercase tracking-wider">
+                                                        <span className="text-xs text-foreground/40 font-medium uppercase tracking-wider">
                                                             {sp.m2_construction ? `${sp.m2_construction.toLocaleString()} m²` : ""}
                                                         </span>
                                                         <span className="text-sm font-semibold font-numerics text-gold-500 whitespace-nowrap">
@@ -420,9 +420,9 @@ export default async function PropertyDetailPage({
                                                 )}
                                             </div>
                                             <div className="min-w-0 flex-1 space-y-1.5">
-                                                <p className="font-semibold text-foreground text-sm leading-tight">{agent.full_name}</p>
+                                                <p className="font-semibold text-foreground leading-tight">{agent.full_name}</p>
                                                 {agent.license_number && (
-                                                    <p className="text-[11px] text-foreground/40 uppercase tracking-wider">Céd. {agent.license_number}</p>
+                                                    <p className="text-xs text-foreground/40 uppercase tracking-wider">Céd. {agent.license_number}</p>
                                                 )}
                                                 <div className="flex flex-col gap-1.5 pt-1">
                                                     {agent.phone && (
@@ -499,7 +499,7 @@ export default async function PropertyDetailPage({
                                                     <p className="text-sm font-medium text-foreground truncate group-hover:text-gold-500 transition-colors">
                                                         {doc.label}
                                                     </p>
-                                                    <p className="text-[11px] text-foreground/40 uppercase tracking-wider">PDF</p>
+                                                    <p className="text-xs text-foreground/40 uppercase tracking-wider">PDF</p>
                                                 </div>
                                                 <ArrowUpRight className="size-3.5 text-foreground/30 group-hover:text-gold-500 transition-colors shrink-0" />
                                             </a>
@@ -596,8 +596,8 @@ function MetricCard({ icon, label, value }: { icon: React.ReactNode; label: stri
                 {icon}
             </div>
             <div className="min-w-0">
-                <p className="text-[10px] uppercase tracking-[0.12em] text-foreground/40 font-semibold">{label}</p>
-                <p className="font-numerics font-semibold text-foreground text-sm">{value}</p>
+                <p className="text-xs uppercase tracking-[0.12em] text-foreground/40 font-semibold">{label}</p>
+                <p className="font-numerics font-semibold text-foreground text-base">{value}</p>
             </div>
         </div>
     );
