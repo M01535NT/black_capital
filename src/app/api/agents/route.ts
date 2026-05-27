@@ -44,6 +44,29 @@ async function checkAuth(): Promise<boolean> {
   return !!(session?.value && (await validateSessionToken(session.value)));
 }
 
+export async function GET() {
+  try {
+    if (!(await checkAuth())) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+    const supabase = createAdminClient();
+    const { data: agents, error } = await supabase
+      .from("agents")
+      .select("id, full_name, email, phone, photo_url, license_number, is_active")
+      .order("full_name", { ascending: true });
+
+    if (error) {
+      console.error("[API /agents GET]", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ agents: agents || [] });
+  } catch (err) {
+    console.error("[API /agents GET]", err);
+    return NextResponse.json({ error: "Error interno" }, { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
     try {
         if (!(await checkAuth())) {

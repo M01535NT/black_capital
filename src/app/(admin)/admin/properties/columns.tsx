@@ -35,9 +35,11 @@ function DeleteButton({ propertyId }: { propertyId: string }) {
         if (!window.confirm("¿Estás seguro de eliminar esta propiedad? Esta acción no se puede deshacer.")) return;
         setLoading(true);
         try {
-            const supabase = createClient();
-            const { error } = await supabase.from("properties").delete().eq("id", propertyId);
-            if (error) throw error;
+            const res = await fetch(`/api/properties?id=${propertyId}`, { method: "DELETE" });
+            if (!res.ok) {
+                const json = await res.json().catch(() => ({}));
+                throw new Error(json.error || "Error al eliminar");
+            }
             router.refresh();
         } catch (err) {
             alert(err instanceof Error ? err.message : "Error al eliminar");

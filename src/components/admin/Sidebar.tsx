@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Building2, Users, UserCircle, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
     { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -22,12 +21,13 @@ export function AdminSidebar() {
     useEffect(() => {
         async function fetchNewLeads() {
             try {
-                const supabase = createClient();
-                const { count } = await supabase
-                    .from("leads")
-                    .select("*", { count: "exact", head: true })
-                    .eq("status", "new");
-                setNewLeadsCount(count);
+                const res = await fetch("/api/leads", {
+                    headers: { "Content-Type": "application/json" },
+                });
+                if (res.ok) {
+                    const json = await res.json();
+                    setNewLeadsCount(json.newCount ?? 0);
+                }
             } catch (err) {
                 console.error("Error fetching new leads count:", err);
             }

@@ -9,6 +9,24 @@ async function checkAuth(): Promise<boolean> {
   return !!(session?.value && (await validateSessionToken(session.value)));
 }
 
+export async function GET(req: NextRequest) {
+  try {
+    if (!(await checkAuth())) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+    const supabase = createAdminClient();
+    const { count: newCount } = await supabase
+      .from("leads")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "new");
+
+    return NextResponse.json({ newCount: newCount || 0 });
+  } catch (err) {
+    console.error("[API /leads GET]", err);
+    return NextResponse.json({ error: "Error interno" }, { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     if (!(await checkAuth())) {

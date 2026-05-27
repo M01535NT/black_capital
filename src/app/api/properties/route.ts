@@ -172,3 +172,53 @@ export async function PUT(req: NextRequest) {
     );
   }
 }
+
+export async function GET(req: NextRequest) {
+  try {
+    if (!(await checkAuth())) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+    const supabase = createAdminClient();
+    const { data: properties, error } = await supabase
+      .from("properties")
+      .select("id, title, business_type, price, currency")
+      .order("title", { ascending: true });
+
+    if (error) {
+      console.error("[API /properties GET]", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ properties: properties || [] });
+  } catch (err) {
+    console.error("[API /properties GET]", err);
+    return NextResponse.json({ error: "Error interno" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    if (!(await checkAuth())) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json({ error: "Se requiere el ID de la propiedad" }, { status: 400 });
+    }
+
+    const supabase = createAdminClient();
+    const { error } = await supabase.from("properties").delete().eq("id", id);
+
+    if (error) {
+      console.error("[API /properties DELETE]", error);
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("[API /properties DELETE]", err);
+    return NextResponse.json({ error: "Error interno" }, { status: 500 });
+  }
+}

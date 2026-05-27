@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import posthog from "posthog-js";
 import { toast } from "sonner";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
@@ -89,6 +89,7 @@ export function GatedBrochure({
 
         try {
             // Insert lead into Supabase
+            const supabase = createClient();
             const { error } = await supabase.from("leads").insert([{
                 ...data,
                 phone: cleanPhone,

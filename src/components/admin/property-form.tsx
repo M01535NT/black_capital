@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import imageCompression from "browser-image-compression";
-import { createClient } from "@/lib/supabase/client";
 import { propertySchema, PropertyFormValues } from "@/lib/validations/property";
 
 import { Button } from "@/components/ui/button";
@@ -41,7 +40,6 @@ interface PdfEntry {
 
 export function PropertyForm({ initialData }: { initialData?: any }) {
     const router = useRouter();
-    const supabase = createClient();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [pdfEntries, setPdfEntries] = useState<PdfEntry[]>([]);
@@ -113,37 +111,42 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
     };
 
     // ── Upload functions ──
+    const uploadFile = async (propertyId: string, file: File, bucket: string = "public"): Promise<string | null> => {
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("propertyId", propertyId);
+            formData.append("bucket", bucket);
+
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (res.ok) {
+                const json = await res.json();
+                return json.url as string;
+            }
+            const json = await res.json().catch(() => ({}));
+            throw new Error(json.error || "Error al subir archivo");
+        } catch (err) {
+            throw err;
+        }
+    };
+
     const uploadImages = async (propertyId: string) => {
         const urls: string[] = [];
         const errors: string[] = [];
         for (const file of imageFiles) {
-            const options = {
-                maxSizeMB: 1,
-                maxWidthOrHeight: 1920,
-                useWebWorker: true,
-                fileType: "image/webp",
-            };
             try {
-                const compressedFile = await imageCompression(file, options);
-                const fileName = `${propertyId}/${Date.now()}-${compressedFile.name.replace(/\.[^/.]+$/, "")}.webp`;
-
-                const { data, error } = await supabase.storage
-                    .from("public")
-                    .upload(fileName, compressedFile, {
-                        contentType: "image/webp",
-                        upsert: false,
-                    });
-
-                if (error) {
-                    errors.push(`${file.name}: ${error.message}`);
-                    continue;
-                }
-
-                const { data: publicUrlData } = supabase.storage
-                    .from("public")
-                    .getPublicUrl(fileName);
-
-                urls.push(publicUrlData.publicUrl);
+                const compressedFile = await imageCompression(file, {
+                    maxSizeMB: 1,
+                    maxWidthOrHeight: 1920,
+                    useWebWorker: true,
+                    fileType: "image/webp",
+                });
+                const url = await uploadFile(propertyId, compressedFile);
+                if (url) urls.push(url);
             } catch (err) {
                 errors.push(`${file.name}: ${err instanceof Error ? err.message : "Error desconocido"}`);
             }
@@ -152,7 +155,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             throw new Error(`No se pudo subir ninguna imagen: ${errors.join("; ")}`);
         }
         if (errors.length > 0) {
-            // Image upload warnings silently handled
+            console.warn("Upload warnings:", errors);
         }
         return urls;
     };
@@ -161,20 +164,10 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
         const docs: { label: string; url: string }[] = [];
         for (const entry of pdfEntries) {
             try {
-                const safeName = entry.file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_");
-                const fileName = `${propertyId}/${Date.now()}-${safeName}`;
-                const { error } = await supabase.storage
-                    .from("public")
-                    .upload(fileName, entry.file, {
-                        contentType: "application/pdf",
-                        upsert: false,
-                    });
-
-                if (error) throw error;
-                const { data: publicUrlData } = supabase.storage.from("public").getPublicUrl(fileName);
-                docs.push({ label: entry.label, url: publicUrlData.publicUrl });
+                const url = await uploadFile(propertyId, entry.file);
+                if (url) docs.push({ label: entry.label, url });
             } catch (err) {
-                // Document upload error silently handled
+                console.warn("Document upload failed:", entry.file.name, err);
             }
         }
         return docs;

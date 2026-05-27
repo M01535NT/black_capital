@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Check, ChevronDown, User, X } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
 interface AgentOption {
@@ -23,18 +22,26 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
     const [agents, setAgents] = useState<AgentOption[]>([]);
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         async function load() {
-            const supabase = createClient();
-            const { data } = await supabase
-                .from("agents")
-                .select("id, full_name, email, phone, photo_url")
-                .eq("is_active", true)
-                .order("full_name", { ascending: true });
-            if (data) setAgents(data);
-            setLoading(false);
+            try {
+                const res = await fetch("/api/agents", {
+                    headers: { "Content-Type": "application/json" },
+                });
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.agents) setAgents(json.agents.filter((a: AgentOption & { is_active?: boolean }) => a.is_active));
+                } else {
+                    setError("Error al cargar agentes");
+                }
+            } catch (err) {
+                setError("Error de conexión");
+            } finally {
+                setLoading(false);
+            }
         }
         load();
     }, []);
@@ -62,7 +69,6 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
 
     return (
         <div ref={ref} className="relative">
-            {/* Trigger button */}
             <button
                 type="button"
                 onClick={() => !disabled && setOpen(!open)}
@@ -101,11 +107,12 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
                 <ChevronDown className={cn("h-4 w-4 text-foreground/50 shrink-0 transition-transform", open && "rotate-180")} />
             </button>
 
-            {/* Dropdown */}
             {open && (
                 <div className="absolute z-50 mt-1 w-full min-w-[280px] bg-card border border-foreground/10 rounded-xl shadow-2xl shadow-black/40 overflow-hidden">
                     {loading ? (
                         <div className="p-4 text-center text-sm text-foreground/50">Cargando agentes...</div>
+                    ) : error ? (
+                        <div className="p-4 text-center text-sm text-red-400">{error}</div>
                     ) : agents.length === 0 ? (
                         <div className="p-4 text-center text-sm text-foreground/50">
                             No hay agentes activos. <a href="/admin/agents/new" className="text-gold-500 underline">Registra uno</a>
