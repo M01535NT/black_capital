@@ -8,7 +8,6 @@ import { Ruler, Building2, Calendar, ShieldCheck, MapPin, ArrowLeft, MessageCirc
 import { ImageGallery } from "@/components/public/image-gallery";
 import { VideoEmbed } from "@/components/public/video-embed";
 import { TourEmbed } from "@/components/public/tour-embed";
-import { GatedBrochure } from "@/components/public/gated-brochure";
 import { Breadcrumbs } from "@/components/public/breadcrumbs";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 import Link from "next/link";
@@ -213,11 +212,11 @@ export default async function PropertyDetailPage({
             </div>
 
             {/* ─── MAIN LAYOUT: 2 columns ─── */}
-            <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-10">
-                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+            <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 md:py-6">
+                <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
 
                     {/* ═══════════════ COLUMNA PRINCIPAL ═══════════════ */}
-                    <div className="flex-1 min-w-0 space-y-8">
+                    <div className="flex-1 min-w-0 space-y-6">
 
                         {/* Badges row */}
                         <div className="flex flex-wrap items-center gap-2">
@@ -241,7 +240,7 @@ export default async function PropertyDetailPage({
                         </div>
 
                         {/* Title */}
-                        <h1 className="font-display text-[1.75rem] md:text-[2.25rem] lg:text-[2.5rem] font-semibold uppercase tracking-wider text-foreground leading-[1.08]">
+                        <h1 className="font-display text-[1.25rem] md:text-[1.5rem] lg:text-[1.75rem] font-semibold uppercase tracking-wider text-foreground leading-[1.15]">
                             {property.title}
                         </h1>
 
@@ -255,7 +254,7 @@ export default async function PropertyDetailPage({
 
                         {/* Price — prominent */}
                         <div className="flex items-baseline gap-3">
-                            <p className="text-[2rem] md:text-[2.5rem] font-numerics font-semibold tracking-tight text-gold-500">
+                            <p className="text-[1.5rem] md:text-[1.75rem] font-numerics font-semibold tracking-tight text-gold-500">
                                 {formatPrice(property.price, property.currency)}
                             </p>
                             {property.price_mxn && property.currency !== "MXN" && (
@@ -305,7 +304,7 @@ export default async function PropertyDetailPage({
                                 <h2 className="font-display text-lg font-semibold uppercase tracking-wider text-foreground mb-4">
                                     Descripción
                                 </h2>
-                                <div className="text-[0.9375rem] text-foreground/60 leading-relaxed whitespace-pre-wrap space-y-4">
+                                <div className="text-[0.875rem] text-foreground/60 leading-relaxed whitespace-pre-wrap space-y-4">
                                     {property.description}
                                 </div>
                             </section>
@@ -403,7 +402,7 @@ export default async function PropertyDetailPage({
 
                     {/* ═══════════════ SIDEBAR ═══════════════ */}
                     <div className="lg:w-[340px] shrink-0">
-                        <div className="lg:sticky lg:top-24 space-y-5">
+                        <div className="lg:sticky lg:top-4 space-y-5">
 
                             {/* ── Agent Card ── */}
                             {agents.length > 0 && (
@@ -540,14 +539,6 @@ export default async function PropertyDetailPage({
                                                 <MessageCircle className="size-4" />
                                                 Contactar por WhatsApp
                                             </a>
-                                        )}
-                                        {property.brochure_path && (
-                                            <GatedBrochure
-                                                propertyId={property.id}
-                                                propertyName={property.title}
-                                                pdfUrl={property.brochure_path}
-                                                label="Descargar Brochure Ejecutivo"
-                                            />
                                         )}
                                     </div>
                                 </div>
