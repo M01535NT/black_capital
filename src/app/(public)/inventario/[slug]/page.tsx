@@ -187,15 +187,17 @@ export default async function PropertyDetailPage({
 
     return (
         <div className="w-full bg-background min-h-screen">
-            {/* ─── FULL-BLEED GALLERY ─── */}
-            <ImageGallery
-                images={property.images || []}
-                title={property.title}
-                coverImage={property.cover_image}
-            />
+            {/* ─── CONTAINED LAYOUT ─── */}
+            <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8 space-y-8">
 
-            {/* ── Back navigation (desktop) ── */}
-            <div className="max-w-6xl mx-auto px-4 md:px-6 pt-6">
+                {/* ── Gallery (contained, not full-bleed) ── */}
+                <ImageGallery
+                    images={property.images || []}
+                    title={property.title}
+                    coverImage={property.cover_image}
+                />
+
+                {/* ── Navigation row ── */}
                 <div className="flex items-center justify-between">
                     <Breadcrumbs items={[
                         { label: "Inventario", href: "/inventario" },
@@ -203,17 +205,15 @@ export default async function PropertyDetailPage({
                     ]} />
                     <Link
                         href="/inventario"
-                        className="hidden md:inline-flex items-center gap-1.5 text-sm text-foreground/40 hover:text-gold-500 transition-colors shrink-0"
+                        className="hidden md:inline-flex items-center gap-1.5 text-xs text-foreground/40 hover:text-gold-500 transition-colors shrink-0 font-display uppercase tracking-wider"
                     >
-                        <ArrowLeft className="size-3.5" />
-                        Volver al inventario
+                        <ArrowLeft className="size-3" />
+                        Volver
                     </Link>
                 </div>
-            </div>
 
-            {/* ─── MAIN LAYOUT: 2 columns ─── */}
-            <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 md:py-6">
-                <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
+                {/* ─── MAIN LAYOUT: 2 columns ─── */}
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
 
                     {/* ═══════════════ COLUMNA PRINCIPAL ═══════════════ */}
                     <div className="flex-1 min-w-0 space-y-6">

@@ -113,7 +113,7 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
     return (
         <>
             {/* ── Main Carousel ── */}
-            <div className="relative w-full bg-black">
+            <div className="relative w-full rounded-2xl overflow-hidden bg-black">
                 <div
                     ref={carouselRef}
                     className="relative w-full aspect-[16/9] overflow-hidden cursor-pointer group"
