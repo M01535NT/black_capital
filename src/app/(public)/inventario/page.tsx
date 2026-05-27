@@ -37,8 +37,6 @@ async function InventoryContent() {
         .from("properties")
         .select("id, slug, title, property_use, property_type, business_type, price, currency, m2_terrain, m2_construction, cover_image, status")
         .eq("status", "Available")
-        .not("title", "ilike", "%prueba%")
-        .not("title", "ilike", "%test%")
         .order("created_at", { ascending: false });
 
     return <CatalogFilter properties={properties || []} />;

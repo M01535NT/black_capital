@@ -44,8 +44,6 @@ export function FeaturedInventory() {
                 .select("id, title, slug, property_use, business_type, m2_terrain, m2_construction, price, currency, cover_image, attributes")
                 .eq("is_featured", true)
                 .eq("status", "Available")
-                .not("title", "ilike", "%prueba%")
-                .not("title", "ilike", "%test%")
                 .order("created_at", { ascending: false })
                 .limit(3);
 

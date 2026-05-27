@@ -50,8 +50,6 @@ export function BrandInventory({
                 .select("id, slug, title, property_type, business_type, price, currency, m2_construction, cover_image")
                 .eq("property_use", propertyUse)
                 .eq("status", "Available")
-                .not("title", "ilike", "%prueba%")
-                .not("title", "ilike", "%test%")
                 .order("created_at", { ascending: false })
                 .limit(3);
 

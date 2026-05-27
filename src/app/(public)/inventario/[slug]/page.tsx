@@ -124,9 +124,6 @@ export default async function PropertyDetailPage({
 
     if (error || !property) return notFound();
 
-    const titleLower = (property.title || "").toLowerCase();
-    if (titleLower.includes("prueba") || titleLower.includes("test")) return notFound();
-
     // ── Agents ──
     const { data: assignedAgents } = await supabase
         .from("property_agents")
@@ -153,8 +150,6 @@ export default async function PropertyDetailPage({
             .eq("property_use", property.property_use)
             .eq("status", "Available")
             .neq("id", property.id)
-            .not("title", "ilike", "%prueba%")
-            .not("title", "ilike", "%test%")
             .order("created_at", { ascending: false })
             .limit(3);
         if (similarData) similar = similarData;
