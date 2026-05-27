@@ -1,55 +1,47 @@
 import { NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@supabase/supabase-js";
 
 export async function GET() {
-  const supabase = createAdminClient();
   const results: Record<string, unknown> = {};
 
-  // 1. Check if RLS is enabled on properties
-  const { data: rlsInfo, error: rlsErr } = await supabase
-    .rpc("check_rls", {}, { head: false })
-    .catch(() => ({ data: null, error: "rpc not available" }));
+  // Use anon key to simulate what public visitors see
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-  // 2. Count total properties
-  const { count: totalProps } = await supabase
-    .from("properties")
-    .select("*", { count: "exact", head: true });
-  results.totalProperties = totalProps;
+  results.env = {
+    hasUrl: !!url,
+    hasKey: !!key,
+  };
 
-  // 3. Count available properties via admin client
-  const { count: availableProps } = await supabase
-    .from("properties")
-    .select("*", { count: "exact", head: true })
-    .eq("status", "Available");
-  results.availableProperties = availableProps;
-
-  // 4. Try to get a sample property
-  const { data: sample, error: sampleErr } = await supabase
-    .from("properties")
-    .select("id, title, slug, status")
-    .limit(3);
-  results.sampleProperties = sample || [];
-  if (sampleErr) results.sampleError = sampleErr.message;
-
-  // 5. Check RLS state via raw query attempt
-  try {
-    const { data: rlsState } = await supabase
-      .from("properties")
-      .select("id")
-      .limit(1);
-    results.rlsCheck = {
-      canReadAdmin: !!rlsState,
-      count: rlsState?.length || 0,
-    };
-  } catch (e) {
-    results.rlsCheck = { error: String(e) };
+  if (!url || !key) {
+    results.error = "Missing Supabase env vars";
+    return NextResponse.json(results);
   }
 
-  // 6. Check env vars (names only, no values)
-  results.env = {
-    hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-    hasPublishableKey: !!process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
-    hasServiceRole: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+  const supabase = createClient(url, key);
+
+  // Try reading properties (same as public inventory page)
+  const { data: props, error: propsErr } = await supabase
+    .from("properties")
+    .select("id, title, slug, status")
+    .eq("status", "Available")
+    .limit(3);
+
+  results.publicRead = {
+    found: props?.length || 0,
+    error: propsErr?.message || null,
+    samples: props || [],
+  };
+
+  // Try reading without status filter
+  const { data: allProps, error: allErr } = await supabase
+    .from("properties")
+    .select("id, title, status")
+    .limit(3);
+
+  results.allRead = {
+    found: allProps?.length || 0,
+    error: allErr?.message || null,
   };
 
   return NextResponse.json(results);
