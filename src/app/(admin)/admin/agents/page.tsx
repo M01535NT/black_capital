@@ -34,8 +34,24 @@ export default async function AgentsPage() {
         propertyCounts.set(pa.agent_id, (propertyCounts.get(pa.agent_id) || 0) + 1);
     });
 
-    // Count leads won per agent (if assigned_agent_id exists)
+    // Count leads won per agent
     let leadsWonCounts = new Map<string, number>();
+    if (agentIds.length > 0) {
+        try {
+            const { data: leadsWon } = await supabase
+                .from("leads")
+                .select("assigned_agent_id")
+                .in("assigned_agent_id", agentIds)
+                .eq("status", "won");
+            (leadsWon || []).forEach((l: any) => {
+                if (l.assigned_agent_id) {
+                    leadsWonCounts.set(l.assigned_agent_id, (leadsWonCounts.get(l.assigned_agent_id) || 0) + 1);
+                }
+            });
+        } catch (e) {
+            console.warn("Error fetching leads won count (column may not exist yet):", e);
+        }
+    }
 
     const activeAgents = (agents || []).filter((a: any) => a.is_active);
     const inactiveAgents = (agents || []).filter((a: any) => !a.is_active);

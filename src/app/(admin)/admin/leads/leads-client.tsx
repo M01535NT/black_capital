@@ -19,6 +19,7 @@ interface Lead {
     phone: string;
     source: string;
     status: string;
+    assigned_agent_id?: string | null;
     created_at: string;
 }
 
@@ -98,6 +99,67 @@ function StatusCell({ lead, onChange }: { lead: Lead; onChange: (id: string, sta
     );
 }
 
+function AgentCell({ lead, agents, onChange }: { lead: Lead; agents: Agent[]; onChange: (id: string, agentId: string | null) => void }) {
+    const [open, setOpen] = useState(false);
+    const assigned = agents.find(a => a.id === lead.assigned_agent_id);
+
+    return (
+        <div className="relative">
+            <button
+                onClick={() => setOpen(!open)}
+                className={cn(
+                    "flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-medium border transition-all",
+                    assigned
+                        ? "bg-gold-500/10 text-gold-500 border-gold-500/20"
+                        : "bg-muted/30 text-foreground/50 border-foreground/10"
+                )}
+            >
+                {assigned ? assigned.full_name.split(" ")[0] : "Sin asignar"}
+                <ChevronDown className="w-3 h-3" />
+            </button>
+            {open && (
+                <>
+                    <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+                    <div className="absolute top-full mt-1 left-0 z-20 min-w-[160px] bg-card border border-foreground/10 rounded-xl shadow-2xl py-1 overflow-hidden">
+                        <button
+                            onClick={() => {
+                                onChange(lead.id, null);
+                                setOpen(false);
+                            }}
+                            className={cn(
+                                "w-full text-left px-3 py-2 text-xs transition-colors",
+                                !assigned ? "text-gold-500 font-medium" : "text-foreground/70 hover:bg-muted/50"
+                            )}
+                        >
+                            Sin asignar
+                        </button>
+                        <div className="border-t border-foreground/5" />
+                        {agents.map((agent) => (
+                            <button
+                                key={agent.id}
+                                onClick={() => {
+                                    onChange(lead.id, agent.id);
+                                    setOpen(false);
+                                }}
+                                className={cn(
+                                    "w-full text-left px-3 py-2 text-xs transition-colors flex items-center gap-2",
+                                    agent.id === lead.assigned_agent_id
+                                        ? "text-gold-500 font-medium bg-gold-500/5"
+                                        : "text-foreground/70 hover:bg-muted/50"
+                                )}
+                            >
+                                <span className="w-2 h-2 rounded-full bg-gold-500" />
+                                {agent.full_name}
+                                {agent.id === lead.assigned_agent_id && <Check className="w-3 h-3 ml-auto" />}
+                            </button>
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
+    );
+}
+
 export function LeadsPageClient({ leads, agents, supabaseError, debugInfo }: LeadsPageClientProps) {
     const [data, setData] = useState<Lead[]>(leads);
     const [open, setOpen] = useState(false);
@@ -109,6 +171,7 @@ export function LeadsPageClient({ leads, agents, supabaseError, debugInfo }: Lea
         source: "organic",
         notes: "",
         status: "new",
+        assigned_agent_id: "" as string | undefined,
     });
     const [error, setError] = useState("");
     const router = useRouter();
@@ -128,6 +191,23 @@ export function LeadsPageClient({ leads, agents, supabaseError, debugInfo }: Lea
             console.error(err);
             // Rollback using the snapshot
             setData(prev => prev.map(l => l.id === id ? { ...l, status: originalStatus } : l));
+        }
+    }, [data]);
+
+    const updateAgent = useCallback(async (id: string, agentId: string | null) => {
+        const originalAgentId = data.find(l => l.id === id)?.assigned_agent_id ?? null;
+        setData(prev => prev.map(l => l.id === id ? { ...l, assigned_agent_id: agentId } : l));
+        try {
+            // Leads agent assignment is done via the leads API
+            const res = await fetch("/api/leads", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, assigned_agent_id: agentId }),
+            });
+            if (!res.ok) throw new Error("Error al asignar agente");
+        } catch (err) {
+            console.error(err);
+            setData(prev => prev.map(l => l.id === id ? { ...l, assigned_agent_id: originalAgentId } : l));
         }
     }, [data]);
 
@@ -165,6 +245,11 @@ export function LeadsPageClient({ leads, agents, supabaseError, debugInfo }: Lea
             cell: ({ row }) => <StatusCell lead={row.original} onChange={updateStatus} />,
         },
         {
+            id: "assigned_agent",
+            header: "Asesor",
+            cell: ({ row }) => <AgentCell lead={row.original} agents={agents} onChange={updateAgent} />,
+        },
+        {
             accessorKey: "created_at",
             header: () => <div className="text-right">Fecha</div>,
             cell: ({ row }) => {
@@ -178,7 +263,7 @@ export function LeadsPageClient({ leads, agents, supabaseError, debugInfo }: Lea
                 return <div className="text-right text-muted-foreground text-sm">{formatted}</div>;
             },
         },
-    ], [agents, updateStatus]);
+    ], [agents, updateStatus, updateAgent]);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -200,6 +285,9 @@ export function LeadsPageClient({ leads, agents, supabaseError, debugInfo }: Lea
                 status: form.status,
                 privacy_accepted: true,
             };
+            if (form.assigned_agent_id) {
+                payload.assigned_agent_id = form.assigned_agent_id;
+            }
             const res = await fetch("/api/leads", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -212,7 +300,7 @@ export function LeadsPageClient({ leads, agents, supabaseError, debugInfo }: Lea
             }
 
             setOpen(false);
-            setForm({ full_name: "", email: "", phone: "", source: "organic", notes: "", status: "new" });
+            setForm({ full_name: "", email: "", phone: "", source: "organic", notes: "", status: "new", assigned_agent_id: undefined });
             router.refresh();
         } catch (err) {
             setError(err instanceof Error ? err.message : "Error al registrar");
@@ -345,6 +433,19 @@ export function LeadsPageClient({ leads, agents, supabaseError, debugInfo }: Lea
                                     <option value="qualified">Calificado</option>
                                     <option value="won">Ganado</option>
                                     <option value="lost">Perdido</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="text-sm font-medium mb-1 block">Asesor Asignado</label>
+                                <select
+                                    value={form.assigned_agent_id || ""}
+                                    onChange={e => setForm(prev => ({ ...prev, assigned_agent_id: e.target.value || undefined }))}
+                                    className="flex h-10 w-full rounded-md border border-foreground/20 bg-transparent px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-gold-500/40"
+                                >
+                                    <option value="">Sin asignar</option>
+                                    {agents.map(agent => (
+                                        <option key={agent.id} value={agent.id}>{agent.full_name}</option>
+                                    ))}
                                 </select>
                             </div>
                             <div>
