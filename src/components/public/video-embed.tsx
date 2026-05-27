@@ -20,7 +20,7 @@ function extractYoutubeId(url: string): string | null {
             return u.pathname.split("/")[2];
         }
     } catch (parseErr) {
-        console.warn("Failed to parse video URL, trying regex fallback:", parseErr);
+        // Silently fallback on video parse error
         const match = url.match(
             /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
         );

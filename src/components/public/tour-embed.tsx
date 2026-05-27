@@ -17,7 +17,7 @@ function getEmbedUrl(url: string): string | null {
         // Matterport or any other platform
         return url;
     } catch (parseErr) {
-        console.warn("Failed to parse tour URL:", parseErr);
+        // Silently fallback on tour parse error
         return null;
     }
 }

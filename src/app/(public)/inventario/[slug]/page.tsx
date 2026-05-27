@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Ruler, Building2, Calendar, ShieldCheck, MapPin, ArrowLeft, MessageCircle, Phone } from "lucide-react";
@@ -25,6 +26,7 @@ type AgentInfo = {
 
 type SimilarProperty = {
     id: string;
+    slug: string | null;
     title: string;
     price: number;
     currency: string;
@@ -33,19 +35,71 @@ type SimilarProperty = {
     m2_construction: number | null;
 };
 
+export async function generateMetadata({
+    params
+}: {
+    params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+    const { slug } = await params;
+    const supabase = await createClient();
+
+    let { data: property } = await supabase
+        .from("properties")
+        .select("title, description, cover_image")
+        .eq("slug", slug)
+        .single();
+
+    if (!property && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug)) {
+        const fallback = await supabase
+            .from("properties")
+            .select("title, description, cover_image")
+            .eq("id", slug)
+            .single();
+        property = fallback.data;
+    }
+
+    if (!property) {
+        return {
+            title: "Propiedad no encontrada | Black Corporativo",
+        };
+    }
+
+    return {
+        title: `${property.title} | Black Corporativo`,
+        description: property.description || `Propiedad en venta: ${property.title}`,
+        openGraph: property.cover_image ? {
+            images: [{ url: property.cover_image }],
+        } : undefined,
+    };
+}
+
 export default async function PropertyDetailPage({
     params
 }: {
-    params: Promise<{ id: string }>
+    params: Promise<{ slug: string }>
 }) {
-    const { id } = await params;
+    const { slug } = await params;
     const supabase = await createClient();
 
-    const { data: property, error } = await supabase
+    // Try to find by slug first, then fallback to id (for backward compat)
+    let propertyQuery = supabase
         .from("properties")
         .select("*")
-        .eq("id", id)
+        .eq("slug", slug)
         .single();
+
+    let { data: property, error } = await propertyQuery;
+
+    // Fallback: if no slug match and the slug looks like a UUID, search by id
+    if (!property && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug)) {
+        const fallback = await supabase
+            .from("properties")
+            .select("*")
+            .eq("id", slug)
+            .single();
+        property = fallback.data;
+        error = fallback.error;
+    }
 
     if (error || !property) {
         return notFound();
@@ -60,7 +114,7 @@ export default async function PropertyDetailPage({
     const { data: assignedAgents } = await supabase
         .from("property_agents")
         .select("agent_id")
-        .eq("property_id", id);
+        .eq("property_id", property.id);
 
     let agents: AgentInfo[] = [];
     if (assignedAgents && assignedAgents.length > 0) {
@@ -78,10 +132,10 @@ export default async function PropertyDetailPage({
     if (property.property_use) {
         const { data: similarData } = await supabase
             .from("properties")
-            .select("id, title, price, currency, cover_image, business_type, m2_construction")
+            .select("id, slug, title, price, currency, cover_image, business_type, m2_construction")
             .eq("property_use", property.property_use)
             .eq("status", "Available")
-            .neq("id", id)
+            .neq("id", property.id)
             .not("title", "ilike", "%prueba%")
             .not("title", "ilike", "%test%")
             .order("created_at", { ascending: false })
@@ -393,7 +447,7 @@ export default async function PropertyDetailPage({
                                 {similar.map((sp) => (
                                     <Link
                                         key={sp.id}
-                                        href={`/inventario/${sp.id}`}
+                                        href={`/inventario/${sp.slug || sp.id}`}
                                         className="group block bg-card border border-foreground/5 rounded-2xl overflow-hidden hover:border-gold-500/30 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.12)] transition-all duration-500"
                                     >
                                         <div className="aspect-[4/3] relative overflow-hidden bg-foreground/[0.03]">

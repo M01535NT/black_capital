@@ -45,7 +45,7 @@ export function AdminSidebar() {
     return (
         <nav className="hidden border-r border-foreground/10 bg-card md:block w-64 h-full">
             <div className="flex h-14 items-center border-b border-foreground/10 px-4 lg:h-[60px] lg:px-6">
-                <Link href="/" className="font-display font-bold text-xl tracking-tight text-foreground uppercase">
+                <Link href="/" className="font-display font-bold text-xl tracking-wider text-foreground uppercase">
                     Black <span className="text-gold-500">Corp</span>
                 </Link>
             </div>

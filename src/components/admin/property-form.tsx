@@ -63,6 +63,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             description: "",
             address: "",
             cover_image: "",
+            slug: "",
             status: "Available",
             agent_name: "",
             agent_phone: "",
@@ -149,7 +150,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             throw new Error(`No se pudo subir ninguna imagen: ${errors.join("; ")}`);
         }
         if (errors.length > 0) {
-            console.warn("Algunas imágenes no se subieron:", errors);
+            // Image upload warnings silently handled
         }
         return urls;
     };
@@ -171,7 +172,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 const { data: publicUrlData } = supabase.storage.from("public").getPublicUrl(fileName);
                 docs.push({ label: entry.label, url: publicUrlData.publicUrl });
             } catch (err) {
-                console.error(`Error uploading ${entry.file.name}:`, err);
+                // Document upload error silently handled
             }
         }
         return docs;
@@ -218,7 +219,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 try {
                     documents = await uploadDocuments(propertyData.id);
                 } catch (error) {
-                    console.error('Error uploading documents:', error);
+                    // Document upload error silently handled
                 }
             }
 
@@ -228,7 +229,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 try {
                     imageUrls = await uploadImages(propertyData.id);
                 } catch (error) {
-                    console.error('Error uploading images:', error);
+                    // Image upload error silently handled
                 }
             }
 
@@ -251,17 +252,17 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     });
                     if (!updateRes.ok) {
                         const errJson = await updateRes.json().catch(() => ({}));
-                        console.error('Error updating property with files:', errJson);
+                        // File link error silently handled
                     }
                 } catch (error) {
-                    console.error('Error linking files to property:', error);
+                    // File link error silently handled
                 }
             }
 
             router.push("/admin/properties");
             router.refresh();
         } catch (error) {
-            console.error("Error submitting property:", error);
+            // Submit error silently handled
             alert(`Error al guardar: ${error instanceof Error ? error.message : 'Error desconocido'}`);
         } finally {
             setIsSubmitting(false);
@@ -283,6 +284,23 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                                 <FormControl>
                                     <Input placeholder="Ej. Lujoso Penthouse en Polanco" {...field} />
                                 </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="slug"
+                        render={({ field }) => (
+                            <FormItem className="col-span-1 md:col-span-2">
+                                <FormLabel>Slug (URL amigable para SEO)</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="ej-lujoso-penthouse-polanco" value={field.value ?? ""} onChange={field.onChange} />
+                                </FormControl>
+                                <FormDescription>
+                                    Deja en blanco para generar automáticamente desde el título. Solo letras, números y guiones.
+                                </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}

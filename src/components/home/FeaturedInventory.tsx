@@ -44,6 +44,8 @@ export function FeaturedInventory() {
                 .select("id, title, slug, property_use, business_type, m2_terrain, m2_construction, price, currency, cover_image, attributes")
                 .eq("is_featured", true)
                 .eq("status", "Available")
+                .not("title", "ilike", "%prueba%")
+                .not("title", "ilike", "%test%")
                 .order("created_at", { ascending: false })
                 .limit(3);
 
@@ -97,7 +99,7 @@ export function FeaturedInventory() {
                     <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {items.map((item) => (
                             <StaggerItem key={item.id}>
-                                <Link href={`/inventario/${item.id}`} className="group block h-full">
+                                <Link href={`/inventario/${item.slug || item.id}`} className="group block h-full">
                                     <article className="h-full flex flex-col bg-background border border-foreground/10 rounded-xl overflow-hidden transition-all duration-500 hover:border-gold-500/30 hover:shadow-[0_0_40px_-5px] hover:shadow-gold-500/20">
 
                                         {/* Image Wrapper */}

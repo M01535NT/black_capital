@@ -38,7 +38,7 @@ export default async function AgentDetailPage({
     if (propertyIds.length > 0) {
         const { data: props } = await supabase
             .from("properties")
-            .select("id, title, business_type, property_use, property_type, price, currency, status, cover_image")
+            .select("id, slug, title, business_type, property_use, property_type, price, currency, status, cover_image")
             .in("id", propertyIds)
             .order("created_at", { ascending: false });
         if (props) properties = props;
@@ -159,7 +159,7 @@ export default async function AgentDetailPage({
                             {properties.map((prop) => (
                                 <Link
                                     key={prop.id}
-                                    href={`/inventario/${prop.id}`}
+                                    href={`/inventario/${prop.slug || prop.id}`}
                                     target="_blank"
                                     className="group flex items-center gap-4 bg-card border border-foreground/10 rounded-xl p-4 hover:border-gold-500/20 hover:bg-gold-500/[0.02] transition-all"
                                 >

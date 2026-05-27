@@ -35,15 +35,11 @@ async function InventoryContent() {
 
     const { data: properties, error } = await supabase
         .from("properties")
-        .select("id, title, property_use, property_type, business_type, price, currency, m2_terrain, m2_construction, cover_image, status")
+        .select("id, slug, title, property_use, property_type, business_type, price, currency, m2_terrain, m2_construction, cover_image, status")
         .eq("status", "Available")
         .not("title", "ilike", "%prueba%")
         .not("title", "ilike", "%test%")
         .order("created_at", { ascending: false });
-
-    if (error) {
-        console.error("Error fetching properties:", error);
-    }
 
     return <CatalogFilter properties={properties || []} />;
 }

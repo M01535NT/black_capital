@@ -70,7 +70,7 @@ export function LeadMagnet() {
             setIsSuccess(true);
             toast.success("¡Solicitud enviada con éxito!");
         } catch (error) {
-            console.error("Error capturing lead:", error);
+            // Lead capture error silently handled
             toast.error("Ocurrió un error. Por favor intenta nuevamente.");
         } finally {
             setIsSubmitting(false);

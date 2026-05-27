@@ -10,6 +10,7 @@ import { FadeIn, StaggerChildren, StaggerItem } from "@/components/ui/motion";
 
 interface BrandProperty {
     id: string;
+    slug: string | null;
     title: string;
     property_type: string;
     business_type: string;
@@ -46,9 +47,11 @@ export function BrandInventory({
             const supabase = createClient();
             const { data } = await supabase
                 .from("properties")
-                .select("id, title, property_type, business_type, price, currency, m2_construction, cover_image")
+                .select("id, slug, title, property_type, business_type, price, currency, m2_construction, cover_image")
                 .eq("property_use", propertyUse)
                 .eq("status", "Available")
+                .not("title", "ilike", "%prueba%")
+                .not("title", "ilike", "%test%")
                 .order("created_at", { ascending: false })
                 .limit(3);
 
@@ -142,7 +145,7 @@ export function BrandInventory({
                         {properties.map((prop) => (
                             <StaggerItem key={prop.id}>
                                 <Link
-                                    href={`/inventario/${prop.id}`}
+                                    href={`/inventario/${prop.slug || prop.id}`}
                                     className={`group block relative overflow-hidden rounded-2xl border ${accent.border} ${accent.borderHover} hover:shadow-2xl ${accent.shadow} transition-all duration-700 bg-zinc-950/40`}
                                 >
                                     {/* Image */}

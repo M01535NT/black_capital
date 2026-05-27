@@ -108,12 +108,12 @@ export function GatedBrochure({
                     pdfUrl,
                     docType,
                 }),
-            }).catch((err) => console.error("Error sending brochure email:", err));
+            }).catch(() => { /* brochure email error silently handled */ });
 
             setIsSuccess(true);
             toast.success("Documento enviado a tu correo");
         } catch (error) {
-            console.error("Error capturing lead:", error);
+            // Lead capture error silently handled
             toast.error("Ocurrió un error. Intenta nuevamente.");
         } finally {
             setIsSubmitting(false);
@@ -142,7 +142,7 @@ export function GatedBrochure({
                                     <Lock className="size-5 text-gold-500" />
                                 </div>
                                 <div>
-                                    <DialogTitle className="font-display text-lg font-semibold uppercase tracking-tight">
+                                    <DialogTitle className="font-display text-lg font-semibold uppercase tracking-wider">
                                         Documento Exclusivo
                                     </DialogTitle>
                                     <DialogDescription className="text-sm text-foreground/50">
@@ -233,7 +233,7 @@ export function GatedBrochure({
                                             <div className="space-y-1 leading-tight">
                                                 <label htmlFor="brochure-privacy" className="text-xs text-foreground/50 cursor-pointer leading-relaxed">
                                                     Acepto el{" "}
-                                                    <a href="/legal/privacidad" className="text-gold-500 hover:underline font-medium" target="_blank">
+                                                    <a href="/legal/privacidad" className="text-gold-500 hover:underline font-medium" target="_blank" rel="noopener noreferrer">
                                                         Aviso de Privacidad
                                                     </a>
                                                     {" "}y autorizo que me contacten para prospección comercial.
@@ -272,7 +272,7 @@ export function GatedBrochure({
                         <div className="size-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-5 border border-emerald-500/20">
                             <CheckCircle2 className="size-8 text-emerald-500" />
                         </div>
-                        <h3 className="font-display text-xl font-semibold text-foreground mb-2 uppercase tracking-tight">
+                        <h3 className="font-display text-xl font-semibold text-foreground mb-2 uppercase tracking-wider">
                             Documento Enviado
                         </h3>
                         <p className="text-sm text-foreground/50 max-w-xs leading-relaxed mb-6">

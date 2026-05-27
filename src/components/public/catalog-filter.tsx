@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 
 type Property = {
     id: string;
+    slug: string | null;
     title: string;
     property_use: string;
     property_type: string;
@@ -46,7 +47,7 @@ function PropertyCard({ property, index }: { property: Property; index: number }
             transition={{ duration: 0.4, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
         >
             <Link
-                href={`/inventario/${property.id}`}
+                href={`/inventario/${property.slug || property.id}`}
                 className="group block bg-card border border-foreground/5 rounded-2xl overflow-hidden hover:border-gold-500/30 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.12)] transition-all duration-500"
             >
                 <div className="aspect-[4/3] relative overflow-hidden bg-foreground/[0.03]">

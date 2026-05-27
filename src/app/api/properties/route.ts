@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
     try {
         const data = await req.json();
         const { agent_ids } = data;
-        const slug = generateSlug(data.title);
+        const slug = data.slug || generateSlug(data.title);
         const payload = filterPayload({ ...data, slug });
         const supabase = getAdminSupabase();
 
@@ -112,8 +112,10 @@ export async function PUT(req: NextRequest) {
         }
 
         const updatePayload = filterPayload(rest);
-        if (rest.title) {
+        if (rest.title && !rest.slug) {
             updatePayload.slug = generateSlug(rest.title as string);
+        } else if (rest.slug) {
+            updatePayload.slug = rest.slug;
         }
 
         const { data: property, error } = await supabase
