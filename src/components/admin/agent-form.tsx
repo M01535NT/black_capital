@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { agentSchema, AgentFormValues } from "@/lib/validations/agent";
-import { createClient } from "@/lib/supabase/client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface AgentFormProps {
     initialData?: AgentFormValues & { id?: string };
@@ -27,7 +27,6 @@ interface AgentFormProps {
 
 export function AgentForm({ initialData }: AgentFormProps) {
     const router = useRouter();
-    const supabase = createClient();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const form = useForm<AgentFormValues>({
@@ -47,43 +46,26 @@ export function AgentForm({ initialData }: AgentFormProps) {
         setIsSubmitting(true);
         try {
             const isEditing = !!initialData?.id;
+            const method = isEditing ? "PUT" : "POST";
+            const body = isEditing ? { id: initialData.id, ...data } : data;
 
-            if (isEditing) {
-                const { error } = await supabase
-                    .from("agents")
-                    .update({
-                        full_name: data.full_name,
-                        email: data.email || null,
-                        phone: data.phone || null,
-                        photo_url: data.photo_url || null,
-                        license_number: data.license_number || null,
-                        bio: data.bio || null,
-                        is_active: data.is_active,
-                    })
-                    .eq("id", initialData.id);
+            const res = await fetch("/api/agents", {
+                method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body),
+            });
 
-                if (error) throw error;
-            } else {
-                const { error } = await supabase
-                    .from("agents")
-                    .insert({
-                        full_name: data.full_name,
-                        email: data.email || null,
-                        phone: data.phone || null,
-                        photo_url: data.photo_url || null,
-                        license_number: data.license_number || null,
-                        bio: data.bio || null,
-                        is_active: data.is_active,
-                    });
+            const result = await res.json();
 
-                if (error) throw error;
+            if (!res.ok) {
+                throw new Error(result.error || "Error al guardar agente");
             }
 
+            toast.success(isEditing ? "Agente actualizado" : "Agente registrado");
             router.push("/admin/agents");
             router.refresh();
         } catch (error) {
-            console.error("Error saving agent:", error);
-            alert(`Error al guardar: ${error instanceof Error ? error.message : "Error desconocido"}`);
+            toast.error(error instanceof Error ? error.message : "Error desconocido");
         } finally {
             setIsSubmitting(false);
         }
