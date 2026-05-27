@@ -1,32 +1,43 @@
-import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/auth";
 import { LeadsPageClient } from "./leads-client";
+import { getRecentLeads, getLeadsCount } from "@/lib/data";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export const revalidate = 0;
 
 export default async function LeadsPage() {
     await requireAdminSession();
-    const supabase = createAdminClient();
 
-    const { data: leads, error } = await supabase
+    // Use shared data layer for consistency with sidebar/dashboard
+    const supabase = createAdminClient();
+    
+    const { data: leads, error: leadsError } = await supabase
         .from("leads")
         .select("id, full_name, email, phone, source, status, assigned_agent_id, created_at")
         .order("created_at", { ascending: false });
 
-    if (error) {
-        console.error("Error fetching leads:", error);
-    }
-
-    const { data: agents } = await supabase
+    const { data: agents, error: agentsError } = await supabase
         .from("agents")
         .select("id, full_name")
         .eq("is_active", true)
         .order("full_name", { ascending: true });
 
+    // If there's a Supabase error, pass it to the client for display
+    const supabaseError = leadsError?.message || agentsError?.message || null;
+    if (supabaseError) {
+        console.error("[LeadsPage] Supabase error:", supabaseError);
+    }
+
+    // Also get total count for debugging
+    const totalLeads = await getLeadsCount();
+    const newLeads = await getLeadsCount("new");
+
     return (
         <LeadsPageClient
             leads={(leads as any[]) || []}
             agents={(agents as any[]) || []}
+            supabaseError={supabaseError}
+            debugInfo={{ totalLeads, newLeads }}
         />
     );
 }

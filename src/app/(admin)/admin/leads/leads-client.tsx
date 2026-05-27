@@ -31,6 +31,8 @@ interface Agent {
 interface LeadsPageClientProps {
     leads: Lead[];
     agents: Agent[];
+    supabaseError?: string | null;
+    debugInfo?: { totalLeads: number; newLeads: number };
 }
 
 const STATUS_OPTIONS = [
@@ -158,7 +160,7 @@ function AgentCell({ lead, agents, onChange }: { lead: Lead; agents: Agent[]; on
     );
 }
 
-export function LeadsPageClient({ leads, agents }: LeadsPageClientProps) {
+export function LeadsPageClient({ leads, agents, supabaseError, debugInfo }: LeadsPageClientProps) {
     const [data, setData] = useState<Lead[]>(leads);
     const [open, setOpen] = useState(false);
     const [submitting, setSubmitting] = useState(false);
@@ -333,6 +335,16 @@ export function LeadsPageClient({ leads, agents }: LeadsPageClientProps) {
                         </div>
                         <h3 className="text-xl font-bold mb-2 font-display uppercase tracking-wider">No hay leads registrados</h3>
                         <p className="text-foreground/50 mb-6">Registra tu primer lead para empezar a gestionar el embudo de ventas.</p>
+                        {supabaseError && (
+                            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400">
+                                Error de conexión: {supabaseError}
+                            </div>
+                        )}
+                        {debugInfo && (
+                            <div className="mb-4 p-3 bg-muted/20 border border-foreground/10 rounded-lg text-xs text-foreground/50 font-mono">
+                                Debug: totalLeads={debugInfo.totalLeads}, newLeads={debugInfo.newLeads}
+                            </div>
+                        )}
                         <Button
                             onClick={() => setOpen(true)}
                             className="bg-gold-500 text-black hover:bg-gold-600 font-bold"
