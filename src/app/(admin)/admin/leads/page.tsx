@@ -37,7 +37,6 @@ export default async function LeadsPage() {
             leads={(leads as any[]) || []}
             agents={(agents as any[]) || []}
             supabaseError={supabaseError}
-            debugInfo={{ totalLeads, newLeads }}
         />
     );
 }
