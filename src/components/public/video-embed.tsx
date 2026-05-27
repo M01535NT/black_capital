@@ -20,7 +20,6 @@ function extractYoutubeId(url: string): string | null {
             return u.pathname.split("/")[2];
         }
     } catch (parseErr) {
-        // Silently fallback on video parse error
         const match = url.match(
             /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
         );
@@ -32,33 +31,31 @@ function extractYoutubeId(url: string): string | null {
 export function VideoEmbed({ urls }: VideoEmbedProps) {
     if (!urls || urls.length === 0) return null;
 
+    const validUrls = urls.map(extractYoutubeId).filter(Boolean) as string[];
+    if (validUrls.length === 0) return null;
+
     return (
-        <div className="space-y-6">
-            <h2 className="section-heading text-2xl tracking-tight border-b border-foreground/10 pb-4">
+        <section className="space-y-4">
+            <h2 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-foreground/40">
                 Video Promocional
             </h2>
             <div className="space-y-4">
-                {urls.map((url, i) => {
-                    const videoId = extractYoutubeId(url);
-                    if (!videoId) return null;
-
-                    return (
-                        <div
-                            key={i}
-                            className="w-full aspect-video rounded-xl overflow-hidden bg-zinc-900 border border-foreground/5 shadow-lg"
-                        >
-                            <iframe
-                                src={`https://www.youtube.com/embed/${videoId}`}
-                                title={`Video promocional ${i + 1}`}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                                loading="lazy"
-                                className="w-full h-full"
-                            />
-                        </div>
-                    );
-                })}
+                {validUrls.map((videoId, i) => (
+                    <div
+                        key={i}
+                        className="w-full aspect-video rounded-2xl overflow-hidden bg-zinc-900 border border-foreground/5 shadow-lg"
+                    >
+                        <iframe
+                            src={`https://www.youtube.com/embed/${videoId}?rel=0`}
+                            title={`Video promocional ${i + 1}`}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            loading="lazy"
+                            className="w-full h-full"
+                        />
+                    </div>
+                ))}
             </div>
-        </div>
+        </section>
     );
 }
