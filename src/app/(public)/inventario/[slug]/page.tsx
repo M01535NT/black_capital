@@ -206,7 +206,7 @@ export default async function PropertyDetailPage({
 
     return (
         <div className="w-full bg-background min-h-screen">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 space-y-8 md:space-y-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24 pb-6 md:pb-10 space-y-8 md:space-y-10">
 
                 {/* Gallery */}
                 <ImageGallery
@@ -272,7 +272,7 @@ export default async function PropertyDetailPage({
                             </div>
 
                             {/* Title */}
-                            <h1 className="font-display text-2xl sm:text-3xl md:text-[2rem] font-semibold uppercase tracking-wider text-foreground leading-[1.1]">
+                            <h1 className="font-display text-xl sm:text-2xl md:text-[1.625rem] font-semibold uppercase tracking-wider text-foreground leading-[1.1]">
                                 {property.title}
                             </h1>
 
@@ -286,7 +286,7 @@ export default async function PropertyDetailPage({
 
                             {/* Price */}
                             <div className="flex flex-wrap items-baseline gap-3">
-                                <p className="text-3xl sm:text-4xl font-numerics font-bold tracking-tight text-gold-500">
+                                <p className="text-2xl sm:text-3xl font-numerics font-bold tracking-tight text-gold-500">
                                     {formatPrice(property.price, property.currency)}
                                 </p>
                                 {property.price_mxn && property.currency !== "MXN" && (
@@ -622,7 +622,7 @@ export default async function PropertyDetailPage({
             <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 p-3 bg-background/95 backdrop-blur-xl border-t border-foreground/10 safe-area-pb">
                 <div className="flex items-center gap-3">
                     <div className="flex-1 min-w-0">
-                        <p className="font-numerics font-bold text-gold-500 text-xl sm:text-2xl">
+                        <p className="font-numerics font-bold text-gold-500 text-lg sm:text-xl">
                             {formatPrice(property.price, property.currency)}
                         </p>
                     </div>
