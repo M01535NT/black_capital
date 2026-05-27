@@ -298,6 +298,10 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                 throw new Error(body.error || "Error al registrar lead");
             }
 
+            const json = await res.json();
+            // Add new lead to local state immediately (no page refresh needed)
+            setData(prev => [json.lead, ...prev]);
+
             setOpen(false);
             setForm({ full_name: "", email: "", phone: "", source: "organic", notes: "", status: "new", assigned_agent_id: undefined });
             router.refresh();
