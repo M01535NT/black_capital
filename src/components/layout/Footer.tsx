@@ -26,17 +26,17 @@ const corpLinks = [
 
 export function Footer() {
     return (
-        <footer className="w-full bg-background pt-20 pb-10 mt-auto relative">
+        <footer className="w-full bg-background pt-10 pb-4 mt-auto relative">
             {/* Animated gold gradient border top */}
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-500/40 to-transparent" />
 
             <FadeIn direction="up" delay={0.1}>
                 <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-10">
                         {/* Brand */}
-                        <div className="md:col-span-4 space-y-6">
+                        <div className="md:col-span-4 space-y-2">
                             <Link href="/" className="inline-block">
-                                <span className="font-display font-bold text-2xl tracking-tight text-foreground">
+                                <span className="font-display font-bold text-xl tracking-tight text-foreground">
                                     BLACK <span className="text-gold-500">CORP</span>
                                 </span>
                             </Link>
@@ -50,7 +50,7 @@ export function Footer() {
                                         href={social.href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-10 h-10 rounded-full border border-foreground/10 flex items-center justify-center text-foreground/40 hover:text-gold-500 hover:border-gold-500/30 transition-all duration-300"
+                                        className="w-8 h-8 rounded-full border border-foreground/10 flex items-center justify-center text-foreground/40 hover:text-gold-500 hover:border-gold-500/30 transition-all duration-300"
                                         aria-label={social.name}
                                     >
                                         <social.icon className="w-4 h-4" />
@@ -60,11 +60,11 @@ export function Footer() {
                         </div>
 
                         {/* Marcas Hijas */}
-                        <div className="md:col-span-3 md:col-start-6 space-y-6">
+                        <div className="md:col-span-3 md:col-start-6 space-y-2">
                             <h4 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-foreground">
                                 Nuestras Marcas
                             </h4>
-                            <ul className="space-y-4">
+                            <ul className="space-y-2">
                                 {brandLinks.map((link) => (
                                     <li key={link.name}>
                                         <Link href={link.href} className="group flex flex-col">
@@ -81,7 +81,7 @@ export function Footer() {
                         </div>
 
                         {/* Legal & Corp */}
-                        <div className="md:col-span-2 space-y-6">
+                        <div className="md:col-span-2 space-y-4">
                             <h4 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-foreground">
                                 Corporativo
                             </h4>
@@ -100,7 +100,7 @@ export function Footer() {
                         </div>
 
                         {/* Contact */}
-                        <div className="md:col-span-3 space-y-6">
+                        <div className="md:col-span-3 space-y-4">
                             <h4 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-foreground">
                                 Contacto
                             </h4>
@@ -113,7 +113,7 @@ export function Footer() {
                     </div>
 
                     {/* Bottom bar */}
-                    <div className="pt-8 border-t border-foreground/5 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div className="pt-4 border-t border-foreground/5 flex flex-col md:flex-row justify-between items-center gap-4">
                         <p className="text-xs text-foreground/40 tracking-wide">
                             &copy; {new Date().getFullYear()} Black Corporativo. Todos los derechos reservados.
                         </p>

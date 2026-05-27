@@ -272,7 +272,7 @@ export default async function PropertyDetailPage({
                             </div>
 
                             {/* Title */}
-                            <h1 className="font-display text-sm sm:text-base md:text-lg font-semibold uppercase tracking-wider text-foreground leading-[1.1]">
+                            <h1 className="font-display text-xl sm:text-2xl font-semibold uppercase tracking-wider text-foreground leading-[1.1]">
                                 {property.title}
                             </h1>
 
@@ -286,7 +286,7 @@ export default async function PropertyDetailPage({
 
                             {/* Price */}
                             <div className="flex flex-wrap items-baseline gap-3">
-                                <p className="text-base sm:text-lg md:text-xl font-numerics font-bold tracking-tight text-gold-500">
+                                <p className="text-xl sm:text-2xl md:text-3xl font-numerics font-bold tracking-tight text-gold-500">
                                     {formatPrice(property.price, property.currency)}
                                 </p>
                                 {property.price_mxn && property.currency !== "MXN" && (
@@ -622,7 +622,7 @@ export default async function PropertyDetailPage({
             <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 p-3 bg-background/95 backdrop-blur-xl border-t border-foreground/10 safe-area-pb">
                 <div className="flex items-center gap-3">
                     <div className="flex-1 min-w-0">
-                        <p className="font-numerics font-bold text-gold-500 text-xs sm:text-sm">
+                        <p className="font-numerics font-bold text-gold-500 text-base sm:text-lg">
                             {formatPrice(property.price, property.currency)}
                         </p>
                     </div>
