@@ -1,5 +1,12 @@
-import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/auth";
+import {
+    getPropertiesCount,
+    getAgentsCount,
+    getLeadsCount,
+    getLeadsByStatus,
+    getRecentLeads,
+    getRecentProperties,
+} from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -22,38 +29,15 @@ export const revalidate = 0;
 
 export default async function AdminDashboard() {
     await requireAdminSession();
-    const supabase = createAdminClient();
 
-    // ── Stats ──
-    const { count: totalProperties, error: propErr } = await supabase
-        .from("properties")
-        .select("*", { count: "exact", head: true });
-    if (propErr) console.error("[Dashboard] Error fetching properties:", propErr);
-
-    const { count: totalAgents, error: agentErr } = await supabase
-        .from("agents")
-        .select("*", { count: "exact", head: true })
-        .eq("is_active", true);
-    if (agentErr) console.error("[Dashboard] Error fetching agents:", agentErr);
-
-    const { count: totalLeads, error: leadsErr } = await supabase
-        .from("leads")
-        .select("*", { count: "exact", head: true });
-    if (leadsErr) console.error("[Dashboard] Error fetching leads:", leadsErr);
-
-    const { count: newLeads, error: newErr } = await supabase
-        .from("leads")
-        .select("*", { count: "exact", head: true })
-        .eq("status", "new");
-    if (newErr) console.error("[Dashboard] Error fetching new leads:", newErr);
+    // ── Stats (shared data layer — same as API routes) ──
+    const totalProperties = await getPropertiesCount();
+    const totalAgents = await getAgentsCount(true);
+    const totalLeads = await getLeadsCount();
+    const newLeads = await getLeadsCount("new");
 
     // ── Leads by status ──
-    const { data: leadsByStatus, error: statusErr } = await supabase
-        .from("leads")
-        .select("status")
-        .not("status", "is", null);
-    if (statusErr) console.error("[Dashboard] Error fetching leads by status:", statusErr);
-
+    const leadsByStatus = await getLeadsByStatus();
     const statusCounts: Record<string, number> = {};
     (leadsByStatus || []).forEach((l: any) => {
         statusCounts[l.status] = (statusCounts[l.status] || 0) + 1;
@@ -68,20 +52,10 @@ export default async function AdminDashboard() {
     ];
 
     // ── Recent leads ──
-    const { data: recentLeads, error: recentErr } = await supabase
-        .from("leads")
-        .select("id, full_name, email, phone, source, status, created_at")
-        .order("created_at", { ascending: false })
-        .limit(5);
-    if (recentErr) console.error("[Dashboard] Error fetching recent leads:", recentErr);
+    const recentLeads = await getRecentLeads(5);
 
     // ── Recent properties ──
-    const { data: recentProperties, error: recentPropErr } = await supabase
-        .from("properties")
-        .select("id, title, business_type, price, currency, cover_image, status, created_at")
-        .order("created_at", { ascending: false })
-        .limit(5);
-    if (recentPropErr) console.error("[Dashboard] Error fetching recent properties:", recentPropErr);
+    const recentProperties = await getRecentProperties(5);
 
     const today = new Date();
     const todayStr = today.toLocaleDateString("es-MX", {

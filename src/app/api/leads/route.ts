@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { validateSessionToken } from "@/lib/auth";
+import { getLeadsCount } from "@/lib/data";
 
 async function checkAuth(): Promise<boolean> {
   const { cookies } = await import("next/headers");
@@ -14,13 +15,8 @@ export async function GET(req: NextRequest) {
     if (!(await checkAuth())) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
-    const supabase = createAdminClient();
-    const { count: newCount } = await supabase
-      .from("leads")
-      .select("*", { count: "exact", head: true })
-      .eq("status", "new");
-
-    return NextResponse.json({ newCount: newCount || 0 });
+    const newCount = await getLeadsCount("new");
+    return NextResponse.json({ newCount });
   } catch (err) {
     console.error("[API /leads GET]", err);
     return NextResponse.json({ error: "Error interno" }, { status: 500 });
