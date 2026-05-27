@@ -6,17 +6,17 @@
 
 export const CONTACT_CONFIG = {
     /** Display phone number (human-readable) */
-    phone: "+52 (664) 000 0000",
+    phone: "+52 (664) 104 9491",
     /** Raw phone number for WhatsApp links (no +, spaces, or parentheses) */
-    phoneRaw: "526640000000",
+    phoneRaw: "526641049491",
     email: "contacto@blackcorporativo.com",
     address: "Tijuana, Baja California, México",
     /** Multi-line address for card/detail displays */
     addressLines: ["Tijuana, Baja California"],
     social: {
-        linkedin: "#",
-        instagram: "#",
-        x: "#",
+        linkedin: "https://linkedin.com/company/blackcorporativo",
+        instagram: "https://instagram.com/blackcorporativo",
+        x: "https://x.com/blackcorporativo",
     },
     /** Business hours (display lines) */
     hours: [

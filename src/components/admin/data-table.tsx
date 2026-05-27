@@ -46,6 +46,7 @@ export function DataTable<TData extends object>({
     const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
     const [globalSearch, setGlobalSearch] = useState("");
     const [activeFilters, setActiveFilters] = useState<Record<string, string | null>>({});
+    const [openFilter, setOpenFilter] = useState<string | null>(null);
 
     // Client-side filtering
     const filteredData = useMemo(() => {
@@ -124,64 +125,20 @@ export function DataTable<TData extends object>({
                 {/* Column Filters */}
                 {filters?.map((filter) => {
                     const current = activeFilters[filter.id] || null;
-                    const [open, setOpen] = useState(false);
+                    const isOpen = openFilter === filter.id;
 
-                    return (
-                        <div key={filter.id} className="relative">
-                            <button
-                                onClick={() => setOpen(!open)}
-                                className={cn(
-                                    "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all",
-                                    current
-                                        ? "bg-gold-500/10 border-gold-500/30 text-gold-500"
-                                        : "bg-muted/20 border-foreground/10 text-foreground/60 hover:border-foreground/30"
-                                )}
-                            >
-                                {filter.label}
-                                {current && <span className="ml-1">· {current}</span>}
-                                <ChevronDown className="w-3 h-3 ml-0.5" />
-                            </button>
-                            {open && (
-                                <>
-                                    <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-                                    <div className="absolute top-full mt-1 left-0 z-20 min-w-[160px] bg-card border border-foreground/10 rounded-xl shadow-2xl shadow-black/40 py-1 overflow-hidden">
-                                        <button
-                                            onClick={() => {
-                                                setActiveFilters(prev => ({ ...prev, [filter.id]: null }));
-                                                setOpen(false);
-                                                setPagination(prev => ({ ...prev, pageIndex: 0 }));
-                                            }}
-                                            className={cn(
-                                                "w-full text-left px-3 py-2 text-xs transition-colors",
-                                                !current ? "text-gold-500 font-medium" : "text-foreground/60 hover:text-foreground"
-                                            )}
-                                        >
-                                            Tod{filter.label.toLowerCase().endsWith("s") ? "os" : "as"}
-                                        </button>
-                                        <div className="border-t border-foreground/5" />
-                                        {filter.options.map((opt) => (
-                                            <button
-                                                key={opt}
-                                                onClick={() => {
-                                                    setActiveFilters(prev => ({ ...prev, [filter.id]: opt }));
-                                                    setOpen(false);
-                                                    setPagination(prev => ({ ...prev, pageIndex: 0 }));
-                                                }}
-                                                className={cn(
-                                                    "w-full text-left px-3 py-2 text-xs transition-colors",
-                                                    current === opt
-                                                        ? "text-gold-500 font-medium bg-gold-500/5"
-                                                        : "text-foreground/70 hover:bg-muted/50"
-                                                )}
-                                            >
-                                                {opt}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    );
+                    return <FilterDropdown
+                        key={filter.id}
+                        filter={filter}
+                        current={current}
+                        isOpen={isOpen}
+                        onToggle={() => setOpenFilter(isOpen ? null : filter.id)}
+                        onSelect={(value) => {
+                            setActiveFilters(prev => ({ ...prev, [filter.id]: value }));
+                            setOpenFilter(null);
+                            setPagination(prev => ({ ...prev, pageIndex: 0 }));
+                        }}
+                    />;
                 })}
 
                 {/* Clear filters */}
@@ -273,6 +230,71 @@ export function DataTable<TData extends object>({
                     </Button>
                 </div>
             </div>
+        </div>
+    );
+}
+
+// ── Filter Dropdown subcomponent ──────────────────────────────────
+
+function FilterDropdown({
+    filter,
+    current,
+    isOpen,
+    onToggle,
+    onSelect,
+}: {
+    filter: FilterConfig;
+    current: string | null;
+    isOpen: boolean;
+    onToggle: () => void;
+    onSelect: (value: string | null) => void;
+}) {
+    return (
+        <div className="relative">
+            <button
+                onClick={onToggle}
+                className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all",
+                    current
+                        ? "bg-gold-500/10 border-gold-500/30 text-gold-500"
+                        : "bg-muted/20 border-foreground/10 text-foreground/60 hover:border-foreground/30"
+                )}
+            >
+                {filter.label}
+                {current && <span className="ml-1">· {current}</span>}
+                <ChevronDown className="w-3 h-3 ml-0.5" />
+            </button>
+            {isOpen && (
+                <>
+                    <div className="fixed inset-0 z-10" onClick={onToggle} />
+                    <div className="absolute top-full mt-1 left-0 z-20 min-w-[160px] bg-card border border-foreground/10 rounded-xl shadow-2xl shadow-black/40 py-1 overflow-hidden">
+                        <button
+                            onClick={() => onSelect(null)}
+                            className={cn(
+                                "w-full text-left px-3 py-2 text-xs transition-colors",
+                                !current ? "text-gold-500 font-medium" : "text-foreground/60 hover:text-foreground"
+                            )}
+                        >
+                            Tod{filter.label.toLowerCase().endsWith("s") ? "os" : "as"}
+                        </button>
+                        <div className="border-t border-foreground/5" />
+                        {filter.options.map((opt) => (
+                            <button
+                                key={opt}
+                                onClick={() => onSelect(opt)}
+                                className={cn(
+                                    "w-full text-left px-3 py-2 text-xs transition-colors",
+                                    current === opt
+                                        ? "text-gold-500 font-medium bg-gold-500/5"
+                                        : "text-foreground/70 hover:bg-muted/50"
+                                )}
+                            >
+                                {opt}
+                            </button>
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 }
