@@ -25,29 +25,34 @@ export default async function AdminDashboard() {
     const supabase = createAdminClient();
 
     // ── Stats ──
-    const { count: totalProperties } = await supabase
+    const { count: totalProperties, error: propErr } = await supabase
         .from("properties")
         .select("*", { count: "exact", head: true });
+    if (propErr) console.error("[Dashboard] Error fetching properties:", propErr);
 
-    const { count: totalAgents } = await supabase
+    const { count: totalAgents, error: agentErr } = await supabase
         .from("agents")
         .select("*", { count: "exact", head: true })
         .eq("is_active", true);
+    if (agentErr) console.error("[Dashboard] Error fetching agents:", agentErr);
 
-    const { count: totalLeads } = await supabase
+    const { count: totalLeads, error: leadsErr } = await supabase
         .from("leads")
         .select("*", { count: "exact", head: true });
+    if (leadsErr) console.error("[Dashboard] Error fetching leads:", leadsErr);
 
-    const { count: newLeads } = await supabase
+    const { count: newLeads, error: newErr } = await supabase
         .from("leads")
         .select("*", { count: "exact", head: true })
         .eq("status", "new");
+    if (newErr) console.error("[Dashboard] Error fetching new leads:", newErr);
 
     // ── Leads by status ──
-    const { data: leadsByStatus } = await supabase
+    const { data: leadsByStatus, error: statusErr } = await supabase
         .from("leads")
         .select("status")
         .not("status", "is", null);
+    if (statusErr) console.error("[Dashboard] Error fetching leads by status:", statusErr);
 
     const statusCounts: Record<string, number> = {};
     (leadsByStatus || []).forEach((l: any) => {
@@ -63,18 +68,20 @@ export default async function AdminDashboard() {
     ];
 
     // ── Recent leads ──
-    const { data: recentLeads } = await supabase
+    const { data: recentLeads, error: recentErr } = await supabase
         .from("leads")
         .select("id, full_name, email, phone, source, status, created_at")
         .order("created_at", { ascending: false })
         .limit(5);
+    if (recentErr) console.error("[Dashboard] Error fetching recent leads:", recentErr);
 
     // ── Recent properties ──
-    const { data: recentProperties } = await supabase
+    const { data: recentProperties, error: recentPropErr } = await supabase
         .from("properties")
         .select("id, title, business_type, price, currency, cover_image, status, created_at")
         .order("created_at", { ascending: false })
         .limit(5);
+    if (recentPropErr) console.error("[Dashboard] Error fetching recent properties:", recentPropErr);
 
     const today = new Date();
     const todayStr = today.toLocaleDateString("es-MX", {
