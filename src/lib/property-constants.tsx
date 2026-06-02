@@ -56,6 +56,12 @@ export const ATTRIBUTE_ICONS: Record<string, LucideIcon> = {
 
 export const DEFAULT_ATTRIBUTE_ICON: LucideIcon = ShieldCheck;
 
+/** React component that returns the right icon for an attribute key. */
+export function getAttributeIcon(key: string): React.ReactNode {
+    const Icon = ATTRIBUTE_ICONS[key.toLowerCase()] || DEFAULT_ATTRIBUTE_ICON;
+    return <Icon className="size-4" />;
+}
+
 /* ── Business type / use (used by filters, badges) ─────────────────── */
 
 export const USES = ["Residencial", "Comercial", "Industrial"] as const;
