@@ -44,9 +44,7 @@ export default function AdminLayout({
                         </DrawerContent>
                     </Drawer>
 
-                    <div className="w-full flex-1">
-                        <h1 className="text-lg font-bold tracking-tight text-foreground/50">Backoffice Admin</h1>
-                    </div>
+                    <div className="w-full flex-1" />
                     <ModeToggle />
                 </header>
 
