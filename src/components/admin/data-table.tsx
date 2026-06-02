@@ -57,7 +57,10 @@ export function DataTable<TData extends object>({
             const q = globalSearch.toLowerCase();
             result = result.filter((row) => {
                 // Search through specified fields, or all string fields
-                const fields = searchFields || (Object.keys(row as any).filter((k: any) => typeof (row as any)[k] === "string") as (keyof TData)[]);
+                const rowRecord = row as Record<string, unknown>;
+                const fields: (keyof TData)[] = searchFields || (
+                    Object.keys(rowRecord).filter((k) => typeof rowRecord[k] === "string") as (keyof TData)[]
+                );
                 return fields.some((key) => {
                     const val = row[key];
                     return typeof val === "string" && val.toLowerCase().includes(q);

@@ -159,26 +159,26 @@ export default function SettingsPage() {
                     <CardTitle>Títulos de Marcas</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    {[
+                    {([
                         { keyTitle: "luxuryHeroTitle", keySubtitle: "luxuryHeroSubtitle", label: "Black Luxury" },
                         { keyTitle: "businessHeroTitle", keySubtitle: "businessHeroSubtitle", label: "Black Business" },
                         { keyTitle: "industrialHeroTitle", keySubtitle: "industrialHeroSubtitle", label: "Black Industrial" },
-                    ].map((brand) => (
+                    ] satisfies Array<{ keyTitle: keyof AppSettings; keySubtitle: keyof AppSettings; label: string }>).map((brand) => (
                         <div key={brand.label} className="space-y-3 p-4 bg-muted/20 rounded-xl border border-foreground/5">
                             <p className="text-xs font-bold uppercase tracking-wider text-gold-500 font-display">{brand.label}</p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="text-sm font-medium mb-1 block">Título</label>
                                     <Input
-                                        value={(settings as any)[brand.keyTitle]}
-                                        onChange={e => update(brand.keyTitle as keyof AppSettings, e.target.value)}
+                                        value={String(settings[brand.keyTitle] ?? "")}
+                                        onChange={e => update(brand.keyTitle, e.target.value)}
                                     />
                                 </div>
                                 <div>
                                     <label className="text-sm font-medium mb-1 block">Subtítulo</label>
                                     <Input
-                                        value={(settings as any)[brand.keySubtitle]}
-                                        onChange={e => update(brand.keySubtitle as keyof AppSettings, e.target.value)}
+                                        value={String(settings[brand.keySubtitle] ?? "")}
+                                        onChange={e => update(brand.keySubtitle, e.target.value)}
                                     />
                                 </div>
                             </div>
