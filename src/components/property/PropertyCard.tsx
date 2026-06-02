@@ -103,7 +103,7 @@ export function PropertyCard({
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-foreground/15 text-sm font-medium uppercase tracking-widest">
+                        <span className="text-foreground/40 text-sm font-medium uppercase tracking-widest">
                             Sin imagen
                         </span>
                     </div>

@@ -134,7 +134,7 @@ export function BusinessCTA() {
                                         comercial.
                                     </p>
 
-                                    <div className="flex items-center gap-3 pt-2 text-foreground/30 text-xs uppercase tracking-widest">
+                                    <div className="flex items-center gap-3 pt-2 text-foreground/50 text-xs uppercase tracking-widest">
                                         <div className="w-2 h-2 rounded-full bg-gold-500/50" />
                                         Respuesta en menos de 24h
                                     </div>

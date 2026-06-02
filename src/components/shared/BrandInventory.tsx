@@ -158,7 +158,7 @@ export function BrandInventory({
                                             />
                                         ) : (
                                             <div className="absolute inset-0 bg-zinc-900/80 flex items-center justify-center">
-                                                <span className="text-foreground/15 text-sm uppercase tracking-widest">
+                                                <span className="text-foreground/40 text-sm uppercase tracking-widest">
                                                     En preparación
                                                 </span>
                                             </div>

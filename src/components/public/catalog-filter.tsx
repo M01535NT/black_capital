@@ -209,7 +209,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                         <Search className="size-6 text-foreground/20" />
                     </div>
                     <p className="text-foreground/50 font-medium mb-2 font-display uppercase tracking-wide">Sin resultados</p>
-                    <p className="text-foreground/30 text-sm mb-8">Intenta ajustar los filtros o el término de búsqueda.</p>
+                    <p className="text-foreground/50 text-sm mb-8">Intenta ajustar los filtros o el término de búsqueda.</p>
                     <button
                         onClick={clearAll}
                         className="px-6 py-2.5 border border-gold-500/30 text-gold-500 rounded-full text-sm font-display font-bold uppercase tracking-wider hover:bg-gold-500 hover:text-black transition-all duration-300"

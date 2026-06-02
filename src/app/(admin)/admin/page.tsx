@@ -269,7 +269,7 @@ export default async function AdminDashboard() {
                                         >
                                             {statusLabels[lead.status] || lead.status}
                                         </Badge>
-                                        <p className="text-[10px] text-foreground/30 mt-0.5">
+                                        <p className="text-[10px] text-foreground/50 mt-0.5">
                                             {new Date(lead.created_at).toLocaleDateString("es-MX", { day: "2-digit", month: "short" })}
                                         </p>
                                     </div>
@@ -320,7 +320,7 @@ export default async function AdminDashboard() {
                                     </div>
                                     <div className="text-right shrink-0">
                                         <p className="text-xs font-numerics font-bold text-gold-500">{formatPrice(prop.price, prop.currency)}</p>
-                                        <p className="text-[10px] text-foreground/30 mt-0.5">
+                                        <p className="text-[10px] text-foreground/50 mt-0.5">
                                             {new Date(prop.created_at).toLocaleDateString("es-MX", { day: "2-digit", month: "short" })}
                                         </p>
                                     </div>
