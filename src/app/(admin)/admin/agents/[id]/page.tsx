@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, Mail, Phone, Shield, Building2, Calendar, ExternalLink, Edit, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { AssignPropertiesButton } from "./assign-properties";
+import Image from "next/image";
 
 export const revalidate = 0;
 
@@ -168,7 +169,13 @@ export default async function AgentDetailPage({
                                     {/* Thumbnail */}
                                     <div className="w-16 h-16 rounded-xl bg-muted overflow-hidden shrink-0 border border-foreground/5">
                                         {prop.cover_image ? (
-                                            <img src={prop.cover_image} alt={prop.title || "Propiedad"} className="w-full h-full object-cover" />
+                                            <Image
+                                                src={prop.cover_image}
+                                                alt={prop.title || "Propiedad"}
+                                                width={64}
+                                                height={64}
+                                                className="w-full h-full object-cover"
+                                            />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center text-foreground/20">
                                                 <Building2 className="w-5 h-5" />

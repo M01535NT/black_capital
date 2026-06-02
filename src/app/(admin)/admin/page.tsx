@@ -24,6 +24,7 @@ import {
     Eye,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export const revalidate = 0;
 
@@ -269,7 +270,7 @@ export default async function AdminDashboard() {
                                         >
                                             {statusLabels[lead.status] || lead.status}
                                         </Badge>
-                                        <p className="text-[10px] text-foreground/30 mt-0.5">
+                                        <p className="text-[10px] text-foreground/50 mt-0.5">
                                             {new Date(lead.created_at).toLocaleDateString("es-MX", { day: "2-digit", month: "short" })}
                                         </p>
                                     </div>
@@ -300,7 +301,13 @@ export default async function AdminDashboard() {
                                 >
                                     <div className="w-10 h-10 rounded-lg bg-muted overflow-hidden shrink-0 border border-foreground/5">
                                         {prop.cover_image ? (
-                                            <img src={prop.cover_image} alt={prop.title} className="w-full h-full object-cover" />
+                                            <Image
+                                                src={prop.cover_image}
+                                                alt={prop.title}
+                                                width={40}
+                                                height={40}
+                                                className="w-full h-full object-cover"
+                                            />
                                         ) : (
                                             <Building2 className="w-4 h-4 text-foreground/20 m-2.5" />
                                         )}
@@ -320,7 +327,7 @@ export default async function AdminDashboard() {
                                     </div>
                                     <div className="text-right shrink-0">
                                         <p className="text-xs font-numerics font-bold text-gold-500">{formatPrice(prop.price, prop.currency)}</p>
-                                        <p className="text-[10px] text-foreground/30 mt-0.5">
+                                        <p className="text-[10px] text-foreground/50 mt-0.5">
                                             {new Date(prop.created_at).toLocaleDateString("es-MX", { day: "2-digit", month: "short" })}
                                         </p>
                                     </div>

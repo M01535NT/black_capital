@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { UserPlus, Mail, Phone, Shield, ChevronRight, Building2, Users, BarChart3, Edit, Eye } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export const revalidate = 0;
 
@@ -97,7 +98,13 @@ export default async function AgentsPage() {
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-14 h-14 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 text-xl font-bold shrink-0 border-2 border-gold-500/20 group-hover:border-gold-500/50 transition-colors overflow-hidden">
                                         {agent.photo_url ? (
-                                            <img src={agent.photo_url} alt={agent.full_name} className="w-full h-full object-cover" />
+                                            <Image
+                                                src={agent.photo_url}
+                                                alt={agent.full_name}
+                                                width={56}
+                                                height={56}
+                                                className="w-full h-full object-cover"
+                                            />
                                         ) : (
                                             agent.full_name.charAt(0).toUpperCase()
                                         )}

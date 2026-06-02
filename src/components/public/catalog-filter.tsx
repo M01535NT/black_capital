@@ -2,95 +2,18 @@
 
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import Link from "next/link";
 import { Search, X, ArrowUpDown } from "lucide-react";
 import { motion } from "framer-motion";
+import { PropertyCard, type PropertyCardData } from "@/components/property/PropertyCard";
+import { USES, BUSINESS_TYPES, BRAND_TO_USE } from "@/lib/property-constants";
 
-type Property = {
-    id: string;
-    slug: string | null;
-    title: string;
-    property_use: string;
-    property_type: string;
-    business_type: string;
-    price: number;
-    currency: string;
-    m2_terrain: number | null;
-    m2_construction: number | null;
-    cover_image: string | null;
-    status: string;
-};
-
-const USES = ["Residencial", "Comercial", "Industrial"];
-const BUSINESS_TYPES = ["Venta", "Renta"];
 const SORT_OPTIONS = [
     { label: "Más recientes", value: "newest" },
     { label: "Menor precio", value: "price_asc" },
     { label: "Mayor precio", value: "price_desc" },
 ];
 
-function formatPrice(price: number, currency: string, businessType: string): string {
-    if (businessType === "Renta") {
-        return `$${price.toLocaleString("es-MX")} ${currency}/mes`;
-    }
-    if (price >= 1_000_000) {
-        return `$${(price / 1_000_000).toFixed(1)} M ${currency}`;
-    }
-    return `$${price.toLocaleString("es-MX")} ${currency}`;
-}
-
-function PropertyCard({ property, index }: { property: Property; index: number }) {
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
-        >
-            <Link
-                href={`/inventario/${property.slug || property.id}`}
-                className="group block bg-card border border-foreground/5 rounded-2xl overflow-hidden hover:border-gold-500/30 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.12)] transition-all duration-500"
-            >
-                <div className="aspect-[4/3] relative overflow-hidden bg-foreground/[0.03]">
-                    {property.cover_image ? (
-                        <img
-                            src={property.cover_image}
-                            alt={property.title}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                            loading={index < 6 ? "eager" : "lazy"}
-                        />
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                            <span className="text-foreground/15 text-sm font-medium uppercase tracking-widest">Sin imagen</span>
-                        </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="absolute top-3 left-3 flex gap-2">
-                        <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white rounded-full border border-white/10">
-                            {property.property_use}
-                        </span>
-                        <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-gold-500 text-black rounded-full">
-                            {property.business_type}
-                        </span>
-                    </div>
-                </div>
-                <div className="p-5">
-                    <h3 className="font-display text-[0.9375rem] font-semibold leading-snug line-clamp-2 group-hover:text-gold-500 transition-colors mb-3">
-                        {property.title}
-                    </h3>
-                    <div className="flex items-center justify-between gap-2 pt-3 border-t border-foreground/5">
-                        <div className="flex gap-3 text-[11px] text-foreground/40 font-medium uppercase tracking-wider">
-                            {property.m2_terrain ? <span>{property.m2_terrain.toLocaleString()} m² T</span> : null}
-                            {property.m2_construction ? <span>{property.m2_construction.toLocaleString()} m² C</span> : null}
-                        </div>
-                        <span className="text-sm font-semibold font-numerics text-gold-500 whitespace-nowrap">
-                            {formatPrice(property.price, property.currency, property.business_type)}
-                        </span>
-                    </div>
-                </div>
-            </Link>
-        </motion.div>
-    );
-}
+type Property = PropertyCardData;
 
 export function CatalogFilter({ properties }: { properties: Property[] }) {
     const searchParams = useSearchParams();
@@ -111,12 +34,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
         if (brandProcessed.current) return;
         const brand = searchParams.get("brand");
         if (brand && !activeUse) {
-            const brandMap: Record<string, string> = {
-                luxury: "Residencial",
-                business: "Comercial",
-                industrial: "Industrial",
-            };
-            const mapped = brandMap[brand];
+            const mapped = BRAND_TO_USE[brand];
             if (mapped) {
                 brandProcessed.current = true;
                 setActiveUse(mapped);
@@ -177,8 +95,12 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
             {/* Search + Sort Bar */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
                 <div className="relative flex-1 max-w-md">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-foreground/30" />
+                    <label htmlFor="catalog-search" className="sr-only">
+                        Buscar propiedad por título
+                    </label>
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-foreground/30 pointer-events-none" />
                     <input
+                        id="catalog-search"
                         ref={searchInputRef}
                         type="text"
                         placeholder="Buscar propiedad..."
@@ -256,7 +178,11 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
 
                 {/* Sort dropdown */}
                 <div className="ml-auto relative">
+                    <label htmlFor="catalog-sort" className="sr-only">
+                        Ordenar propiedades
+                    </label>
                     <select
+                        id="catalog-sort"
                         value={sort}
                         onChange={(e) => {
                             setSort(e.target.value);
@@ -283,7 +209,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                         <Search className="size-6 text-foreground/20" />
                     </div>
                     <p className="text-foreground/50 font-medium mb-2 font-display uppercase tracking-wide">Sin resultados</p>
-                    <p className="text-foreground/30 text-sm mb-8">Intenta ajustar los filtros o el término de búsqueda.</p>
+                    <p className="text-foreground/50 text-sm mb-8">Intenta ajustar los filtros o el término de búsqueda.</p>
                     <button
                         onClick={clearAll}
                         className="px-6 py-2.5 border border-gold-500/30 text-gold-500 rounded-full text-sm font-display font-bold uppercase tracking-wider hover:bg-gold-500 hover:text-black transition-all duration-300"
@@ -294,7 +220,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                     {filtered.map((property, i) => (
-                        <PropertyCard key={property.id} property={property} index={i} />
+                        <PropertyCard key={property.id} property={property} index={i} priority={i < 3} />
                     ))}
                 </div>
             )}

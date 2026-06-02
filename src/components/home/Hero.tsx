@@ -171,7 +171,7 @@ export function Hero() {
                 transition={{ delay: 2, duration: 1 }}
                 className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
             >
-                <span className="text-[10px] uppercase tracking-[0.3em] text-foreground/30 font-medium">
+                <span className="text-[10px] uppercase tracking-[0.3em] text-foreground/50 font-medium">
                     Descubre más
                 </span>
                 <motion.div

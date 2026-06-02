@@ -138,7 +138,7 @@ export function ImageGallery({ images, title, coverImage }: ImageGalleryProps) {
                         >
                             {imageErrors.has(idx) ? (
                                 <div className="w-full h-full flex items-center justify-center bg-foreground/[0.03]">
-                                    <div className="text-center text-foreground/20">
+                                    <div className="text-center text-foreground/40">
                                         <span className="text-xs uppercase tracking-wider font-display">Sin imagen</span>
                                     </div>
                                 </div>

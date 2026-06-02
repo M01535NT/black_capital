@@ -1,36 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Maximize2, Building2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FadeIn, StaggerChildren, StaggerItem } from "@/components/ui/motion";
+import { PropertyCard, type PropertyCardData } from "@/components/property/PropertyCard";
 import { createClient } from "@/lib/supabase/client";
 
-interface FeaturedProperty {
-    id: string;
-    title: string;
-    slug: string | null;
-    property_use: string;
-    business_type: string;
-    m2_terrain: number | null;
-    m2_construction: number | null;
-    price: number;
-    currency: string;
-    cover_image: string | null;
-    attributes: string[] | null;
-}
-
-function formatPrice(price: number, currency: string, businessType: string): string {
-    if (businessType === "Renta") {
-        return `$${price} ${currency}/m²/mes`;
-    }
-    if (price >= 1_000_000) {
-        return `$${(price / 1_000_000).toFixed(1)} M ${currency}`;
-    }
-    return `$${price.toLocaleString()} ${currency}`;
-}
+type FeaturedProperty = PropertyCardData & { property_type: string };
 
 export function FeaturedInventory() {
     const [items, setItems] = useState<FeaturedProperty[]>([]);
@@ -41,7 +19,7 @@ export function FeaturedInventory() {
             const supabase = createClient();
             const { data } = await supabase
                 .from("properties")
-                .select("id, title, slug, property_use, business_type, m2_terrain, m2_construction, price, currency, cover_image, attributes")
+                .select("id, title, slug, property_use, business_type, m2_terrain, m2_construction, price, currency, cover_image, attributes, property_type")
                 .eq("is_featured", true)
                 .eq("status", "Available")
                 .order("created_at", { ascending: false })
@@ -95,78 +73,14 @@ export function FeaturedInventory() {
                     </FadeIn>
                 ) : (
                     <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {items.map((item) => (
+                        {items.map((item, i) => (
                             <StaggerItem key={item.id}>
-                                <Link href={`/inventario/${item.slug || item.id}`} className="group block h-full">
-                                    <article className="h-full flex flex-col bg-background border border-foreground/10 rounded-xl overflow-hidden transition-all duration-500 hover:border-gold-500/30 hover:shadow-[0_0_40px_-5px] hover:shadow-gold-500/20">
-
-                                        {/* Image Wrapper */}
-                                        <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-                                            {item.cover_image ? (
-                                                <Image
-                                                    src={item.cover_image}
-                                                    alt={item.title}
-                                                    fill
-                                                    sizes="(max-width: 768px) 100vw, 33vw"
-                                                    className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center bg-zinc-900">
-                                                    <span className="text-foreground/20 text-sm uppercase tracking-widest">En preparación</span>
-                                                </div>
-                                            )}
-                                            <div className="absolute top-4 left-4">
-                                                <span className="px-3 py-1 bg-black/80 backdrop-blur-sm text-gold-500 text-xs font-bold uppercase tracking-widest rounded-full border border-gold-500/20">
-                                                    {item.property_use}
-                                                </span>
-                                            </div>
-                                            <div className="absolute top-4 right-4">
-                                                <span className="px-3 py-1 bg-gold-500/90 text-black text-xs font-bold uppercase tracking-wider rounded-full">
-                                                    {item.business_type}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        {/* Content */}
-                                        <div className="p-6 flex-1 flex flex-col">
-                                            <h3 className="card-title text-xl text-foreground group-hover:text-gold-500 transition-colors line-clamp-2 mb-2">
-                                                {item.title}
-                                            </h3>
-
-                                            {/* Price */}
-                                            <p className="font-numerics text-xl font-bold text-gold-400 mb-4">
-                                                {formatPrice(item.price, item.currency, item.business_type)}
-                                            </p>
-
-                                            {/* Metrics */}
-                                            <div className="grid grid-cols-2 gap-4 mb-6 text-sm text-foreground/70">
-                                                {item.m2_terrain && (
-                                                    <div className="flex items-center gap-2">
-                                                        <Maximize2 className="w-4 h-4 text-gold-500" />
-                                                        <span className="font-numerics">{item.m2_terrain.toLocaleString()} m² T</span>
-                                                    </div>
-                                                )}
-                                                {item.m2_construction && (
-                                                    <div className="flex items-center gap-2">
-                                                        <Building2 className="w-4 h-4 text-gold-500" />
-                                                        <span className="font-numerics">{item.m2_construction.toLocaleString()} m² C</span>
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            {/* Attributes */}
-                                            {item.attributes && item.attributes.length > 0 && (
-                                                <div className="mt-auto pt-4 border-t border-foreground/10 flex flex-wrap gap-2">
-                                                    {item.attributes.map((attr, idx) => (
-                                                        <span key={idx} className="text-xs px-2 py-1 bg-foreground/5 text-foreground/80 rounded-md">
-                                                            {attr}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </article>
-                                </Link>
+                                <PropertyCard
+                                    property={item}
+                                    variant="featured"
+                                    disableMotion
+                                    priority={i === 0}
+                                />
                             </StaggerItem>
                         ))}
                     </StaggerChildren>

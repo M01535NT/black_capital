@@ -262,7 +262,7 @@ export function GatedBrochure({
                                         </>
                                     )}
                                 </Button>
-                                <p className="text-[11px] text-center text-foreground/30 pt-1">
+                                <p className="text-[11px] text-center text-foreground/50 pt-1">
                                     Tus datos están protegidos. No compartimos tu información con terceros.
                                 </p>
                             </form>
