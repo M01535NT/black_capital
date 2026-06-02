@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LuxuryHero } from "@/components/luxury/LuxuryHero";
+import { SubBrandHero } from "@/components/shared/SubBrandHero";
 import { LuxuryValue } from "@/components/luxury/LuxuryValue";
 import { LuxuryStats } from "@/components/luxury/LuxuryStats";
 import { BrandInventory } from "@/components/shared/BrandInventory";
@@ -22,7 +22,23 @@ export const metadata: Metadata = {
 export default function BlackLuxuryPage() {
     return (
         <>
-            <LuxuryHero />
+            <SubBrandHero
+                brand="Black Luxury"
+                backgroundImage="/luxury-hero.png"
+                backgroundAlt="Residencia de súper lujo"
+                accent="gold"
+                headline={
+                    <>
+                        Donde el Lujo
+                        <br />
+                        se Convierte en{" "}
+                        <span className="metallic-gold">Legado</span>
+                    </>
+                }
+                subtitle="Residencias trofeo, penthouses de autor y desarrollos exclusivos seleccionados para inversores HNWI con los estándares más exigentes del mercado inmobiliario mexicano."
+                primaryCta={{ label: "Explorar Portafolio", href: "/inventario?brand=luxury" }}
+                secondaryCta={{ label: "Solicitar Acceso Privado", href: "#luxury-cta" }}
+            />
             <LuxuryValue />
             <LuxuryStats />
             <BrandInventory

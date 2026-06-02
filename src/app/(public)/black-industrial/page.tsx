@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { IndustrialHero } from "@/components/industrial/IndustrialHero";
+import { SubBrandHero } from "@/components/shared/SubBrandHero";
 import { IndustrialValue } from "@/components/industrial/IndustrialValue";
 import { IndustrialStats } from "@/components/industrial/IndustrialStats";
 import { BrandInventory } from "@/components/shared/BrandInventory";
 import { IndustrialCTA } from "@/components/industrial/IndustrialCTA";
 
 export const metadata: Metadata = {
-    title: "Black Industrial | Naves Industriales y Terrenos en México",
+    title: "Black Industrial | Naves, Bodegas y Parques Logísticos",
     description:
-        "Terrenos macro, naves industriales clase A y parques logísticos en los principales corredores de México. Análisis financiero estructurado para inversores institucionales.",
+        "Terrenos macro, naves industriales clase A y parques logísticos en los principales corredores de México. Análisis estructurado para inversión institucional.",
     openGraph: {
-        title: "Black Industrial | Naves Industriales y Terrenos en México",
+        title: "Black Industrial | Infraestructura que Escala",
         description:
-            "Portafolio de activos industriales con análisis financiero completo: cap rates, ocupación histórica y proyecciones de rendimiento.",
+            "Portafolio industrial con análisis estructurado para decisiones de inversión institucional en los principales corredores logísticos de México.",
         type: "website",
         locale: "es_MX",
         siteName: "Black Corporativo",
@@ -22,16 +22,37 @@ export const metadata: Metadata = {
 export default function BlackIndustrialPage() {
     return (
         <>
-            <IndustrialHero />
+            <SubBrandHero
+                brand="Black Industrial"
+                backgroundImage="/industrial-hero.png"
+                backgroundAlt="Complejo industrial moderno"
+                accent="steel"
+                overlayClass="from-black/70 via-black/50"
+                headline={
+                    <>
+                        Infraestructura
+                        <br />
+                        <span className="metallic-gold">que Escala</span>
+                    </>
+                }
+                subtitle="Terrenos macro, naves industriales clase A y parques logísticos en los principales corredores de México. Análisis estructurado para decisiones de inversión institucional."
+                primaryCta={{ label: "Ver Inventario Industrial", href: "/inventario?brand=industrial" }}
+                highlights={[
+                    { value: "250K+", label: "m² en portafolio" },
+                    { value: "45+", label: "naves activas" },
+                    { value: "8", label: "estados" },
+                ]}
+                gridLines
+            />
             <IndustrialValue />
             <IndustrialStats />
             <BrandInventory
                 brandSlug="industrial"
                 propertyUse="Industrial"
-                title="Inventario"
-                highlight="Industrial"
-                subtitle="Activos seleccionados con análisis financiero completo y documentación verificada."
-                ctaText="Ver Todo el Inventario Industrial"
+                title="Naves y"
+                highlight="Parques"
+                subtitle="Cada activo ha sido evaluado por ubicación, capacidad, conectividad y retorno para decisiones de inversión institucional."
+                ctaText="Ver Portafolio Completo"
                 accentColor="steel"
             />
             <IndustrialCTA />
