@@ -22,6 +22,9 @@ import { ImageGallery } from "@/components/public/image-gallery";
 import { VideoEmbed } from "@/components/public/video-embed";
 import { TourEmbed } from "@/components/public/tour-embed";
 import { Breadcrumbs } from "@/components/public/breadcrumbs";
+import { PropertyCard } from "@/components/property/PropertyCard";
+import { STATUS_LABELS, STATUS_CLASSES, ATTRIBUTE_ICONS, DEFAULT_ATTRIBUTE_ICON } from "@/lib/property-constants";
+import { formatPrice } from "@/lib/format";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 import Link from "next/link";
 
@@ -44,6 +47,8 @@ type SimilarProperty = {
     currency: string;
     cover_image: string | null;
     business_type: string;
+    property_use: string;
+    m2_terrain: number | null;
     m2_construction: number | null;
 };
 
@@ -81,31 +86,10 @@ export async function generateMetadata({
     };
 }
 
-const STATUS_LABELS: Record<string, string> = {
-    Available: "Disponible",
-    Under_Offer: "Bajo Oferta",
-    Sold: "Vendido",
-    Rented: "Rentado",
-};
-
-const STATUS_COLORS: Record<string, string> = {
-    Available: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-    Under_Offer: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
-    Sold: "bg-red-500/10 text-red-400 border-red-500/20",
-    Rented: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-};
-
-const attributeIcons: Record<string, React.ReactNode> = {
-    habitaciones: <Bed className="size-4" />,
-    dormitorios: <Bed className="size-4" />,
-    recamaras: <Bed className="size-4" />,
-    baños: <Bath className="size-4" />,
-    banos: <Bath className="size-4" />,
-    pisos: <Layers className="size-4" />,
-    niveles: <Layers className="size-4" />,
-    estacionamiento: <Car className="size-4" />,
-    cajones: <Car className="size-4" />,
-};
+function getAttributeIcon(key: string): React.ReactNode {
+    const Icon = ATTRIBUTE_ICONS[key.toLowerCase()] || DEFAULT_ATTRIBUTE_ICON;
+    return <Icon className="size-4" />;
+}
 
 export default async function PropertyDetailPage({
     params,
@@ -145,7 +129,7 @@ export default async function PropertyDetailPage({
         property.property_use
             ? supabase
                 .from("properties")
-                .select("id, slug, title, price, currency, cover_image, business_type, m2_construction")
+                .select("id, slug, title, price, currency, cover_image, business_type, property_use, m2_terrain, m2_construction")
                 .eq("property_use", property.property_use)
                 .eq("status", "Available")
                 .neq("id", property.id)
@@ -180,19 +164,6 @@ export default async function PropertyDetailPage({
         const alreadyInDocs = documents.some((d) => d.url === property.brochure_path);
         if (!alreadyInDocs) documents.push({ label: "Brochure Ejecutivo", url: property.brochure_path });
     }
-
-    const formatPrice = (price: number, currency: string) => {
-        return new Intl.NumberFormat("es-MX", {
-            style: "currency",
-            currency,
-            maximumFractionDigits: 0,
-        }).format(price);
-    };
-
-    const formatShortPrice = (price: number, currency: string) => {
-        if (price >= 1_000_000) return `$${(price / 1_000_000).toFixed(1)} M ${currency}`;
-        return `$${price.toLocaleString("es-MX")} ${currency}`;
-    };
 
     const hasMedia = property.video_urls?.length > 0 || property.tour_embeds?.length > 0;
 
@@ -268,7 +239,7 @@ export default async function PropertyDetailPage({
                                 )}
                                 <span
                                     className={`ml-auto text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${
-                                        STATUS_COLORS[property.status] || "text-foreground/50 border-foreground/15"
+                                        STATUS_CLASSES[property.status] || "text-foreground/50 border-foreground/15"
                                     }`}
                                 >
                                     {STATUS_LABELS[property.status] || property.status}
@@ -333,7 +304,7 @@ export default async function PropertyDetailPage({
                                     <MetricCard
                                         key={key}
                                         icon={
-                                            attributeIcons[key.toLowerCase()] || (
+                                            getAttributeIcon(key) || (
                                                 <ShieldCheck className="size-4 text-gold-500" />
                                             )
                                         }
@@ -418,49 +389,13 @@ export default async function PropertyDetailPage({
                                         Propiedades Similares
                                     </h2>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {similar.map((sp) => (
-                                            <Link
+                                        {similar.map((sp, i) => (
+                                            <PropertyCard
                                                 key={sp.id}
-                                                href={`/inventario/${sp.slug || sp.id}`}
-                                                className="group block bg-card border border-foreground/5 rounded-2xl overflow-hidden hover:border-gold-500/30 hover:shadow-[0_0_40px_-8px_rgba(212,175,55,0.12)] transition-all duration-500"
-                                            >
-                                                <div className="aspect-[16/10] relative overflow-hidden bg-foreground/[0.03]">
-                                                    {sp.cover_image ? (
-                                                        <img
-                                                            src={sp.cover_image}
-                                                            alt={sp.title}
-                                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                                            loading="lazy"
-                                                        />
-                                                    ) : (
-                                                        <div className="w-full h-full flex items-center justify-center">
-                                                            <span className="text-foreground/15 text-xs font-medium uppercase tracking-wider">
-                                                                Sin imagen
-                                                            </span>
-                                                        </div>
-                                                    )}
-                                                    <div className="absolute top-3 left-3">
-                                                        <span className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider bg-gold-500 text-black rounded-full">
-                                                            {sp.business_type}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div className="p-4">
-                                                    <h3 className="font-display font-semibold text-sm uppercase tracking-wider leading-snug line-clamp-2 group-hover:text-gold-500 transition-colors mb-2">
-                                                        {sp.title}
-                                                    </h3>
-                                                    <div className="flex items-center justify-between gap-2">
-                                                        <span className="text-xs text-foreground/40 font-medium uppercase tracking-wider">
-                                                            {sp.m2_construction
-                                                                ? `${sp.m2_construction.toLocaleString()} m²`
-                                                                : ""}
-                                                        </span>
-                                                        <span className="text-sm font-semibold font-numerics text-gold-500 whitespace-nowrap">
-                                                            {formatShortPrice(sp.price, sp.currency)}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </Link>
+                                                property={sp}
+                                                variant="similar"
+                                                index={i}
+                                            />
                                         ))}
                                     </div>
                                 </section>
