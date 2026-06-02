@@ -24,6 +24,7 @@ import {
     Eye,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export const revalidate = 0;
 
@@ -300,7 +301,13 @@ export default async function AdminDashboard() {
                                 >
                                     <div className="w-10 h-10 rounded-lg bg-muted overflow-hidden shrink-0 border border-foreground/5">
                                         {prop.cover_image ? (
-                                            <img src={prop.cover_image} alt={prop.title} className="w-full h-full object-cover" />
+                                            <Image
+                                                src={prop.cover_image}
+                                                alt={prop.title}
+                                                width={40}
+                                                height={40}
+                                                className="w-full h-full object-cover"
+                                            />
                                         ) : (
                                             <Building2 className="w-4 h-4 text-foreground/20 m-2.5" />
                                         )}
