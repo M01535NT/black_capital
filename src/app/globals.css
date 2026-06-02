@@ -32,6 +32,32 @@
   --font-sans: var(--font-inter), sans-serif;
   --font-display: var(--font-montserrat), sans-serif;
   --font-numerics: var(--font-inter), sans-serif;
+
+  /* ── Semantic Type Scale ── */
+  /* Display tiers (display font, uppercase, tight tracking) */
+  --text-display-1: clamp(3rem, 6vw, 4.5rem);       /* Hero / landing hero */
+  --text-display-2: clamp(2.25rem, 4.5vw, 3rem);    /* h1 — page hero */
+  --text-display-3: clamp(1.5rem, 3vw, 2rem);       /* h2 — section */
+  --text-display-4: clamp(1.125rem, 2vw, 1.375rem); /* h3 — card title */
+  --text-display-5: 1.0625rem;                       /* h4 — small heading */
+
+  /* Body tiers (sans font, normal case) */
+  --text-body-xl: 1.125rem;   /* 18px — editorial / lead */
+  --text-body-lg: 1.0625rem;  /* 17px — important body */
+  --text-body: 0.9375rem;     /* 15px — default body */
+  --text-body-sm: 0.8125rem;  /* 13px — secondary body */
+  --text-caption: 0.6875rem;  /* 11px — overline / meta */
+
+  /* Line heights */
+  --leading-display: 1.05;
+  --leading-snug: 1.2;
+  --leading-body: 1.65;
+  --leading-relaxed: 1.75;
+
+  /* Letter spacing */
+  --tracking-display: 0.02em;
+  --tracking-overline: 0.16em;
+  --tracking-eyebrow: 0.24em;
 }
 
 :root {
@@ -649,4 +675,33 @@ h4 { font-size: clamp(1.1rem, 2vw, 1.375rem); }
 /* ── Safe area padding bottom (mobile notch) ── */
 .safe-area-pb {
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+/* ── Map grayscale filter (Google Maps embed) ── */
+.map-grayscale {
+  filter: grayscale(100%) invert(92%) contrast(83%);
+}
+
+/* ── prefers-reduced-motion: disable decorative animations ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-marquee,
+  .animate-gradient-shift,
+  .animate-gold-shimmer,
+  .animate-float,
+  .animate-float-slow,
+  .animate-float-fast,
+  .animate-pulse-glow,
+  .animate-luminous-flow,
+  .metallic-gold {
+    animation: none !important;
+  }
 }
