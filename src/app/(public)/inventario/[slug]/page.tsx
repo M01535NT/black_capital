@@ -115,7 +115,7 @@ export default async function PropertyDetailPage({
     const { slug } = await params;
     const supabase = await createClient();
 
-    let propertyQuery = supabase
+    const propertyQuery = supabase
         .from("properties")
         .select("*")
         .eq("slug", slug)
@@ -135,10 +135,27 @@ export default async function PropertyDetailPage({
 
     if (error || !property) return notFound();
 
-    const { data: assignedAgents } = await supabase
-        .from("property_agents")
-        .select("agent_id")
-        .eq("property_id", property.id);
+    // Parallelize the two lookups that both depend on property.id / property.property_use.
+    // The agents-in-agents fetch must remain sequential (it depends on property_agents result).
+    const [propertyAgentsRes, similarRes] = await Promise.all([
+        supabase
+            .from("property_agents")
+            .select("agent_id")
+            .eq("property_id", property.id),
+        property.property_use
+            ? supabase
+                .from("properties")
+                .select("id, slug, title, price, currency, cover_image, business_type, m2_construction")
+                .eq("property_use", property.property_use)
+                .eq("status", "Available")
+                .neq("id", property.id)
+                .order("created_at", { ascending: false })
+                .limit(3)
+            : Promise.resolve({ data: [] as SimilarProperty[] | null, error: null }),
+    ]);
+
+    const assignedAgents = propertyAgentsRes.data;
+    const similar: SimilarProperty[] = similarRes.data || [];
 
     let agents: AgentInfo[] = [];
     if (assignedAgents && assignedAgents.length > 0) {
@@ -149,19 +166,6 @@ export default async function PropertyDetailPage({
             .in("id", agentIds)
             .eq("is_active", true);
         if (agentData) agents = agentData;
-    }
-
-    let similar: SimilarProperty[] = [];
-    if (property.property_use) {
-        const { data: similarData } = await supabase
-            .from("properties")
-            .select("id, slug, title, price, currency, cover_image, business_type, m2_construction")
-            .eq("property_use", property.property_use)
-            .eq("status", "Available")
-            .neq("id", property.id)
-            .order("created_at", { ascending: false })
-            .limit(3);
-        if (similarData) similar = similarData;
     }
 
     const documents: { label: string; url: string }[] = [];
@@ -395,7 +399,7 @@ export default async function PropertyDetailPage({
                                             width="100%"
                                             height="100%"
                                             loading="lazy"
-                                            style={{ border: 0, filter: "grayscale(100%) invert(92%) contrast(83%)" }}
+                                            className="border-0 map-grayscale"
                                             referrerPolicy="no-referrer-when-downgrade"
                                             src={`https://maps.google.com/maps?q=${encodeURIComponent(property.address)}&output=embed&z=15`}
                                             allowFullScreen
