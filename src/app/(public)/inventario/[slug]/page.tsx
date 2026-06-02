@@ -12,6 +12,7 @@ import { PropertyMedia } from "@/components/property/PropertyMedia";
 import { PropertyLocation } from "@/components/property/PropertyLocation";
 import { PropertySidebar } from "@/components/property/PropertySidebar";
 import { ContactCTA } from "@/components/property/ContactCTA";
+import { PropertyJsonLd } from "@/components/property/PropertyJsonLd";
 import { formatPrice } from "@/lib/format";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 import Link from "next/link";
@@ -166,7 +167,23 @@ export default async function PropertyDetailPage({
     const whatsappHref = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
     return (
-        <div className="w-full bg-background min-h-screen">
+        <>
+            <PropertyJsonLd
+                title={property.title}
+                description={property.description || `${property.property_type} en ${property.address}`}
+                address={property.address || ""}
+                coverImage={property.cover_image}
+                price={property.price}
+                currency={property.currency}
+                priceMxn={property.price_mxn}
+                businessType={property.business_type}
+                propertyType={property.property_type}
+                m2Construction={property.m2_construction}
+                m2Terrain={property.m2_terrain}
+                agents={agents}
+                url={`/inventario/${slug}`}
+            />
+            <div className="w-full bg-background min-h-screen">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24 pb-6 md:pb-10 space-y-8 md:space-y-10">
                 <ImageGallery
                     images={property.images || []}
@@ -282,6 +299,7 @@ export default async function PropertyDetailPage({
 
             {/* Spacer for sticky mobile CTA + WhatsApp float */}
             <div className="lg:hidden h-28" />
-        </div>
+            </div>
+        </>
     );
 }

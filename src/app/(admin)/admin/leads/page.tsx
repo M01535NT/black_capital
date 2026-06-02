@@ -2,6 +2,7 @@ import { requireAdminSession } from "@/lib/auth";
 import { LeadsPageClient } from "./leads-client";
 import { getRecentLeads, getLeadsCount } from "@/lib/data";
 import { createAdminClient } from "@/lib/supabase/admin";
+import type { DbAgent, DbLead } from "@/lib/db-types";
 
 export const revalidate = 0;
 
@@ -10,7 +11,7 @@ export default async function LeadsPage() {
 
     // Use shared data layer for consistency with sidebar/dashboard
     const supabase = createAdminClient();
-    
+
     const { data: leads, error: leadsError } = await supabase
         .from("leads")
         .select("id, full_name, email, phone, source, status, assigned_agent_id, created_at")
@@ -34,8 +35,8 @@ export default async function LeadsPage() {
 
     return (
         <LeadsPageClient
-            leads={(leads as any[]) || []}
-            agents={(agents as any[]) || []}
+            leads={(leads as DbLead[] | null) || []}
+            agents={(agents as Pick<DbAgent, "id" | "full_name">[] | null) || []}
             supabaseError={supabaseError}
         />
     );

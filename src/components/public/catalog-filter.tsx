@@ -95,8 +95,12 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
             {/* Search + Sort Bar */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
                 <div className="relative flex-1 max-w-md">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-foreground/30" />
+                    <label htmlFor="catalog-search" className="sr-only">
+                        Buscar propiedad por título
+                    </label>
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-foreground/30 pointer-events-none" />
                     <input
+                        id="catalog-search"
                         ref={searchInputRef}
                         type="text"
                         placeholder="Buscar propiedad..."
@@ -174,7 +178,11 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
 
                 {/* Sort dropdown */}
                 <div className="ml-auto relative">
+                    <label htmlFor="catalog-sort" className="sr-only">
+                        Ordenar propiedades
+                    </label>
                     <select
+                        id="catalog-sort"
                         value={sort}
                         onChange={(e) => {
                             setSort(e.target.value);
