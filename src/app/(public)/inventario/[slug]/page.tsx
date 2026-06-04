@@ -12,7 +12,10 @@ import { PropertyMedia } from "@/components/property/PropertyMedia";
 import { PropertyLocation } from "@/components/property/PropertyLocation";
 import { PropertySidebar } from "@/components/property/PropertySidebar";
 import { ContactCTA } from "@/components/property/ContactCTA";
+import { StickyContactBar } from "@/components/property/StickyContactBar";
 import { PropertyJsonLd } from "@/components/property/PropertyJsonLd";
+import { MortgageCalculator } from "@/components/tools/mortgage-calculator";
+import { FavoriteButton } from "@/components/property/favorite-button";
 import { formatPrice } from "@/lib/format";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 import Link from "next/link";
@@ -198,13 +201,19 @@ export default async function PropertyDetailPage({
                             { label: property.title },
                         ]}
                     />
-                    <Link
-                        href="/inventario"
-                        className="hidden md:inline-flex items-center gap-1.5 text-xs text-foreground/40 hover:text-gold-500 transition-colors shrink-0 font-display uppercase tracking-wider"
-                    >
-                        <ArrowLeft className="size-3" />
-                        Volver
-                    </Link>
+                    <div className="flex items-center gap-2">
+                        <FavoriteButton
+                            propertyId={property.id}
+                            variant="pill"
+                        />
+                        <Link
+                            href="/inventario"
+                            className="hidden md:inline-flex items-center gap-1.5 text-xs text-foreground/40 hover:text-gold-500 transition-colors shrink-0 font-display uppercase tracking-wider"
+                        >
+                            <ArrowLeft className="size-3" />
+                            Volver
+                        </Link>
+                    </div>
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
@@ -254,6 +263,18 @@ export default async function PropertyDetailPage({
                             </>
                         )}
 
+                        {/* Mortgage Calculator — only for sale properties */}
+                        {property.business_type === "Venta" && (
+                            <>
+                                <div className={SECTION_DIVIDER} />
+                                <MortgageCalculator
+                                    price={property.price}
+                                    currency={property.currency}
+                                    businessType={property.business_type}
+                                />
+                            </>
+                        )}
+
                         {similar.length > 0 && (
                             <>
                                 <div className={SECTION_DIVIDER} />
@@ -295,6 +316,15 @@ export default async function PropertyDetailPage({
                 variant="sticky"
                 whatsappHref={whatsappHref}
                 priceLabel={formatPrice(property.price, property.currency)}
+            />
+
+            {/* Sticky bottom contact bar — mobile only */}
+            <StickyContactBar
+                propertyId={property.id}
+                agentPhone={agents?.[0]?.phone}
+                agentEmail={agents?.[0]?.email}
+                agentWhatsapp={CONTACT_CONFIG.phoneRaw}
+                propertyTitle={property.title}
             />
 
             {/* Spacer for sticky mobile CTA + WhatsApp float */}

@@ -8,6 +8,7 @@ import { formatShortPrice, formatArea } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { ShareButton } from "./ShareButton";
 import { PublishedBadge } from "./PublishedBadge";
+import { FavoriteButton } from "./favorite-button";
 
 /* ── Shape ─────────────────────────────────────────────────────────── */
 
@@ -125,8 +126,14 @@ export function PropertyCard({
                     )}
                 </div>
 
-                {/* Share button — top-right */}
+                {/* Action row — top-right: favorite + share + business badge */}
                 <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex items-center gap-2">
+                    <div className="no-print">
+                        <FavoriteButton
+                            propertyId={property.id}
+                            variant="icon"
+                        />
+                    </div>
                     <div className="no-print">
                         <ShareButton
                             title={property.title}
