@@ -82,7 +82,7 @@ const stats = [
 export function IndustrialStats() {
     return (
         <FadeIn direction="up">
-            <section className="w-full bg-zinc-950 border-y border-steel-500/15 py-20 relative overflow-hidden">
+            <section className="w-full bg-background-deep border-y border-steel-500/15 py-20 relative overflow-hidden">
                 {/* Subtle grid background */}
                 <div
                     className="absolute inset-0 pointer-events-none opacity-[0.02]"

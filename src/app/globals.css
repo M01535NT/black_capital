@@ -61,8 +61,14 @@
 }
 
 :root {
-  color-scheme: dark;
-  --radius: 0.625rem;
+    color-scheme: dark;
+    --color-background-deep: oklch(0.10 0 0);
+    --color-background-elevated: oklch(0.18 0 0);
+    --color-surface: oklch(0.22 0 0);
+    --color-surface-hover: oklch(0.26 0 0);
+    --color-subtle: oklch(1 0 0 / 8%);
+    --color-border-subtle: oklch(1 0 0 / 8%);
+    --color-border-default: oklch(1 0 0 / 12%);--radius: 0.625rem;
 
   /* Glassmorphism tokens */
   --glass-bg: oklch(0.15 0 0 / 40%);
@@ -733,4 +739,35 @@ a[href="#main-content"]:focus {
     font-weight: 600;
     border-radius: 0.5rem;
     text-decoration: none;
+}
+
+/* ── Print Stylesheet ────────────────────────────────────────────────── */
+@media print {
+  nav,
+  footer,
+  .no-print,
+  button,
+  [role="dialog"] {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  img {
+    max-height: 60vh;
+    object-fit: contain;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 10px;
+  }
 }

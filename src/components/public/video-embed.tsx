@@ -43,7 +43,7 @@ export function VideoEmbed({ urls }: VideoEmbedProps) {
                 {validUrls.map((videoId, i) => (
                     <div
                         key={i}
-                        className="w-full aspect-video rounded-2xl overflow-hidden bg-zinc-900 border border-foreground/5 shadow-lg"
+                        className="w-full aspect-video rounded-2xl overflow-hidden bg-background-elevated border border-foreground/5 shadow-lg"
                     >
                         <iframe
                             src={`https://www.youtube.com/embed/${videoId}?rel=0`}

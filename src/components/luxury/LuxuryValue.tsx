@@ -54,7 +54,7 @@ export function LuxuryValue() {
                         const Icon = item.icon;
                         return (
                             <StaggerItem key={item.title}>
-                                <div className="group relative p-10 rounded-2xl border border-gold-500/10 bg-zinc-950/40 backdrop-blur-sm hover:border-gold-500/30 hover:shadow-2xl hover:shadow-gold-500/5 transition-all duration-700">
+                                <div className="group relative p-10 rounded-2xl border border-gold-500/10 bg-background-deep/40 backdrop-blur-sm hover:border-gold-500/30 hover:shadow-2xl hover:shadow-gold-500/5 transition-all duration-700">
                                     {/* Glow on hover */}
                                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-gold-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 

@@ -32,7 +32,7 @@ export function TourEmbed({ urls }: TourEmbedProps) {
                 {validUrls.map((embedUrl, i) => (
                     <div
                         key={i}
-                        className="w-full aspect-video rounded-2xl overflow-hidden bg-zinc-900 border border-foreground/5 shadow-lg"
+                        className="w-full aspect-video rounded-2xl overflow-hidden bg-background-elevated border border-foreground/5 shadow-lg"
                     >
                         <iframe
                             src={embedUrl}

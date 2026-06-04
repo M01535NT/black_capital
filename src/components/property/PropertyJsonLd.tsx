@@ -1,18 +1,17 @@
-import type { AgentInfo } from "./AgentCard";
+interface AgentInfo {
+    id: string;
+    full_name: string;
+    email: string | null;
+    phone: string | null;
+    photo_url: string | null;
+    license_number: string | null;
+}
 
-/**
- * JSON-LD structured data for a single property listing, per schema.org/RealEstateListing.
- * Rendered as a <script type="application/ld+json"> in the page head.
- *
- * Why this matters: real estate sites that ship JSON-LD get rich results in
- * Google Search (price, address, photo carousel, agent). This is the single
- * highest-ROI frontend change for a property site.
- */
 export interface PropertyJsonLdProps {
     title: string;
-    description: string;
+    description?: string | null;
     address: string;
-    coverImage: string | null;
+    coverImage?: string | null;
     price: number;
     currency: string;
     priceMxn?: number | null;
@@ -20,80 +19,85 @@ export interface PropertyJsonLdProps {
     propertyType: string;
     m2Construction?: number | null;
     m2Terrain?: number | null;
-    bedrooms?: number | null;
-    bathrooms?: number | null;
     agents?: AgentInfo[];
     url: string;
 }
 
-export function PropertyJsonLd(props: PropertyJsonLdProps) {
-    const {
-        title,
-        description,
-        address,
-        coverImage,
-        price,
-        currency,
-        priceMxn,
-        businessType,
-        propertyType,
-        m2Construction,
-        m2Terrain,
-        agents,
-        url,
-    } = props;
+export function PropertyJsonLd({
+    title,
+    description,
+    address,
+    coverImage,
+    price,
+    currency,
+    priceMxn,
+    businessType,
+    propertyType,
+    m2Construction,
+    m2Terrain,
+    agents,
+    url,
+}: PropertyJsonLdProps) {
+    const typeMap: Record<string, string> = {
+        casa: 'House',
+        departamento: 'Apartment',
+        terreno: 'Land',
+        local: 'Place',
+        oficina: 'Place',
+        bodega: 'Place',
+        'nave industrial': 'Place',
+    };
+    const mappedType = typeMap[propertyType.toLowerCase()] || 'Residence';
 
-    const schema = {
-        "@context": "https://schema.org",
-        "@type": "RealEstateListing",
+    const ld: Record<string, unknown> = {
+        '@context': 'https://schema.org',
+        '@type': 'RealEstateListing',
+        '@id': `https://blackcorporativo.com${url}`,
+        url: `https://blackcorporativo.com${url}`,
         name: title,
-        description,
-        url,
-        image: coverImage ? [coverImage] : undefined,
-        datePosted: new Date().toISOString(),
+        description: description || `${propertyType} en ${address}`,
+        image: coverImage || undefined,
         address: {
-            "@type": "PostalAddress",
+            '@type': 'PostalAddress',
             streetAddress: address,
-            addressCountry: "MX",
+            addressRegion: 'Baja California',
+            addressCountry: 'MX',
         },
         offers: {
-            "@type": "Offer",
-            price,
-            priceCurrency: currency,
-            // Schema standardizes "For Sale" / "For Rent"
-            businessType:
-                businessType === "Renta" ? "For Rent" : "For Sale",
+            '@type': 'Offer',
+            price: price,
+            priceCurrency: currency || 'MXN',
+            availability: 'https://schema.org/InStock',
         },
-        // Optional: surface MXN equivalent for SEO if the listing is in USD
-        ...(priceMxn && currency !== "MXN" && {
-            priceSpecification: {
-                "@type": "PriceSpecification",
-                price: priceMxn,
-                priceCurrency: "MXN",
-            },
-        }),
-        // Real estate specifics
-        ...(m2Construction ? { floorSize: { "@type": "QuantitativeValue", value: m2Construction, unitCode: "MTK" } } : {}),
-        ...(m2Terrain ? { lotSize: { "@type": "QuantitativeValue", value: m2Terrain, unitCode: "MTK" } } : {}),
-        ...(propertyType ? { category: propertyType } : {}),
-        // Real estate agent
-        ...(agents && agents.length > 0
-            ? {
-                  broker: agents.map((a) => ({
-                      "@type": "RealEstateAgent",
-                      name: a.full_name,
-                      ...(a.email ? { email: a.email } : {}),
-                      ...(a.phone ? { telephone: a.phone } : {}),
-                      ...(a.license_number ? { identifier: a.license_number } : {}),
-                  })),
-              }
-            : {}),
     };
+
+    if (m2Construction != null) {
+        (ld.offers as Record<string, unknown>).floorSize = {
+            '@type': 'QuantitativeValue',
+            value: m2Construction,
+            unitCode: 'MTK',
+        };
+    }
+
+    if (agents && agents.length > 0) {
+        const agent = agents[0];
+        ld.broker = {
+            '@type': 'RealEstateAgent',
+            name: agent.full_name || 'Black Corporativo',
+            ...(agent.email && { email: agent.email }),
+            ...(agent.phone && { telephone: agent.phone }),
+            worksFor: {
+                '@type': 'Organization',
+                name: 'Black Corporativo',
+                url: 'https://blackcorporativo.com',
+            },
+        };
+    }
 
     return (
         <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }}
         />
     );
 }
