@@ -807,3 +807,146 @@ input[type="range"].slider-gold::-moz-range-thumb {
   border: 3px solid oklch(0.15 0 0);
   box-shadow: 0 2px 8px oklch(0.1 0 0 / 0.4);
 }
+
+/* ── Skeleton Shimmer ────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    oklch(0.20 0 0) 0%,
+    oklch(0.25 0 0) 40%,
+    oklch(0.30 0 0) 50%,
+    oklch(0.25 0 0) 60%,
+    oklch(0.20 0 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  border-radius: var(--radius);
+}
+
+/* Skeleton text lines */
+.skeleton-text {
+  height: 1em;
+  border-radius: 4px;
+}
+.skeleton-text-sm {
+  height: 0.75em;
+  border-radius: 3px;
+}
+
+/* ── Micro-interactions & Transitions ─────────────────────────────────── */
+
+/* Underline animation for text links */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  transition: background-size 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+
+/* Gold underline variant */
+.link-underline-gold {
+  background-image: linear-gradient(var(--color-gold-500), var(--color-gold-500));
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  transition: background-size 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: currentColor;
+}
+.link-underline-gold:hover {
+  background-size: 100% 1px;
+  color: var(--color-gold-500);
+}
+
+/* Button press effect */
+button:active:not(:disabled),
+.press-effect:active {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
+}
+
+/* Smooth page-level card hover (already in PropertyCard, but for generic cards) */
+.hover-lift {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Gold border glow on focus within sections */
+.focus-glow:focus-within {
+  box-shadow: 0 0 0 2px oklch(0.6 0.15 80 / 0.2), 0 0 20px oklch(0.6 0.15 80 / 0.1);
+}
+
+/* Fade in animation for route transitions */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Stagger children utility (pair with animate-fade-in-up) */
+.stagger-children > *:nth-child(1) { animation-delay: 0s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.06s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.12s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.18s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.24s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.30s; }
+
+/* Smooth image zoom on hover (gallery cards) */
+.img-zoom {
+  overflow: hidden;
+}
+.img-zoom img {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.img-zoom:hover img {
+  transform: scale(1.04);
+}
+
+/* Price tag highlight pulse (for featured properties) */
+@keyframes price-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.6 0.15 80 / 0.3); }
+  50% { box-shadow: 0 0 0 8px oklch(0.6 0.15 80 / 0); }
+}
+
+.price-pulse {
+  animation: price-pulse 2s ease-in-out infinite;
+}
+
+/* Reduce motion: disable all micro-interactions */
+@media (prefers-reduced-motion: reduce) {
+  .link-underline,
+  .link-underline-gold,
+  .hover-lift,
+  .img-zoom img {
+    transition: none !important;
+    animation: none !important;
+  }
+  .animate-fade-in-up {
+    animation: none !important;
+  }
+  .stagger-children > * {
+    animation-delay: 0s !important;
+  }
+  .price-pulse {
+    animation: none !important;
+  }
+}

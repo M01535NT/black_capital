@@ -44,7 +44,7 @@ export function BrandsGrid() {
                         <StaggerItem key={brand.name}>
                             <Link
                                 href={brand.href}
-                                className="group relative overflow-hidden rounded-xl aspect-square md:aspect-[4/5] flex flex-col justify-end p-8 border border-foreground/5 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl hover:shadow-gold-500/20 hover:shadow-2xl hover:shadow-gold-500/15 hover:border-gold-500/30 cursor-pointer"
+                                className="group relative overflow-hidden rounded-xl img-zoom hover-lift cursor-pointer aspect-square md:aspect-[4/5] flex flex-col justify-end p-8 border border-foreground/5 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl hover:shadow-gold-500/20 hover:shadow-2xl hover:shadow-gold-500/15 hover:border-gold-500/30 cursor-pointer"
                             >
                                 {/* Background Image */}
                                 <Image
