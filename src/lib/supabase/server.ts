@@ -2,7 +2,10 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
 function createMockClient() {
-  const noop = () => Promise.resolve({ data: null, error: new Error('No Supabase config') as any })
+  if (typeof window === "undefined") {
+    console.warn("[Supabase] createMockClient: NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY not set");
+  }
+  const noop = () => Promise.resolve({ data: null, error: new Error("No Supabase config") })
   const emptyArray = () => Promise.resolve({ data: [], error: null })
   const chain = (obj: any) => {
     obj.eq = () => obj
@@ -22,7 +25,7 @@ function createMockClient() {
   return {
     from: () => fromReturn,
     storage: { from: () => ({ upload: noop, getPublicUrl: () => ({ data: { publicUrl: '' } }) }) },
-  } as any
+  } as never
 }
 
 export async function createClient() {

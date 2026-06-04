@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { validateSessionToken } from "@/lib/auth";
 
@@ -56,13 +57,13 @@ export async function GET() {
       .order("full_name", { ascending: true });
 
     if (error) {
-      console.error("[API /agents GET]", error);
+      logger.error("API/agents", "[API /agents GET]", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     return NextResponse.json({ agents: agents || [] });
   } catch (err) {
-    console.error("[API /agents GET]", err);
+    logger.error("API/agents", "[API /agents GET]", err);
     return NextResponse.json({ error: "Error interno" }, { status: 500 });
   }
 }

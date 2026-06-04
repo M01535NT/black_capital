@@ -19,8 +19,68 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Black Corporativo",
-  description: "Plataforma digital inmobiliaria de alta gama",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://blackcorporativo.com"),
+  title: {
+    default: "Black Corporativo | Boutique Inmobiliaria de Alta Gama",
+    template: "%s | Black Corporativo",
+  },
+  description: "Plataforma digital inmobiliaria de alta gama especializada en propiedades de lujo, comerciales e industriales en México. Análisis financiero estructurado para inversores institucionales y HNWI.",
+  keywords: [
+    "inmobiliaria de lujo",
+    "propiedades premium",
+    "bienes raíces corporativos",
+    "naves industriales",
+    "inversión inmobiliaria",
+    "México",
+    "CDMX",
+    "Monterrey",
+    "Guadalajara",
+  ],
+  authors: [{ name: "Black Corporativo" }],
+  creator: "Black Corporativo",
+  publisher: "Black Corporativo",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    locale: "es_MX",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://blackcorporativo.com",
+    siteName: "Black Corporativo",
+    title: "Black Corporativo | Boutique Inmobiliaria de Alta Gama",
+    description: "Propiedades de lujo, comerciales e industriales con análisis financiero estructurado para inversores institucionales.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Black Corporativo - Plataforma Inmobiliaria Premium",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Black Corporativo",
+    description: "Boutique inmobiliaria de alta gama en México",
+    images: ["/og-image.jpg"],
+    creator: "@black_corp",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://blackcorporativo.com",
+  },
 };
 
 import { PostHogProvider } from "@/providers/posthog-provider";

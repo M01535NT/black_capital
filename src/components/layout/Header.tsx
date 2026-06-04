@@ -104,7 +104,7 @@ export function Header() {
                     </Link>
 
                     {/* Center: Desktop Navigation */}
-                    <nav className="hidden lg:flex items-center gap-6" ref={dropdownRef}>
+                    <nav aria-label="Menú principal" className="hidden lg:flex items-center gap-6" ref={dropdownRef}>
                         {baseLinks.map((link) => (
                             <Link
                                 key={link.name}
@@ -211,7 +211,7 @@ export function Header() {
                         </Link>
 
                         <Drawer direction="right" open={drawerOpen} onOpenChange={setDrawerOpen}>
-                            <DrawerTrigger asChild>
+                            <DrawerTrigger asChild aria-label="Abrir menú de navegación" aria-expanded={drawerOpen}>
                                 <Button variant="ghost" size="icon" className="hover:text-gold-solid text-foreground">
                                     <Menu className="h-5 w-5" />
                                     <span className="sr-only">Abrir menú</span>

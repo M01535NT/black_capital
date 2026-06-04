@@ -29,6 +29,27 @@ export default function HomePage() {
       <SocialProof />
       <BottomMarquee />
       <LeadMagnet />
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "RealEstateAgent",
+            "name": "Black Corporativo",
+            "description": "Boutique inmobiliaria de alta gama especializada en propiedades de lujo, comerciales e industriales",
+            "url": "https://blackcorporativo.com",
+            "priceRange": "$$$$",
+            "address": {
+              "@type": "PostalAddress",
+              "addressCountry": "MX"
+            },
+            "sameAs": [
+              "https://instagram.com/blackcorporativo",
+              "https://linkedin.com/company/blackcorporativo"
+            ]
+          })
+        }}
+      />
     </>
   );
 }

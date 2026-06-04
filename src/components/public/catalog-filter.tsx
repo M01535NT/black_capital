@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Search, X, ArrowUpDown } from "lucide-react";
+import { Search, X, ArrowUpDown, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { PropertyCard, type PropertyCardData } from "@/components/property/PropertyCard";
 import { USES, BUSINESS_TYPES, BRAND_TO_USE } from "@/lib/property-constants";
@@ -15,6 +15,7 @@ const SORT_OPTIONS = [
 
 type Property = PropertyCardData;
 
+// Catalog results are announced to screen readers via aria-live
 export function CatalogFilter({ properties }: { properties: Property[] }) {
     const searchParams = useSearchParams();
     const router = useRouter();

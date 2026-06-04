@@ -83,7 +83,7 @@ export function PropertyCard({
         variant === "featured" && !!property.attributes && property.attributes.length > 0;
 
     const card = (
-        <Link
+        <Link role="article" aria-label={`Ver detalles de ${property.title}`}
             href={href}
             className={cn(
                 "group block bg-card border border-foreground/5 rounded-2xl overflow-hidden transition-all duration-500",
@@ -95,7 +95,7 @@ export function PropertyCard({
                 {property.cover_image ? (
                     <Image
                         src={property.cover_image}
-                        alt={property.title}
+                        alt={`Fotografía de ${property.title}`}
                         fill
                         sizes={SIZES[variant]}
                         priority={priority}

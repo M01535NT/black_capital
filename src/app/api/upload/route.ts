@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { validateSessionToken } from "@/lib/auth";
 
@@ -56,7 +57,7 @@ export async function POST(req: NextRequest) {
       });
 
     if (error) {
-      console.error("[Upload] Supabase storage error:", error);
+      logger.error("API/upload", "[Upload] Supabase storage error:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
@@ -65,7 +66,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url: publicUrlData.publicUrl, path: data.path });
   } catch (err) {
-    console.error("[Upload] Unexpected error:", err);
+    logger.error("API/upload", "[Upload] Unexpected error:", err);
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Error interno" },
       { status: 500 }

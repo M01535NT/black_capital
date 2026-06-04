@@ -32,6 +32,20 @@ export function FeaturedInventory() {
     }, []);
 
     return (
+        <>
+        {loading && (
+                <div className="container mx-auto px-4 py-24">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {[1, 2, 3].map((i) => (
+                            <div
+                                key={i}
+                                className="aspect-[4/5] bg-zinc-800/40 rounded-xl animate-pulse"
+                                aria-hidden="true"
+                            />
+                        ))}
+                    </div>
+                </div>
+            )}
         <section className="w-full py-24 bg-zinc-950">
             <div className="container mx-auto px-4">
                 <FadeIn className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
@@ -87,5 +101,6 @@ export function FeaturedInventory() {
                 )}
             </div>
         </section>
+        </>
     );
 }

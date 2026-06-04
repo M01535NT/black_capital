@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { validateSessionToken } from "@/lib/auth";
 import { getLeadsCount } from "@/lib/data";
@@ -18,7 +19,7 @@ export async function GET(req: NextRequest) {
     const newCount = await getLeadsCount("new");
     return NextResponse.json({ newCount });
   } catch (err) {
-    console.error("[API /leads GET]", err);
+    logger.error("API/leads", "[API /leads GET]", err);
     return NextResponse.json({ error: "Error interno" }, { status: 500 });
   }
 }
@@ -32,8 +33,19 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { full_name, email, phone, source, status, notes, assigned_agent_id, property_id, privacy_accepted } = body;
 
-    if (!full_name) {
-      return NextResponse.json({ error: "El nombre es requerido" }, { status: 400 });
+    // Validate required fields
+    if (!full_name || typeof full_name !== "string" || full_name.trim().length < 2) {
+      return NextResponse.json({ error: "El nombre es requerido (mínimo 2 caracteres)" }, { status: 400 });
+    }
+    
+    // Validate email format if provided
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json({ error: "Formato de correo electrónico inválido" }, { status: 400 });
+    }
+    
+    // Validate phone format if provided
+    if (phone && !/^[\d\s\-\+\(\)]{10,}$/.test(phone)) {
+      return NextResponse.json({ error: "Formato de teléfono inválido" }, { status: 400 });
     }
 
     const supabase = createAdminClient();
@@ -54,13 +66,13 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (error) {
-      console.error("[API /leads POST]", error);
+      logger.error("API/leads", "[API /leads POST]", error);
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
     return NextResponse.json({ lead: data }, { status: 201 });
   } catch (err) {
-    console.error("[API /leads POST]", err);
+    logger.error("API/leads", "[API /leads POST]", err);
     return NextResponse.json({ error: "Error interno" }, { status: 500 });
   }
 }
@@ -97,13 +109,13 @@ export async function PUT(req: NextRequest) {
       .single();
 
     if (error) {
-      console.error("[API /leads PUT]", error);
+      logger.error("API/leads", "[API /leads PUT]", error);
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
     return NextResponse.json({ lead: data });
   } catch (err) {
-    console.error("[API /leads PUT]", err);
+    logger.error("API/leads", "[API /leads PUT]", err);
     return NextResponse.json({ error: "Error interno" }, { status: 500 });
   }
 }

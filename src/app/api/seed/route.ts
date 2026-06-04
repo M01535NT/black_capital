@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { validateSessionToken } from "@/lib/auth";
 
@@ -37,13 +38,13 @@ export async function POST(request: Request) {
     .neq("id", "00000000-0000-0000-0000-000000000000");
 
   if (deleteError) {
-    console.error("SEED CLEANUP ERROR:", deleteError);
+    logger.error("API/seed", "SEED CLEANUP ERROR:", deleteError);
   }
 
   const { data, error } = await supabase.from("properties").insert(seedProperties).select();
 
   if (error) {
-    console.error("NATIVE SUPABASE ERROR:", error);
+    logger.error("API/seed", "NATIVE SUPABASE ERROR:", error);
     return NextResponse.json(
       { error: error.message, details: error.details, hint: error.hint, code: error.code },
       { status: 500 }

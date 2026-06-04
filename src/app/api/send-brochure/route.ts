@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
 import { createClient } from "@/lib/supabase/server";
 
+// TODO: Implement rate limiting (max 5 requests/min per IP)
+// Consider using Vercel's @vercel/edge or upstash/ratelimit
 export async function POST(req: Request) {
     try {
         const body = await req.json();
@@ -36,7 +39,7 @@ export async function POST(req: Request) {
 
         const resendApiKey = process.env.RESEND_API_KEY;
         if (!resendApiKey) {
-            console.log("[Resend] API key not configured — skipping email");
+            logger.info("API/brochure", "[Resend] API key not configured — skipping email");
             return NextResponse.json({ success: true, message: "Documento listo (email no configurado)" });
         }
 
@@ -115,7 +118,7 @@ export async function POST(req: Request) {
             try {
                 pdfHost = new URL(pdfUrl).hostname;
             } catch {
-                console.warn("[Resend] Invalid pdfUrl, skipping attachment");
+                logger.warn("API/brochure", "[Resend] Invalid pdfUrl, skipping attachment");
             }
 
             const isAllowed = pdfHost && allowedDomains.some(d =>
@@ -123,7 +126,7 @@ export async function POST(req: Request) {
             );
 
             if (!isAllowed) {
-                console.warn("[Resend] pdfUrl domain not allowed:", pdfHost);
+                logger.warn("API/brochure", "[Resend] pdfUrl domain not allowed:", pdfHost);
             } else {
                 try {
                     const pdfResponse = await fetch(pdfUrl, { signal: AbortSignal.timeout(15000) });
@@ -131,7 +134,7 @@ export async function POST(req: Request) {
                         const contentLength = Number(pdfResponse.headers.get("content-length") || "0");
                         // Reject files larger than 10 MB
                         if (contentLength > 10 * 1024 * 1024) {
-                            console.warn("[Resend] PDF too large, skipping attachment");
+                            logger.warn("API/brochure", "[Resend] PDF too large, skipping attachment");
                         } else {
                             const pdfBuffer = await pdfResponse.arrayBuffer();
                             // Double-check actual size
@@ -145,7 +148,7 @@ export async function POST(req: Request) {
                         }
                     }
                 } catch (attachErr) {
-                    console.warn("[Resend] Could not attach PDF, sending email with link only:", attachErr);
+                    logger.warn("API/brochure", "[Resend] Could not attach PDF, sending email with link only:", attachErr);
                 }
             }
         }
@@ -162,7 +165,7 @@ export async function POST(req: Request) {
 
         if (!resendResponse.ok) {
             const resendBody = await resendResponse.text();
-            console.error("[Resend] API error:", resendResponse.status, resendBody);
+            logger.error("API/brochure", "[Resend] API error:", resendResponse.status, resendBody);
             return NextResponse.json(
                 { error: "No se pudo enviar el documento. Intenta nuevamente." },
                 { status: 502 }
@@ -172,7 +175,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ success: true, message: "Documento enviado correctamente" });
 
     } catch (error) {
-        console.error("[send-brochure] Error:", error);
+        logger.error("API/brochure", "[send-brochure] Error:", error);
         return NextResponse.json(
             { error: "Error al procesar la solicitud" },
             { status: 500 }

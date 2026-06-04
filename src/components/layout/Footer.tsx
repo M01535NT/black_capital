@@ -21,12 +21,13 @@ const corpLinks = [
     { name: "Nosotros", href: "/nosotros" },
     { name: "Herramientas", href: "/herramientas" },
     { name: "Aviso de Privacidad", href: "/legal/privacidad" },
+    { name: "Términos de Uso", href: "/legal/terminos" },
     { name: "Panel Admin", href: "/admin" },
 ];
 
 export function Footer() {
     return (
-        <footer className="w-full bg-background pt-10 pb-4 mt-auto relative">
+        <footer role="contentinfo" aria-label="Pie de página" className="w-full bg-background pt-10 pb-4 mt-auto relative">
             {/* Animated gold gradient border top */}
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-500/40 to-transparent" />
 

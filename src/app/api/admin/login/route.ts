@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE, deriveToken, timingSafeEqual } from "@/lib/auth";
 
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[API /admin/login] Error:", err);
+    logger.error("API/login", "[API /admin/login] Error:", err);
     return NextResponse.json(
       { error: "Error interno" },
       { status: 500 }

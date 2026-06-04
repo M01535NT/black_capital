@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { validateSessionToken } from "@/lib/auth";
 
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
       .insert({ agent_id, property_id });
 
     if (error) {
-      console.error("[API /property-agents POST] Supabase error:", error);
+      logger.error("API/prop-agents", "[API /property-agents POST] Supabase error:", error);
       // 23505 = unique violation (already assigned)
       if (error.code === "23505") {
         return NextResponse.json({ success: true });
@@ -38,7 +39,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[API /property-agents POST] Unexpected error:", err);
+    logger.error("API/prop-agents", "[API /property-agents POST] Unexpected error:", err);
     return NextResponse.json({ error: err instanceof Error ? err.message : "Internal error" }, { status: 500 });
   }
 }
@@ -67,13 +68,13 @@ export async function DELETE(req: NextRequest) {
     const { error } = await query;
 
     if (error) {
-      console.error("[API /property-agents DELETE] Supabase error:", error);
+      logger.error("API/prop-agents", "[API /property-agents DELETE] Supabase error:", error);
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[API /property-agents DELETE] Unexpected error:", err);
+    logger.error("API/prop-agents", "[API /property-agents DELETE] Unexpected error:", err);
     return NextResponse.json({ error: err instanceof Error ? err.message : "Internal error" }, { status: 500 });
   }
 }

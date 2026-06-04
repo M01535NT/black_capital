@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
 import { promises as fs } from "fs";
 import path from "path";
 import { validateSessionToken } from "@/lib/auth";
@@ -50,7 +51,7 @@ async function readSettings(): Promise<AppSettings> {
     const parsed = JSON.parse(raw) as AppSettings;
     return { ...DEFAULTS, ...parsed };
   } catch (err) {
-    console.error("[Settings] Error reading settings file:", err instanceof Error ? err.message : err);
+    logger.error("API/settings", "[Settings] Error reading settings file:", err instanceof Error ? err.message : err);
     return { ...DEFAULTS };
   }
 }
@@ -74,7 +75,7 @@ export async function GET() {
     const settings = await readSettings();
     return NextResponse.json(settings);
   } catch (err) {
-    console.error("[Settings GET]", err);
+    logger.error("API/settings", "[Settings GET]", err);
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Error reading settings" },
       { status: 500 }
@@ -107,7 +108,7 @@ export async function POST(req: NextRequest) {
     await writeSettings(merged);
     return NextResponse.json(merged);
   } catch (err) {
-    console.error("[Settings POST]", err);
+    logger.error("API/settings", "[Settings POST]", err);
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Error saving settings" },
       { status: 500 }

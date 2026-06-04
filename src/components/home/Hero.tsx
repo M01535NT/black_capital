@@ -7,6 +7,10 @@ import { TopMarquee } from "./Marquees";
 
 const words = ["Legado", "Futuro", "Expansión"];
 
+// Respect user's motion preferences
+const prefersReducedMotion = typeof window !== "undefined" 
+    && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
 /* ── Staggered Letter Reveal Component ── */
 function StaggeredWord({ word, className }: { word: string; className?: string }) {
     const letters = useMemo(() => word.split(""), [word]);
@@ -178,7 +182,7 @@ export function Hero() {
                     animate={{ y: [0, 8, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
-                    <ChevronDown className="w-5 h-5 text-gold-500/60" />
+                    <ChevronDown aria-hidden="true" className="w-5 h-5 text-gold-500/60" />
                 </motion.div>
             </motion.div>
 

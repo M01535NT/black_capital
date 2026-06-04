@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { validateSessionToken } from "@/lib/auth";
 
@@ -50,7 +51,7 @@ async function syncPropertyAgents(
     }));
     const { error } = await supabase.from("property_agents").insert(rows);
     if (error) {
-      console.error("[API /properties] Error syncing property_agents:", error);
+      logger.error("API/properties", "[API /properties] Error syncing property_agents:", error);
       return error.message;
     }
   }
@@ -90,7 +91,7 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (error) {
-      console.error("[API /properties POST] Supabase error:", error);
+      logger.error("API/properties", "[API /properties POST] Supabase error:", error);
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
@@ -107,7 +108,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ property }, { status: 201 });
   } catch (err) {
-    console.error("[API /properties POST] Unexpected error:", err);
+    logger.error("API/properties", "[API /properties POST] Unexpected error:", err);
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Internal server error" },
       { status: 500 }
@@ -149,7 +150,7 @@ export async function PUT(req: NextRequest) {
       .single();
 
     if (error) {
-      console.error("[API /properties PUT] Supabase error:", error);
+      logger.error("API/properties", "[API /properties PUT] Supabase error:", error);
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
@@ -165,7 +166,7 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({ property }, { status: 200 });
   } catch (err) {
-    console.error("[API /properties PUT] Unexpected error:", err);
+    logger.error("API/properties", "[API /properties PUT] Unexpected error:", err);
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Internal server error" },
       { status: 500 }
@@ -185,13 +186,13 @@ export async function GET(req: NextRequest) {
       .order("title", { ascending: true });
 
     if (error) {
-      console.error("[API /properties GET]", error);
+      logger.error("API/properties", "[API /properties GET]", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     return NextResponse.json({ properties: properties || [] });
   } catch (err) {
-    console.error("[API /properties GET]", err);
+    logger.error("API/properties", "[API /properties GET]", err);
     return NextResponse.json({ error: "Error interno" }, { status: 500 });
   }
 }
@@ -212,13 +213,13 @@ export async function DELETE(req: NextRequest) {
     const { error } = await supabase.from("properties").delete().eq("id", id);
 
     if (error) {
-      console.error("[API /properties DELETE]", error);
+      logger.error("API/properties", "[API /properties DELETE]", error);
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[API /properties DELETE]", err);
+    logger.error("API/properties", "[API /properties DELETE]", err);
     return NextResponse.json({ error: "Error interno" }, { status: 500 });
   }
 }

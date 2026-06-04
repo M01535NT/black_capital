@@ -1,4 +1,5 @@
 import { requireAdminSession } from "@/lib/auth";
+import { logger } from "@/lib/logger";
 import { LeadsPageClient } from "./leads-client";
 import { getRecentLeads, getLeadsCount } from "@/lib/data";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -26,7 +27,7 @@ export default async function LeadsPage() {
     // If there's a Supabase error, pass it to the client for display
     const supabaseError = leadsError?.message || agentsError?.message || null;
     if (supabaseError) {
-        console.error("[LeadsPage] Supabase error:", supabaseError);
+        logger.error("admin/leads", "[LeadsPage] Supabase error:", supabaseError);
     }
 
     // Also get total count for debugging

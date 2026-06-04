@@ -5,6 +5,7 @@
  */
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { logger } from "@/lib/logger";
 
 export async function getLeadsCount(status?: string) {
   const supabase = createAdminClient();
@@ -12,7 +13,7 @@ export async function getLeadsCount(status?: string) {
   if (status) query = query.eq("status", status);
   const { count, error } = await query;
   if (error) {
-    console.error("[data] getLeadsCount error:", error);
+    logger.error("data-layer", "[data] getLeadsCount error:", error);
     return 0;
   }
   return count ?? 0;
@@ -25,7 +26,7 @@ export async function getLeadsByStatus() {
     .select("status")
     .not("status", "is", null);
   if (error) {
-    console.error("[data] getLeadsByStatus error:", error);
+    logger.error("data-layer", "[data] getLeadsByStatus error:", error);
     return [];
   }
   return data || [];
@@ -39,7 +40,7 @@ export async function getRecentLeads(limit = 5) {
     .order("created_at", { ascending: false })
     .limit(limit);
   if (error) {
-    console.error("[data] getRecentLeads error:", error);
+    logger.error("data-layer", "[data] getRecentLeads error:", error);
     return [];
   }
   return data || [];
@@ -51,7 +52,7 @@ export async function getAgentsCount(activeOnly = true) {
   if (activeOnly) query = query.eq("is_active", true);
   const { count, error } = await query;
   if (error) {
-    console.error("[data] getAgentsCount error:", error);
+    logger.error("data-layer", "[data] getAgentsCount error:", error);
     return 0;
   }
   return count ?? 0;
@@ -63,7 +64,7 @@ export async function getPropertiesCount() {
     .from("properties")
     .select("*", { count: "exact", head: true });
   if (error) {
-    console.error("[data] getPropertiesCount error:", error);
+    logger.error("data-layer", "[data] getPropertiesCount error:", error);
     return 0;
   }
   return count ?? 0;
@@ -77,7 +78,7 @@ export async function getRecentProperties(limit = 5) {
     .order("created_at", { ascending: false })
     .limit(limit);
   if (error) {
-    console.error("[data] getRecentProperties error:", error);
+    logger.error("data-layer", "[data] getRecentProperties error:", error);
     return [];
   }
   return data || [];
