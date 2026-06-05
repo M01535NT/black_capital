@@ -30,8 +30,8 @@
   --color-steel-700: oklch(0.25 0.01 250);
 
   --font-sans: var(--font-inter), sans-serif;
-  --font-display: var(--font-montserrat), sans-serif;
-  --font-numerics: var(--font-inter), sans-serif;
+  --font-display: var(--font-display), sans-serif;
+  --font-numerics: var(--font-display), "JetBrains Mono", ui-monospace, monospace;
 
   /* ── Semantic Type Scale ── */
   /* Display tiers (display font, uppercase, tight tracking) */
@@ -267,26 +267,61 @@ body {
     mix-blend-mode: overlay;
   }
 
-  /* ── Metallic Reflective Gold (WhatsApp gold palette) ── */
+  /* ── Metallic Reflective Gold ───────────────────────────────────
+     A real polished-metal feel needs:
+     1. A *very* dark base color, then a near-white highlight, then
+        back to dark — three stops, not a flat 50% gold.
+     2. Strong contrast between the darkest and lightest stops so
+        the shine is visible even on a dark background.
+     3. background-clip:text with a fallback solid color in case
+        background-clip is unsupported (older WebKit builds).
+     4. A slow linear animation (8s) so the highlight drifts, not
+        strobes.
+  */
   .metallic-gold {
-    background: linear-gradient(to right,
-        #8B7030 0%,
-        #F5E6B8 20%,
-        #D4AF37 40%,
-        #E8C55A 60%,
-        #F5E6B8 80%,
-        #8B7030 100%);
-    background-size: 200% auto;
+    /* Fallback solid color for browsers without background-clip:text. */
+    color: #D4AF37;
+    background: linear-gradient(
+        100deg,
+        #6B5318 0%,
+        #8B7030 18%,
+        #D4AF37 38%,
+        #FFF1B8 50%,
+        #D4AF37 62%,
+        #8B7030 82%,
+        #6B5318 100%
+    );
+    background-size: 220% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: metallic-shine 8s linear infinite;
+    animation: metallic-shine 9s linear infinite;
   }
 
   @keyframes metallic-shine {
-    to {
+    from {
       background-position: 200% center;
     }
+    to {
+      background-position: -200% center;
+    }
+  }
+
+  /* A subtler variant for shorter spans (body, eyebrows) where the
+     full shine would feel theatrical. Single highlight, no animation. */
+  .metallic-gold-static {
+    color: #E8C55A;
+    background: linear-gradient(
+        100deg,
+        #8B7030 0%,
+        #D4AF37 35%,
+        #F5E6B8 50%,
+        #D4AF37 65%,
+        #8B7030 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   /* Soft gold halo behind metallic text — pairs with .metallic-gold

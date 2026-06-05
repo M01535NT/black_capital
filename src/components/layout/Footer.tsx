@@ -287,7 +287,7 @@ export function Footer() {
                     {/* Compliance line — required signal for institutional buyers */}
                     <p className="text-caption text-foreground/35 mb-4 max-w-3xl">
                         Cumplimiento LFPIORPI Art. 27 y disposiciones COFECE
-                        aplicables. Black Corporativo opera como intermediario
+                        aplicables. Black Capital opera como intermediario
                         inmobiliario; no presta servicios de asesoría financiera
                         ni de inversión. Toda la información publicada está
                         sujeta a disponibilidad y confirmación.
@@ -296,7 +296,7 @@ export function Footer() {
                     {/* Bottom bar */}
                     <div className="pt-4 border-t border-foreground/5 flex flex-col md:flex-row justify-between items-center gap-4">
                         <p className="text-caption text-foreground/45 tracking-wide">
-                            © {new Date().getFullYear()} Black Corporativo.
+                            © {new Date().getFullYear()} Black Capital.
                             Todos los derechos reservados.
                         </p>
                         <p className="text-caption text-foreground/35">

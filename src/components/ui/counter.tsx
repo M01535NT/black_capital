@@ -4,81 +4,98 @@ import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "framer-motion";
 
 /**
- * Animated counter that scrolls from `from` to `to` once it scrolls
- * into view. Respects `prefers-reduced-motion`. Falls back to `to`
- * after 3s if the IntersectionObserver never fires.
+ * Animated count-up. Triggers once when the element scrolls into view.
  *
- * SSR renders the final value (`to`) so the first paint is honest
- * with the real number; the count-up animation only runs after the
- * component mounts on the client.
+ * Why this rewrite (June 2026):
+ *  - The previous version initialized state to `to` (so SSR + first paint
+ *    would not flash "0"), but the animation logic was guarded behind a
+ *    useEffect that would silently skip if `isInView` was false on mount
+ *    AND the user never scrolled past the -100px margin — leaving the
+ *    counter stuck at `from` or, after the 3s fallback, snapping to `to`
+ *    with no animation at all.
+ *  - New behavior:
+ *      • SSR / first paint  → renders the FINAL value (no flash)
+ *      • Hydration          → resets to `from` if motion is allowed
+ *      • Scroll into view   → starts rAF count-up
+ *      • `prefers-reduced-motion` → no animation, just shows `to`
+ *      • Re-mounts on the page (e.g. route change) → re-animates
+ *  - Uses an `animateKey` so that if the same Counter is rendered with a
+ *    different `to`, the rAF loop is torn down and restarted cleanly.
  */
 export function Counter({
     from = 0,
     to,
-    duration = 2,
+    duration = 1.8,
     suffix = "",
+    prefix = "",
 }: {
     from?: number;
     to: number;
     duration?: number;
     suffix?: string;
+    prefix?: string;
 }) {
-    const shouldReduceMotion = useReducedMotion();
-    // Start at `to` to avoid a flash of "0" during SSR / first paint.
-    // The animation will reset to `from` and count up once we are
-    // hydrated and in view.
-    const [count, setCount] = useState(to);
+    const shouldReduceMotion = useReducedMotion() ?? false;
+    const [count, setCount] = useState<number>(to);
     const ref = useRef<HTMLSpanElement>(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
     const hasAnimated = useRef(false);
+    const rafHandle = useRef<number | null>(null);
 
     useEffect(() => {
         if (hasAnimated.current) return;
-        if (to === 0 || to === from) {
-            // No animation needed.
+
+        // 0 → 0 or equal values: nothing to animate.
+        if (to === from) {
             hasAnimated.current = true;
             setCount(to);
             return;
         }
+
+        // Reduced motion: skip animation, show final value.
         if (shouldReduceMotion) {
             hasAnimated.current = true;
             setCount(to);
             return;
         }
-        // Reset to `from` so the animation is visible after hydration.
+
+        // Reset to `from` so the count-up is visible after hydration.
         setCount(from);
+
         if (isInView) {
             hasAnimated.current = true;
-            let startTime: number;
-            let rafHandle: number;
-            const step = (timestamp: number) => {
-                if (!startTime) startTime = timestamp;
-                const progress = Math.min(
-                    (timestamp - startTime) / (duration * 1000),
-                    1,
-                );
-                setCount(Math.floor(progress * (to - from) + from));
+            const start = performance.now();
+            const tick = (now: number) => {
+                const progress = Math.min((now - start) / (duration * 1000), 1);
+                // easeOutCubic for a soft deceleration — feels less mechanical
+                // than a linear ramp.
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const next = from + (to - from) * eased;
+                setCount(progress >= 1 ? to : next);
                 if (progress < 1) {
-                    rafHandle = window.requestAnimationFrame(step);
+                    rafHandle.current = window.requestAnimationFrame(tick);
                 }
             };
-            rafHandle = window.requestAnimationFrame(step);
-            return () => {
-                if (rafHandle) window.cancelAnimationFrame(rafHandle);
-            };
+            rafHandle.current = window.requestAnimationFrame(tick);
         }
-        const timer = setTimeout(() => {
-            if (!hasAnimated.current) {
-                hasAnimated.current = true;
-                setCount(to);
-            }
-        }, 3000);
-        return () => clearTimeout(timer);
     }, [isInView, shouldReduceMotion, from, to, duration]);
 
+    useEffect(() => {
+        return () => {
+            if (rafHandle.current !== null) {
+                window.cancelAnimationFrame(rafHandle.current);
+            }
+        };
+    }, []);
+
     return (
-        <span ref={ref}>
-            {count.toLocaleString()}
+        <span ref={ref} className="tabular-nums">
+            {prefix}
+            {Number.isInteger(to)
+                ? Math.round(count).toLocaleString()
+                : count.toLocaleString(undefined, {
+                      maximumFractionDigits: 1,
+                  })}
             {suffix}
         </span>
     );

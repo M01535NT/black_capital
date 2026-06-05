@@ -3,9 +3,9 @@ import { FadeIn, StaggerChildren, StaggerItem } from "@/components/ui/motion";
 import { Shield, Users, TrendingUp, Award } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Nosotros | Black Corporativo",
+    title: "Nosotros | Black Capital",
     description:
-        "Boutique inmobiliaria digital de alto nivel especializada en activos residenciales de lujo, comerciales y logísticos en México.",
+        "Plataforma inmobiliaria digital de alto nivel especializada en activos residenciales de lujo, comerciales y logísticos en México.",
 };
 
 const pillars = [
@@ -47,11 +47,11 @@ export default function NosotrosPage() {
                             Acerca de Nosotros
                         </span>
                         <h1 className="text-display-3 font-display font-semibold tracking-display uppercase text-4xl md:text-6xl text-foreground mb-6">
-                            La Boutique Inmobiliaria{" "}
+                            La Plataforma Inmobiliaria{" "}
                             <span className="metallic-gold">del Futuro</span>
                         </h1>
                         <p className="text-foreground/50 text-lg leading-relaxed max-w-2xl mx-auto">
-                            Black Corporativo es una plataforma digital inmobiliaria de alta gama
+                            Black Capital es una plataforma digital inmobiliaria de alta gama
                             estructurada para inversores B2B y HNWI con interés en el mercado
                             mexicano. Operamos como puente entre los mejores activos inmobiliarios
                             y los inversores más sofisticados.

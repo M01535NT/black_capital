@@ -2,9 +2,9 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'Black Corporativo',
+        name: 'Black Capital',
         short_name: 'Black Corp',
-        description: 'Boutique Inmobiliaria de Alto Nivel - Comercial, Industrial y Residencial.',
+        description: 'Plataforma Inmobiliaria de Alto Nivel - Comercial, Industrial y Residencial.',
         start_url: '/',
         display: 'standalone',
         background_color: '#09090b', // zinc-950

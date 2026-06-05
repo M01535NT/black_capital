@@ -3,50 +3,49 @@ import { cn } from "@/lib/utils";
 
 interface LogoProps {
   /**
-   * `mark` renders the monogram badge only (square with the BC monogram).
-   * Use inside compact UI (header, button leading slot, etc).
+   * `mark` renders the compact header variant: a vertical gold bar
+   * followed by "BLACK CAPITAL" wordmark in Space Grotesk.
    *
-   * `full` renders the monogram + "BLACK CORPORATIVO" wordmark beside it.
-   * Use in footer, auth pages, email signatures, and any layout that has
-   * room for ~160px of width.
+   * `full` renders the same wordmark at a larger size for the footer.
+   * Same composition, no separate "BC" monogram.
    */
   variant?: "mark" | "full";
   /**
-   * Visual height in pixels. Width follows the viewBox aspect ratio.
-   * `mark` is 1:1, `full` is 3.6:1. Defaults to a comfortable 36/44.
+   * Visual height in pixels. Width follows the natural aspect of the
+   * SVG content (the bar + the wordmark).
    */
   size?: "sm" | "md" | "lg";
   /**
-   * Color of the strokes/fills. `gold` paints the whole logo in brand
-   * gold; `current` inherits the text color of the parent. Default `gold`
-   * keeps the brand consistent even on dark or light surfaces.
+   * Color treatment. `gold` paints the accent bar in brand gold and the
+   * wordmark in off-white. `mono` is single-color (current text color).
+   * `light` paints the wordmark in white (for dark video overlays, etc).
    */
-  tone?: "gold" | "current";
+  tone?: "gold" | "mono" | "light";
   /** Optional href. If provided, wraps the logo in a Link. */
   href?: string;
   /** Additional classes for the outer wrapper. */
   className?: string;
-  /** Accessible label override. Defaults to "Black Corporativo". */
+  /** Accessible label override. Defaults to "Black Capital". */
   ariaLabel?: string;
 }
 
 const sizeMap: Record<NonNullable<LogoProps["size"]>, { mark: number; full: number }> = {
-  sm: { mark: 28, full: 33 },
-  md: { mark: 36, full: 44 },
-  lg: { mark: 56, full: 66 },
+  sm: { mark: 22, full: 28 },
+  md: { mark: 28, full: 36 },
+  lg: { mark: 44, full: 56 },
 };
 
 /**
- * Black Corporativo brand mark.
+ * Black Capital wordmark logo.
  *
- * Inlined SVG instead of next/image + /public/*.svg. Two reasons:
+ * Composition:
+ *   - A vertical gold bar (1:4 aspect, fills the cap height)
+ *   - "BLACK" — uppercase, weight 700, tight tracking
+ *   - "CAPITAL" — uppercase, weight 400, wide tracking, gold accent
  *
- * 1. The original stroke + text colors are `currentColor`, which only
- *    works for SVGs that live in the DOM (not for `<img src>`). The
- *    `tone` prop toggles which class paints the SVG.
- * 2. Inline SVG ships zero extra HTTP requests and the browser can paint
- *    it on the very first frame — important for the LCP candidate in the
- *    sticky header.
+ * The 2-line stacked "BLACK / CAPITAL" treatment is the signature
+ * of the brand. Inline SVG with `currentColor` so the `tone` prop
+ * controls the paint at the call site, not at the file level.
  */
 export function Logo({
   variant = "mark",
@@ -54,113 +53,93 @@ export function Logo({
   tone = "gold",
   href,
   className,
-  ariaLabel = "Black Corporativo",
+  ariaLabel = "Black Capital",
 }: LogoProps) {
   const height = sizeMap[size][variant];
-  const toneClass = tone === "gold" ? "text-gold-solid" : "text-current";
 
-  const content =
-    variant === "mark" ? (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 100 100"
-        role="img"
-        aria-label={ariaLabel}
-        height={height}
-        width={height}
-        className={cn("flex-shrink-0", toneClass, className)}
+  // Color tokens per tone.
+  const colors = (() => {
+    switch (tone) {
+      case "gold":
+        return {
+          bar: "#D4AF37",
+          black: "#F5F5F5", // off-white for "BLACK" word
+          capital: "#D4AF37", // gold for "CAPITAL" subhead
+        };
+      case "light":
+        return {
+          bar: "#D4AF37",
+          black: "#FFFFFF",
+          capital: "#D4AF37",
+        };
+      case "mono":
+      default:
+        return {
+          bar: "currentColor",
+          black: "currentColor",
+          capital: "currentColor",
+        };
+    }
+  })();
+
+  // Aspect ratio: the wordmark is wider than tall. We pick widths
+  // empirically for each size + variant to keep the cap-height
+  // consistent with the rest of the nav.
+  const widths: Record<NonNullable<LogoProps["size"]>, { mark: number; full: number }> = {
+    sm: { mark: 110, full: 150 },
+    md: { mark: 140, full: 190 },
+    lg: { mark: 220, full: 300 },
+  };
+  const width = widths[size][variant];
+
+  // Font size scaled to the cap-height of the chosen height.
+  const fontSize = Math.round(height * 0.62);
+
+  const content = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 240 100"
+      role="img"
+      aria-label={ariaLabel}
+      height={height}
+      width={(width / 100) * height}
+      className={cn("flex-shrink-0", className)}
+    >
+      {/* Vertical accent bar — 1:4 aspect, fills the cap height. */}
+      <rect
+        x="6"
+        y="6"
+        width="6"
+        height="88"
+        rx="1"
+        fill={colors.bar}
+      />
+      {/* "BLACK" — heavy, tight tracking, off-white. */}
+      <text
+        x="26"
+        y="48"
+        fontFamily="var(--font-display), 'Space Grotesk', 'Helvetica Neue', sans-serif"
+        fontSize={fontSize}
+        fontWeight="700"
+        letterSpacing="0.5"
+        fill={colors.black}
       >
-        <rect
-          x="6"
-          y="6"
-          width="88"
-          height="88"
-          rx="3"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <text
-          x="50"
-          y="72"
-          fontFamily="Georgia, 'Times New Roman', 'Playfair Display', serif"
-          fontSize="60"
-          fontWeight="700"
-          fontStyle="italic"
-          textAnchor="middle"
-          fill="currentColor"
-          letterSpacing="-2"
-        >
-          BC
-        </text>
-      </svg>
-    ) : (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 360 100"
-        role="img"
-        aria-label={ariaLabel}
-        height={height}
-        width={height * 3.6}
-        className={cn("flex-shrink-0", toneClass, className)}
+        BLACK
+      </text>
+      {/* "CAPITAL" — light, wide tracking, gold. */}
+      <text
+        x="26"
+        y="84"
+        fontFamily="var(--font-display), 'Space Grotesk', 'Helvetica Neue', sans-serif"
+        fontSize={Math.round(fontSize * 0.62)}
+        fontWeight="400"
+        letterSpacing="3.5"
+        fill={colors.capital}
       >
-        <rect
-          x="6"
-          y="6"
-          width="88"
-          height="88"
-          rx="3"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <text
-          x="50"
-          y="72"
-          fontFamily="Georgia, 'Times New Roman', 'Playfair Display', serif"
-          fontSize="60"
-          fontWeight="700"
-          fontStyle="italic"
-          textAnchor="middle"
-          fill="currentColor"
-          letterSpacing="-2"
-        >
-          BC
-        </text>
-        <text
-          x="116"
-          y="52"
-          fontFamily="Montserrat, 'Helvetica Neue', sans-serif"
-          fontSize="22"
-          fontWeight="800"
-          letterSpacing="3"
-          fill="currentColor"
-        >
-          BLACK
-        </text>
-        <line
-          x1="116"
-          y1="62"
-          x2="200"
-          y2="62"
-          stroke="currentColor"
-          strokeWidth="0.5"
-          opacity="0.4"
-        />
-        <text
-          x="116"
-          y="78"
-          fontFamily="Montserrat, 'Helvetica Neue', sans-serif"
-          fontSize="22"
-          fontWeight="500"
-          letterSpacing="8"
-          fill="currentColor"
-          opacity="0.85"
-        >
-          CORPORATIVO
-        </text>
-      </svg>
-    );
+        CAPITAL
+      </text>
+    </svg>
+  );
 
   if (href) {
     return (

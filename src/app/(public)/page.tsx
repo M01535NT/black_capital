@@ -1,33 +1,31 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/Hero";
-import { BottomMarquee } from "@/components/home/Marquees";
 import { BrandsGrid } from "@/components/home/BrandsGrid";
 import { ComoTrabajamos } from "@/components/home/ComoTrabajamos";
 import { FeaturedInventory } from "@/components/home/FeaturedInventory";
 import { SocialProof } from "@/components/home/SocialProof";
-import { LeadMagnet } from "@/components/home/LeadMagnet";
 import { JsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-    title: "Black Corporativo | Boutique Inmobiliaria de Alto Nivel",
+    title: "Black Capital | Plataforma Inmobiliaria de Alta Gama",
     description:
-        "Plataforma digital inmobiliaria de alta gama para inversores B2B y HNWI. Residencial de lujo, oficinas corporativas y activos industriales en México.",
+        "Plataforma digital inmobiliaria de alta gama para inversores B2B y HNWI. Residencial, comercial e industrial en México.",
     openGraph: {
-        title: "Black Corporativo | Boutique Inmobiliaria de Alto Nivel",
+        title: "Black Capital | Plataforma Inmobiliaria de Alta Gama",
         description:
-            "Residencial de lujo, oficinas corporativas y activos industriales en México. Accede a inventario exclusivo y análisis financieros estructurados.",
+            "Residencial, comercial e industrial en México. Accede a inventario exclusivo y análisis financieros estructurados.",
         type: "website",
         locale: "es_MX",
-        siteName: "Black Corporativo",
+        siteName: "Black Capital",
     },
 };
 
 const REAL_ESTATE_AGENT_SCHEMA = {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
-    name: "Black Corporativo",
+    name: "Black Capital",
     description:
-        "Boutique inmobiliaria de alta gama especializada en propiedades de lujo, comerciales e industriales",
+        "Plataforma inmobiliaria de alta gama especializada en propiedades residenciales, comerciales e industriales",
     url: "https://blackcorporativo.com",
     priceRange: "$$$$",
     address: {
@@ -43,12 +41,12 @@ const REAL_ESTATE_AGENT_SCHEMA = {
 const WEBSITE_SCHEMA = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Black Corporativo",
+    name: "Black Capital",
     url: "https://blackcorporativo.com",
     inLanguage: "es-MX",
     publisher: {
         "@type": "RealEstateAgent",
-        name: "Black Corporativo",
+        name: "Black Capital",
     },
 };
 
@@ -60,8 +58,6 @@ export default async function HomePage() {
             <ComoTrabajamos />
             <FeaturedInventory />
             <SocialProof />
-            <BottomMarquee />
-            <LeadMagnet />
             <JsonLd id="ld-organization" data={REAL_ESTATE_AGENT_SCHEMA} />
             <JsonLd id="ld-website" data={WEBSITE_SCHEMA} />
         </>

@@ -55,7 +55,7 @@ export async function POST(req: Request) {
                     BLACK <span style="color:#D4AF37">CORP</span>
                 </h1>
                 <p style="color:#666;font-size:12px;margin:4px 0 0;text-transform:uppercase;letter-spacing:0.2em">
-                    Boutique Inmobiliaria
+                    Plataforma Inmobiliaria
                 </p>
             </td>
         </tr>
@@ -89,7 +89,7 @@ export async function POST(req: Request) {
         <tr>
             <td style="padding-top:32px;border-top:1px solid #222">
                 <p style="font-size:11px;color:#555;margin:0 0 4px">
-                    Black Corporativo — Boutique Inmobiliaria de Alto Nivel
+                    Black Capital — Plataforma Inmobiliaria de Alto Nivel
                 </p>
                 <p style="font-size:11px;color:#444;margin:0">
                     Este correo fue enviado porque solicitaste informacion en nuestro portal.
@@ -102,7 +102,7 @@ export async function POST(req: Request) {
 
         // Build Resend payload
         const resendPayload: Record<string, unknown> = {
-            from: "Black Corporativo <docs@blackcorporativo.com>",
+            from: "Black Capital <docs@blackcorporativo.com>",
             to: [email],
             subject: `${docLabel}: ${property.title}`,
             html,

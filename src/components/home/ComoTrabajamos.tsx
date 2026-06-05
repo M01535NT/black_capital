@@ -80,11 +80,6 @@ export function ComoTrabajamos() {
                 </FadeIn>
 
                 <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 relative">
-                    {/* Connecting line — desktop only */}
-                    <div
-                        aria-hidden="true"
-                        className="hidden lg:block absolute top-12 left-[12%] right-[12%] h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent"
-                    />
                     {steps.map((step) => {
                         const Icon = step.icon;
                         return (
@@ -92,7 +87,7 @@ export function ComoTrabajamos() {
                                 <div className="relative h-full p-6 md:p-8 rounded-2xl border border-foreground/5 bg-foreground/[0.015] hover:border-gold-500/20 hover:bg-foreground/[0.03] transition-all duration-500">
                                     {/* Number + icon row */}
                                     <div className="flex items-center justify-between mb-6">
-                                        <span className="font-display text-display-3 font-bold metallic-gold">
+                                        <span className="font-display text-display-3 font-bold metallic-gold-static">
                                             {step.number}
                                         </span>
                                         <div

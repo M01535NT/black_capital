@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
     Menu,
+    X,
     Home,
     Building2,
     Warehouse,
@@ -13,10 +14,11 @@ import {
     Percent,
     Phone,
     ChevronDown,
+    ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
+import { cn } from "@/lib/utils";
 import {
     Drawer,
     DrawerContent,
@@ -48,7 +50,7 @@ const herramientasDropdown = [
     { name: "Calculadora ISAI", href: "/herramientas#isai", icon: Calculator },
 ];
 
-const verticals = [
+const verticales = [
     { name: "Black Luxury", href: "/black-luxury", desc: "Residencias trofeo y súper lujo" },
     { name: "Black Business", href: "/black-business", desc: "Activos corporativos clase A" },
     { name: "Black Industrial", href: "/black-industrial", desc: "Naves y parques logísticos" },
@@ -57,10 +59,16 @@ const verticals = [
 const corporativoLinks = [
     { name: "Nosotros", href: "/nosotros" },
     { name: "Aviso de Privacidad", href: "/legal/privacidad" },
-    { name: "Panel Admin", href: "/admin" },
+    { name: "Términos de Uso", href: "/legal/terminos" },
 ];
 
-/* ── Accessible dropdown component ──────────────────────────────────── */
+/* ── Accessible dropdown ──────────────────────────────────────────────
+   IMPORTANT: the trigger is a `<button>`, not a `<Link>`. The button
+   toggles the menu on click and opens it on hover. Navigation to the
+   category landing page is available via the dropdown's first item
+   (e.g. "Ver todos de Venta →"). This fixes the issue where clicking
+   the trigger used to navigate the user to `/inventario?tipo=Venta`
+   without ever opening the menu. */
 
 type DropdownKey = "venta" | "renta" | "herramientas";
 
@@ -82,16 +90,14 @@ function NavDropdown({
     isOpen,
     onOpen,
     onClose,
-    isActive,
 }: {
     def: DropdownDef;
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
-    isActive: boolean;
 }) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const triggerRef = useRef<HTMLAnchorElement>(null);
+    const triggerRef = useRef<HTMLButtonElement>(null);
     const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const cancelClose = useCallback(() => {
@@ -103,8 +109,14 @@ function NavDropdown({
 
     const scheduleClose = useCallback(() => {
         cancelClose();
-        closeTimer.current = setTimeout(onClose, 150);
+        closeTimer.current = setTimeout(onClose, 180);
     }, [cancelClose, onClose]);
+
+    // Open on hover
+    const handleMouseEnter = useCallback(() => {
+        cancelClose();
+        onOpen();
+    }, [cancelClose, onOpen]);
 
     // Close on outside click
     useEffect(() => {
@@ -122,7 +134,7 @@ function NavDropdown({
     }, [isOpen, onClose]);
 
     // Close on Escape and return focus to trigger
-    const onKeyDown = (e: KeyboardEvent<HTMLAnchorElement>) => {
+    const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
         if (e.key === "Escape" && isOpen) {
             e.preventDefault();
             onClose();
@@ -131,33 +143,26 @@ function NavDropdown({
     };
 
     const navLinkBase =
-        "font-display text-xs font-bold uppercase tracking-card text-foreground/80 hover:text-gold-solid transition-colors duration-300 relative py-1 inline-flex items-center gap-1";
+        "font-display text-xs font-bold uppercase tracking-card text-foreground/80 hover:text-gold-solid transition-colors duration-300 relative py-1 inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:text-gold-solid";
     const navLinkActive =
-        "text-gold-solid after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-gold-500 after:to-gold-700 after:rounded-sm";
+        "text-gold-solid";
 
     return (
         <div
             ref={containerRef}
             className="relative"
-            onMouseEnter={cancelClose}
+            onMouseEnter={handleMouseEnter}
             onMouseLeave={scheduleClose}
         >
-            <Link
+            <button
                 ref={triggerRef}
-                href={def.href}
+                type="button"
                 aria-haspopup="menu"
                 aria-expanded={isOpen}
-                onClick={(e) => {
-                    // Toggle on click for keyboard/touch users; let the link
-                    // navigate if the user clicks the label area itself.
-                    if (!isOpen) {
-                        e.preventDefault();
-                        onOpen();
-                    }
-                }}
+                onClick={() => (isOpen ? onClose() : onOpen())}
                 onFocus={onOpen}
                 onKeyDown={onKeyDown}
-                className={cn(navLinkBase, isActive && navLinkActive)}
+                className={cn(navLinkBase, isOpen && navLinkActive)}
             >
                 {def.label}
                 <ChevronDown
@@ -167,13 +172,22 @@ function NavDropdown({
                     )}
                     aria-hidden="true"
                 />
-            </Link>
+            </button>
             {isOpen && (
                 <div
                     role="menu"
                     aria-label={def.label}
-                    className="absolute top-full left-1/2 -translate-x-1/2 translate-y-2 min-w-[220px] bg-[rgba(26,26,26,0.95)] border border-white/10 rounded-2xl p-3 shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-2xl z-50"
+                    className="absolute top-full left-1/2 -translate-x-1/2 translate-y-2 min-w-[260px] bg-[rgba(15,15,15,0.96)] border border-white/10 rounded-2xl p-3 shadow-[0_20px_60px_rgba(0,0,0,0.7)] backdrop-blur-2xl z-50"
                 >
+                    <Link
+                        href={def.href}
+                        role="menuitem"
+                        className="flex items-center justify-between px-4 py-2.5 mb-1 text-xs uppercase tracking-overline font-display font-bold text-gold-solid rounded-xl border-b border-white/5 pb-3 hover:text-gold-400 focus-visible:outline-none focus-visible:text-gold-400"
+                        onClick={onClose}
+                    >
+                        Ver todo de {def.label}
+                        <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                    </Link>
                     {def.items.map((item) => {
                         const Icon = item.icon;
                         return (
@@ -205,7 +219,6 @@ export function Header() {
     const [scrolled, setScrolled] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<DropdownKey | null>(null);
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const navRef = useRef<HTMLElement>(null);
 
     const isActive = (href: string) => {
         if (href === "/") return pathname === "/";
@@ -218,239 +231,227 @@ export function Header() {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    // Close any open dropdown on route change.
     useEffect(() => {
         setOpenDropdown(null);
     }, [pathname]);
 
     const navLinkBase =
-        "font-display text-xs font-bold uppercase tracking-card text-foreground/80 hover:text-gold-solid transition-colors duration-300 relative py-1";
+        "font-display text-xs font-bold uppercase tracking-card text-foreground/80 hover:text-gold-solid transition-colors duration-300 relative py-1 focus-visible:outline-none focus-visible:text-gold-solid";
     const navLinkActive =
-        "text-gold-solid after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-gradient-to-r after:from-gold-500 after:to-gold-700 after:rounded-sm";
+        "text-gold-solid after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-gold-solid after:rounded-sm";
 
     return (
-        <header
-            className={cn(
-                "fixed top-5 left-1/2 -translate-x-1/2 w-[92%] max-w-7xl z-50",
-                "px-4 md:px-6 py-2 flex items-center justify-between gap-2",
-                // Smoother scroll: 400ms ease on bg + border + shadow
-                "bg-black/70 backdrop-blur-xl border border-white/10 rounded-full",
-                "transition-all duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-                scrolled &&
-                    "bg-black/90 border-gold-500/25 shadow-[0_10px_40px_rgba(0,0,0,0.6)] backdrop-saturate-150",
-            )}
-            role="banner"
-        >
-            {/* Left: Logo */}
-            <Logo href="/" variant="mark" size="sm" tone="gold" className="flex-shrink-0" />
-
-            {/* Center: Desktop Navigation */}
-            <nav
-                ref={navRef}
-                aria-label="Menú principal"
-                className="hidden lg:flex items-center gap-6"
+        <>
+            <header
+                className={cn(
+                    "fixed top-5 left-1/2 -translate-x-1/2 w-[92%] max-w-7xl z-50",
+                    "px-4 md:px-6 py-2 flex items-center justify-between gap-2",
+                    "bg-black/70 backdrop-blur-xl border border-white/10 rounded-full",
+                    "transition-all duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+                    scrolled &&
+                        "bg-black/90 border-gold-500/25 shadow-[0_10px_40px_rgba(0,0,0,0.6)] backdrop-saturate-150",
+                )}
+                role="banner"
             >
-                {baseLinks.map((link) => (
-                    <Link
-                        key={link.name}
-                        href={link.href}
-                        className={cn(navLinkBase, isActive(link.href) && navLinkActive)}
-                    >
-                        {link.name}
-                    </Link>
-                ))}
+                {/* Left: Logo */}
+                <Logo href="/" variant="mark" size="sm" tone="gold" className="flex-shrink-0" />
 
-                {DESKTOP_DROPDOWNS.map((def) => (
-                    <NavDropdown
-                        key={def.key}
-                        def={def}
-                        isOpen={openDropdown === def.key}
-                        onOpen={() => setOpenDropdown(def.key)}
-                        onClose={() =>
-                            setOpenDropdown((curr) => (curr === def.key ? null : curr))
-                        }
-                        isActive={
-                            isActive(def.href) ||
-                            (def.key === openDropdown && isActive("/inventario"))
-                        }
-                    />
-                ))}
-            </nav>
-
-            {/* Right: Contacto + Hamburger */}
-            <div className="flex items-center gap-2 flex-shrink-0">
-                <Link
-                    href="/contacto"
-                    className="hidden lg:inline-flex items-center gap-2 px-5 py-2 border border-gold-solid rounded-full text-gold-solid text-xs font-display font-bold uppercase tracking-wider hover:bg-gold-solid hover:text-black transition-all duration-300"
+                {/* Center: Desktop Navigation */}
+                <nav
+                    aria-label="Menú principal"
+                    className="hidden lg:flex items-center gap-6"
                 >
-                    <Phone className="w-3.5 h-3.5" aria-hidden="true" />
-                    Contacto
-                </Link>
-
-                <Drawer
-                    direction="right"
-                    open={drawerOpen}
-                    onOpenChange={setDrawerOpen}
-                >
-                    <DrawerTrigger asChild>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="lg:hidden hover:text-gold-solid text-foreground"
-                            aria-label="Abrir menú de navegación"
-                            aria-expanded={drawerOpen}
+                    {baseLinks.map((link) => (
+                        <Link
+                            key={link.name}
+                            href={link.href}
+                            className={cn(navLinkBase, isActive(link.href) && navLinkActive)}
                         >
-                            <Menu className="h-5 w-5" aria-hidden="true" />
-                            <span className="sr-only">Abrir menú</span>
-                        </Button>
-                    </DrawerTrigger>
-                    <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-80 sm:w-96 rounded-none bg-background/80 backdrop-blur-2xl border-l border-gold-solid/10">
-                        <div className="mx-auto w-full max-w-sm p-6 overflow-y-auto">
-                            <DrawerHeader className="px-0 pt-0 text-left">
-                                <DrawerTitle className="font-display text-2xl font-bold tracking-tight text-gold-solid">
-                                    Navegación
-                                </DrawerTitle>
-                            </DrawerHeader>
+                            {link.name}
+                        </Link>
+                    ))}
 
-                            <div className="py-6 space-y-8">
-                                {/* Mobile Base Links */}
-                                <div className="lg:hidden space-y-4">
-                                    <h3 className="text-caption text-foreground/50 mb-4 uppercase font-sans font-bold tracking-overline">
-                                        Menú Principal
-                                    </h3>
-                                    <div className="flex flex-col gap-4">
-                                        {baseLinks.map((link) => (
-                                            <Link
-                                                key={link.name}
-                                                href={link.href}
-                                                className={cn(
-                                                    "font-display text-lg font-bold uppercase tracking-wide hover:text-gold-solid transition-colors focus-visible:text-gold-solid focus-visible:outline-none",
-                                                    isActive(link.href)
-                                                        ? "text-gold-solid"
-                                                        : "text-foreground",
-                                                )}
-                                                onClick={() => setDrawerOpen(false)}
-                                            >
-                                                {link.name}
-                                            </Link>
-                                        ))}
-                                        <Link
-                                            href="/inventario?tipo=Venta"
-                                            className="font-display text-lg font-bold uppercase tracking-wide text-foreground hover:text-gold-solid transition-colors focus-visible:text-gold-solid focus-visible:outline-none"
-                                            onClick={() => setDrawerOpen(false)}
-                                        >
-                                            Venta
-                                        </Link>
-                                        <Link
-                                            href="/inventario?tipo=Renta"
-                                            className="font-display text-lg font-bold uppercase tracking-wide text-foreground hover:text-gold-solid transition-colors focus-visible:text-gold-solid focus-visible:outline-none"
-                                            onClick={() => setDrawerOpen(false)}
-                                        >
-                                            Renta
-                                        </Link>
-                                    </div>
-                                </div>
+                    {DESKTOP_DROPDOWNS.map((def) => (
+                        <NavDropdown
+                            key={def.key}
+                            def={def}
+                            isOpen={openDropdown === def.key}
+                            onOpen={() => setOpenDropdown(def.key)}
+                            onClose={() =>
+                                setOpenDropdown((curr) => (curr === def.key ? null : curr))
+                            }
+                        />
+                    ))}
+                </nav>
 
-                                {/* Verticales */}
-                                <div className="space-y-4">
-                                    <h3 className="text-caption text-foreground/50 mb-4 uppercase font-sans font-bold tracking-overline">
-                                        Nuestras Marcas
-                                    </h3>
-                                    <div className="flex flex-col gap-4">
-                                        {verticals.map((link) => (
-                                            <Link
-                                                key={link.name}
-                                                href={link.href}
-                                                className="group focus-visible:outline-none"
-                                                onClick={() => setDrawerOpen(false)}
-                                            >
-                                                <span
+                {/* Right: Contacto CTA + Hamburger (always visible) */}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                    <Link
+                        href="/contacto"
+                        className="hidden lg:inline-flex items-center gap-2 px-5 py-2 border border-gold-solid rounded-full text-gold-solid text-xs font-display font-bold uppercase tracking-wider hover:bg-gold-solid hover:text-black transition-all duration-300"
+                    >
+                        <Phone className="w-3.5 h-3.5" aria-hidden="true" />
+                        Contacto
+                    </Link>
+
+                    <Drawer
+                        direction="right"
+                        open={drawerOpen}
+                        onOpenChange={setDrawerOpen}
+                    >
+                        <DrawerTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="hover:text-gold-solid hover:bg-white/5 text-foreground"
+                                aria-label="Abrir menú de navegación"
+                                aria-expanded={drawerOpen}
+                            >
+                                <Menu className="h-5 w-5" aria-hidden="true" />
+                                <span className="sr-only">Abrir menú</span>
+                            </Button>
+                        </DrawerTrigger>
+                        <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-80 sm:w-96 rounded-none bg-[#0a0a0a]/95 backdrop-blur-2xl border-l border-gold-500/15">
+                            <div className="mx-auto w-full max-w-sm p-6 overflow-y-auto">
+                                <DrawerHeader className="px-0 pt-0 text-left flex flex-row items-center justify-between">
+                                    <DrawerTitle className="font-display text-2xl font-bold tracking-tight text-foreground">
+                                        Menú
+                                    </DrawerTitle>
+                                    <button
+                                        onClick={() => setDrawerOpen(false)}
+                                        className="text-foreground/60 hover:text-gold-solid transition-colors p-1"
+                                        aria-label="Cerrar menú"
+                                    >
+                                        <X className="w-5 h-5" />
+                                    </button>
+                                </DrawerHeader>
+
+                                <div className="py-6 space-y-8">
+                                    {/* Inicio y Proyectos */}
+                                    <div className="space-y-4">
+                                        <h3 className="font-display text-caption uppercase tracking-overline text-gold-solid font-bold">
+                                            Navegación
+                                        </h3>
+                                        <div className="flex flex-col gap-3">
+                                            {baseLinks.map((link) => (
+                                                <Link
+                                                    key={link.name}
+                                                    href={link.href}
                                                     className={cn(
-                                                        "font-display text-lg font-bold tracking-wide transition-colors",
+                                                        "font-display text-lg font-bold uppercase tracking-wide transition-colors",
                                                         isActive(link.href)
                                                             ? "text-gold-solid"
-                                                            : "text-foreground group-hover:text-gold-solid",
+                                                            : "text-foreground hover:text-gold-solid",
                                                     )}
-                                                >
-                                                    {link.name}
-                                                </span>
-                                                <p className="text-xs text-foreground/50 mt-0.5">
-                                                    {link.desc}
-                                                </p>
-                                            </Link>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Herramientas */}
-                                <div className="space-y-4">
-                                    <h3 className="text-caption text-foreground/50 mb-4 uppercase font-sans font-bold tracking-overline">
-                                        Herramientas
-                                    </h3>
-                                    <div className="flex flex-col gap-3">
-                                        {herramientasDropdown.map((item) => {
-                                            const Icon = item.icon;
-                                            return (
-                                                <Link
-                                                    key={item.name}
-                                                    href={item.href}
-                                                    className="flex items-center gap-3 text-sm font-medium text-foreground/80 hover:text-gold-solid transition-colors focus-visible:text-gold-solid focus-visible:outline-none"
                                                     onClick={() => setDrawerOpen(false)}
                                                 >
-                                                    <Icon
-                                                        className="w-4 h-4 text-gold-solid"
-                                                        aria-hidden="true"
-                                                    />
-                                                    {item.name}
+                                                    {link.name}
                                                 </Link>
-                                            );
-                                        })}
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* Corporativo */}
-                                <div className="space-y-4">
-                                    <h3 className="text-caption text-foreground/50 mb-4 uppercase font-sans font-bold tracking-overline">
-                                        Corporativo
-                                    </h3>
-                                    <div className="flex flex-col gap-3">
-                                        {corporativoLinks.map((link) => (
-                                            <Link
-                                                key={link.name}
-                                                href={link.href}
-                                                className={cn(
-                                                    "text-sm font-medium transition-colors focus-visible:outline-none",
-                                                    isActive(link.href)
-                                                        ? "text-gold-solid"
-                                                        : "text-foreground/80 hover:text-gold-solid",
-                                                )}
-                                                onClick={() => setDrawerOpen(false)}
-                                            >
-                                                {link.name}
-                                            </Link>
-                                        ))}
+                                    {/* Verticales */}
+                                    <div className="space-y-4">
+                                        <h3 className="font-display text-caption uppercase tracking-overline text-gold-solid font-bold">
+                                            Nuestras Marcas
+                                        </h3>
+                                        <div className="flex flex-col gap-4">
+                                            {verticales.map((link) => (
+                                                <Link
+                                                    key={link.name}
+                                                    href={link.href}
+                                                    className="group focus-visible:outline-none"
+                                                    onClick={() => setDrawerOpen(false)}
+                                                >
+                                                    <span
+                                                        className={cn(
+                                                            "font-display text-lg font-bold tracking-wide transition-colors",
+                                                            isActive(link.href)
+                                                                ? "text-gold-solid"
+                                                                : "text-foreground group-hover:text-gold-solid",
+                                                        )}
+                                                    >
+                                                        {link.name}
+                                                    </span>
+                                                    <p className="text-xs text-foreground/50 mt-0.5">
+                                                        {link.desc}
+                                                    </p>
+                                                </Link>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* Contacto CTA en mobile */}
-                                <div className="lg:hidden pt-4">
-                                    <Link
-                                        href="/contacto"
-                                        className="flex items-center justify-center gap-2 w-full py-3 px-6 border border-gold-solid rounded-full text-gold-solid font-semibold text-sm hover:bg-gold-solid hover:text-black transition-all focus-visible:bg-gold-solid focus-visible:text-black focus-visible:outline-none"
-                                        onClick={() => setDrawerOpen(false)}
-                                    >
-                                        <Phone
-                                            className="w-4 h-4"
-                                            aria-hidden="true"
-                                        />
-                                        Contactar
-                                    </Link>
+                                    {/* Herramientas */}
+                                    <div className="space-y-4">
+                                        <h3 className="font-display text-caption uppercase tracking-overline text-gold-solid font-bold">
+                                            Herramientas
+                                        </h3>
+                                        <div className="flex flex-col gap-3">
+                                            {herramientasDropdown.map((item) => {
+                                                const Icon = item.icon;
+                                                return (
+                                                    <Link
+                                                        key={item.name}
+                                                        href={item.href}
+                                                        className="flex items-center gap-3 text-sm font-medium text-foreground/80 hover:text-gold-solid transition-colors"
+                                                        onClick={() => setDrawerOpen(false)}
+                                                    >
+                                                        <Icon
+                                                            className="w-4 h-4 text-gold-solid"
+                                                            aria-hidden="true"
+                                                        />
+                                                        {item.name}
+                                                    </Link>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    {/* Corporativo */}
+                                    <div className="space-y-4">
+                                        <h3 className="font-display text-caption uppercase tracking-overline text-gold-solid font-bold">
+                                            Corporativo
+                                        </h3>
+                                        <div className="flex flex-col gap-3">
+                                            {corporativoLinks.map((link) => (
+                                                <Link
+                                                    key={link.name}
+                                                    href={link.href}
+                                                    className={cn(
+                                                        "text-sm font-medium transition-colors",
+                                                        isActive(link.href)
+                                                            ? "text-gold-solid"
+                                                            : "text-foreground/80 hover:text-gold-solid",
+                                                    )}
+                                                    onClick={() => setDrawerOpen(false)}
+                                                >
+                                                    {link.name}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Contacto CTA */}
+                                    <div className="pt-2">
+                                        <Link
+                                            href="/contacto"
+                                            className="flex items-center justify-center gap-2 w-full py-3 px-6 border border-gold-solid rounded-full text-gold-solid font-semibold text-sm hover:bg-gold-solid hover:text-black transition-all"
+                                            onClick={() => setDrawerOpen(false)}
+                                        >
+                                            <Phone
+                                                className="w-4 h-4"
+                                                aria-hidden="true"
+                                            />
+                                            Contactar
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </DrawerContent>
-                </Drawer>
-            </div>
-        </header>
+                        </DrawerContent>
+                    </Drawer>
+                </div>
+            </header>
+        </>
     );
 }

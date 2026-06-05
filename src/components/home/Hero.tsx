@@ -3,14 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { ChevronDown, ArrowRight, CalendarCheck } from "lucide-react";
+import { ArrowRight, CalendarCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TopMarquee } from "./Marquees";
 
 const words = ["Patrimonio", "Visión", "Capital"];
 
 /* ── Staggered Letter Reveal Component ─────────────────────────────── */
-function StaggeredWord({ word, className }: { word: string; className?: string }) {
+function StaggeredWord({ word }: { word: string }) {
     const letters = useMemo(() => word.split(""), [word]);
 
     return (
@@ -25,7 +25,7 @@ function StaggeredWord({ word, className }: { word: string; className?: string }
             {letters.map((letter, i) => (
                 <motion.span
                     key={`${word}-${i}`}
-                    className="inline-block metallic-gold text-glow-gold"
+                    className="inline-block metallic-gold"
                     variants={{
                         hidden: {
                             opacity: 0,
@@ -64,15 +64,8 @@ function StaggeredWord({ word, className }: { word: string; className?: string }
 }
 
 /**
- * Conditionally render the hero video. We skip the `<video>` tag entirely on
- * (a) touch-only devices, (b) when `prefers-reduced-motion: reduce`, and
- * (c) when the effective network type looks slow (3g / slow-2g). The poster
- * frame still paints from the SVG, so first paint is never a black void.
- *
- * Trade-off: this hook only runs on the client, so the server-rendered HTML
- * includes the `<video>` and React swaps it for the poster on the first
- * hydration tick. That is acceptable because the `<video>` is decorative,
- * `aria-hidden`, and the poster is identical visually.
+ * Conditionally render the hero video. Skip on touch-only devices,
+ * `prefers-reduced-motion`, or slow network. Static poster still paints.
  */
 function useShouldRenderVideo(): boolean {
     const [render, setRender] = useState(true);
@@ -119,13 +112,9 @@ export function Hero() {
     return (
         <section
             className="relative w-full min-h-[95vh] flex flex-col items-center justify-center overflow-hidden"
-            aria-label="Hero de Black Corporativo"
+            aria-label="Hero de Black Capital"
         >
-            {/* ── Video Background ──
-                poster: shows immediately so first paint is not the black void
-                preload="metadata": only fetches the metadata first, full bytes
-                stream once autoplay starts (browser heuristics).
-                Render is gated by useShouldRenderVideo to spare mobile data. */}
+            {/* ── Video Background ── */}
             {shouldRenderVideo && (
                 <video
                     autoPlay
@@ -140,7 +129,6 @@ export function Hero() {
                     <source src="/hero.webm" type="video/webm" />
                 </video>
             )}
-            {/* ── Static poster fallback (also used on its own when video is skipped) ── */}
             {!shouldRenderVideo && (
                 <div
                     className="absolute inset-0 bg-cover bg-center z-[-2]"
@@ -149,42 +137,8 @@ export function Hero() {
                 />
             )}
 
-            {/* ── Layered Dark Overlay ──
-                gradient is more refined than a flat black/60: the top fades
-                to almost transparent (lets the gold poster glow through),
-                the middle anchors the text, the bottom prepares the
-                transition into the marquee. */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/85 z-[-1]" />
-
-            {/* ── Editorial corner markers (always visible) ──
-                Small gold "BC" mark in the top-left, mirrored with the
-                "01 / Hero" counter on the top-right. A subtle gold line
-                on the left edge gives the section a "framed" feel. */}
-            <div
-                aria-hidden="true"
-                className="absolute top-6 left-6 md:top-8 md:left-10 z-20 flex items-center gap-3"
-            >
-                <span className="w-8 h-px bg-gradient-to-r from-gold-500 to-gold-700" />
-                <span className="font-display text-caption font-bold uppercase tracking-mega text-foreground/60">
-                    BC
-                </span>
-            </div>
-            <div
-                aria-hidden="true"
-                className="absolute top-6 right-6 md:top-8 md:right-10 z-20"
-            >
-                <span className="font-display text-caption font-bold uppercase tracking-mega text-foreground/60">
-                    01 — Hero
-                </span>
-            </div>
-            <div
-                aria-hidden="true"
-                className="absolute top-0 left-6 md:left-10 bottom-32 w-px bg-gradient-to-b from-gold-500/40 via-gold-500/10 to-transparent hidden md:block"
-            />
-            <div
-                aria-hidden="true"
-                className="absolute top-0 right-6 md:right-10 bottom-32 w-px bg-gradient-to-b from-gold-500/40 via-gold-500/10 to-transparent hidden md:block"
-            />
+            {/* ── Layered Dark Overlay ── */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/65 to-black/90 z-[-1]" />
 
             {/* ── Content ── */}
             <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12">
@@ -196,7 +150,7 @@ export function Hero() {
                         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                         className="inline-block font-display text-caption font-bold uppercase tracking-eyebrow text-gold-solid"
                     >
-                        Boutique Inmobiliaria · México
+                        Real Estate · Inversión · México
                     </motion.span>
 
                     {/* ── Main Headline ── */}
@@ -204,11 +158,10 @@ export function Hero() {
                         initial={shouldReduceMotion ? {} : { opacity: 0, x: -50 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-display-1 font-display font-bold tracking-display uppercase text-foreground"
+                        className="text-display-1 font-display font-bold tracking-tight uppercase text-foreground leading-[0.95]"
                     >
                         Estructuramos <br className="hidden sm:block" />
                         tu{" "}
-                        {/* ── Staggered Letter Reveal (PRD requirement) ── */}
                         <span
                             className="inline whitespace-nowrap"
                             style={{ perspective: "600px" }}
@@ -237,7 +190,7 @@ export function Hero() {
                             delay: 0.3,
                             ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="w-24 h-px bg-gradient-to-r from-gold-500 to-gold-700 origin-left"
+                        className="w-20 h-[2px] bg-gold-solid origin-left"
                     />
 
                     {/* ── Value proposition (concrete, B2B) ── */}
@@ -308,41 +261,6 @@ export function Hero() {
                     </motion.p>
                 </div>
             </div>
-
-            {/* ── Scroll Down Indicator ──
-                Vertical-rail style: a thin gold line, a small caption,
-                and a chevron that floats up and down. */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 2, duration: 1 }}
-                className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 hidden sm:flex flex-col items-center gap-3"
-            >
-                <span className="text-caption uppercase tracking-eyebrow text-foreground/50 font-medium">
-                    Descubre más
-                </span>
-                <div className="relative w-px h-10 bg-foreground/15 overflow-hidden">
-                    <motion.div
-                        aria-hidden="true"
-                        className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-transparent to-gold-500"
-                        animate={{ y: ["-100%", "200%"] }}
-                        transition={{
-                            duration: 1.8,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                        }}
-                    />
-                </div>
-                <motion.div
-                    animate={{ y: [0, 4, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                >
-                    <ChevronDown
-                        aria-hidden="true"
-                        className="w-5 h-5 text-gold-500/60"
-                    />
-                </motion.div>
-            </motion.div>
 
             {/* ── Bottom Marquee ── */}
             <div className="absolute bottom-0 left-0 w-full z-20">

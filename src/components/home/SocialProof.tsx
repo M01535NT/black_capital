@@ -46,7 +46,8 @@ export async function SocialProof() {
                     ? Number((stats.portfolioValueMXN / 1_000_000).toFixed(1))
                     : null,
             label: "Millones USD en Portafolio",
-            suffix: "",
+            suffix: "M",
+            prefix: "$",
         },
     ];
 
@@ -78,7 +79,7 @@ export async function SocialProof() {
                                 {i > 0 && (
                                     <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 h-16 w-px bg-gradient-to-b from-transparent via-gold-500/20 to-transparent" />
                                 )}
-                                <h4 className="text-display-3 font-numerics font-bold metallic-gold flex items-center min-h-[1em]">
+                                <h4 className="text-display-3 font-numerics font-bold metallic-gold-static flex items-center min-h-[1em]">
                                     {stat.display === null ? (
                                         <span
                                             className="text-foreground/50"
@@ -95,6 +96,8 @@ export async function SocialProof() {
                                             from={0}
                                             to={stat.display}
                                             suffix={stat.suffix}
+                                            prefix={stat.prefix ?? ""}
+                                            duration={2}
                                         />
                                     )}
                                 </h4>
