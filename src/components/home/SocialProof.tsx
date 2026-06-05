@@ -56,33 +56,45 @@ export async function SocialProof() {
     return (
         <FadeIn direction="up">
             <section
-                className="w-full bg-gradient-to-b from-background via-zinc-950 to-background border-y border-gold-500/10 py-20"
+                className="w-full bg-gradient-to-b from-background via-zinc-950 to-background border-y border-gold-500/10 py-24"
                 aria-label="Indicadores de autoridad de la marca"
                 aria-live="polite"
             >
                 <div className="container mx-auto px-4">
-                    <div className="text-center max-w-2xl mx-auto mb-12">
-                        <span className="font-display text-caption font-bold uppercase tracking-eyebrow text-gold-solid">
-                            Track Record
-                        </span>
-                        <p className="text-body text-foreground/60 mt-3">
-                            Cifras consolidadas al cierre del último trimestre
-                            fiscal, auditadas internamente.
+                    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+                        <div className="max-w-2xl">
+                            <div className="flex items-center gap-3 font-display text-caption uppercase tracking-eyebrow font-bold mb-3">
+                                <span className="font-mono text-gold-solid text-body-sm">
+                                    02 /
+                                </span>
+                                <span className="text-gold-solid">Track Record</span>
+                            </div>
+                            <h2 className="text-display-2 font-display font-bold tracking-tight text-foreground leading-[0.95]">
+                                Cifras auditadas.
+                                <br />
+                                <span className="text-foreground/55">
+                                    No estimadas.
+                                </span>
+                            </h2>
+                        </div>
+                        <p className="text-body text-foreground/60 max-w-md md:text-right">
+                            Datos consolidados al cierre del último trimestre
+                            fiscal. Sin inflar, sin aproximar.
                         </p>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-0 md:gap-px bg-gold-500/10 border border-gold-500/10">
                         {items.map((stat, i) => (
                             <div
                                 key={i}
-                                className="flex flex-col items-center justify-center p-6 space-y-3 relative"
+                                className="flex flex-col items-start justify-center p-6 md:p-8 space-y-3 relative bg-background"
                             >
-                                {i > 0 && (
-                                    <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 h-16 w-px bg-gradient-to-b from-transparent via-gold-500/20 to-transparent" />
-                                )}
-                                <h4 className="text-display-3 font-numerics font-bold metallic-gold-static flex items-center min-h-[1em]">
+                                <span className="font-mono text-caption uppercase tracking-overline text-foreground/40">
+                                    {String(i + 1).padStart(2, "0")}
+                                </span>
+                                <h4 className="font-mono text-[clamp(2.5rem,5vw,3.75rem)] font-medium leading-none metallic-gold-static tabular-nums min-h-[1em]">
                                     {stat.display === null ? (
                                         <span
-                                            className="text-foreground/50"
+                                            className="text-foreground/30"
                                             title={
                                                 hasLiveData
                                                     ? "Sin datos disponibles"
@@ -101,7 +113,7 @@ export async function SocialProof() {
                                         />
                                     )}
                                 </h4>
-                                <p className="font-display text-xs md:text-sm font-bold uppercase tracking-overline text-foreground/60">
+                                <p className="font-display text-caption uppercase tracking-overline text-foreground/55 leading-relaxed">
                                     {stat.label}
                                 </p>
                             </div>

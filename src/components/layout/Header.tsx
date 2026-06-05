@@ -244,8 +244,8 @@ export function Header() {
         <>
             <header
                 className={cn(
-                    "fixed top-5 left-1/2 -translate-x-1/2 w-[92%] max-w-7xl z-50",
-                    "px-4 md:px-6 py-2 flex items-center justify-between gap-2",
+                    "fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-7xl z-50",
+                    "px-4 md:px-6 py-2.5 flex items-center justify-between gap-2",
                     "bg-black/70 backdrop-blur-xl border border-white/10 rounded-full",
                     "transition-all duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                     scrolled &&
@@ -253,8 +253,16 @@ export function Header() {
                 )}
                 role="banner"
             >
-                {/* Left: Logo */}
-                <Logo href="/" variant="mark" size="sm" tone="gold" className="flex-shrink-0" />
+                {/* Left: Logo — large enough to be a true brand mark,
+                    not a favicon. size="md" renders the wordmark at ~28px
+                    for "BLACK" so it reads from across a laptop screen. */}
+                <Logo
+                    href="/"
+                    variant="mark"
+                    size="md"
+                    tone="gold"
+                    className="flex-shrink-0"
+                />
 
                 {/* Center: Desktop Navigation */}
                 <nav

@@ -4,23 +4,32 @@ import { cn } from "@/lib/utils";
 interface LogoProps {
   /**
    * `mark` renders the compact header variant: a vertical gold bar
-   * followed by "BLACK CAPITAL" wordmark in Space Grotesk.
+   * followed by "BLACK CAPITAL" wordmark.
    *
-   * `full` renders the same wordmark at a larger size for the footer.
-   * Same composition, no separate "BC" monogram.
+   * `full` renders the same composition at a larger size for the footer.
    */
   variant?: "mark" | "full";
   /**
-   * Visual height in pixels. Width follows the natural aspect of the
-   * SVG content (the bar + the wordmark).
+   * Visual height in pixels. The SVG `viewBox` is fixed (220x72), so the
+   * `font-size`, the bar height, and the tracking all scale linearly
+   * with this value. Sizing rules:
+   *
+   *   sm (28px) → BLACK ≈ 17px, CAPITAL ≈ 10px
+   *   md (44px) → BLACK ≈ 28px, CAPITAL ≈ 16px
+   *   lg (64px) → BLACK ≈ 40px, CAPITAL ≈ 23px
+   *
+   * Anything below 26px becomes hard to read because the "CAPITAL"
+   * subhead drops below 9px in raster.
    */
   size?: "sm" | "md" | "lg";
   /**
-   * Color treatment. `gold` paints the accent bar in brand gold and the
-   * wordmark in off-white. `mono` is single-color (current text color).
-   * `light` paints the wordmark in white (for dark video overlays, etc).
+   * Color treatment.
+   *  - `gold` (default) — gold accent bar + off-white "BLACK" + gold "CAPITAL"
+   *  - `light`           — gold bar + pure-white "BLACK" + gold "CAPITAL"
+   *  - `mono`            — single-color (inherits `currentColor`); used on
+   *                        light backgrounds or print stylesheets
    */
-  tone?: "gold" | "mono" | "light";
+  tone?: "gold" | "light" | "mono";
   /** Optional href. If provided, wraps the logo in a Link. */
   href?: string;
   /** Additional classes for the outer wrapper. */
@@ -29,33 +38,35 @@ interface LogoProps {
   ariaLabel?: string;
 }
 
-const sizeMap: Record<NonNullable<LogoProps["size"]>, { mark: number; full: number }> = {
-  sm: { mark: 22, full: 28 },
-  md: { mark: 28, full: 36 },
-  lg: { mark: 44, full: 56 },
+const sizeMap: Record<NonNullable<LogoProps["size"]>, number> = {
+  sm: 28,
+  md: 44,
+  lg: 64,
 };
 
 /**
  * Black Capital wordmark logo.
  *
- * Composition:
- *   - A vertical gold bar (1:4 aspect, fills the cap height)
- *   - "BLACK" — uppercase, weight 700, tight tracking
- *   - "CAPITAL" — uppercase, weight 400, wide tracking, gold accent
+ * Composition (viewBox 220x72, units in CSS px when SVG height = 72):
+ *   x=0..6     → vertical gold accent bar (1:12 aspect)
+ *   x=14..200  → two-line stacked wordmark
+ *   line 1     → "BLACK"   uppercase, weight 700, tight tracking
+ *   line 2     → "CAPITAL" uppercase, weight 400, wide tracking, gold
  *
- * The 2-line stacked "BLACK / CAPITAL" treatment is the signature
- * of the brand. Inline SVG with `currentColor` so the `tone` prop
- * controls the paint at the call site, not at the file level.
+ * The previous version had a viewBox of 240x100 with text positioned
+ * at y=48/y=84 of a 100-unit-tall box. When rendered at height=22, that
+ * gave a real font-size of ~3px — invisible. This version uses a tight
+ * viewBox where every unit maps to meaningful pixels.
  */
 export function Logo({
-  variant = "mark",
+  variant: _variant = "mark",
   size = "md",
   tone = "gold",
   href,
   className,
   ariaLabel = "Black Capital",
 }: LogoProps) {
-  const height = sizeMap[size][variant];
+  const height = sizeMap[size];
 
   // Color tokens per tone.
   const colors = (() => {
@@ -63,8 +74,8 @@ export function Logo({
       case "gold":
         return {
           bar: "#D4AF37",
-          black: "#F5F5F5", // off-white for "BLACK" word
-          capital: "#D4AF37", // gold for "CAPITAL" subhead
+          black: "#F5F5F5",
+          capital: "#D4AF37",
         };
       case "light":
         return {
@@ -82,44 +93,39 @@ export function Logo({
     }
   })();
 
-  // Aspect ratio: the wordmark is wider than tall. We pick widths
-  // empirically for each size + variant to keep the cap-height
-  // consistent with the rest of the nav.
-  const widths: Record<NonNullable<LogoProps["size"]>, { mark: number; full: number }> = {
-    sm: { mark: 110, full: 150 },
-    md: { mark: 140, full: 190 },
-    lg: { mark: 220, full: 300 },
-  };
-  const width = widths[size][variant];
+  // Width follows the 220:72 aspect → width = height * (220 / 72).
+  const width = height * (220 / 72);
 
-  // Font size scaled to the cap-height of the chosen height.
-  const fontSize = Math.round(height * 0.62);
+  // viewBox is 220x72. font-size is in viewBox units. At height=72 the
+  // text renders at these exact pixel sizes. At other heights it scales.
+  const blackSize = 40;
+  const capitalSize = 24;
 
   const content = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 240 100"
+      viewBox="0 0 220 72"
       role="img"
       aria-label={ariaLabel}
       height={height}
-      width={(width / 100) * height}
+      width={width}
       className={cn("flex-shrink-0", className)}
     >
-      {/* Vertical accent bar — 1:4 aspect, fills the cap height. */}
+      {/* Vertical accent bar — 1:12 aspect, vertically centered. */}
       <rect
-        x="6"
-        y="6"
-        width="6"
-        height="88"
-        rx="1"
+        x="2"
+        y="4"
+        width="4"
+        height="64"
+        rx="0.5"
         fill={colors.bar}
       />
       {/* "BLACK" — heavy, tight tracking, off-white. */}
       <text
-        x="26"
-        y="48"
+        x="14"
+        y="38"
         fontFamily="var(--font-display), 'Space Grotesk', 'Helvetica Neue', sans-serif"
-        fontSize={fontSize}
+        fontSize={blackSize}
         fontWeight="700"
         letterSpacing="0.5"
         fill={colors.black}
@@ -128,12 +134,12 @@ export function Logo({
       </text>
       {/* "CAPITAL" — light, wide tracking, gold. */}
       <text
-        x="26"
-        y="84"
+        x="14"
+        y="62"
         fontFamily="var(--font-display), 'Space Grotesk', 'Helvetica Neue', sans-serif"
-        fontSize={Math.round(fontSize * 0.62)}
+        fontSize={capitalSize}
         fontWeight="400"
-        letterSpacing="3.5"
+        letterSpacing="3"
         fill={colors.capital}
       >
         CAPITAL

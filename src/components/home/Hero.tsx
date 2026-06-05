@@ -143,22 +143,27 @@ export function Hero() {
             {/* ── Content ── */}
             <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12">
                 <div className="max-w-5xl space-y-8 md:space-y-10">
-                    {/* ── Eyebrow ── */}
-                    <motion.span
+                    {/* ── Eyebrow — financial-publication style ── */}
+                    <motion.div
                         initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                        className="inline-block font-display text-caption font-bold uppercase tracking-eyebrow text-gold-solid"
+                        className="flex items-center gap-3 font-display text-caption font-bold uppercase tracking-eyebrow"
                     >
-                        Real Estate · Inversión · México
-                    </motion.span>
+                        <span className="font-mono text-gold-solid text-body-sm">
+                            01 /
+                        </span>
+                        <span className="text-gold-solid">
+                            Real Estate · Inversión · México
+                        </span>
+                    </motion.div>
 
                     {/* ── Main Headline ── */}
                     <motion.h1
                         initial={shouldReduceMotion ? {} : { opacity: 0, x: -50 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-display-1 font-display font-bold tracking-tight uppercase text-foreground leading-[0.95]"
+                        className="text-[clamp(3.5rem,9vw,7rem)] font-display font-bold tracking-[-0.04em] uppercase text-foreground leading-[0.9]"
                     >
                         Estructuramos <br className="hidden sm:block" />
                         tu{" "}
@@ -202,7 +207,7 @@ export function Hero() {
                             delay: shouldReduceMotion ? 0 : 0.5,
                             ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="text-body-lg md:text-body-xl text-foreground/75 max-w-2xl leading-relaxed"
+                        className="font-sans text-body-lg md:text-body-xl text-foreground/75 max-w-2xl leading-relaxed"
                     >
                         Adquisición, estructuración y disposición de activos
                         inmobiliarios premium —residenciales, comerciales e
@@ -210,7 +215,11 @@ export function Hero() {
                         family offices en México.
                     </motion.p>
 
-                    {/* ── Primary + secondary CTA ── */}
+                    {/* ── Primary + secondary CTA ──
+                        Brutalist flat buttons — no rounded-full, square
+                        corners with a 2px gold underline accent. The
+                        eyebrow style is "financial-publication" — clean
+                        rectangular hits. */}
                     <motion.div
                         initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -219,17 +228,17 @@ export function Hero() {
                             delay: shouldReduceMotion ? 0 : 0.7,
                             ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="flex flex-col sm:flex-row gap-3 pt-2"
+                        className="flex flex-col sm:flex-row gap-3 pt-4"
                     >
                         <Button
                             asChild
                             size="lg"
-                            className="bg-gold-solid text-black hover:bg-gold-400 font-display text-xs font-bold uppercase tracking-eyebrow px-7 py-6 rounded-full shadow-[0_8px_24px_rgba(212,175,55,0.18)] hover:shadow-[0_8px_32px_rgba(212,175,55,0.32)] transition-all duration-300"
+                            className="group relative bg-gold-solid text-black hover:bg-gold-400 font-display text-xs font-bold uppercase tracking-eyebrow px-8 py-7 rounded-none shadow-[0_8px_24px_rgba(212,175,55,0.18)] hover:shadow-[0_8px_32px_rgba(212,175,55,0.32)] transition-all duration-300 overflow-hidden"
                         >
                             <Link href="/inventario">
                                 Ver Inventario Exclusivo
                                 <ArrowRight
-                                    className="w-4 h-4 ml-2"
+                                    className="w-4 h-4 ml-3 transition-transform group-hover:translate-x-1.5"
                                     aria-hidden="true"
                                 />
                             </Link>
@@ -238,11 +247,11 @@ export function Hero() {
                             asChild
                             size="lg"
                             variant="outline"
-                            className="border-foreground/30 text-foreground hover:border-gold-solid hover:text-gold-solid hover:bg-transparent font-display text-xs font-bold uppercase tracking-eyebrow px-7 py-6 rounded-full transition-all duration-300"
+                            className="border-foreground/30 bg-transparent text-foreground hover:border-gold-solid hover:text-gold-solid hover:bg-transparent font-display text-xs font-bold uppercase tracking-eyebrow px-8 py-7 rounded-none transition-all duration-300"
                         >
                             <Link href="/contacto">
                                 <CalendarCheck
-                                    className="w-4 h-4 mr-2"
+                                    className="w-4 h-4 mr-3"
                                     aria-hidden="true"
                                 />
                                 Agendar Asesoría

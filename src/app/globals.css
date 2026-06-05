@@ -31,7 +31,8 @@
 
   --font-sans: var(--font-inter), sans-serif;
   --font-display: var(--font-display), sans-serif;
-  --font-numerics: var(--font-display), "JetBrains Mono", ui-monospace, monospace;
+  --font-numerics: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
+  --font-mono: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
 
   /* ── Semantic Type Scale ── */
   /* Display tiers (display font, uppercase, tight tracking) */

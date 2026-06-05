@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -9,13 +9,15 @@ import "./globals.css";
 /**
  * Font stack
  * -----------
- * Body:    Inter (400 / 500 / 600)  — neutral, high-legibility sans.
+ * Body:    Inter (400 / 500 / 600 / 700)  — neutral, high-legibility sans.
  * Display: Space Grotesk (500 / 600 / 700) — modern geometric grotesque with
  *          a slightly aggressive, brutalist character. Used for all
  *          headings, eyebrows, and the navbar / nav links. Pairs with
  *          Inter without competing.
  * Mono:    JetBrains Mono (400 / 500) — used for stat counters and any
- *          numeric data. Tabular-nums for stable column alignment.
+ *          numeric data. Tabular-nums for stable column alignment. The
+ *          editorial-brutalist look on big stats (12+, $0.3M) comes
+ *          from monospace: it feels like a Bloomberg / WSJ number bar.
  */
 const inter = Inter({
   variable: "--font-inter",
@@ -28,6 +30,13 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -132,7 +141,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} antialiased min-h-screen flex flex-col bg-background text-foreground`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased min-h-screen flex flex-col bg-background text-foreground`}
       >
         <ThemeProvider
           attribute="class"
