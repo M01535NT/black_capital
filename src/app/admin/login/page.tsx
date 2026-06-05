@@ -91,7 +91,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="section-heading text-3xl text-foreground mb-2">
+          <h1 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl text-foreground mb-2">
             BLACK <span className="text-gold-500">CORP</span>
           </h1>
           <p className="text-foreground/50 text-sm">Panel de Administración</p>

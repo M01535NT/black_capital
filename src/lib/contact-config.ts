@@ -24,6 +24,10 @@ export const CONTACT_CONFIG = {
         "9:00 AM — 6:00 PM (PT)",
         "Sábados con cita previa",
     ],
+    /** Business-level facts (not stored in DB). Edit here when the company grows. */
+    business: {
+        yearsInBusiness: 12,
+    },
 } as const;
 
 export type ContactConfig = typeof CONTACT_CONFIG;

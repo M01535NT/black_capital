@@ -59,7 +59,7 @@ const PADDING: Record<Variant, string> = {
 };
 
 const TITLE_SIZE: Record<Variant, string> = {
-    default: "text-[0.9375rem]",
+    default: "text-body",
     featured: "text-xl",
     similar: "text-sm",
 };
@@ -108,7 +108,7 @@ export function PropertyCard({
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-foreground/40 text-sm font-medium uppercase tracking-widest">
+                        <span className="text-foreground/50 text-sm font-medium uppercase tracking-widest">
                             Sin imagen
                         </span>
                     </div>
@@ -118,7 +118,7 @@ export function PropertyCard({
 
                 {/* Use badge — top-left, neutral */}
                 <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex flex-col gap-1.5">
-                    <span className="px-2.5 py-1 sm:px-3 sm:py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white rounded-full border border-white/10">
+                    <span className="px-2.5 py-1 sm:px-3 sm:py-1 text-caption sm:text-xs font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white rounded-full border border-white/10">
                         {property.property_use}
                     </span>
                     {property.created_at && (
@@ -142,7 +142,7 @@ export function PropertyCard({
                             className="bg-black/60 backdrop-blur-md border-white/10 text-white hover:bg-black/80"
                         />
                     </div>
-                    <span className="px-2.5 py-1 sm:px-3 sm:py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-gold-500 text-black rounded-full">
+                    <span className="px-2.5 py-1 sm:px-3 sm:py-1 text-caption sm:text-xs font-bold uppercase tracking-wider bg-gold-500 text-black rounded-full">
                         {property.business_type}
                     </span>
                 </div>
@@ -200,7 +200,7 @@ export function PropertyCard({
                     </>
                 ) : (
                     <div className="flex items-center justify-between gap-2 pt-3 border-t border-foreground/5">
-                        <div className="flex gap-3 text-[11px] text-foreground/40 font-medium uppercase tracking-wider min-w-0">
+                        <div className="flex gap-3 text-caption text-foreground/50 font-medium uppercase tracking-wider min-w-0">
                             {property.m2_terrain ? (
                                 <span className="truncate">{formatArea(property.m2_terrain, "T")}</span>
                             ) : null}

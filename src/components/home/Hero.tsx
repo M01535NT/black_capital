@@ -1,17 +1,13 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { TopMarquee } from "./Marquees";
 
 const words = ["Legado", "Futuro", "Expansión"];
 
-// Respect user's motion preferences
-const prefersReducedMotion = typeof window !== "undefined" 
-    && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-
-/* ── Staggered Letter Reveal Component ── */
+/* ── Staggered Letter Reveal Component ─────────────────────────────── */
 function StaggeredWord({ word, className }: { word: string; className?: string }) {
     const letters = useMemo(() => word.split(""), [word]);
 
@@ -65,19 +61,42 @@ function StaggeredWord({ word, className }: { word: string; className?: string }
     );
 }
 
+/* Detect coarse pointer (mobile/tablet) at hook level so we never
+   mount the cursor-follow glow on touch devices. */
+function useIsCoarsePointer(): boolean {
+    const [coarse, setCoarse] = useState(false);
+    useEffect(() => {
+        const mq = window.matchMedia("(pointer: coarse)");
+        const update = () => setCoarse(mq.matches);
+        update();
+        mq.addEventListener("change", update);
+        return () => mq.removeEventListener("change", update);
+    }, []);
+    return coarse;
+}
+
 export function Hero() {
     const [index, setIndex] = useState(0);
     const shouldReduceMotion = useReducedMotion();
+    const isCoarsePointer = useIsCoarsePointer();
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const rafId = useRef<number | null>(null);
 
     useEffect(() => {
         if (shouldReduceMotion) return;
 
+        // Throttle the cursor follow with rAF: only commit to state
+        // when the browser is ready to paint the next frame, so we
+        // avoid 1 re-render per mousemove (was 60–120 Hz on a fast mouse).
         const handleMouseMove = (e: MouseEvent) => {
-            setMousePos({ x: e.clientX, y: e.clientY });
+            if (rafId.current !== null) return;
+            rafId.current = window.requestAnimationFrame(() => {
+                setMousePos({ x: e.clientX, y: e.clientY });
+                rafId.current = null;
+            });
         };
 
-        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
         const intervalId = setInterval(() => {
             setIndex((prev) => (prev + 1) % words.length);
@@ -85,19 +104,30 @@ export function Hero() {
 
         return () => {
             window.removeEventListener("mousemove", handleMouseMove);
+            if (rafId.current !== null) {
+                window.cancelAnimationFrame(rafId.current);
+            }
             clearInterval(intervalId);
         };
     }, [shouldReduceMotion]);
 
+    const showCursorGlow = !shouldReduceMotion && !isCoarsePointer;
+
     return (
         <section className="relative w-full min-h-[95vh] flex flex-col items-center justify-center overflow-hidden">
-            {/* ── Video Background ── */}
+            {/* ── Video Background ──
+                poster: shows immediately so first paint is not the black void
+                preload="metadata": only fetches the metadata first, full bytes
+                stream once autoplay starts (browser heuristics) */}
             <video
                 autoPlay
                 muted
                 loop
                 playsInline
+                preload="metadata"
+                poster="/hero-poster.svg"
                 className="absolute inset-0 w-full h-full object-cover z-[-2]"
+                aria-hidden="true"
             >
                 <source src="/hero.webm" type="video/webm" />
             </video>
@@ -105,8 +135,8 @@ export function Hero() {
             {/* ── Dark Overlay ── */}
             <div className="absolute inset-0 bg-black/60 z-[-1]" />
 
-            {/* ── Cursor Follow Glow ── */}
-            {!shouldReduceMotion && (
+            {/* ── Cursor Follow Glow (desktop only) ── */}
+            {showCursorGlow && (
                 <motion.div
                     className="absolute w-[600px] h-[600px] rounded-full bg-gold-500/10 blur-[120px] pointer-events-none z-0"
                     animate={{
@@ -125,14 +155,19 @@ export function Hero() {
                         initial={shouldReduceMotion ? {} : { opacity: 0, x: -50 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                        className="hero-title text-foreground"
+                        className="text-display-1 font-display font-bold tracking-display uppercase text-foreground"
                     >
                         Impulsamos <br />
                         tu{" "}
                         {/* ── Staggered Letter Reveal (PRD requirement) ── */}
-                        <span className="inline whitespace-nowrap" style={{ perspective: "600px" }}>
+                        <span
+                            className="inline whitespace-nowrap"
+                            style={{ perspective: "600px" }}
+                        >
                             {shouldReduceMotion ? (
-                                <span className="metallic-gold">{words[index]}</span>
+                                <span className="metallic-gold">
+                                    {words[index]}
+                                </span>
                             ) : (
                                 <AnimatePresence mode="wait">
                                     <StaggeredWord
@@ -148,7 +183,11 @@ export function Hero() {
                     <motion.div
                         initial={shouldReduceMotion ? {} : { scaleX: 0, opacity: 0 }}
                         animate={{ scaleX: 1, opacity: 1 }}
-                        transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{
+                            duration: 1.2,
+                            delay: 0.3,
+                            ease: [0.22, 1, 0.36, 1],
+                        }}
                         className="w-24 h-px bg-gradient-to-r from-gold-500 to-gold-700 origin-left"
                     />
 
@@ -161,7 +200,7 @@ export function Hero() {
                             delay: shouldReduceMotion ? 0 : 0.5,
                             ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="body-text text-foreground/40 max-w-xl uppercase tracking-[0.4em] font-medium"
+                        className="text-body text-foreground/50 max-w-xl uppercase tracking-hero font-medium"
                     >
                         Generando valor para ti.
                     </motion.p>
@@ -175,14 +214,17 @@ export function Hero() {
                 transition={{ delay: 2, duration: 1 }}
                 className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
             >
-                <span className="text-[10px] uppercase tracking-[0.3em] text-foreground/50 font-medium">
+                <span className="text-caption uppercase tracking-eyebrow text-foreground/50 font-medium">
                     Descubre más
                 </span>
                 <motion.div
                     animate={{ y: [0, 8, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
-                    <ChevronDown aria-hidden="true" className="w-5 h-5 text-gold-500/60" />
+                    <ChevronDown
+                        aria-hidden="true"
+                        className="w-5 h-5 text-gold-500/60"
+                    />
                 </motion.div>
             </motion.div>
 

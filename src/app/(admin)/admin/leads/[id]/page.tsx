@@ -68,7 +68,7 @@ export default async function LeadDetailPage({
                         </Button>
                     </Link>
                     <div>
-                        <h2 className="card-title text-2xl text-foreground">{lead.full_name}</h2>
+                        <h2 className="text-display-4 font-display font-semibold tracking-wide uppercase text-2xl text-foreground">{lead.full_name}</h2>
                         <p className="text-foreground/50 text-sm">
                             Registrado {new Date(lead.created_at).toLocaleDateString("es-MX", { dateStyle: "long" })}
                         </p>
@@ -119,14 +119,14 @@ export default async function LeadDetailPage({
                             <div className="space-y-1">
                                 <p className="text-xs text-foreground/50">Origen</p>
                                 <div className="flex items-center gap-2 text-sm">
-                                    <Globe className="w-4 h-4 text-foreground/40" />
+                                    <Globe className="w-4 h-4 text-foreground/50" />
                                     {sourceLabels[lead.source] || lead.source}
                                 </div>
                             </div>
                             <div className="space-y-1">
                                 <p className="text-xs text-foreground/50">Fecha de Registro</p>
                                 <div className="flex items-center gap-2 text-sm">
-                                    <Calendar className="w-4 h-4 text-foreground/40" />
+                                    <Calendar className="w-4 h-4 text-foreground/50" />
                                     {new Date(lead.created_at).toLocaleDateString("es-MX", {
                                         day: "2-digit",
                                         month: "long",
@@ -139,7 +139,7 @@ export default async function LeadDetailPage({
                             <div className="space-y-1">
                                 <p className="text-xs text-foreground/50">ID</p>
                                 <div className="flex items-center gap-2 text-sm font-sans tabular-nums text-foreground/60">
-                                    <Tag className="w-4 h-4 text-foreground/40" />
+                                    <Tag className="w-4 h-4 text-foreground/50" />
                                     {lead.id.slice(0, 8)}...
                                 </div>
                             </div>

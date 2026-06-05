@@ -25,7 +25,7 @@ export function TourEmbed({ urls }: TourEmbedProps) {
 
     return (
         <section className="space-y-4">
-            <h2 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-foreground/40">
+            <h2 className="font-display text-xs font-bold uppercase tracking-wide-display text-foreground/50">
                 Recorrido Virtual 360°
             </h2>
             <div className="space-y-4">

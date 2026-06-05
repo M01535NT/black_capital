@@ -48,12 +48,18 @@ export default function InventoryPage() {
             {/* Hero */}
             <div className="relative overflow-hidden border-b border-gold-500/10">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.06,_transparent_60%)]" />
+                <div
+                    className="grain-overlay"
+                    aria-hidden="true"
+                />
                 <div className="container mx-auto px-4 py-16 md:py-20 relative z-10">
-                    <h1 className="text-[2rem] md:text-[2.75rem] font-semibold tracking-tight text-foreground mb-3">
+                    <h1 className="text-display-2 text-foreground mb-3">
                         Inventario
                     </h1>
-                    <p className="text-foreground/45 text-[0.9375rem] max-w-xl leading-relaxed">
-                        Explora nuestro portafolio de propiedades comerciales, industriales y residenciales premium con análisis financiero estructurado.
+                    <p className="text-body text-foreground/50 max-w-xl leading-relaxed">
+                        Explora nuestro portafolio de propiedades
+                        comerciales, industriales y residenciales premium con
+                        análisis financiero estructurado.
                     </p>
                 </div>
             </div>

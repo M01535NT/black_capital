@@ -154,7 +154,7 @@ export default async function AdminDashboard() {
                             <p className="text-sm font-bold text-foreground group-hover:text-gold-500 transition-colors uppercase tracking-wider">
                                 {action.label}
                             </p>
-                            <p className="text-[10px] text-foreground/40 mt-0.5">Ir ahora</p>
+                            <p className="text-caption text-foreground/50 mt-0.5">Ir ahora</p>
                         </div>
                         <ArrowRight className="w-4 h-4 text-foreground/20 ml-auto group-hover:text-gold-500 group-hover:translate-x-1 transition-all" />
                     </Link>
@@ -169,33 +169,33 @@ export default async function AdminDashboard() {
                         <TrendingUp className="w-4 h-4 text-foreground/20 group-hover:text-gold-500/50 transition-colors" />
                     </div>
                     <p className="text-3xl font-numerics font-bold text-foreground">{totalProperties || 0}</p>
-                    <p className="text-[10px] text-foreground/50 mt-1 uppercase tracking-wider font-display">Propiedades en inventario</p>
+                    <p className="text-caption text-foreground/50 mt-1 uppercase tracking-wider font-display">Propiedades en inventario</p>
                 </Link>
                 <Link href="/admin/agents" className="bg-card border border-foreground/10 rounded-2xl p-5 hover:border-gold-500/20 transition-all group">
                     <div className="flex items-center justify-between mb-3">
                         <UserCircle className="w-5 h-5 text-gold-500" />
                     </div>
                     <p className="text-3xl font-numerics font-bold text-foreground">{totalAgents || 0}</p>
-                    <p className="text-[10px] text-foreground/50 mt-1 uppercase tracking-wider font-display">Agentes activos</p>
+                    <p className="text-caption text-foreground/50 mt-1 uppercase tracking-wider font-display">Agentes activos</p>
                 </Link>
                 <Link href="/admin/leads" className="bg-card border border-foreground/10 rounded-2xl p-5 hover:border-gold-500/20 transition-all group">
                     <div className="flex items-center justify-between mb-3">
                         <Users className="w-5 h-5 text-gold-500" />
                     </div>
                     <p className="text-3xl font-numerics font-bold text-foreground">{totalLeads || 0}</p>
-                    <p className="text-[10px] text-foreground/50 mt-1 uppercase tracking-wider font-display">Leads totales</p>
+                    <p className="text-caption text-foreground/50 mt-1 uppercase tracking-wider font-display">Leads totales</p>
                 </Link>
                 <Link href="/admin/leads?status=new" className="bg-card border border-foreground/10 rounded-2xl p-5 hover:border-gold-500/20 transition-all group relative">
                     <div className="flex items-center justify-between mb-3">
                         <Mail className="w-5 h-5 text-gold-500" />
                         {(newLeads ?? 0) > 0 && (
-                            <span className="bg-gold-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-full">
+                            <span className="bg-gold-500 text-black text-caption font-bold px-2 py-0.5 rounded-full">
                                 {newLeads} nuevo{(newLeads ?? 0) !== 1 ? "s" : ""}
                             </span>
                         )}
                     </div>
                     <p className="text-3xl font-numerics font-bold text-foreground">{newLeads || 0}</p>
-                    <p className="text-[10px] text-foreground/50 mt-1 uppercase tracking-wider font-display">Leads sin revisar</p>
+                    <p className="text-caption text-foreground/50 mt-1 uppercase tracking-wider font-display">Leads sin revisar</p>
                 </Link>
             </div>
 
@@ -259,7 +259,7 @@ export default async function AdminDashboard() {
                                     </div>
                                     <div className="text-right shrink-0">
                                         <Badge variant="secondary"
-                                            className={`text-[10px] px-1.5 py-0 h-auto ${
+                                            className={`text-caption px-1.5 py-0 h-auto ${
                                                 lead.status === "new" ? "bg-blue-500/10 text-blue-500"
                                                 : lead.status === "contacted" ? "bg-yellow-500/10 text-yellow-500"
                                                 : lead.status === "qualified" ? "bg-purple-500/10 text-purple-500"
@@ -270,7 +270,7 @@ export default async function AdminDashboard() {
                                         >
                                             {statusLabels[lead.status] || lead.status}
                                         </Badge>
-                                        <p className="text-[10px] text-foreground/50 mt-0.5">
+                                        <p className="text-caption text-foreground/50 mt-0.5">
                                             {new Date(lead.created_at).toLocaleDateString("es-MX", { day: "2-digit", month: "short" })}
                                         </p>
                                     </div>
@@ -315,19 +315,19 @@ export default async function AdminDashboard() {
                                     <div className="flex-1 min-w-0">
                                         <p className="text-sm font-medium truncate group-hover:text-gold-500 transition-colors">{prop.title}</p>
                                         <div className="flex items-center gap-2 mt-0.5">
-                                            <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${statusColors[prop.status] || ""}`}>
+                                            <span className={`text-caption font-medium px-1.5 py-0.5 rounded-full ${statusColors[prop.status] || ""}`}>
                                                 {prop.status === "Available" ? "Disponible"
                                                     : prop.status === "Sold" ? "Vendido"
                                                     : prop.status === "Rented" ? "Rentado"
                                                     : prop.status === "Under_Offer" ? "Bajo Oferta"
                                                     : prop.status}
                                             </span>
-                                            <span className="text-[10px] text-foreground/40">{prop.business_type}</span>
+                                            <span className="text-caption text-foreground/50">{prop.business_type}</span>
                                         </div>
                                     </div>
                                     <div className="text-right shrink-0">
                                         <p className="text-xs font-numerics font-bold text-gold-500">{formatPrice(prop.price, prop.currency)}</p>
-                                        <p className="text-[10px] text-foreground/50 mt-0.5">
+                                        <p className="text-caption text-foreground/50 mt-0.5">
                                             {new Date(prop.created_at).toLocaleDateString("es-MX", { day: "2-digit", month: "short" })}
                                         </p>
                                     </div>

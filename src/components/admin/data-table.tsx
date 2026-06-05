@@ -105,7 +105,7 @@ export function DataTable<TData extends object>({
             <div className="flex flex-wrap items-center gap-3 p-4 border-b border-foreground/10">
                 {/* Search */}
                 <div className="relative flex-1 min-w-[200px] max-w-sm">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/30" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/50" />
                     <Input
                         placeholder={searchPlaceholder}
                         value={globalSearch}
@@ -118,7 +118,7 @@ export function DataTable<TData extends object>({
                     {globalSearch && (
                         <button
                             onClick={() => setGlobalSearch("")}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/30 hover:text-foreground/60"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/50 hover:text-foreground/60"
                         >
                             <X className="w-3.5 h-3.5" />
                         </button>
@@ -148,7 +148,7 @@ export function DataTable<TData extends object>({
                 {hasActiveFilters && (
                     <button
                         onClick={clearFilters}
-                        className="text-xs text-foreground/40 hover:text-foreground/70 transition-colors ml-auto"
+                        className="text-xs text-foreground/50 hover:text-foreground/70 transition-colors ml-auto"
                     >
                         Limpiar filtros
                     </button>
@@ -189,7 +189,7 @@ export function DataTable<TData extends object>({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-32 text-center">
-                                    <div className="text-foreground/40 text-sm">
+                                    <div className="text-foreground/50 text-sm">
                                         {hasActiveFilters
                                             ? "Sin resultados para los filtros actuales."
                                             : "No hay datos disponibles."}
@@ -203,7 +203,7 @@ export function DataTable<TData extends object>({
 
             {/* Footer: Count + Pagination */}
             <div className="flex items-center justify-between px-4 py-3 border-t border-foreground/10">
-                <span className="text-xs text-foreground/40">
+                <span className="text-xs text-foreground/50">
                     {filteredData.length} registro{filteredData.length !== 1 ? "s" : ""}
                     {filteredData.length !== data.length && (
                         <> de {data.length} totales</>
@@ -219,7 +219,7 @@ export function DataTable<TData extends object>({
                     >
                         Anterior
                     </Button>
-                    <span className="text-xs text-foreground/40 px-1">
+                    <span className="text-xs text-foreground/50 px-1">
                         {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
                     </span>
                     <Button

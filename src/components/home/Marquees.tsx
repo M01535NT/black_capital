@@ -40,7 +40,7 @@ export function TopMarquee() {
                 items={corporativeValues}
                 renderItem={(val, i) => (
                     <span key={i} className="inline-flex items-center">
-                        <span className="mx-6 font-display font-bold uppercase tracking-[0.2em] text-foreground/50 text-sm md:text-base transition-colors duration-300 hover:text-gold-500 cursor-default">
+                        <span className="mx-6 font-display font-bold uppercase tracking-wide-display text-foreground/50 text-sm md:text-base transition-colors duration-300 hover:text-gold-500 cursor-default">
                             {val}
                         </span>
                         <Diamond className="w-2 h-2 text-gold-500/30 mx-2 inline-block shrink-0" />
@@ -58,7 +58,7 @@ export function BottomMarquee() {
                 items={brandNames}
                 renderItem={(brand, i) => (
                     <span key={i} className="inline-flex items-center">
-                        <span className="mx-10 text-gold-600 opacity-50 transition-all duration-300 hover:opacity-100 hover:text-gold-400 hover:scale-105 cursor-default font-display font-bold uppercase tracking-[0.3em] text-sm">
+                        <span className="mx-10 text-gold-600 opacity-50 transition-all duration-300 hover:opacity-100 hover:text-gold-400 hover:scale-105 cursor-default font-display font-bold uppercase tracking-eyebrow text-sm">
                             {brand}
                         </span>
                         <Diamond className="w-1.5 h-1.5 text-gold-700/30 mx-4 inline-block shrink-0" />

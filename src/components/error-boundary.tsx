@@ -45,7 +45,7 @@ export class ErrorBoundary extends Component<Props, State> {
                     <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-3">
                         Algo salió mal
                     </h2>
-                    <p className="body-text text-foreground/60 max-w-md mb-8">
+                    <p className="text-body text-foreground/60 max-w-md mb-8">
                         Ocurrió un error inesperado. Por favor, recarga la página o intenta más tarde.
                     </p>
                     <button

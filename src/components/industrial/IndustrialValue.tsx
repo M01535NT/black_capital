@@ -34,12 +34,12 @@ export function IndustrialValue() {
                 <FadeIn className="text-center max-w-3xl mx-auto mb-16">
                     <div className="flex items-center justify-center gap-4 mb-6">
                         <div className="w-8 h-px bg-steel-500" />
-                        <span className="text-xs font-bold uppercase tracking-[0.4em] text-steel-400">
+                        <span className="text-xs font-bold uppercase tracking-hero text-steel-400">
                             Verticales de activo
                         </span>
                         <div className="w-8 h-px bg-steel-500" />
                     </div>
-                    <h2 className="section-heading text-3xl md:text-5xl text-foreground mb-4">
+                    <h2 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl md:text-5xl text-foreground mb-4">
                         Activos Industriales de
                         <span className="metallic-gold"> Alto Calibre</span>
                     </h2>
@@ -63,7 +63,7 @@ export function IndustrialValue() {
                                         <Icon className="w-6 h-6 text-steel-400 group-hover:text-gold-500 transition-colors duration-500" />
                                     </div>
 
-                                    <h3 className="card-title text-xl text-foreground mb-3 uppercase tracking-wider">
+                                    <h3 className="text-display-4 font-display font-semibold tracking-wide uppercase text-xl text-foreground mb-3 uppercase tracking-wider">
                                         {item.title}
                                     </h3>
 

@@ -122,7 +122,7 @@ export function IndustrialCTA() {
                                         </span>
                                     </div>
 
-                                    <h2 className="section-heading text-3xl md:text-4xl text-white">
+                                    <h2 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl md:text-4xl text-white">
                                         Recibe Nuestro Portafolio
                                         <br />
                                         <span className="metallic-gold">Industrial Actualizado</span>

@@ -6,7 +6,7 @@ import { ContactCTA } from "./ContactCTA";
 import { formatArea } from "@/lib/format";
 
 const SECTION_HEADING =
-    "font-display text-[11px] font-bold uppercase tracking-[0.2em] text-foreground/40";
+    "font-display text-caption font-bold uppercase tracking-wide-display text-foreground/50";
 
 const CARD_CLASS = "bg-card border border-foreground/10 rounded-2xl p-5 space-y-4";
 

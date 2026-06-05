@@ -35,10 +35,10 @@ export function BusinessValue() {
 
             <div className="container mx-auto px-4">
                 <FadeIn className="text-center max-w-3xl mx-auto mb-20">
-                    <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-[0.5em] mb-6 inline-block">
+                    <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-mega mb-6 inline-block">
                         Oportunidades Comerciales
                     </span>
-                    <h2 className="section-heading text-3xl md:text-5xl text-foreground mb-5">
+                    <h2 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl md:text-5xl text-foreground mb-5">
                         Activos que Generan{" "}
                         <span className="metallic-gold">Valor</span>
                     </h2>
@@ -63,7 +63,7 @@ export function BusinessValue() {
                                             <Icon className="w-6 h-6 text-gold-500" />
                                         </div>
 
-                                        <h3 className="card-title text-xl text-foreground mb-4 tracking-wide">
+                                        <h3 className="text-display-4 font-display font-semibold tracking-wide uppercase text-xl text-foreground mb-4 tracking-wide">
                                             {item.title}
                                         </h3>
 

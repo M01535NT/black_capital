@@ -141,7 +141,7 @@ export const columns: ColumnDef<PropertyRow>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel className="uppercase text-[10px] tracking-wider font-display">Acciones</DropdownMenuLabel>
+                        <DropdownMenuLabel className="uppercase text-caption tracking-wider font-display">Acciones</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
                             <Link href={`/admin/properties/${property.id}`}>
                                 <Eye className="w-3.5 h-3.5 mr-2 text-gold-500" />

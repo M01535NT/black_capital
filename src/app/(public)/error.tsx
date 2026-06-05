@@ -17,7 +17,7 @@ export default function Error({
                 <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-3">
                     Algo salió mal
                 </h1>
-                <p className="body-text text-foreground/60 max-w-md mb-8">
+                <p className="text-body text-foreground/60 max-w-md mb-8">
                     No pudimos cargar esta página. Intenta de nuevo o regresa al inicio.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">

@@ -45,7 +45,7 @@ type SimilarProperty = {
 };
 
 const SECTION_HEADING =
-    "font-display text-xs font-bold uppercase tracking-[0.2em] text-foreground/40";
+    "font-display text-xs font-bold uppercase tracking-wide-display text-foreground/50";
 
 const SECTION_DIVIDER = "h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent";
 
@@ -208,7 +208,7 @@ export default async function PropertyDetailPage({
                         />
                         <Link
                             href="/inventario"
-                            className="hidden md:inline-flex items-center gap-1.5 text-xs text-foreground/40 hover:text-gold-500 transition-colors shrink-0 font-display uppercase tracking-wider"
+                            className="hidden md:inline-flex items-center gap-1.5 text-xs text-foreground/50 hover:text-gold-500 transition-colors shrink-0 font-display uppercase tracking-wider"
                         >
                             <ArrowLeft className="size-3" />
                             Volver

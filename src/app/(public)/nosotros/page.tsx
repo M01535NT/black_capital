@@ -43,10 +43,10 @@ export default function NosotrosPage() {
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.05,_transparent_50%)]" />
                 <div className="container mx-auto px-4 relative z-10 text-center max-w-4xl">
                     <FadeIn>
-                        <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-[0.5em] mb-6 inline-block">
+                        <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-mega mb-6 inline-block">
                             Acerca de Nosotros
                         </span>
-                        <h1 className="section-heading text-4xl md:text-6xl text-foreground mb-6">
+                        <h1 className="text-display-3 font-display font-semibold tracking-display uppercase text-4xl md:text-6xl text-foreground mb-6">
                             La Boutique Inmobiliaria{" "}
                             <span className="metallic-gold">del Futuro</span>
                         </h1>
@@ -71,7 +71,7 @@ export default function NosotrosPage() {
                                     <div className="w-14 h-14 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-8 group-hover:bg-gold-500/20 transition-all duration-500">
                                         <Icon className="w-6 h-6 text-gold-500" />
                                     </div>
-                                    <h3 className="card-title text-xl text-foreground mb-4">
+                                    <h3 className="text-display-4 font-display font-semibold tracking-wide uppercase text-xl text-foreground mb-4">
                                         {pillar.title}
                                     </h3>
                                     <p className="text-foreground/45 text-sm leading-relaxed">

@@ -95,13 +95,13 @@ export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertie
                         {/* Search */}
                         <div className="p-3 border-b border-foreground/5">
                             <div className="relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/30" />
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/50" />
                                 <input
                                     type="text"
                                     placeholder="Buscar propiedad..."
                                     value={search}
                                     onChange={e => setSearch(e.target.value)}
-                                    className="w-full pl-9 pr-3 py-2 bg-muted/30 border border-foreground/10 rounded-lg text-sm focus:outline-none focus:border-gold-500/50 text-foreground placeholder:text-foreground/30"
+                                    className="w-full pl-9 pr-3 py-2 bg-muted/30 border border-foreground/10 rounded-lg text-sm focus:outline-none focus:border-gold-500/50 text-foreground placeholder:text-foreground/50"
                                 />
                             </div>
                         </div>

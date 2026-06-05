@@ -16,7 +16,7 @@ export function MetricCard({
                 {icon}
             </div>
             <div className="min-w-0">
-                <p className="text-[11px] uppercase tracking-[0.12em] text-foreground/40 font-semibold">
+                <p className="text-caption uppercase tracking-card text-foreground/50 font-semibold">
                     {label}
                 </p>
                 <p className="font-numerics font-semibold text-foreground text-sm sm:text-base truncate">

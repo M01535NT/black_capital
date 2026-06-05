@@ -23,6 +23,11 @@ interface FadeInProps {
     once?: boolean;
     /** viewport margin, e.g. "-100px" */
     margin?: string;
+    /** ARIA role (e.g. "alert" for error states). */
+    role?: string;
+    /** Inline styles or aria-* attributes. */
+    "aria-label"?: string;
+    "aria-live"?: "polite" | "assertive" | "off";
 }
 
 const offset = 40;
@@ -42,6 +47,9 @@ export function FadeIn({
     className,
     once = true,
     margin = "-80px",
+    role,
+    "aria-label": ariaLabel,
+    "aria-live": ariaLive,
 }: FadeInProps) {
     const shouldReduce = useReducedMotion();
     const d = directionMap[direction];
@@ -61,6 +69,9 @@ export function FadeIn({
                 ease: [0.25, 0.1, 0.25, 1],
             }}
             className={className}
+            role={role}
+            aria-label={ariaLabel}
+            aria-live={ariaLive}
         >
             {children}
         </motion.div>

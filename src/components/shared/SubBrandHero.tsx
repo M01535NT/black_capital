@@ -147,7 +147,7 @@ export function SubBrandHero({
                     >
                         <div className={`w-12 h-px bg-${accent === "gold" ? "gradient-to-r from-gold-700 to-gold-400" : "steel-500"}`} />
                         <span
-                            className={`text-xs font-bold uppercase tracking-[0.5em] ${accentClasses.text}`}
+                            className={`text-xs font-bold uppercase tracking-mega ${accentClasses.text}`}
                         >
                             {brand}
                         </span>
@@ -158,7 +158,7 @@ export function SubBrandHero({
                         initial={shouldReduceMotion ? {} : (gridLines ? { opacity: 0, x: -40 } : { opacity: 0, y: 40 })}
                         animate={{ opacity: 1, [gridLines ? "x" : "y"]: 0 }}
                         transition={{ duration: gridLines ? 0.8 : 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                        className="hero-title text-5xl md:text-7xl lg:text-[100px] text-foreground"
+                        className="text-display-1 font-display font-bold tracking-display uppercase text-5xl md:text-7xl lg:text-[100px] text-foreground"
                     >
                         {headline}
                     </motion.h1>
@@ -194,7 +194,7 @@ export function SubBrandHero({
                                     <span className="text-3xl md:text-4xl font-numerics font-bold metallic-gold">
                                         {stat.value}
                                     </span>
-                                    <span className="text-xs uppercase tracking-[0.2em] text-foreground/40 font-medium mt-1">
+                                    <span className="text-xs uppercase tracking-wide-display text-foreground/50 font-medium mt-1">
                                         {stat.label}
                                     </span>
                                 </div>
@@ -218,7 +218,7 @@ export function SubBrandHero({
                         {secondaryCta && (
                             <Link
                                 href={secondaryCta.href}
-                                className="text-sm text-foreground/40 hover:text-gold-500 uppercase tracking-[0.3em] font-medium transition-colors"
+                                className="text-sm text-foreground/50 hover:text-gold-500 uppercase tracking-eyebrow font-medium transition-colors"
                             >
                                 {secondaryCta.label}
                             </Link>
@@ -235,7 +235,7 @@ export function SubBrandHero({
                     transition={{ delay: 2, duration: 1 }}
                     className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
                 >
-                    <span className="text-[10px] uppercase tracking-[0.3em] text-foreground/50 font-medium">
+                    <span className="text-caption uppercase tracking-eyebrow text-foreground/50 font-medium">
                         Descubre más
                     </span>
                     <motion.div

@@ -45,28 +45,28 @@ export function PropertyHeader({
         <div className="space-y-4">
             {/* Badges */}
             <div className="flex flex-wrap items-center gap-2">
-                <Badge className="bg-gold-500 text-black font-semibold uppercase tracking-wider text-[11px] px-2.5 py-0.5">
+                <Badge className="bg-gold-500 text-black font-semibold uppercase tracking-wider text-caption px-2.5 py-0.5">
                     {businessType}
                 </Badge>
                 <Badge
                     variant="outline"
-                    className="uppercase tracking-wider text-[11px] border-foreground/15 px-2.5 py-0.5"
+                    className="uppercase tracking-wider text-caption border-foreground/15 px-2.5 py-0.5"
                 >
                     {propertyUse}
                 </Badge>
                 <Badge
                     variant="outline"
-                    className="uppercase tracking-wider text-[11px] border-foreground/15 px-2.5 py-0.5"
+                    className="uppercase tracking-wider text-caption border-foreground/15 px-2.5 py-0.5"
                 >
                     {propertyType}
                 </Badge>
                 {isProject && (
-                    <Badge className="bg-blue-600 text-white text-[11px] uppercase tracking-wider px-2.5 py-0.5">
+                    <Badge className="bg-blue-600 text-white text-caption uppercase tracking-wider px-2.5 py-0.5">
                         Proyecto
                     </Badge>
                 )}
                 <span
-                    className={`ml-auto text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${statusClass}`}
+                    className={`ml-auto text-caption font-semibold px-2.5 py-0.5 rounded-full border ${statusClass}`}
                 >
                     {statusLabel}
                 </span>
@@ -79,7 +79,7 @@ export function PropertyHeader({
 
             {/* Address */}
             {address && (
-                <div className="flex items-start gap-2 text-foreground/40 text-sm">
+                <div className="flex items-start gap-2 text-foreground/50 text-sm">
                     <MapPin className="size-4 mt-0.5 shrink-0" />
                     <span className="leading-relaxed">{address}</span>
                 </div>
@@ -91,7 +91,7 @@ export function PropertyHeader({
                     {formatPrice(price, currency)}
                 </p>
                 {priceMxn && currency !== "MXN" && (
-                    <span className="text-sm text-foreground/40">≈ {currencyMXN.format(priceMxn)}</span>
+                    <span className="text-sm text-foreground/50">≈ {currencyMXN.format(priceMxn)}</span>
                 )}
             </div>
         </div>

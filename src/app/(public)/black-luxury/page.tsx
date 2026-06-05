@@ -4,6 +4,22 @@ import { LuxuryValue } from "@/components/luxury/LuxuryValue";
 import { LuxuryStats } from "@/components/luxury/LuxuryStats";
 import { BrandInventory } from "@/components/shared/BrandInventory";
 import { LuxuryCTA } from "@/components/luxury/LuxuryCTA";
+import { JsonLd } from "@/components/seo/JsonLd";
+
+const LUXURY_SCHEMA = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Black Luxury · Residencias de Súper Lujo",
+    description:
+        "Portafolio curado de residencias trofeo, penthouses de autor y desarrollos exclusivos para inversores HNWI en México.",
+    itemListOrder: "https://schema.org/ItemListOrderDescending",
+    numberOfItems: 0,
+    provider: {
+        "@type": "RealEstateAgent",
+        name: "Black Corporativo",
+        url: "https://blackcorporativo.com",
+    },
+};
 
 export const metadata: Metadata = {
     title: "Black Luxury | Residencias de Súper Lujo en México",
@@ -51,6 +67,7 @@ export default function BlackLuxuryPage() {
                 accentColor="gold"
             />
             <LuxuryCTA />
+            <JsonLd id="ld-luxury" data={LUXURY_SCHEMA} />
         </>
     );
 }

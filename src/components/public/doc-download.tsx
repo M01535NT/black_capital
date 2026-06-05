@@ -50,10 +50,10 @@ export function DocDownload({ documents, propertyId, propertyName }: DocDownload
 
     return (
         <div>
-            <h2 className="section-heading text-[1.125rem] tracking-tight text-foreground mb-4">
+            <h2 className="text-display-3 font-display font-semibold tracking-display uppercase text-body-xl tracking-tight text-foreground mb-4">
                 Documentos Disponibles
             </h2>
-            <p className="text-[0.8125rem] text-foreground/40 mb-6 leading-relaxed">
+            <p className="text-body-sm text-foreground/50 mb-6 leading-relaxed">
                 Para acceder a cualquier documento, comparte tus datos y te lo enviamos
                 directamente a tu correo electrónico.
             </p>
@@ -73,7 +73,7 @@ export function DocDownload({ documents, propertyId, propertyName }: DocDownload
                                 <p className="text-sm font-medium text-foreground truncate">
                                     {doc.label}
                                 </p>
-                                <p className="text-[11px] text-foreground/40 mt-0.5">
+                                <p className="text-caption text-foreground/50 mt-0.5">
                                     PDF · Recibirás en tu correo
                                 </p>
                             </div>

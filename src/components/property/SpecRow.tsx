@@ -12,7 +12,7 @@ export function SpecRow({
 }) {
     return (
         <div className="flex items-center justify-between gap-3 py-1">
-            <span className="text-[11px] text-foreground/40 uppercase tracking-wider">{label}</span>
+            <span className="text-caption text-foreground/50 uppercase tracking-wider">{label}</span>
             <span
                 className={`text-sm font-medium text-foreground text-right ${
                     mono ? "font-mono text-xs" : ""

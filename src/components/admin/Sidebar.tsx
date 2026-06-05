@@ -68,7 +68,7 @@ export function AdminSidebar() {
                                 <item.icon className={cn("h-4 w-4", active ? "text-gold-500" : "text-foreground/50")} />
                                 <span className="flex-1">{item.title}</span>
                                 {showBadge && (
-                                    <span className="bg-gold-500 text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                                    <span className="bg-gold-500 text-black text-caption font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                                         {newLeadsCount}
                                     </span>
                                 )}

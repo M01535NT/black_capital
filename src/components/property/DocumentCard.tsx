@@ -23,9 +23,9 @@ export function DocumentCard({ doc }: { doc: DocumentLink }) {
                 <p className="text-sm font-medium text-foreground truncate group-hover:text-gold-500 transition-colors">
                     {doc.label}
                 </p>
-                <p className="text-[11px] text-foreground/40 uppercase tracking-wider">PDF</p>
+                <p className="text-caption text-foreground/50 uppercase tracking-wider">PDF</p>
             </div>
-            <ArrowUpRight className="size-3.5 text-foreground/30 group-hover:text-gold-500 transition-colors shrink-0" />
+            <ArrowUpRight className="size-3.5 text-foreground/50 group-hover:text-gold-500 transition-colors shrink-0" />
         </a>
     );
 }

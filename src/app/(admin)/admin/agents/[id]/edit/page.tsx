@@ -34,7 +34,7 @@ export default async function EditAgentPage({
                     </Button>
                 </Link>
                 <div>
-                    <h2 className="section-heading text-3xl text-foreground">Editar Agente</h2>
+                    <h2 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl text-foreground">Editar Agente</h2>
                     <p className="text-foreground/50">Modifica los datos del agente.</p>
                 </div>
             </div>

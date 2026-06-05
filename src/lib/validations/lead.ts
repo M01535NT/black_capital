@@ -28,7 +28,15 @@ export const leadSchema = z.object({
             (val) => !isDisposableEmail(val),
             { message: "Por favor, utiliza un dominio de correo corporativo o personal real (Gmail, Outlook, etc.)" }
         ),
-    phone: z.string().min(10, "El teléfono debe tener al menos 10 caracteres"),
+    phone: z
+        .string()
+        .trim()
+        .optional()
+        .or(z.literal(""))
+        .refine(
+            (val) => !val || val.replace(/\D/g, "").length >= 10,
+            { message: "El teléfono debe tener al menos 10 dígitos" }
+        ),
     privacy_accepted: z.boolean().refine(val => val === true, { message: "Debes aceptar el aviso de privacidad" }),
     source: z.enum(["organic", "campaign", "referral", "other", "landing_luxury", "landing_business", "landing_industrial"]),
     property_id: z.string().uuid().optional().nullable(),

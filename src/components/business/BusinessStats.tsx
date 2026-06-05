@@ -107,7 +107,7 @@ export function BusinessStats() {
                                         suffix={stat.suffix}
                                     />
                                 </h4>
-                                <p className="font-display text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-foreground/50">
+                                <p className="font-display text-xs md:text-sm font-bold uppercase tracking-wide-display text-foreground/50">
                                     {stat.label}
                                 </p>
                             </div>

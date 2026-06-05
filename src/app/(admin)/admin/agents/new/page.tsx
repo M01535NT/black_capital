@@ -13,7 +13,7 @@ export default function NewAgentPage() {
                     </Button>
                 </Link>
                 <div>
-                    <h2 className="section-heading text-3xl text-foreground">Nuevo Agente</h2>
+                    <h2 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl text-foreground">Nuevo Agente</h2>
                     <p className="text-foreground/50">Registra un nuevo agente o corredor inmobiliario.</p>
                 </div>
             </div>

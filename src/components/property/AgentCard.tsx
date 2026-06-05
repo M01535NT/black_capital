@@ -31,11 +31,11 @@ export function AgentCard({ agent }: { agent: AgentInfo }) {
                 )}
             </div>
             <div className="min-w-0 flex-1 space-y-1.5">
-                <p className="font-semibold text-foreground leading-tight text-[0.9375rem]">
+                <p className="font-semibold text-foreground leading-tight text-body">
                     {agent.full_name}
                 </p>
                 {agent.license_number && (
-                    <p className="text-[11px] text-foreground/40 uppercase tracking-wider">
+                    <p className="text-caption text-foreground/50 uppercase tracking-wider">
                         Céd. {agent.license_number}
                     </p>
                 )}

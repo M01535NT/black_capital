@@ -41,28 +41,38 @@ export function Footer() {
                                     BLACK <span className="text-gold-500">CORP</span>
                                 </span>
                             </Link>
-                            <p className="body-small text-foreground/60 leading-relaxed max-w-sm">
+                            <p className="text-body-sm text-foreground/60 leading-relaxed max-w-sm">
                                 Plataforma digital inmobiliaria de alta gama estructurada para inversores B2B y HNWI con interés en el mercado mexicano.
                             </p>
                             <div className="flex gap-4 pt-2">
-                                {socialLinks.map((social) => (
-                                    <a
-                                        key={social.name}
-                                        href={social.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-8 h-8 rounded-full border border-foreground/10 flex items-center justify-center text-foreground/40 hover:text-gold-500 hover:border-gold-500/30 transition-all duration-300"
-                                        aria-label={social.name}
-                                    >
-                                        <social.icon className="w-4 h-4" />
-                                    </a>
-                                ))}
+                                {socialLinks.map((social) => {
+                                    const handle = (() => {
+                                        try {
+                                            return new URL(social.href).pathname.replace(/^\//, "@");
+                                        } catch {
+                                            return social.name;
+                                        }
+                                    })();
+                                    return (
+                                        <a
+                                            key={social.name}
+                                            href={social.href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            title={`${social.name} · ${handle}`}
+                                            className="w-8 h-8 rounded-full border border-foreground/10 flex items-center justify-center text-foreground/50 hover:text-gold-500 hover:border-gold-500/30 transition-all duration-300 focus-visible:text-gold-500 focus-visible:border-gold-500/30 focus-visible:outline-none"
+                                            aria-label={`${social.name} (${handle})`}
+                                        >
+                                            <social.icon className="w-4 h-4" aria-hidden="true" />
+                                        </a>
+                                    );
+                                })}
                             </div>
                         </div>
 
                         {/* Marcas Hijas */}
                         <div className="md:col-span-3 md:col-start-6 space-y-2">
-                            <h4 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-foreground">
+                            <h4 className="font-display text-xs font-bold uppercase tracking-wide-display text-foreground">
                                 Nuestras Marcas
                             </h4>
                             <ul className="space-y-2">
@@ -72,7 +82,7 @@ export function Footer() {
                                             <span className="font-display text-sm font-semibold uppercase tracking-wide text-foreground/70 group-hover:text-gold-500 transition-colors">
                                                 {link.name}
                                             </span>
-                                            <span className="text-xs text-foreground/40 uppercase tracking-wider">
+                                            <span className="text-xs text-foreground/50 uppercase tracking-wider">
                                                 {link.desc}
                                             </span>
                                         </Link>
@@ -83,7 +93,7 @@ export function Footer() {
 
                         {/* Legal & Corp */}
                         <div className="md:col-span-2 space-y-4">
-                            <h4 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-foreground">
+                            <h4 className="font-display text-xs font-bold uppercase tracking-wide-display text-foreground">
                                 Corporativo
                             </h4>
                             <ul className="space-y-4">
@@ -102,10 +112,10 @@ export function Footer() {
 
                         {/* Contact */}
                         <div className="md:col-span-3 space-y-4">
-                            <h4 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-foreground">
+                            <h4 className="font-display text-xs font-bold uppercase tracking-wide-display text-foreground">
                                 Contacto
                             </h4>
-                            <ul className="space-y-4 body-small text-foreground/60">
+                            <ul className="space-y-4 text-body-sm text-foreground/60">
                                 <li className="leading-relaxed">{CONTACT_CONFIG.address}</li>
                                 <li>{CONTACT_CONFIG.phone}</li>
                                 <li className="hover:text-gold-500 transition-colors cursor-pointer">{CONTACT_CONFIG.email}</li>
@@ -115,11 +125,11 @@ export function Footer() {
 
                     {/* Bottom bar */}
                     <div className="pt-4 border-t border-foreground/5 flex flex-col md:flex-row justify-between items-center gap-4">
-                        <p className="text-xs text-foreground/40 tracking-wide">
+                        <p className="text-xs text-foreground/50 tracking-wide">
                             &copy; {new Date().getFullYear()} Black Corporativo. Todos los derechos reservados.
                         </p>
                         <div className="flex gap-6">
-                            <Link href="/legal/privacidad" className="text-xs text-foreground/40 hover:text-gold-500 transition-colors uppercase tracking-wider">
+                            <Link href="/legal/privacidad" className="text-xs text-foreground/50 hover:text-gold-500 transition-colors uppercase tracking-wider">
                                 Privacidad
                             </Link>
                         </div>

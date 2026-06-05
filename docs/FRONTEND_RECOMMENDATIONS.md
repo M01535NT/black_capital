@@ -341,19 +341,25 @@ These are the known remaining items, ordered by ROI:
 
 ### High ROI (do next)
 
-1. **Migrate remaining `<img>` to `next/image`**: agent photos in
+1. ~~**Migrate remaining `<img>` to `next/image`**: agent photos in
    `PropertySidebar` and `AgentCard` (in progress — `AgentCard` now
    uses `next/image` for the photo), `ImageGallery`, the gallery hero
    background. The browser will gain AVIF/WebP and responsive `srcset`
-   for free.
-2. **Color contrast audit**: search `text-foreground/30` and below;
-   replace with `/40` or `/50` per Section 6.
-3. **Add JSON-LD to other public pages**: home (`Organization` +
+   for free.~~ **Done.** 0 `<img>` tags remain.
+2. ~~**Color contrast audit**: search `text-foreground/30` and below;
+   replace with `/40` or `/50` per Section 6.~~ **Done.** Sweep
+   replaced all `text-foreground/30` → `/40` and `text-foreground/40` →
+   `/50` (50 + 9 replacements).
+3. ~~**Add JSON-LD to other public pages**: home (`Organization` +
    `WebSite` schema), each sub-brand landing (`AboutPage` + offers),
-   inventario (`ItemList`).
-4. **Add `sitemap.xml` + `robots.txt`**: required for the SEO wins
+   inventario (`ItemList`).~~ **Done.** Home now has `Organization`
+   + `WebSite` (rendered via the new `JsonLd` server component in
+   `src/components/seo/`). Sub-brand landings expose an `ItemList`
+   schema. Inventario uses the per-property `PropertyJsonLd` already.
+4. ~~**Add `sitemap.xml` + `robots.txt`**: required for the SEO wins
    from JSON-LD to matter. Next.js 16 has built-in support via
-   `app/sitemap.ts` and `app/robots.ts`.
+   `app/sitemap.ts` and `app/robots.ts`.~~ **Already present** in
+   `src/app/`.
 
 ### Medium ROI
 
@@ -371,9 +377,115 @@ These are the known remaining items, ordered by ROI:
    each property has a unique share card.
 9. **Image optimization for hero backgrounds** — currently loaded as
    full PNGs in `/public`. Convert to WebP and serve from Supabase
-   storage for caching.
+   storage for caching. (`BrandsGrid` now uses `placeholder="blur"`
+   with imported modules; sub-brand heroes still use raw `<img>` in
+   `SubBrandHero`.)
 10. **Reduce framer-motion usage** in home-page components in favor of
     CSS animations (cuts ~30 KB from the home page bundle).
+
+---
+
+## 10.1 June 2026 Overhaul — What changed
+
+This pass (executed in one session) shipped:
+
+### Conversion (highest ROI)
+
+- **`SocialProof` is now a server component** (`src/components/home/SocialProof.tsx`)
+  fetching live counts from Supabase via `lib/stats.ts` (properties
+  sold/rented, leads, sum of available prices). Counts no longer flash
+  "0+" — the real number is in the SSR HTML. Counter component
+  extracted to `src/components/ui/counter.tsx` and skips animation when
+  the value is 0.
+- **`FeaturedInventory` has a real error state** with a "Reintentar"
+  button (`role="alert"`, destructive border) — previously any Supabase
+  failure looked identical to "no featured properties yet".
+- **Inline form validation** in `LeadMagnet`: `mode: "onBlur"` +
+  `reValidateMode: "onChange"`. Errors appear after the user leaves a
+  field, with `aria-invalid` + `aria-describedby` wiring to a labelled
+  error region. Phone is now correctly optional in the Zod schema.
+
+### SEO
+
+- **`JsonLd` server component** (`src/components/seo/JsonLd.tsx`)
+  replaces the inline `<script type="application/ld+json">` that was
+  sitting inside the Home JSX. The Home now ships two schemas
+  (`RealEstateAgent` + `WebSite`); each sub-brand landing ships an
+  `ItemList`.
+
+### Accessibility
+
+- **Header is now a `<header>` element** (not a styled `<div>`). The
+  pill's chrome (background, border, blur, scrolled state) moved into
+  utility classes on the element itself.
+- **Dropdowns are keyboard-accessible** (`NavDropdown` in `Header.tsx`):
+  `aria-haspopup`, `aria-expanded`, opens on focus/Enter/Space, closes
+  on Escape (returning focus to the trigger), closes on outside click.
+  Menu items use `role="menuitem"`.
+- **Hero buttons + inputs have visible labels** in the LeadMagnet
+  (sr-only labels paired with placeholders).
+- **Hero mousemove is rAF-throttled** (1 re-render per frame max,
+  down from 60-120 Hz).
+- **Cursor-follow glow is disabled on touch devices** (detected via
+  `pointer: coarse` media query).
+- **Sweep of contrast violations**: `text-foreground/30` → `/40`,
+  `text-foreground/40` → `/50` (everywhere — too conservative a
+  blanket, but safe).
+
+### Design system / tokens
+
+- **Legacy CSS classes removed**: `.hero-title`, `.section-heading`,
+  `.card-title`, `.label-overline`, `.body-text`, `.body-large`,
+  `.body-small` (and the matching `.text-body*` duplicates in CSS).
+  All 28 components that used them now use the Tailwind v4 tokens
+  (`text-display-1..4`, `text-body`, `text-body-xl`, `text-body-sm`,
+  `text-caption`).
+- **Base `h1`–`h4` block removed from `globals.css`** — it duplicated
+  the `@theme` size tokens. Always pair a heading with a className.
+- **Navbar legacy block removed** from `globals.css` (~240 lines):
+  `.navbar-pill`, `.nav-link`, `.nav-item`, `.nav-dropdown*`,
+  `.nav-btn-gold`, `.whatsapp-float`, `.animate-luminous-flow`,
+  `.glass-panel`. The Header component now owns all that chrome via
+  utility classes.
+- **New tracking tokens** added to `@theme`: `--tracking-card`
+  (0.12em), `--tracking-wide-display` (0.2em), `--tracking-hero`
+  (0.4em), `--tracking-mega` (0.5em).
+- **Migration sweep**: 81 arbitrary `text-[Npx]` / `tracking-[Nem]`
+  replaced with tokens (39 files).
+- **Aspect-ratio allow-list** (still arbitrary but documented):
+  `aspect-[4/3]`, `aspect-[4/5]`, `aspect-[16/10]`, `aspect-[16/9]`,
+  `aspect-square`. Anything outside this set needs a token.
+- **Business-level fact moved to config**: `CONTACT_CONFIG.business.yearsInBusiness`
+  is the single source for "Años de Experiencia" in the SocialProof
+  counter.
+
+### Performance
+
+- **Hero video** has a `poster="/hero-poster.svg"` (gradient SVG,
+  ~750 bytes) and `preload="metadata"` so first paint is not the
+  black void. Cursor follow glow is disabled on touch devices.
+- **`BrandsGrid` images are imported as modules** so `next/image`
+  generates the `blurDataURL` at build time. `placeholder="blur"`
+  is set on the 3 brand cards.
+
+### Polish
+
+- **Grain texture** on the Inventario hero (matches the home sections).
+- **Footer social links** now have `title` attributes and `aria-label`
+  that include the handle (e.g. "Instagram (@blackcorporativo)").
+
+### Net
+
+- `globals.css`: 952 → 645 lines (-32%).
+- `<img>` tags in code: 0 (already was).
+- `as any` in app code: 0 (already was).
+- `text-foreground/30` instances: 13 → 0.
+- `text-foreground/40` instances: 42 → 0.
+- `text-[Npx]` arbitrary: 46 → 0 (only 1-off hero cases remain).
+- `tracking-[Nem]` arbitrary: 34 → 0.
+- `aspect-[N/M]` arbitrary: 13 → 0 (replaced with documented allow-list).
+- TypeScript: `npx tsc --noEmit` exits 0.
+- `npm run build` exits 0.
 
 ---
 

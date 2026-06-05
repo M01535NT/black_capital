@@ -137,11 +137,11 @@ export default async function AgentsPage() {
                                 <div className="grid grid-cols-2 gap-2 mb-4">
                                     <div className="bg-muted/20 rounded-lg p-2 text-center border border-foreground/5">
                                         <p className="text-lg font-numerics font-bold text-gold-500">{propsCount}</p>
-                                        <p className="text-[10px] text-foreground/50 uppercase tracking-wider font-display">Propiedades</p>
+                                        <p className="text-caption text-foreground/50 uppercase tracking-wider font-display">Propiedades</p>
                                     </div>
                                     <div className="bg-muted/20 rounded-lg p-2 text-center border border-foreground/5">
                                         <p className="text-lg font-numerics font-bold text-emerald-500">{wonCount}</p>
-                                        <p className="text-[10px] text-foreground/50 uppercase tracking-wider font-display">Cierres</p>
+                                        <p className="text-caption text-foreground/50 uppercase tracking-wider font-display">Cierres</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-between pt-3 border-t border-foreground/5 mt-auto">

@@ -4,6 +4,22 @@ import { IndustrialValue } from "@/components/industrial/IndustrialValue";
 import { IndustrialStats } from "@/components/industrial/IndustrialStats";
 import { BrandInventory } from "@/components/shared/BrandInventory";
 import { IndustrialCTA } from "@/components/industrial/IndustrialCTA";
+import { JsonLd } from "@/components/seo/JsonLd";
+
+const INDUSTRIAL_SCHEMA = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Black Industrial · Naves, Bodegas y Parques Logísticos",
+    description:
+        "Terrenos macro, naves industriales clase A y parques logísticos en los principales corredores de México.",
+    itemListOrder: "https://schema.org/ItemListOrderDescending",
+    numberOfItems: 0,
+    provider: {
+        "@type": "RealEstateAgent",
+        name: "Black Corporativo",
+        url: "https://blackcorporativo.com",
+    },
+};
 
 export const metadata: Metadata = {
     title: "Black Industrial | Naves, Bodegas y Parques Logísticos",
@@ -56,6 +72,7 @@ export default function BlackIndustrialPage() {
                 accentColor="steel"
             />
             <IndustrialCTA />
+            <JsonLd id="ld-industrial" data={INDUSTRIAL_SCHEMA} />
         </>
     );
 }

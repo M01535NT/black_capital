@@ -62,7 +62,7 @@ export default async function AgentDetailPage({
                         </Button>
                     </Link>
                     <div>
-                        <h2 className="section-heading text-3xl text-foreground">{agent.full_name}</h2>
+                        <h2 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl text-foreground">{agent.full_name}</h2>
                         <p className="text-foreground/50">
                             Registrado {new Date(agent.created_at).toLocaleDateString("es-MX", { month: "long", year: "numeric" })}
                         </p>
@@ -189,10 +189,10 @@ export default async function AgentDetailPage({
                                             {prop.title}
                                         </p>
                                         <div className="flex items-center gap-2 text-xs text-foreground/50 mt-1">
-                                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-auto border-foreground/10">
+                                            <Badge variant="outline" className="text-caption px-1.5 py-0 h-auto border-foreground/10">
                                                 {prop.business_type}
                                             </Badge>
-                                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-auto border-foreground/10">
+                                            <Badge variant="outline" className="text-caption px-1.5 py-0 h-auto border-foreground/10">
                                                 {prop.property_use}
                                             </Badge>
                                             <span className="text-gold-500 font-numerics font-bold">
@@ -201,7 +201,7 @@ export default async function AgentDetailPage({
                                         </div>
                                     </div>
 
-                                    <ExternalLink className="w-4 h-4 text-foreground/30 group-hover:text-gold-500 transition-colors shrink-0" />
+                                    <ExternalLink className="w-4 h-4 text-foreground/50 group-hover:text-gold-500 transition-colors shrink-0" />
                                 </Link>
                             ))}
                         </div>

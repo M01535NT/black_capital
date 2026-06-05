@@ -90,19 +90,19 @@ export function BrandInventory({
             <div className="container mx-auto px-4">
                 <FadeIn className="text-center max-w-3xl mx-auto mb-20">
                     {isGold ? (
-                        <span className={`${accent.shimmer} text-xs font-bold uppercase tracking-[0.5em] mb-6 inline-block`}>
+                        <span className={`${accent.shimmer} text-xs font-bold uppercase tracking-mega mb-6 inline-block`}>
                             {brandSlug === "luxury" ? "Selección curada" : "Portafolio activo"}
                         </span>
                     ) : (
                         <div className="flex items-center justify-center gap-4 mb-6">
                             <div className="w-8 h-px bg-steel-500" />
-                            <span className="text-xs font-bold uppercase tracking-[0.4em] text-steel-400">
+                            <span className="text-xs font-bold uppercase tracking-hero text-steel-400">
                                 Inventario activo
                             </span>
                             <div className="w-8 h-px bg-steel-500" />
                         </div>
                     )}
-                    <h2 className="section-heading text-3xl md:text-5xl text-foreground mb-4">
+                    <h2 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl md:text-5xl text-foreground mb-4">
                         {title}
                         {highlight && (
                             <>
@@ -129,10 +129,10 @@ export function BrandInventory({
                             <div className={`w-16 h-16 rounded-full ${isGold ? "bg-gold-500/10" : "bg-steel-500/10"} flex items-center justify-center mx-auto mb-8`}>
                                 <span className={`${accent.iconText} text-2xl`}>✦</span>
                             </div>
-                            <h3 className="card-title text-xl text-foreground/70 mb-3">
+                            <h3 className="text-display-4 font-display font-semibold tracking-wide uppercase text-xl text-foreground/70 mb-3">
                                 Portafolio en Curación
                             </h3>
-                            <p className="text-foreground/40 text-sm max-w-md mx-auto">
+                            <p className="text-foreground/50 text-sm max-w-md mx-auto">
                                 Nuestro equipo está seleccionando los mejores activos de {propertyUse.toLowerCase()}.
                                 Solicita acceso anticipado para ser el primero en conocerlos.
                             </p>
@@ -158,7 +158,7 @@ export function BrandInventory({
                                             />
                                         ) : (
                                             <div className="absolute inset-0 bg-zinc-900/80 flex items-center justify-center">
-                                                <span className="text-foreground/40 text-sm uppercase tracking-widest">
+                                                <span className="text-foreground/50 text-sm uppercase tracking-widest">
                                                     En preparación
                                                 </span>
                                             </div>
@@ -173,10 +173,10 @@ export function BrandInventory({
 
                                     {/* Info */}
                                     <div className="p-8 space-y-3">
-                                        <h3 className="card-title text-lg text-foreground group-hover:text-gold-500 transition-colors duration-300">
+                                        <h3 className="text-display-4 font-display font-semibold tracking-wide uppercase text-lg text-foreground group-hover:text-gold-500 transition-colors duration-300">
                                             {prop.title}
                                         </h3>
-                                        <div className="flex items-center gap-4 text-sm text-foreground/40">
+                                        <div className="flex items-center gap-4 text-sm text-foreground/50">
                                             <span className="flex items-center gap-1.5">
                                                 <MapPin className={`w-3.5 h-3.5 ${isGold ? "" : "text-steel-500/50"}`} />
                                                 {prop.business_type}

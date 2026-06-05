@@ -4,6 +4,22 @@ import { BusinessValue } from "@/components/business/BusinessValue";
 import { BusinessStats } from "@/components/business/BusinessStats";
 import { BrandInventory } from "@/components/shared/BrandInventory";
 import { BusinessCTA } from "@/components/business/BusinessCTA";
+import { JsonLd } from "@/components/seo/JsonLd";
+
+const BUSINESS_SCHEMA = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Black Business · Activos Corporativos Clase A",
+    description:
+        "Oficinas corporativas, locales comerciales y plazas premium para empresas que exigen ubicación estratégica y retorno garantizado.",
+    itemListOrder: "https://schema.org/ItemListOrderDescending",
+    numberOfItems: 0,
+    provider: {
+        "@type": "RealEstateAgent",
+        name: "Black Corporativo",
+        url: "https://blackcorporativo.com",
+    },
+};
 
 export const metadata: Metadata = {
     title: "Black Business | Activos Corporativos Clase A en México",
@@ -51,6 +67,7 @@ export default function BlackBusinessPage() {
                 accentColor="gold"
             />
             <BusinessCTA />
+            <JsonLd id="ld-business" data={BUSINESS_SCHEMA} />
         </>
     );
 }

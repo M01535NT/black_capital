@@ -83,7 +83,7 @@ export default async function AdminPropertyDetailPage({
                         </Button>
                     </Link>
                     <div>
-                        <h2 className="card-title text-2xl text-foreground truncate max-w-xl">
+                        <h2 className="text-display-4 font-display font-semibold tracking-wide uppercase text-2xl text-foreground truncate max-w-xl">
                             {property.title}
                         </h2>
                         <p className="text-foreground/50 text-sm">

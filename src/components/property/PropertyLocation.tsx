@@ -1,5 +1,5 @@
 const SECTION_HEADING =
-    "font-display text-xs font-bold uppercase tracking-[0.2em] text-foreground/40";
+    "font-display text-xs font-bold uppercase tracking-wide-display text-foreground/50";
 
 /**
  * Google Maps embed with the gold/grayscale brand treatment.

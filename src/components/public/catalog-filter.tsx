@@ -87,7 +87,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
 
     const hasFilters = activeBusiness || activeUse || searchTerm || sort !== "newest";
 
-    const pillBase = "px-5 py-2 text-[11px] font-display font-bold uppercase tracking-wider rounded-full transition-all duration-300";
+    const pillBase = "px-5 py-2 text-caption font-display font-bold uppercase tracking-wider rounded-full transition-all duration-300";
     const pillActive = "bg-gold-500 text-black shadow-lg shadow-gold-500/20";
     const pillInactive = "text-foreground/50 hover:text-foreground hover:bg-foreground/5";
 
@@ -99,7 +99,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                     <label htmlFor="catalog-search" className="sr-only">
                         Buscar propiedad por título
                     </label>
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-foreground/30 pointer-events-none" />
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-foreground/50 pointer-events-none" />
                     <input
                         id="catalog-search"
                         ref={searchInputRef}
@@ -115,7 +115,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                     {searchTerm && (
                         <button
                             onClick={() => { setSearchTerm(""); updateURL({ q: null }); searchInputRef.current?.focus(); }}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/30 hover:text-foreground/60 transition-colors"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/50 hover:text-foreground/60 transition-colors"
                         >
                             <X className="size-3.5" />
                         </button>
@@ -123,7 +123,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <span className="text-sm text-foreground/40 tabular-nums font-numerics">
+                    <span className="text-sm text-foreground/50 tabular-nums font-numerics">
                         <strong className="text-foreground font-semibold">{filtered.length}</strong> {filtered.length === 1 ? "resultado" : "resultados"}
                     </span>
                     {hasFilters && (
@@ -189,13 +189,13 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             setSort(e.target.value);
                             updateURL({ orden: e.target.value === "newest" ? null : e.target.value });
                         }}
-                        className="appearance-none pl-4 pr-9 py-2 bg-foreground/[0.04] border border-foreground/10 rounded-full text-[11px] font-display font-bold uppercase tracking-wider text-foreground/60 focus:outline-none focus:border-gold-500/30 cursor-pointer transition-all"
+                        className="appearance-none pl-4 pr-9 py-2 bg-foreground/[0.04] border border-foreground/10 rounded-full text-caption font-display font-bold uppercase tracking-wider text-foreground/60 focus:outline-none focus:border-gold-500/30 cursor-pointer transition-all"
                     >
                         {SORT_OPTIONS.map((opt) => (
                             <option key={opt.value} value={opt.value} className="bg-background text-foreground">{opt.label}</option>
                         ))}
                     </select>
-                    <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 size-3 text-foreground/30 pointer-events-none" />
+                    <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 size-3 text-foreground/50 pointer-events-none" />
                 </div>
             </div>
 

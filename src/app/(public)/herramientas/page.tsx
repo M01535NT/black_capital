@@ -50,10 +50,10 @@ export default function HerramientasPage() {
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.05,_transparent_50%)]" />
                 <div className="container mx-auto px-4 relative z-10 text-center max-w-4xl">
                     <FadeIn>
-                        <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-[0.5em] mb-6 inline-block">
+                        <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-mega mb-6 inline-block">
                             Recursos Exclusivos
                         </span>
-                        <h1 className="section-heading text-4xl md:text-6xl text-foreground mb-6">
+                        <h1 className="text-display-3 font-display font-semibold tracking-display uppercase text-4xl md:text-6xl text-foreground mb-6">
                             Herramientas para{" "}
                             <span className="metallic-gold">Inversionistas</span>
                         </h1>
@@ -86,7 +86,7 @@ export default function HerramientasPage() {
                                             {tool.status}
                                         </span>
                                     </div>
-                                    <h3 className="card-title text-xl text-foreground mb-4">
+                                    <h3 className="text-display-4 font-display font-semibold tracking-wide uppercase text-xl text-foreground mb-4">
                                         {tool.title}
                                     </h3>
                                     <p className="text-foreground/45 text-sm leading-relaxed flex-1">

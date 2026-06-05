@@ -85,7 +85,7 @@ export function GatedBrochure({
         });
 
         // Strip non-numeric from phone for clean storage
-        const cleanPhone = data.phone.replace(/[^0-9+]/g, "");
+        const cleanPhone = (data.phone ?? "").replace(/[^0-9+]/g, "");
 
         try {
             // Insert lead into Supabase
@@ -161,7 +161,7 @@ export function GatedBrochure({
                                     name="full_name"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="label-overline text-foreground/60">Nombre completo</FormLabel>
+                                            <FormLabel className="text-caption font-sans font-bold tracking-overline uppercase text-foreground/60">Nombre completo</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     placeholder="Tu nombre completo"
@@ -179,7 +179,7 @@ export function GatedBrochure({
                                     name="email"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="label-overline text-foreground/60">
+                                            <FormLabel className="text-caption font-sans font-bold tracking-overline uppercase text-foreground/60">
                                                 <Mail className="size-3 inline mr-1.5 -mt-0.5" />
                                                 Correo electrónico
                                             </FormLabel>
@@ -201,7 +201,7 @@ export function GatedBrochure({
                                     name="phone"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="label-overline text-foreground/60">
+                                            <FormLabel className="text-caption font-sans font-bold tracking-overline uppercase text-foreground/60">
                                                 <Smartphone className="size-3 inline mr-1.5 -mt-0.5" />
                                                 WhatsApp / Teléfono
                                             </FormLabel>
@@ -262,7 +262,7 @@ export function GatedBrochure({
                                         </>
                                     )}
                                 </Button>
-                                <p className="text-[11px] text-center text-foreground/50 pt-1">
+                                <p className="text-caption text-center text-foreground/50 pt-1">
                                     Tus datos están protegidos. No compartimos tu información con terceros.
                                 </p>
                             </form>

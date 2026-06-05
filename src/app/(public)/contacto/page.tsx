@@ -62,10 +62,10 @@ export default function ContactoPage() {
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.05,_transparent_50%)]" />
                 <div className="container mx-auto px-4 relative z-10 text-center max-w-4xl">
                     <FadeIn>
-                        <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-[0.5em] mb-6 inline-block">
+                        <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-mega mb-6 inline-block">
                             Contacto Directo
                         </span>
-                        <h1 className="section-heading text-4xl md:text-6xl text-foreground mb-6">
+                        <h1 className="text-display-3 font-display font-semibold tracking-display uppercase text-4xl md:text-6xl text-foreground mb-6">
                             Hablemos de{" "}
                             <span className="metallic-gold">Inversión</span>
                         </h1>
@@ -89,7 +89,7 @@ export default function ContactoPage() {
                                     <div className="w-14 h-14 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-8 group-hover:bg-gold-500/20 transition-all duration-500">
                                         <Icon className="w-6 h-6 text-gold-500" />
                                     </div>
-                                    <h3 className="card-title text-xl text-foreground mb-4">
+                                    <h3 className="text-display-4 font-display font-semibold tracking-wide uppercase text-xl text-foreground mb-4">
                                         {card.title}
                                     </h3>
                                     <div className="space-y-1 mb-6 flex-1">
@@ -122,7 +122,7 @@ export default function ContactoPage() {
             <div className="container mx-auto px-4 pb-24">
                 <FadeIn>
                     <div className="max-w-3xl mx-auto text-center p-12 rounded-2xl border border-gold-500/20 bg-zinc-950/60 backdrop-blur-sm">
-                        <h2 className="section-heading text-3xl text-foreground mb-6">
+                        <h2 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl text-foreground mb-6">
                             ¿Listo para invertir?
                         </h2>
                         <p className="text-foreground/50 text-lg leading-relaxed mb-8">

@@ -14,7 +14,7 @@ export default function NewPropertyPage() {
                     </Button>
                 </Link>
                 <div>
-                    <h2 className="section-heading text-3xl text-foreground">Nueva Propiedad</h2>
+                    <h2 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl text-foreground">Nueva Propiedad</h2>
                     <p className="text-foreground/50">Completa los datos para agregar una propiedad al inventario.</p>
                 </div>
             </div>
