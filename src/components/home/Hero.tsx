@@ -63,10 +63,8 @@ function StaggeredWord({ word }: { word: string }) {
     );
 }
 
-/**
- * Conditionally render the hero video. Skip on touch-only devices,
- * `prefers-reduced-motion`, or slow network. Static poster still paints.
- */
+/* ── Conditionally render the hero video. Skip on touch-only devices,
+ * `prefers-reduced-motion`, or slow network. Static poster still paints. */
 function useShouldRenderVideo(): boolean {
     const [render, setRender] = useState(true);
 
@@ -105,7 +103,7 @@ export function Hero() {
         if (shouldReduceMotion) return;
         const intervalId = setInterval(() => {
             setIndex((prev) => (prev + 1) % words.length);
-        }, 3500);
+        }, 5000); // Slower rotation for more contemplative feel
         return () => clearInterval(intervalId);
     }, [shouldReduceMotion]);
 
@@ -137,18 +135,20 @@ export function Hero() {
                 />
             )}
 
-            {/* ── Layered Dark Overlay ── */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/65 to-black/90 z-[-1]" />
+            {/* ── Layered Dark Overlay with subtle texture ── */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/65 to-black/90 z-[-1]">
+                <div className="absolute inset-0 grain-overlay" />
+            </div>
 
             {/* ── Content ── */}
             <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12">
-                <div className="max-w-5xl space-y-8 md:space-y-10">
-                    {/* ── Eyebrow — financial-publication style ── */}
+                <div className="max-w-4xl lg:max-w-5xl space-y-8 md:space-y-10">
+                    {/* ── Asymmetrical layout: eyebrow left-aligned, headline right-weighted ── */}
                     <motion.div
                         initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                        className="flex items-center gap-3 font-display text-caption font-bold uppercase tracking-eyebrow"
+                        className="flex items-start gap-3 font-display text-caption font-bold uppercase tracking-eyebrow mb-4"
                     >
                         <span className="font-mono text-gold-solid text-body-sm">
                             01 /
@@ -158,12 +158,12 @@ export function Hero() {
                         </span>
                     </motion.div>
 
-                    {/* ── Main Headline ── */}
+                    {/* ── Main Headline with enhanced metallic treatment ── */}
                     <motion.h1
-                        initial={shouldReduceMotion ? {} : { opacity: 0, x: -50 }}
+                        initial={shouldReduceMotion ? {} : { opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-[clamp(3.5rem,9vw,7rem)] font-display font-bold tracking-[-0.04em] uppercase text-foreground leading-[0.9]"
+                        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                        className="text-[clamp(3.5rem,9vw,7rem)] font-display font-bold tracking-[-0.04em] uppercase text-foreground leading-[0.9] mb-6"
                     >
                         Estructuramos <br className="hidden sm:block" />
                         tu{" "}
@@ -186,28 +186,28 @@ export function Hero() {
                         </span>
                     </motion.h1>
 
-                    {/* ── Gold Separator Line ── */}
+                    {/* ── Refined gold separator with subtle animation ── */}
                     <motion.div
                         initial={shouldReduceMotion ? {} : { scaleX: 0, opacity: 0 }}
                         animate={{ scaleX: 1, opacity: 1 }}
                         transition={{
-                            duration: 1.2,
-                            delay: 0.3,
+                            duration: 1.5,
+                            delay: 0.2,
                             ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="w-20 h-[2px] bg-gold-solid origin-left"
+                        className="w-24 h-[1.5px] bg-gold-solid origin-left mb-8"
                     />
 
-                    {/* ── Value proposition (concrete, B2B) ── */}
+                    {/* ── Value proposition (enhanced B2B focus) ── */}
                     <motion.p
-                        initial={shouldReduceMotion ? {} : { opacity: 0, x: -30 }}
+                        initial={shouldReduceMotion ? {} : { opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{
                             duration: 1,
                             delay: shouldReduceMotion ? 0 : 0.5,
                             ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="font-sans text-body-lg md:text-body-xl text-foreground/75 max-w-2xl leading-relaxed"
+                        className="font-sans text-body-lg md:text-body-xl text-foreground/75 max-w-xl leading-relaxed mb-10"
                     >
                         Adquisición, estructuración y disposición de activos
                         inmobiliarios premium —residenciales, comerciales e
@@ -215,11 +215,7 @@ export function Hero() {
                         family offices en México.
                     </motion.p>
 
-                    {/* ── Primary + secondary CTA ──
-                        Brutalist flat buttons — no rounded-full, square
-                        corners with a 2px gold underline accent. The
-                        eyebrow style is "financial-publication" — clean
-                        rectangular hits. */}
+                    {/* ── Primary + secondary CTA with elevated interaction ── */}
                     <motion.div
                         initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -228,12 +224,12 @@ export function Hero() {
                             delay: shouldReduceMotion ? 0 : 0.7,
                             ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="flex flex-col sm:flex-row gap-3 pt-4"
+                        className="flex flex-col sm:flex-row gap-4 pt-6"
                     >
                         <Button
                             asChild
                             size="lg"
-                            className="group relative bg-gold-solid text-black hover:bg-gold-400 font-display text-xs font-bold uppercase tracking-eyebrow px-8 py-7 rounded-none shadow-[0_8px_24px_rgba(212,175,55,0.18)] hover:shadow-[0_8px_32px_rgba(212,175,55,0.32)] transition-all duration-300 overflow-hidden"
+                            className="group relative bg-gold-solid text-black hover:bg-gold-400 font-display text-xs font-bold uppercase tracking-eyebrow px-8 py-7 rounded-none shadow-[0_8px_24px_rgba(212,175,55,0.18)] hover:shadow-[0_8px_32px_rgba(212,175,55,0.32)] transition-all duration-300 overflow-hidden after:content-[''] after:absolute after:inset-0 after:bg-gold-solid after:opacity-0 after:transition-opacity after:duration-300 group-hover:after:opacity-10"
                         >
                             <Link href="/inventario">
                                 Ver Inventario Exclusivo
@@ -247,7 +243,7 @@ export function Hero() {
                             asChild
                             size="lg"
                             variant="outline"
-                            className="border-foreground/30 bg-transparent text-foreground hover:border-gold-solid hover:text-gold-solid hover:bg-transparent font-display text-xs font-bold uppercase tracking-eyebrow px-8 py-7 rounded-none transition-all duration-300"
+                            className="border-foreground/30 bg-transparent text-foreground hover:border-gold-solid hover:text-gold-solid hover:bg-transparent font-display text-xs font-bold uppercase tracking-eyebrow px-8 py-7 rounded-none transition-all duration-300 relative after:content-[''] after:absolute after:inset-0 after:border after:border-gold-solid after:opacity-0 after:transition-opacity after:duration-300 group-hover:after:opacity-100"
                         >
                             <Link href="/contacto">
                                 <CalendarCheck
@@ -259,21 +255,25 @@ export function Hero() {
                         </Button>
                     </motion.div>
 
-                    {/* ── Trust microline (year, scope) ── */}
-                    <motion.p
-                        initial={shouldReduceMotion ? {} : { opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1.1, duration: 0.8 }}
-                        className="font-display text-caption uppercase tracking-overline text-foreground/40 pt-2"
-                    >
-                        Más de 12 años · CDMX · Monterrey · Guadalajara · Tijuana
-                    </motion.p>
+                    {/* ── Trust microline with subtle divider ── */}
+                    <div className="flex items-center justify-center space-x-4 pt-6">
+                        <div className="w-px h-4 bg-gold-400/30" />
+                        <motion.p
+                            initial={shouldReduceMotion ? {} : { opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1.1, duration: 0.8 }}
+                            className="font-display text-capital uppercase tracking-overline text-foreground/40"
+                        >
+                            Más de 12 años · CDMX · Monterrey · Guadalajara · Tijuana
+                        </motion.p>
+                        <div className="w-px h-4 bg-gold-400/30" />
+                    </div>
                 </div>
             </div>
 
-            {/* ── Bottom Marquee ── */}
+            {/* ── Bottom Marquee with enhanced styling ── */}
             <div className="absolute bottom-0 left-0 w-full z-20">
-                <TopMarquee />
+                <TopMarquee className="bg-gold-500/5 backdrop-blur-sm" />
             </div>
         </section>
     );
