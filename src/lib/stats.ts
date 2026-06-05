@@ -8,7 +8,7 @@
  * or returns an error, we return zeros — the home page will still
  * render and the fallback UI will guide the visitor.
  */
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 export interface SocialStats {
@@ -35,7 +35,7 @@ const ZERO_STATS: SocialStats = {
 /** Fetch the four social-proof numbers in parallel. */
 export async function getSocialStats(): Promise<SocialStats> {
     try {
-        const supabase = await createClient();
+        const supabase = createAdminClient();
 
         const [closedRes, clientsRes, portfolioRes] = await Promise.all([
             supabase

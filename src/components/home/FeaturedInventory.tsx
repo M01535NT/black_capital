@@ -24,7 +24,7 @@ export function FeaturedInventory() {
             const supabase = createClient();
             const { data, error: queryError } = await supabase
                 .from("properties")
-                .select("id, title, slug, property_use, business_type, m2_terrain, m2_construction, price, currency, cover_image, attributes, property_type")
+                .select("id, title, slug, property_use, business_type, m2_terrain, m2_construction, price, currency, cover_image, custom_attributes, property_type")
                 .eq("is_featured", true)
                 .eq("status", "Available")
                 .order("created_at", { ascending: false })

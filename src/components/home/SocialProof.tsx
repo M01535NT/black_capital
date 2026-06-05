@@ -33,12 +33,19 @@ export async function SocialProof() {
             suffix: "+",
         },
         {
-            value: Math.round(stats.portfolioValueMXN / 1_000_000),
+            // Display in millions with 1 decimal so sub-million
+            // values (e.g. $300K USD) show as 0.3 instead of 0.
+            // NOTE: the underlying `price` values are in their property's
+            // own `currency` (not normalized to MXN). The label was
+            // "Millones MXN" historically, but that's misleading when
+            // every published property is in USD. Until we add a
+            // currency-conversion step, the label reads "MILLONES USD".
+            value: stats.portfolioValueMXN,
             display:
                 stats.isLive && stats.portfolioValueMXN > 0
-                    ? Math.round(stats.portfolioValueMXN / 1_000_000)
+                    ? Number((stats.portfolioValueMXN / 1_000_000).toFixed(1))
                     : null,
-            label: "Millones MXN en Portafolio",
+            label: "Millones USD en Portafolio",
             suffix: "",
         },
     ];

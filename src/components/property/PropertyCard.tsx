@@ -25,7 +25,7 @@ export interface PropertyCardData {
     currency: string;
     cover_image: string | null;
     status?: string;
-    attributes?: string[] | null;
+    customAttributes?: string[] | null;
     address?: string | null;
     created_at?: string | null;
 }
@@ -85,7 +85,7 @@ export function PropertyCard({
     const href = `/inventario/${property.slug || property.id}`;
     const showFullMetrics = variant === "featured";
     const showAttributes =
-        variant === "featured" && !!property.attributes && property.attributes.length > 0;
+        variant === "featured" && !!property.customAttributes && property.customAttributes.length > 0;
 
     const card = (
         <Link role="article" aria-label={`Ver detalles de ${property.title}`}
@@ -185,9 +185,9 @@ export function PropertyCard({
                                 ) : null}
                             </div>
                         )}
-                        {showAttributes && property.attributes && (
+                        {showAttributes && property.customAttributes && (
                             <div className="pt-4 border-t border-foreground/10 flex flex-wrap gap-2">
-                                {property.attributes.map((attr, idx) => (
+                                {property.customAttributes.map((attr: string, idx: number) => (
                                     <span
                                         key={idx}
                                         className="text-xs px-2 py-1 bg-foreground/5 text-foreground/80 rounded-md"
