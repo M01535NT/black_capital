@@ -36,7 +36,7 @@ const LINEAS: Linea[] = [
     href: "/black-luxury",
     description: "Residencias y propiedades de alto valor con ubicación privilegiada.",
     longDescription:
-      "Curaduría de activos residenciales de alto valor en Tijuana y su zona metropolitana: Playas de Tijuana, Chapultepec, Mesa de Otay, Zona Río. Cada propiedad cuenta con análisis financiero estructurado, due diligence legal completo y potencial verificado de plusvalía.",
+      "Curaduría selecta de activos residenciales de alto valor. Cada propiedad incluye análisis financiero estructurado, due diligence legal completo y potencial de plusvalía verificado.",
     highlights: [
       "Off-market exclusivo",
       "Análisis comparativo de mercado",
@@ -59,7 +59,7 @@ const LINEAS: Linea[] = [
     href: "/black-business",
     description: "Oficinas, locales y activos corporativos con potencial real.",
     longDescription:
-      "Activos comerciales en los corredores prime de Tijuana: Zona Río, Blvd. Agua Caliente, Blvd. Sánchez Taboada. Modelos financieros con TIR, cap rate estabilizado y escenarios de salida a 3, 5 y 10 años.",
+      "Selección rigurosa de activos comerciales con potencial de generación de flujo. Cada propiedad incluye análisis financiero estructurado, modelado de TIR a 10 años y contratos con inquilinos verificados.",
     highlights: [
       "Cap rate estabilizado",
       "TIR proyectada a 10 años",
@@ -82,10 +82,10 @@ const LINEAS: Linea[] = [
     href: "/black-industrial",
     description: "Naves, bodegas y terrenos para operaciones que mueven la economía.",
     longDescription:
-      "Naves logísticas, parques industriales y terrenos con uso de suelo garantizado en Tijuana, Mexicali y el corredor industrial bajacaliforniano. Conectividad a la garita de Otay y al puerto de Ensenada.",
+      "Selección curada de naves logísticas, parques industriales y terrenos con uso de suelo garantizado. Cada activo incluye análisis de conectividad, modelado financiero y opciones de build-to-suit.",
     highlights: [
       "Uso de suelo verificado",
-      "Conectividad a garita Otay",
+      "Conectividad logística",
       "Build-to-suit disponible",
       "Contratos triple net",
     ],

@@ -49,7 +49,7 @@ export function Header() {
       role="banner"
     >
       <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 h-16 lg:h-20 flex items-center justify-between gap-4">
-        <Logo href="/" variant="mark" size="sm" tone="gold" className="flex-shrink-0" />
+        <Logo href="/" variant="mark" size="md" tone="gold" className="flex-shrink-0" />
 
         {/* Desktop nav (center) */}
         <nav aria-label="Menu principal" className="hidden lg:flex items-center gap-8">

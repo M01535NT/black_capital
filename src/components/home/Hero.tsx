@@ -1,26 +1,43 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 
-const CITIES = [
-  "Tijuana",
-  "Baja California",
-  "México",
+const ROTATING_WORDS = ["Patrimonio", "Inteligencia", "Black"] as const;
+
+const VALUES = [
+  "Honestidad",
+  "Compromiso",
+  "Disciplina",
+  "Conocimiento",
+  "Transparencia",
+  "Experiencia",
+  "Integridad",
+  "Resultados",
 ];
 
 // Duplicamos la lista para el efecto de loop infinito del marquee
-const MARQUEE = [...CITIES, ...CITIES, ...CITIES];
+const MARQUEE = [...VALUES, ...VALUES];
 
 export function Hero() {
   const shouldReduceMotion = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [wordIndex, setWordIndex] = useState(0);
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v || shouldReduceMotion) return;
     v.play().catch(() => {});
+  }, [shouldReduceMotion]);
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const id = setInterval(
+      () => setWordIndex((p) => (p + 1) % ROTATING_WORDS.length),
+      3500,
+    );
+    return () => clearInterval(id);
   }, [shouldReduceMotion]);
 
   return (
@@ -89,11 +106,23 @@ export function Hero() {
                 className="block"
               >
                 con{" "}
-                <span className="metallic-gold-static gold-glow relative inline-block">
-                  Patrimonio
+                <span className="relative inline-block min-w-[11ch]">
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span
+                      key={ROTATING_WORDS[wordIndex]}
+                      initial={shouldReduceMotion ? false : { opacity: 0, y: 24, filter: "blur(6px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      exit={shouldReduceMotion ? undefined : { opacity: 0, y: -16, filter: "blur(4px)" }}
+                      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                      className="metallic-gold-static gold-glow inline-block"
+                      aria-live="polite"
+                    >
+                      {ROTATING_WORDS[wordIndex]}
+                    </motion.span>
+                  </AnimatePresence>
                   <motion.span
                     aria-hidden="true"
-                    initial={shouldReduceMotion ? { scaleX: 0 } : { scaleX: 0 }}
+                    initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
                     style={{ transformOrigin: "left" }}
@@ -213,16 +242,31 @@ export function Hero() {
           role="presentation"
           aria-hidden="true"
         >
-          {MARQUEE.map((city, i) => (
-            <span key={`${city}-${i}`} className="inline-flex items-center shrink-0">
-              <span className="px-6 sm:px-8 text-[11px] tracking-[0.24em] uppercase text-white/65 font-semibold whitespace-nowrap">
-                {city}
+          {/* Two duplicated strips, each animating from 0 → -100% for seamless loop */}
+          <div className="animate-marquee inline-flex shrink-0">
+            {VALUES.map((v, i) => (
+              <span key={`a-${v}-${i}`} className="inline-flex items-center shrink-0">
+                <span className="px-6 sm:px-10 text-[11px] tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
+                  {v}
+                </span>
+                <span className="text-[#D4AF37] text-sm select-none" aria-hidden="true">
+                  •
+                </span>
               </span>
-              <span className="text-[var(--color-accent)] text-[8px] select-none" aria-hidden="true">
-                ◆
+            ))}
+          </div>
+          <div className="animate-marquee inline-flex shrink-0">
+            {VALUES.map((v, i) => (
+              <span key={`b-${v}-${i}`} className="inline-flex items-center shrink-0">
+                <span className="px-6 sm:px-10 text-[11px] tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
+                  {v}
+                </span>
+                <span className="text-[#D4AF37] text-sm select-none" aria-hidden="true">
+                  •
+                </span>
               </span>
-            </span>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

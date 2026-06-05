@@ -53,7 +53,7 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="hover:text-gold-solid/90 hover:bg-white/5 text-foreground lg:hidden"
+          className="hover:text-gold-solid/90 hover:bg-white/5 text-foreground"
           aria-label="Abrir menu de navegacion"
         >
           <Menu className="h-5 w-5" aria-hidden="true" />

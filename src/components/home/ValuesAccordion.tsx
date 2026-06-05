@@ -58,7 +58,7 @@ export function ValuesAccordion() {
             </span>
           </div>
           <h2 className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-light text-white leading-[1.05] tracking-[-0.03em]">
-            Lo que <span className="metallic-gold-static">sí cumplimos</span>.
+            Nuestro <span className="metallic-gold-static">compromiso</span>.
           </h2>
         </div>
 
@@ -83,13 +83,13 @@ export function ValuesAccordion() {
                   onClick={() => setActiveIdx(activeIdx === i ? null : i)}
                   aria-expanded={isFocused}
                   className="group w-full text-left py-10 sm:py-14 lg:py-16 flex items-start gap-6 sm:gap-10 transition-opacity duration-700"
-                  style={{ opacity: isDimmed ? 0.25 : isFocused ? 1 : 0.4 }}
+                  style={{ opacity: isDimmed ? 0.35 : isFocused ? 1 : 0.55 }}
                 >
                   {/* Number */}
                   <span
                     className={cn(
                       "shrink-0 text-[clamp(1.5rem,2.5vw,2.25rem)] font-light tabular-nums leading-none mt-2 transition-colors duration-700",
-                      isFocused ? "metallic-gold-static" : "text-white/30",
+                      isFocused ? "metallic-gold-static" : "text-white/55",
                     )}
                     aria-hidden="true"
                   >
@@ -101,7 +101,7 @@ export function ValuesAccordion() {
                     <h3
                       className={cn(
                         "text-[clamp(1.5rem,2.8vw,2.5rem)] font-light leading-[1.1] tracking-[-0.02em] transition-colors duration-700",
-                        isFocused ? "text-white" : "text-white/80",
+                        isFocused ? "text-white" : "text-white/90",
                       )}
                     >
                       {v.title}
@@ -117,7 +117,7 @@ export function ValuesAccordion() {
                           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                           className="overflow-hidden"
                         >
-                          <p className="text-[clamp(0.9375rem,1.15vw,1.0625rem)] text-white/65 leading-[1.75] font-light max-w-3xl pt-6">
+                          <p className="text-[clamp(0.9375rem,1.15vw,1.0625rem)] text-white/90 leading-[1.75] font-light max-w-3xl pt-6">
                             {v.body}
                           </p>
                         </motion.div>
@@ -130,8 +130,8 @@ export function ValuesAccordion() {
                     className={cn(
                       "shrink-0 mt-2 w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-500",
                       isFocused
-                        ? "border-[var(--color-accent)] text-[var(--color-accent)] rotate-45"
-                        : "border-white/15 text-white/50",
+                        ? "border-[#D4AF37] text-[#D4AF37] rotate-45"
+                        : "border-white/30 text-white/70",
                     )}
                     aria-hidden="true"
                   >
