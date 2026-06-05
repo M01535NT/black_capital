@@ -15,8 +15,8 @@ const SECTION_HEADING =
     "font-display text-xs font-bold uppercase tracking-wide-display text-foreground/50";
 
 /**
- * The "Características" section. Groups metric cards (terrain, construction,
- * custom attributes, type, published date) in a responsive flex layout.
+ * The "Características" section with premium styling.
+ * Features hairline heading, grid layout with featured variants, and tags for custom attributes.
  */
 export function PropertyMetrics({
     m2Terrain,
@@ -26,44 +26,60 @@ export function PropertyMetrics({
     createdAt,
 }: PropertyMetricsProps) {
     return (
-        <section className="space-y-4">
-            <h2 className={SECTION_HEADING}>Características</h2>
-            <div className="flex flex-wrap gap-3">
-                {m2Terrain ? (
+        <section className="space-y-6">
+            {/* Heading con hairline */}
+            <div className="flex items-center gap-3">
+                <span className="h-px w-10 bg-[var(--color-accent)]/60" />
+                <h2 className={SECTION_HEADING}>Características Principales</h2>
+            </div>
+            
+            {/* Grid de métricas principales */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {m2Terrain && (
                     <MetricCard
-                        icon={<Ruler className="size-4 text-gold-500" />}
+                        icon={<Ruler className="size-4" />}
                         label="Terreno"
                         value={formatArea(m2Terrain, "")}
+                        variant="featured"
                     />
-                ) : null}
-                {m2Construction ? (
+                )}
+                {m2Construction && (
                     <MetricCard
-                        icon={<Building2 className="size-4 text-gold-500" />}
+                        icon={<Building2 className="size-4" />}
                         label="Construcción"
                         value={formatArea(m2Construction, "")}
+                        variant="featured"
                     />
-                ) : null}
-                {Object.entries(customAttributes).map(([key, value]) => (
-                    <MetricCard
-                        key={key}
-                        icon={getAttributeIcon(key) || <ShieldCheck className="size-4 text-gold-500" />}
-                        label={key.charAt(0).toUpperCase() + key.slice(1)}
-                        value={value}
-                    />
-                ))}
+                )}
                 <MetricCard
-                    icon={<Calendar className="size-4 text-gold-500" />}
+                    icon={<Calendar className="size-4" />}
                     label="Publicado"
                     value={formatShortDate(createdAt)}
                 />
-                {propertyType ? (
+                {propertyType && (
                     <MetricCard
-                        icon={<ShieldCheck className="size-4 text-gold-500" />}
+                        icon={<ShieldCheck className="size-4" />}
                         label="Tipo"
                         value={propertyType}
                     />
-                ) : null}
+                )}
             </div>
+            
+            {/* Custom Attributes como tags */}
+            {Object.entries(customAttributes).length > 0 && (
+                <div className="pt-6 border-t border-foreground/10">
+                    <div className="flex flex-wrap gap-2">
+                        {Object.entries(customAttributes).map(([key, value]) => (
+                            <span 
+                                key={key} 
+                                className="px-3 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-xs font-semibold uppercase tracking-wider text-gold-500"
+                            >
+                                {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            )}
         </section>
     );
 }

@@ -1,61 +1,57 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+```
+# Dependencies
+node_modules/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Build outputs
+dist/
+build/
+.next/
+out/
 
-# testing
-/coverage
+# Environment variables
+.env
+.env.local
+.env.*
 
-# next.js
-/.next/
-/out/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-selfcheck.json
+.eggs/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
 
-# production
-/build
+# Logs
+*.log
 
-# misc
+# OS generated files
 .DS_Store
-*.pem
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# env files (can opt-in for committing if needed)
-.env*
-!.env.example
-
-# vercel
-.vercel
-
-# test artifacts
-playwright-report/
-test-results/
-playwright-audit/
-
-# local planning artifacts (per-agent working memory, not project source)
-/.hermes/
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# misc build artifacts
-ts_errors.txt
-
-.vercel
-
-# Supabase CLI temp files
-/supabase/.temp/
-
-# All assets in /public are committed directly. WebP images were converted
-# from PNG originals for performance and are tracked in git.
+# Temporary files
+*.tmp
+*.temp
+*~
+```
