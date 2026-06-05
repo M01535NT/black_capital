@@ -9,6 +9,12 @@ import { baseLinks, DESKTOP_DROPDOWNS, navLinkBase, navLinkActive } from "./cons
 import { NavDropdown } from "./desktop-nav";
 import { MobileDrawer } from "./mobile-drawer";
 
+/**
+ * Navbar minimalista flotante.
+ *  - Inicial: transparente, sin borde, solo backdrop-blur sutil.
+ *  - Al hacer scroll (>80px): backdrop-blur-md + border-bottom 1px gold 20%.
+ *  - Logo a la izquierda, links al centro con underline animado, CTA a la derecha.
+ */
 export function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -20,7 +26,7 @@ export function Header() {
   };
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => setScrolled(window.scrollY > 80);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -32,50 +38,54 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed top-4 left-4 right-4 max-w-7xl mx-auto z-50",
-        "px-4 md:px-6 py-2.5 flex items-center justify-between gap-2",
-        "bg-black/70 backdrop-blur-xl border border-white/10 rounded-full",
-        "transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]",
-        scrolled &&
-          "bg-black/90 border-gold-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.6)] backdrop-saturate-150",
+        // Floating bar full-width, top pegado a 0
+        "fixed top-0 inset-x-0 z-50",
+        "transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        // Initial: transparente, sin borde
+        !scrolled && "bg-transparent",
+        // Scrolled: blur + border inferior gold 20% (1px)
+        scrolled && "bg-[#050505]/70 backdrop-blur-md border-b border-[var(--color-accent)]/20",
       )}
       role="banner"
     >
-      <Logo href="/" variant="mark" size="md" tone="gold" className="flex-shrink-0" />
+      <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 h-16 lg:h-20 flex items-center justify-between gap-4">
+        <Logo href="/" variant="mark" size="sm" tone="gold" className="flex-shrink-0" />
 
-      {/* Desktop Navigation */}
-      <nav aria-label="Menu principal" className="hidden lg:flex items-center gap-6">
-        {baseLinks.map((link) => (
+        {/* Desktop nav (center) */}
+        <nav aria-label="Menu principal" className="hidden lg:flex items-center gap-8">
+          {baseLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className={cn(navLinkBase, isActive(link.href) && navLinkActive)}
+            >
+              {link.name}
+            </Link>
+          ))}
+
+          {DESKTOP_DROPDOWNS.map((def) => (
+            <NavDropdown
+              key={def.key}
+              def={def}
+              isOpen={openDropdown === def.key}
+              onOpen={() => setOpenDropdown(def.key)}
+              onClose={() => setOpenDropdown((curr) => (curr === def.key ? null : curr))}
+            />
+          ))}
+        </nav>
+
+        {/* Right: CTA + mobile trigger */}
+        <div className="flex items-center gap-2 flex-shrink-0">
           <Link
-            key={link.name}
-            href={link.href}
-            className={cn(navLinkBase, isActive(link.href) && navLinkActive)}
+            href="/contacto"
+            className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 border border-[var(--color-accent)]/40 text-white text-[11px] font-semibold uppercase tracking-[0.16em] rounded-full hover:border-[var(--color-accent)] hover:text-[var(--color-accent-light)] transition-all duration-300"
           >
-            {link.name}
+            <span>Asesoría</span>
+            <span aria-hidden="true" className="text-[var(--color-accent)]">→</span>
           </Link>
-        ))}
 
-        {DESKTOP_DROPDOWNS.map((def) => (
-          <NavDropdown
-            key={def.key}
-            def={def}
-            isOpen={openDropdown === def.key}
-            onOpen={() => setOpenDropdown(def.key)}
-            onClose={() => setOpenDropdown((curr) => (curr === def.key ? null : curr))}
-          />
-        ))}
-      </nav>
-
-      {/* Right: Contacto CTA + Hamburger */}
-      <div className="flex items-center gap-2 flex-shrink-0">
-        <Link
-          href="/contacto"
-          className="hidden lg:inline-flex items-center gap-2 px-5 py-2 border border-gold-500/40 rounded-2xl text-gold-solid text-xs font-semibold uppercase tracking-wider hover:bg-gold-solid hover:text-black transition-all duration-300"
-        >
-          Contacto
-        </Link>
-
-        <MobileDrawer pathname={pathname} />
+          <MobileDrawer pathname={pathname} />
+        </div>
       </div>
     </header>
   );

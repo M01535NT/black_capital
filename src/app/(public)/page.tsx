@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/Hero";
-import { BrandsGrid } from "@/components/home/BrandsGrid";
-import { ComoTrabajamos } from "@/components/home/ComoTrabajamos";
-import { FeaturedInventory } from "@/components/home/FeaturedInventory";
-import { SocialProof } from "@/components/home/SocialProof";
-import { LoQueDicen } from "@/components/home/LoQueDicen";
+import { InvestmentTabs } from "@/components/home/InvestmentTabs";
+import { MethodologyTimeline } from "@/components/home/MethodologyTimeline";
+import { InventoryShowcase } from "@/components/home/InventoryShowcase";
+import { TrackRecord } from "@/components/home/TrackRecord";
+import { ValuesAccordion } from "@/components/home/ValuesAccordion";
 import { JsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
@@ -60,18 +60,16 @@ const BREADCRUMB_SCHEMA = {
 
 export default function HomePage() {
   return (
-    <>
-      <main className="scroll-snap-container">
-        <Hero />
-        <BrandsGrid />
-        <ComoTrabajamos />
-        <FeaturedInventory />
-        <SocialProof />
-        <LoQueDicen />
-        <JsonLd id="ld-org" data={ORGANIZATION_SCHEMA} />
-        <JsonLd id="ld-web" data={WEBSITE_SCHEMA} />
-        <JsonLd id="ld-breadcrumb" data={BREADCRUMB_SCHEMA} />
-      </main>
-    </>
+    <main className="scroll-snap-container">
+      <Hero />
+      <InvestmentTabs />
+      <MethodologyTimeline />
+      <InventoryShowcase />
+      <TrackRecord />
+      <ValuesAccordion />
+      <JsonLd id="ld-org" data={ORGANIZATION_SCHEMA} />
+      <JsonLd id="ld-web" data={WEBSITE_SCHEMA} />
+      <JsonLd id="ld-breadcrumb" data={BREADCRUMB_SCHEMA} />
+    </main>
   );
 }

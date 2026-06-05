@@ -1,21 +1,21 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 
-const WORDS = ["Patrimonio", "Futuro", "Capital"];
+const CITIES = [
+  "Tijuana",
+  "Baja California",
+  "México",
+];
+
+// Duplicamos la lista para el efecto de loop infinito del marquee
+const MARQUEE = [...CITIES, ...CITIES, ...CITIES];
 
 export function Hero() {
-  const [index, setIndex] = useState(0);
   const shouldReduceMotion = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (shouldReduceMotion) return;
-    const id = setInterval(() => setIndex((p) => (p + 1) % WORDS.length), 4000);
-    return () => clearInterval(id);
-  }, [shouldReduceMotion]);
 
   useEffect(() => {
     const v = videoRef.current;
@@ -24,8 +24,14 @@ export function Hero() {
   }, [shouldReduceMotion]);
 
   return (
-    <section className="scroll-snap-section relative min-h-[100dvh] flex items-center bg-[#0A0A0A] overflow-hidden" aria-label="Inicio">
-      {/* ── Video Background ── */}
+    <section
+      className="scroll-snap-section relative min-h-[100dvh] flex items-center overflow-hidden bg-[#050505]"
+      aria-label="Inicio"
+    >
+      {/* ── Top hairline (gold accent, 1px) ── */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent z-30" />
+
+      {/* ── Background ambience (full-bleed, very subtle) ── */}
       <div className="absolute inset-0 z-0">
         <video
           ref={videoRef}
@@ -35,115 +41,188 @@ export function Hero() {
           playsInline
           preload="auto"
           poster="/hero-poster.svg"
-          className="absolute inset-0 w-full h-full object-cover opacity-[0.20]"
-          style={{ filter: "brightness(0.8) contrast(1.05)" }}
+          className="absolute inset-0 w-full h-full object-cover opacity-[0.10]"
+          style={{ filter: "brightness(0.6) contrast(1.15) saturate(0.7)" }}
         >
           <source src="/hero.webm" type="video/webm" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/90 via-[#0A0A0A]/65 to-[#0A0A0A]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#050505] via-[#050505]/90 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050505]" />
+        <div className="grain-overlay" />
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 sm:py-32">
-        <div className="max-w-3xl">
-          <motion.div
-            initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="flex items-center gap-3 mb-8 sm:mb-10"
-          >
-            <span className="h-px w-10 bg-white/20" />
-            <span className="text-[11px] tracking-[0.18em] uppercase text-white/70 font-semibold">
-              Inversión Inmobiliaria &middot; México
-            </span>
-          </motion.div>
+      {/* ── Main content grid (12-col asymmetric) ── */}
+      <div className="relative z-10 w-full max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 py-24 sm:py-28 lg:py-32">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center min-h-[68vh]">
+          {/* ═══════ LEFT: Title block (cols 1-7) ═══════ */}
+          <div className="lg:col-span-7 relative">
+            {/* Vertical hairline (desktop only) */}
+            <div className="hidden lg:block absolute -left-8 top-2 bottom-2 w-px bg-gradient-to-b from-transparent via-[var(--color-accent)]/35 to-transparent" />
 
-          <motion.h1
-            initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
-            className="text-[clamp(2.75rem,6.5vw,5rem)] font-extrabold leading-[1.06] tracking-[-0.025em] text-white mb-6 sm:mb-8"
-          >
-            Invertir{" "}
-            <span className="font-light">con</span>
-            <br />
-            <span className="inline-block min-w-[1em]">
-              {shouldReduceMotion ? (
-                <span className="metallic-gold-static">{WORDS[index]}</span>
-              ) : (
-                <AnimatePresence mode="wait">
+            {/* Eyebrow tag */}
+            <motion.div
+              initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="flex items-center gap-3 mb-8 sm:mb-10"
+            >
+              <span className="h-px w-10 bg-[var(--color-accent)]/60" />
+              <span className="text-[11px] tracking-[0.22em] uppercase text-white/75 font-semibold">
+                Inversión inmobiliaria · México
+              </span>
+            </motion.div>
+
+            {/* Massive title */}
+            <h1 className="text-[clamp(3rem,8.5vw,7rem)] font-light leading-[0.98] tracking-[-0.04em] text-white mb-10 sm:mb-12">
+              <motion.span
+                initial={shouldReduceMotion ? {} : { opacity: 0, y: 32, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="block"
+              >
+                Invertir
+              </motion.span>
+              <motion.span
+                initial={shouldReduceMotion ? {} : { opacity: 0, y: 32, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="block"
+              >
+                con{" "}
+                <span className="metallic-gold-static gold-glow relative inline-block">
+                  Patrimonio
                   <motion.span
-                    key={WORDS[index]}
-                    initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, y: -30, filter: "blur(4px)" }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="metallic-gold"
-                  >
-                    {WORDS[index]}
-                  </motion.span>
-                </AnimatePresence>
-              )}
-            </span>
-          </motion.h1>
+                    aria-hidden="true"
+                    initial={shouldReduceMotion ? { scaleX: 0 } : { scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ transformOrigin: "left" }}
+                    className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-transparent"
+                  />
+                </span>
+              </motion.span>
+            </h1>
 
-          <motion.p
-            initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="text-[clamp(0.9375rem,1.5vw,1.125rem)] text-white/80 leading-relaxed max-w-lg mb-10 sm:mb-12 font-light"
-          >
-            Inversión inmobiliaria sin barreras. Presencia que respalda, experiencia que construye.
-            Para quienes saben que su patrimonio merece un lugar.
-          </motion.p>
+            {/* Subtitle */}
+            <motion.p
+              initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[clamp(1.0625rem,1.4vw,1.25rem)] text-white/75 leading-[1.95] max-w-xl mb-12 sm:mb-14 font-light tracking-[0.005em]"
+            >
+              Estructuramos, curamos y gestionamos activos residenciales, comerciales e industriales para family offices e inversores institucionales. Sin barreras, con presencia que respalda.
+            </motion.p>
 
+            {/* CTAs */}
+            <motion.div
+              initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4"
+            >
+              <Link
+                href="/inventario"
+                className="brushed-gold group inline-flex items-center justify-center gap-2.5 px-9 py-4 text-sm font-bold tracking-[0.06em] rounded-full hover:scale-[1.015] transition-all duration-300"
+              >
+                <span>Explorar Propiedades</span>
+                <span aria-hidden="true" className="text-base leading-none transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </Link>
+              <Link
+                href="/contacto"
+                className="btn-ghost-gold inline-flex items-center justify-center gap-2.5 px-9 py-4 bg-white/[0.04] border border-white/35 text-white text-sm font-semibold tracking-[0.06em] rounded-full transition-colors duration-300 hover:border-[#D4AF37] hover:bg-white/[0.06]"
+              >
+                <span>Hablar con un Asesor</span>
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* ═══════ RIGHT: Visual (cols 8-12) ═══════ */}
           <motion.div
-            initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4"
+            initial={shouldReduceMotion ? {} : { opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5 relative aspect-[4/5] lg:aspect-[3/4] max-h-[80vh] order-first lg:order-last"
           >
-            <Link
-              href="/inventario"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 brushed-gold text-sm font-bold tracking-wide rounded-2xl hover:brightness-105 hover:scale-[1.02] transition-all duration-300"
-            >
-              Explorar Propiedades
-              <span className="text-base leading-none">&rarr;</span>
-            </Link>
-            <Link
-              href="/contacto"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-white/15 text-white text-sm font-semibold tracking-wide rounded-2xl hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent-light)] hover:scale-[1.02] transition-all duration-300"
-            >
-              Hablar con un Asesor
-            </Link>
-          </motion.div>
+            <div className="relative w-full h-full overflow-hidden">
+              {/* The visual: video with poster fallback */}
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                poster="/hero-poster.svg"
+                className="absolute inset-0 w-full h-full object-cover"
+              >
+                <source src="/hero.webm" type="video/webm" />
+              </video>
 
-          <motion.p
-            initial={shouldReduceMotion ? {} : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="mt-14 sm:mt-18 text-[11px] tracking-[0.12em] uppercase text-white/60 font-semibold"
-          >
-            Más de 12 años &middot; CDMX &middot; Monterrey &middot; Guadalajara &middot; Tijuana
-          </motion.p>
+              {/* Layered dark overlays for depth */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/25 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#050505]/70" />
+
+              {/* Subtle grain */}
+              <div className="grain-overlay" />
+
+              {/* Gold micro-borders (1px) */}
+              <div className="absolute inset-0 border border-[var(--color-accent)]/15" />
+              <div className="absolute top-0 right-0 w-14 h-14 border-t border-r border-[var(--color-accent)]/50" />
+              <div className="absolute bottom-0 left-0 w-14 h-14 border-b border-l border-[var(--color-accent)]/50" />
+            </div>
+
+            {/* Floating micro-label (live indicator) */}
+            <motion.div
+              initial={shouldReduceMotion ? {} : { opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.2 }}
+              className="absolute -bottom-5 -left-5 sm:-bottom-6 sm:-left-6 bg-[#050505]/95 border border-white/10 px-5 py-3 backdrop-blur-md"
+            >
+              <div className="flex items-center gap-3">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--color-accent)] opacity-60 animate-ping" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
+                </span>
+                <span className="text-[10px] tracking-[0.22em] uppercase text-white/80 font-semibold">
+                  Live · Mercado
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Vertical "01" stamp (desktop only) */}
+            <motion.div
+              initial={shouldReduceMotion ? {} : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.2, delay: 1.4 }}
+              className="hidden lg:flex absolute -right-10 top-1/2 -translate-y-1/2 flex-col items-center gap-3"
+              aria-hidden="true"
+            >
+              <div className="w-px h-12 bg-gradient-to-b from-transparent to-[var(--color-accent)]/50" />
+              <span className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-semibold [writing-mode:vertical-rl] rotate-180">
+                Black · 01
+              </span>
+              <div className="w-px h-12 bg-gradient-to-t from-transparent to-[var(--color-accent)]/50" />
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 
-      <div className="absolute bottom-0 inset-x-0 border-t border-white/[0.04]">
-        <div className="flex overflow-hidden whitespace-nowrap py-3.5">
-          <div className="animate-marquee inline-flex gap-10 sm:gap-14">
-            {["Presencia", "Confianza", "Respaldo", "Experiencia", "Resultados"].map((v, i) => (
-              <span key={i} className="text-[10px] tracking-[0.18em] uppercase text-white/50 font-semibold whitespace-nowrap">
-                {v}
+      {/* ═══════ BOTTOM: City marquee (slow, gold diamonds) ═══════ */}
+      <div className="absolute bottom-0 inset-x-0 z-20">
+        <div className="gold-divider-solid" />
+        <div
+          className="flex overflow-hidden whitespace-nowrap py-5 bg-[#050505]/85 backdrop-blur-md"
+          role="presentation"
+          aria-hidden="true"
+        >
+          {MARQUEE.map((city, i) => (
+            <span key={`${city}-${i}`} className="inline-flex items-center shrink-0">
+              <span className="px-6 sm:px-8 text-[11px] tracking-[0.24em] uppercase text-white/65 font-semibold whitespace-nowrap">
+                {city}
               </span>
-            ))}
-          </div>
-          <div className="animate-marquee inline-flex gap-10 sm:gap-14">
-            {["Presencia", "Confianza", "Respaldo", "Experiencia", "Resultados"].map((v, i) => (
-              <span key={i} className="text-[10px] tracking-[0.18em] uppercase text-white/50 font-semibold whitespace-nowrap">
-                {v}
+              <span className="text-[var(--color-accent)] text-[8px] select-none" aria-hidden="true">
+                ◆
               </span>
-            ))}
-          </div>
+            </span>
+          ))}
         </div>
       </div>
     </section>

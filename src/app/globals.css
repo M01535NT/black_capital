@@ -5,29 +5,34 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-background: #0A0A0A;
+  --color-background: #050505;
   --color-foreground: #FFFFFF;
 
-  /* ── Premium Brushed Gold ──
-   * CFB155 = oro real, no amarillo plástico.
-   * Tiene calidez, profundidad y highlight crema.
-   * Inspirado en oro de relojería suiza.
+  /* ── SINGLE GOLD: champagne metálico (135deg) ──
+   * Regla estricta: UN solo oro en toda la página.
+   *   Base:    #D4AF37  (gold clásico)
+   *   End:     #C5A059  (champagne, final del gradiente)
+   * Todo lo demás (light, dark, deep, mid, soft, brushed) apunta
+   * al MISMO color para que no haya variaciones visibles.
    */
-  --color-accent: #CFB155;
-  --color-accent-light: #DCC97A;
-  --color-accent-dark: #B8963A;
+  --color-accent: #D4AF37;
+  --color-accent-end: #C5A059;
 
-  /* Compatibility aliases */
-  --color-gold-solid: var(--color-accent);
-  --color-gold-300: var(--color-accent-light);
-  --color-gold-400: var(--color-accent-light);
-  --color-gold-500: var(--color-accent);
-  --color-gold-600: var(--color-accent-dark);
-  --color-gold-700: #8B7230;
-  --color-gold: var(--color-accent);
-  --color-gold-rich: var(--color-accent-light);
-  --color-gold-mid: var(--color-accent);
-  --color-gold-soft: var(--color-accent-dark);
+  /* Compatibility aliases — todos al mismo color, sin variaciones */
+  --color-accent-light: #D4AF37;
+  --color-accent-dark: #D4AF37;
+  --color-accent-deep: #D4AF37;
+  --color-accent-mid: #D4AF37;
+  --color-gold-solid: #D4AF37;
+  --color-gold-300: #D4AF37;
+  --color-gold-400: #D4AF37;
+  --color-gold-500: #D4AF37;
+  --color-gold-600: #D4AF37;
+  --color-gold-700: #D4AF37;
+  --color-gold: #D4AF37;
+  --color-gold-rich: #D4AF37;
+  --color-gold-mid: #D4AF37;
+  --color-gold-soft: #D4AF37;
 
   --color-steel-400: oklch(0.55 0.03 250);
   --color-steel-500: oklch(0.45 0.02 250);
@@ -79,7 +84,7 @@ html {
 }
 
 body {
-  background-color: #0A0A0A;
+  background-color: #050505;
   color: #FFFFFF;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -96,41 +101,48 @@ body {
     animation: marquee 20s linear infinite;
   }
 
-  /* ── Premium Brushed Metallic Gold Text ── */
+  /* ── Single Gold gradient — text & bg ──
+   * UN solo gradiente (135deg, D4AF37 → C5A059) para TODO:
+   * texto, botones, líneas, iconos. Sin variaciones. */
+  .metallic-gold,
+  .metallic-gold-static,
+  .gold-text {
+    background: linear-gradient(135deg, #D4AF37 0%, #C5A059 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  /* Animación sutil de brillo (mismo gradiente, solo se desplaza) */
   .metallic-gold {
-    background: linear-gradient(100deg,
-        #8B7230 0%, #A88A35 18%, #B8963A 32%,
-        #CFB155 48%, #C4A84A 52%, #CFB155 56%,
-        #B8963A 72%, #A88A35 88%, #8B7230 100%);
-    background-size: 300% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: metallic-shine 12s linear infinite;
+    background-size: 200% auto;
+    animation: gold-shimmer-text 8s linear infinite;
   }
-  @keyframes metallic-shine {
-    from { background-position: 300% center; }
-    to { background-position: -300% center; }
+  @keyframes gold-shimmer-text {
+    from { background-position: 200% center; }
+    to { background-position: -200% center; }
   }
 
-  .metallic-gold-static {
-    background: linear-gradient(100deg,
-        #8B7230 0%, #B8963A 30%, #CFB155 48%,
-        #C4A84A 52%, #CFB155 60%, #B8963A 80%, #8B7230 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  /* ── Brushed Gold CTA ── */
-  .brushed-gold {
-    background: linear-gradient(180deg,
-        #8B7230 0%, #A88A35 25%, #B8963A 42%,
-        #CFB155 49%, #C4A84A 51%, #CFB155 53%,
-        #B8963A 65%, #A88A35 82%, #8B7230 100%);
-    color: #0A0A0A;
+  /* ── Brushed Champagne Gold CTA (filled button) ──
+   * Mismo gradiente 135deg, sin multi-stops. */
+  .brushed-gold,
+  .gold-gradient {
+    background: linear-gradient(135deg, #D4AF37 0%, #C5A059 100%);
+    color: #050505;
     position: relative;
     overflow: hidden;
+    transition: filter 0.4s ease;
+  }
+  .brushed-gold:hover,
+  .gold-gradient:hover {
+    filter: brightness(1.08);
+  }
+
+  /* ── Gold glow (text-shadow ambient para palabras clave) ── */
+  .gold-glow {
+    text-shadow:
+      0 0 30px rgba(212, 175, 55, 0.25),
+      0 0 60px rgba(212, 175, 55, 0.12);
   }
 
   /* ── Scroll Snap ── */
@@ -198,13 +210,65 @@ body {
   .animate-gold-shimmer {
     background: linear-gradient(110deg,
         transparent 0%,
-        rgba(207,177,85,0.08) 40%,
-        rgba(207,177,85,0.12) 50%,
-        rgba(207,177,85,0.08) 60%,
+        rgba(212, 175, 55, 0.08) 40%,
+        rgba(197, 160, 89, 0.12) 50%,
+        rgba(212, 175, 55, 0.08) 60%,
         transparent 100%);
     background-size: 200% 100%;
     animation: gold-shimmer 3.5s ease-in-out infinite;
   }
+
+  /* ── Premium film grain (Hero visual, overlays) ── */
+  .grain-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* ── Hairline gold divider (1px) — single color, varying opacity ── */
+  .gold-divider {
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(212, 175, 55, 0.5) 50%,
+        transparent 100%);
+  }
+  .gold-divider-solid {
+    height: 1px;
+    background-color: #D4AF37;
+    opacity: 0.25;
+  }
+  .gold-vline {
+    width: 1px;
+    align-self: stretch;
+    background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(212, 175, 55, 0.4) 50%,
+        transparent 100%);
+  }
+
+  /* ── Champagne shimmer button (hover fill) ── */
+  .btn-ghost-gold {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .btn-ghost-gold > span { position: relative; z-index: 1; transition: color 0.4s ease; }
+  .btn-ghost-gold::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #D4AF37 0%, #C5A059 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+  }
+  .btn-ghost-gold:hover::before { transform: scaleX(1); }
+  .btn-ghost-gold:hover > span { color: #050505; }
 
   /* ── Floating orbs (brand value sections) ── */
   @keyframes float {
@@ -220,6 +284,17 @@ body {
   }
   .animate-float-slow {
     animation: float-slow 6s ease-in-out infinite;
+  }
+
+  /* ── Reveal-up utility (framer-motion fallback) ── */
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  .reveal-up.in-view {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
