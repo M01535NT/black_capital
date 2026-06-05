@@ -89,7 +89,7 @@ export default function HerramientasPage() {
                                     <h3 className="text-display-4 font-display font-semibold tracking-wide uppercase text-xl text-foreground mb-4">
                                         {tool.title}
                                     </h3>
-                                    <p className="text-foreground/45 text-sm leading-relaxed flex-1">
+                                    <p className="text-foreground/50 text-sm leading-relaxed flex-1">
                                         {tool.description}
                                     </p>
                                     {tool.href && (

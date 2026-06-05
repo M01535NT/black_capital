@@ -94,7 +94,7 @@ export default function ContactoPage() {
                                     </h3>
                                     <div className="space-y-1 mb-6 flex-1">
                                         {card.lines.map((line, i) => (
-                                            <p key={i} className="text-foreground/45 text-sm">
+                                            <p key={i} className="text-foreground/50 text-sm">
                                                 {line}
                                             </p>
                                         ))}

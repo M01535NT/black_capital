@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import imageCompression from "browser-image-compression";
@@ -44,10 +44,10 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [pdfEntries, setPdfEntries] = useState<PdfEntry[]>([]);
 
-    const form = useForm({
-        // zodResolver + useForm generics have a known type mismatch between zod infer and RHF Resolver type.
-        // Using type assertion to avoid false TS errors while validation works correctly at runtime.
-        resolver: zodResolver(propertySchema) as any,
+    const form = useForm<PropertyFormValues>({
+        // Resolver<PropertyFormValues> keeps the RHF/zod inference in sync
+        // without the `as any` escape hatch.
+        resolver: zodResolver(propertySchema) as Resolver<PropertyFormValues>,
         defaultValues: {
             title: "",
             property_use: "Residencial",

@@ -23,7 +23,7 @@ function StaggeredWord({ word, className }: { word: string; className?: string }
             {letters.map((letter, i) => (
                 <motion.span
                     key={`${word}-${i}`}
-                    className="inline-block metallic-gold"
+                    className="inline-block metallic-gold text-glow-gold"
                     variants={{
                         hidden: {
                             opacity: 0,
@@ -114,7 +114,10 @@ export function Hero() {
     const showCursorGlow = !shouldReduceMotion && !isCoarsePointer;
 
     return (
-        <section className="relative w-full min-h-[95vh] flex flex-col items-center justify-center overflow-hidden">
+        <section
+            className="relative w-full min-h-[95vh] flex flex-col items-center justify-center overflow-hidden"
+            aria-label="Hero de Black Corporativo"
+        >
             {/* ── Video Background ──
                 poster: shows immediately so first paint is not the black void
                 preload="metadata": only fetches the metadata first, full bytes
@@ -132,16 +135,52 @@ export function Hero() {
                 <source src="/hero.webm" type="video/webm" />
             </video>
 
-            {/* ── Dark Overlay ── */}
-            <div className="absolute inset-0 bg-black/60 z-[-1]" />
+            {/* ── Layered Dark Overlay ──
+                gradient is more refined than a flat black/60: the top fades
+                to almost transparent (lets the gold poster glow through),
+                the middle anchors the text, the bottom prepares the
+                transition into the marquee. */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/55 to-black/80 z-[-1]" />
 
-            {/* ── Cursor Follow Glow (desktop only) ── */}
+            {/* ── Editorial corner markers (always visible) ──
+                Small gold "BC" mark in the top-left, mirrored with the
+                "01 / Hero" counter on the top-right. A subtle gold line
+                on the left edge gives the section a "framed" feel. */}
+            <div
+                aria-hidden="true"
+                className="absolute top-6 left-6 md:top-8 md:left-10 z-20 flex items-center gap-3"
+            >
+                <span className="w-8 h-px bg-gradient-to-r from-gold-500 to-gold-700" />
+                <span className="font-display text-caption font-bold uppercase tracking-mega text-foreground/60">
+                    BC
+                </span>
+            </div>
+            <div
+                aria-hidden="true"
+                className="absolute top-6 right-6 md:top-8 md:right-10 z-20"
+            >
+                <span className="font-display text-caption font-bold uppercase tracking-mega text-foreground/60">
+                    01 — Hero
+                </span>
+            </div>
+            <div
+                aria-hidden="true"
+                className="absolute top-0 left-6 md:left-10 bottom-32 w-px bg-gradient-to-b from-gold-500/40 via-gold-500/10 to-transparent hidden md:block"
+            />
+            <div
+                aria-hidden="true"
+                className="absolute top-0 right-6 md:right-10 bottom-32 w-px bg-gradient-to-b from-gold-500/40 via-gold-500/10 to-transparent hidden md:block"
+            />
+
+            {/* ── Cursor Follow Glow (desktop only) ──
+                mix-blend-screen makes the gold feel like real light
+                bleeding through the dark gradient instead of a flat blob. */}
             {showCursorGlow && (
                 <motion.div
-                    className="absolute w-[600px] h-[600px] rounded-full bg-gold-500/10 blur-[120px] pointer-events-none z-0"
+                    className="absolute w-[480px] h-[480px] rounded-full bg-gold-500/10 blur-[120px] pointer-events-none z-0 mix-blend-screen"
                     animate={{
-                        x: mousePos.x - 300,
-                        y: mousePos.y - 300,
+                        x: mousePos.x - 240,
+                        y: mousePos.y - 240,
                     }}
                     transition={{ type: "spring", damping: 30, stiffness: 150 }}
                 />
@@ -165,7 +204,7 @@ export function Hero() {
                             style={{ perspective: "600px" }}
                         >
                             {shouldReduceMotion ? (
-                                <span className="metallic-gold">
+                                <span className="metallic-gold drop-shadow-[0_0_24px_rgba(212,175,55,0.18)]">
                                     {words[index]}
                                 </span>
                             ) : (
@@ -207,18 +246,32 @@ export function Hero() {
                 </div>
             </div>
 
-            {/* ── Scroll Down Indicator ── */}
+            {/* ── Scroll Down Indicator ──
+                Vertical-rail style: a thin gold line, a small caption,
+                and a chevron that floats up and down. */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2, duration: 1 }}
-                className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+                className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3"
             >
                 <span className="text-caption uppercase tracking-eyebrow text-foreground/50 font-medium">
                     Descubre más
                 </span>
+                <div className="relative w-px h-10 bg-foreground/15 overflow-hidden">
+                    <motion.div
+                        aria-hidden="true"
+                        className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-transparent to-gold-500"
+                        animate={{ y: ["-100%", "200%"] }}
+                        transition={{
+                            duration: 1.8,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                        }}
+                    />
+                </div>
                 <motion.div
-                    animate={{ y: [0, 8, 0] }}
+                    animate={{ y: [0, 4, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
                     <ChevronDown

@@ -7,6 +7,10 @@ import { useInView, useReducedMotion } from "framer-motion";
  * Animated counter that scrolls from `from` to `to` once it scrolls
  * into view. Respects `prefers-reduced-motion`. Falls back to `to`
  * after 3s if the IntersectionObserver never fires.
+ *
+ * SSR renders the final value (`to`) so the first paint is honest
+ * with the real number; the count-up animation only runs after the
+ * component mounts on the client.
  */
 export function Counter({
     from = 0,
@@ -20,17 +24,20 @@ export function Counter({
     suffix?: string;
 }) {
     const shouldReduceMotion = useReducedMotion();
-    const [count, setCount] = useState(shouldReduceMotion || to === 0 ? to : from);
+    // Start at `to` to avoid a flash of "0" during SSR / first paint.
+    // The animation will reset to `from` and count up once we are
+    // hydrated and in view.
+    const [count, setCount] = useState(to);
     const ref = useRef<HTMLSpanElement>(null);
     const isInView = useInView(ref, { once: true, margin: "-100px" });
     const hasAnimated = useRef(false);
 
     useEffect(() => {
         if (hasAnimated.current) return;
-        if (to === 0) {
-            // Skip animation for 0 — no point animating to nothing.
+        if (to === 0 || to === from) {
+            // No animation needed.
             hasAnimated.current = true;
-            setCount(0);
+            setCount(to);
             return;
         }
         if (shouldReduceMotion) {
@@ -38,6 +45,8 @@ export function Counter({
             setCount(to);
             return;
         }
+        // Reset to `from` so the animation is visible after hydration.
+        setCount(from);
         if (isInView) {
             hasAnimated.current = true;
             let startTime: number;

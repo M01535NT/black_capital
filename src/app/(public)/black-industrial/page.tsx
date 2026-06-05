@@ -5,74 +5,41 @@ import { IndustrialStats } from "@/components/industrial/IndustrialStats";
 import { BrandInventory } from "@/components/shared/BrandInventory";
 import { IndustrialCTA } from "@/components/industrial/IndustrialCTA";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { SUB_BRAND_CONFIGS } from "@/lib/sub-brand-config";
 
-const INDUSTRIAL_SCHEMA = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: "Black Industrial · Naves, Bodegas y Parques Logísticos",
-    description:
-        "Terrenos macro, naves industriales clase A y parques logísticos en los principales corredores de México.",
-    itemListOrder: "https://schema.org/ItemListOrderDescending",
-    numberOfItems: 0,
-    provider: {
-        "@type": "RealEstateAgent",
-        name: "Black Corporativo",
-        url: "https://blackcorporativo.com",
-    },
-};
+const config = SUB_BRAND_CONFIGS.industrial;
 
-export const metadata: Metadata = {
-    title: "Black Industrial | Naves, Bodegas y Parques Logísticos",
-    description:
-        "Terrenos macro, naves industriales clase A y parques logísticos en los principales corredores de México. Análisis estructurado para inversión institucional.",
-    openGraph: {
-        title: "Black Industrial | Infraestructura que Escala",
-        description:
-            "Portafolio industrial con análisis estructurado para decisiones de inversión institucional en los principales corredores logísticos de México.",
-        type: "website",
-        locale: "es_MX",
-        siteName: "Black Corporativo",
-    },
-};
+export const metadata: Metadata = config.metadata;
 
 export default function BlackIndustrialPage() {
     return (
         <>
             <SubBrandHero
-                brand="Black Industrial"
-                backgroundImage="/industrial-hero.png"
-                backgroundAlt="Complejo industrial moderno"
-                accent="steel"
-                overlayClass="from-black/70 via-black/50"
-                headline={
-                    <>
-                        Infraestructura
-                        <br />
-                        <span className="metallic-gold">que Escala</span>
-                    </>
-                }
-                subtitle="Terrenos macro, naves industriales clase A y parques logísticos en los principales corredores de México. Análisis estructurado para decisiones de inversión institucional."
-                primaryCta={{ label: "Ver Inventario Industrial", href: "/inventario?brand=industrial" }}
-                highlights={[
-                    { value: "250K+", label: "m² en portafolio" },
-                    { value: "45+", label: "naves activas" },
-                    { value: "8", label: "estados" },
-                ]}
-                gridLines
+                brand={config.hero.brand}
+                backgroundImage={config.hero.backgroundImage}
+                backgroundAlt={config.hero.backgroundAlt}
+                accent={config.hero.accent}
+                overlayClass={config.hero.overlayClass}
+                headline={config.hero.headline}
+                subtitle={config.hero.subtitle}
+                primaryCta={config.hero.primaryCta}
+                secondaryCta={config.hero.secondaryCta}
+                highlights={config.hero.highlights}
+                gridLines={config.hero.gridLines}
             />
             <IndustrialValue />
             <IndustrialStats />
             <BrandInventory
-                brandSlug="industrial"
-                propertyUse="Industrial"
-                title="Naves y"
-                highlight="Parques"
-                subtitle="Cada activo ha sido evaluado por ubicación, capacidad, conectividad y retorno para decisiones de inversión institucional."
-                ctaText="Ver Portafolio Completo"
-                accentColor="steel"
+                brandSlug={config.inventory.brandSlug}
+                propertyUse={config.inventory.propertyUse}
+                title={config.inventory.title}
+                highlight={config.inventory.highlight}
+                subtitle={config.inventory.subtitle}
+                ctaText={config.inventory.ctaText}
+                accentColor={config.inventory.accentColor}
             />
             <IndustrialCTA />
-            <JsonLd id="ld-industrial" data={INDUSTRIAL_SCHEMA} />
+            <JsonLd id="ld-industrial" data={config.jsonLd} />
         </>
     );
 }

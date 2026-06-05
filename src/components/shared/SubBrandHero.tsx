@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export type Accent = "gold" | "steel";
 
@@ -145,9 +146,14 @@ export function SubBrandHero({
                         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                         className="flex items-center gap-4"
                     >
-                        <div className={`w-12 h-px bg-${accent === "gold" ? "gradient-to-r from-gold-700 to-gold-400" : "steel-500"}`} />
+                        <div className={cn(
+                            "w-12 h-px",
+                            accent === "gold"
+                                ? "bg-gradient-to-r from-gold-700 to-gold-400"
+                                : "bg-steel-500",
+                        )} />
                         <span
-                            className={`text-xs font-bold uppercase tracking-mega ${accentClasses.text}`}
+                            className={cn("text-xs font-bold uppercase tracking-mega", accentClasses.text)}
                         >
                             {brand}
                         </span>
@@ -158,7 +164,7 @@ export function SubBrandHero({
                         initial={shouldReduceMotion ? {} : (gridLines ? { opacity: 0, x: -40 } : { opacity: 0, y: 40 })}
                         animate={{ opacity: 1, [gridLines ? "x" : "y"]: 0 }}
                         transition={{ duration: gridLines ? 0.8 : 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-display-1 font-display font-bold tracking-display uppercase text-5xl md:text-7xl lg:text-[100px] text-foreground"
+                        className="text-display-1 font-display font-bold tracking-display uppercase text-foreground"
                     >
                         {headline}
                     </motion.h1>

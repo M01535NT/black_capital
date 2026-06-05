@@ -5,69 +5,40 @@ import { BusinessStats } from "@/components/business/BusinessStats";
 import { BrandInventory } from "@/components/shared/BrandInventory";
 import { BusinessCTA } from "@/components/business/BusinessCTA";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { SUB_BRAND_CONFIGS } from "@/lib/sub-brand-config";
 
-const BUSINESS_SCHEMA = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: "Black Business · Activos Corporativos Clase A",
-    description:
-        "Oficinas corporativas, locales comerciales y plazas premium para empresas que exigen ubicación estratégica y retorno garantizado.",
-    itemListOrder: "https://schema.org/ItemListOrderDescending",
-    numberOfItems: 0,
-    provider: {
-        "@type": "RealEstateAgent",
-        name: "Black Corporativo",
-        url: "https://blackcorporativo.com",
-    },
-};
+const config = SUB_BRAND_CONFIGS.business;
 
-export const metadata: Metadata = {
-    title: "Black Business | Activos Corporativos Clase A en México",
-    description:
-        "Oficinas corporativas, locales comerciales y plazas premium. Activos para empresas que exigen ubicación estratégica, eficiencia operativa y retorno garantizado.",
-    openGraph: {
-        title: "Black Business | Activos Corporativos Clase A",
-        description:
-            "Portafolio curado de propiedades comerciales clase A con análisis financiero estructurado y acompañamiento corporativo integral.",
-        type: "website",
-        locale: "es_MX",
-        siteName: "Black Corporativo",
-    },
-};
+export const metadata: Metadata = config.metadata;
 
 export default function BlackBusinessPage() {
     return (
         <>
             <SubBrandHero
-                brand="Black Business"
-                backgroundImage="/business-hero.png"
-                backgroundAlt="Oficina corporativa premium"
-                accent="gold"
-                headline={
-                    <>
-                        Espacios que
-                        <br />
-                        Impulsan{" "}
-                        <span className="metallic-gold">Negocios</span>
-                    </>
-                }
-                subtitle="Oficinas corporativas, locales comerciales y plazas premium seleccionadas para empresas que exigen ubicación estratégica, eficiencia operativa y retorno garantizado."
-                primaryCta={{ label: "Explorar Portafolio", href: "/inventario?brand=business" }}
-                secondaryCta={{ label: "Solicitar Asesoría Corporativa", href: "#business-cta" }}
+                brand={config.hero.brand}
+                backgroundImage={config.hero.backgroundImage}
+                backgroundAlt={config.hero.backgroundAlt}
+                accent={config.hero.accent}
+                headline={config.hero.headline}
+                subtitle={config.hero.subtitle}
+                primaryCta={config.hero.primaryCta}
+                secondaryCta={config.hero.secondaryCta}
+                highlights={config.hero.highlights}
+                gridLines={config.hero.gridLines}
             />
             <BusinessValue />
             <BusinessStats />
             <BrandInventory
-                brandSlug="business"
-                propertyUse="Comercial"
-                title="Activos"
-                highlight="Corporativos"
-                subtitle="Cada activo ha sido evaluado por ubicación, flujo, retorno y potencial de plusvalía para asegurar decisiones de inversión informadas."
-                ctaText="Ver Portafolio Completo"
-                accentColor="gold"
+                brandSlug={config.inventory.brandSlug}
+                propertyUse={config.inventory.propertyUse}
+                title={config.inventory.title}
+                highlight={config.inventory.highlight}
+                subtitle={config.inventory.subtitle}
+                ctaText={config.inventory.ctaText}
+                accentColor={config.inventory.accentColor}
             />
             <BusinessCTA />
-            <JsonLd id="ld-business" data={BUSINESS_SCHEMA} />
+            <JsonLd id="ld-business" data={config.jsonLd} />
         </>
     );
 }

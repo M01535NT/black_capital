@@ -111,7 +111,7 @@ export function BrandInventory({
                             </>
                         )}
                     </h2>
-                    <p className="text-foreground/45 text-lg">{subtitle}</p>
+                    <p className="text-foreground/50 text-lg">{subtitle}</p>
                 </FadeIn>
 
                 {loading ? (

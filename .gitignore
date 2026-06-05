@@ -42,6 +42,9 @@ playwright-report/
 test-results/
 playwright-audit/
 
+# local planning artifacts (per-agent working memory, not project source)
+/.hermes/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

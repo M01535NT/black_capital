@@ -74,7 +74,7 @@ export default function NosotrosPage() {
                                     <h3 className="text-display-4 font-display font-semibold tracking-wide uppercase text-xl text-foreground mb-4">
                                         {pillar.title}
                                     </h3>
-                                    <p className="text-foreground/45 text-sm leading-relaxed">
+                                    <p className="text-foreground/50 text-sm leading-relaxed">
                                         {pillar.description}
                                     </p>
                                 </div>
