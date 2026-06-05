@@ -15,6 +15,7 @@ import { StickyContactBar } from "@/components/property/StickyContactBar";
 import { PropertyJsonLd } from "@/components/property/PropertyJsonLd";
 import { MortgageCalculator } from "@/components/tools/mortgage-calculator";
 import { FavoriteButton } from "@/components/property/favorite-button";
+import { FadeIn } from "@/components/ui/motion";
 
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 import Link from "next/link";
@@ -185,143 +186,164 @@ export default async function PropertyDetailPage({
                 agents={agents}
                 url={`/inventario/${slug}`}
             />
-            <div className="w-full bg-background min-h-screen">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24 pb-6 md:pb-10 space-y-8 md:space-y-10">
-                <ImageGallery
-                    images={property.images || []}
-                    title={property.title}
-                    coverImage={property.cover_image}
-                />
-
-                <div className="flex items-center justify-between gap-4">
-                    <Breadcrumbs
-                        items={[
-                            { label: "Inventario", href: "/inventario" },
-                            { label: property.title },
-                        ]}
-                    />
-                    <div className="flex items-center gap-2">
-                        <FavoriteButton
-                            propertyId={property.id}
-                            variant="pill"
-                        />
-                        <Link
-                            href="/inventario"
-                            className="hidden md:inline-flex items-center gap-1.5 text-xs text-foreground/50 hover:text-gold-500 transition-colors shrink-0 font-display uppercase tracking-wider"
-                        >
-                            <ArrowLeft className="size-3" />
-                            Volver
-                        </Link>
-                    </div>
-                </div>
-
-                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-                    {/* LEFT COLUMN */}
-                    <div className="flex-1 min-w-0 space-y-8 md:space-y-10">
-                        <PropertyHeader
-                            businessType={property.business_type}
-                            propertyUse={property.property_use}
-                            propertyType={property.property_type}
-                            isProject={property.is_project}
-                            status={property.status}
-                            title={property.title}
-                            address={property.address}
-                            price={property.price}
-                            currency={property.currency}
-                            priceMxn={property.price_mxn}
-                        />
-
-                        <div className={SECTION_DIVIDER} />
-
-                        <PropertyMetrics
-                            m2Terrain={property.m2_terrain}
-                            m2Construction={property.m2_construction}
-                            customAttributes={customAttrs}
-                            propertyType={property.property_type}
-                            createdAt={property.created_at}
-                        />
-
-                        <div className={SECTION_DIVIDER} />
-
-                        {property.description && <PropertyDescription description={property.description} />}
-
-                        {(property.video_urls?.length || property.tour_embeds?.length) ? (
-                            <>
-                                <div className={SECTION_DIVIDER} />
-                                <PropertyMedia
-                                    videoUrls={property.video_urls}
-                                    tourEmbeds={property.tour_embeds}
-                                />
-                            </>
-                        ) : null}
-
-                        {property.address && (
-                            <>
-                                <div className={SECTION_DIVIDER} />
-                                <PropertyLocation address={property.address} title={property.title} />
-                            </>
-                        )}
-
-                        {/* Mortgage Calculator — only for sale properties */}
-                        {property.business_type === "Venta" && (
-                            <>
-                                <div className={SECTION_DIVIDER} />
-                                <MortgageCalculator
-                                    price={property.price}
-                                    currency={property.currency}
-                                    businessType={property.business_type}
-                                />
-                            </>
-                        )}
-
-                        {similar.length > 0 && (
-                            <>
-                                <div className={SECTION_DIVIDER} />
-                                <section className="space-y-4">
-                                    <h2 className={SECTION_HEADING}>Propiedades Similares</h2>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {similar.map((sp, i) => (
-                                            <PropertyCard
-                                                key={sp.id}
-                                                property={sp}
-                                                variant="similar"
-                                                index={i}
-                                            />
-                                        ))}
-                                    </div>
-                                </section>
-                            </>
-                        )}
-                    </div>
-
-                    {/* RIGHT COLUMN */}
-                    <PropertySidebar
-                        agents={agents}
-                        property={{
-                            id: property.id,
-                            m2_terrain: property.m2_terrain,
-                            m2_construction: property.m2_construction,
-                            property_type: property.property_type,
-                            business_type: property.business_type,
-                            property_use: property.property_use,
-                        }}
-                        documents={documents}
-                        whatsappHref={whatsappHref}
-                    />
-                </div>
+            
+            {/* Fondo decorativo global similar al Home */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.08,_transparent_50%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--color-gold-500)/0.05,_transparent_40%)]" />
+                <div className="grain-overlay opacity-[0.03]" />
             </div>
 
-            {/* Sticky bottom contact bar — mobile only */}
-            <StickyContactBar
-                propertyId={property.id}
-                agentPhone={agents?.[0]?.phone}
-                agentEmail={agents?.[0]?.email}
-                agentWhatsapp={CONTACT_CONFIG.phoneRaw}
-                propertyTitle={property.title}
-            />
+            <div className="relative z-10 w-full bg-background min-h-screen">
+                {/* Galería Full Width sin Hero encima - Borde inferior decorativo */}
+                <section className="w-full border-b border-white/[0.06]">
+                    <ImageGallery
+                        images={property.images || []}
+                        title={property.title}
+                        coverImage={property.cover_image}
+                    />
+                </section>
 
-            {/* Spacer for sticky mobile CTA */}
-            <div className="lg:hidden h-20" />
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 space-y-12 md:space-y-16">
+                    
+                    {/* Breadcrumbs y Actions con FadeIn */}
+                    <FadeIn direction="up" delay={0.1}>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <Breadcrumbs
+                                items={[
+                                    { label: "Inventario", href: "/inventario" },
+                                    { label: property.business_type, href: `/inventario?business=${encodeURIComponent(property.business_type)}` },
+                                    { label: property.title },
+                                ]}
+                            />
+                            <div className="flex items-center gap-2">
+                                <FavoriteButton
+                                    propertyId={property.id}
+                                    variant="pill"
+                                />
+                                <Link
+                                    href="/inventario"
+                                    className="inline-flex items-center gap-1.5 text-xs text-foreground/50 hover:text-gold-500 transition-colors shrink-0 font-display uppercase tracking-wider"
+                                >
+                                    <ArrowLeft className="size-3" />
+                                    Volver
+                                </Link>
+                            </div>
+                        </div>
+                    </FadeIn>
+
+                    <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
+                        {/* LEFT COLUMN */}
+                        <div className="flex-1 min-w-0 space-y-12 md:space-y-16">
+                            
+                            <FadeIn direction="up" delay={0.2}>
+                                <PropertyHeader
+                                    businessType={property.business_type}
+                                    propertyUse={property.property_use}
+                                    propertyType={property.property_type}
+                                    isProject={property.is_project}
+                                    status={property.status}
+                                    title={property.title}
+                                    address={property.address}
+                                    price={property.price}
+                                    currency={property.currency}
+                                    priceMxn={property.price_mxn}
+                                />
+                            </FadeIn>
+
+                            <FadeIn direction="up" delay={0.3}>
+                                <PropertyMetrics
+                                    m2Terrain={property.m2_terrain}
+                                    m2Construction={property.m2_construction}
+                                    customAttributes={customAttrs}
+                                    propertyType={property.property_type}
+                                    createdAt={property.created_at}
+                                />
+                            </FadeIn>
+
+                            <FadeIn direction="up" delay={0.4}>
+                                {property.description && <PropertyDescription description={property.description} />}
+                            </FadeIn>
+
+                            {(property.video_urls?.length || property.tour_embeds?.length) ? (
+                                <FadeIn direction="up" delay={0.5}>
+                                    <PropertyMedia
+                                        videoUrls={property.video_urls}
+                                        tourEmbeds={property.tour_embeds}
+                                    />
+                                </FadeIn>
+                            ) : null}
+
+                            {property.address && (
+                                <FadeIn direction="up" delay={0.6}>
+                                    <PropertyLocation address={property.address} title={property.title} />
+                                </FadeIn>
+                            )}
+
+                            {/* Mortgage Calculator — only for sale properties */}
+                            {property.business_type === "Venta" && (
+                                <FadeIn direction="up" delay={0.7}>
+                                    <MortgageCalculator
+                                        price={property.price}
+                                        currency={property.currency}
+                                        businessType={property.business_type}
+                                    />
+                                </FadeIn>
+                            )}
+
+                            {similar.length > 0 && (
+                                <FadeIn direction="up" delay={0.8}>
+                                    <section className="space-y-6 pt-8 border-t border-white/[0.06]">
+                                        <h2 className={SECTION_HEADING}>Propiedades Similares</h2>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                            {similar.map((sp, i) => (
+                                                <PropertyCard
+                                                    key={sp.id}
+                                                    property={sp}
+                                                    variant="similar"
+                                                    index={i}
+                                                />
+                                            ))}
+                                        </div>
+                                    </section>
+                                </FadeIn>
+                            )}
+                        </div>
+
+                        {/* RIGHT COLUMN */}
+                        <div className="lg:w-[380px] xl:w-[400px] shrink-0">
+                            <div className="sticky top-24 space-y-8">
+                                <FadeIn direction="left" delay={0.4}>
+                                    <PropertySidebar
+                                        agents={agents}
+                                        property={{
+                                            id: property.id,
+                                            m2_terrain: property.m2_terrain,
+                                            m2_construction: property.m2_construction,
+                                            property_type: property.property_type,
+                                            business_type: property.business_type,
+                                            property_use: property.property_use,
+                                        }}
+                                        documents={documents}
+                                        whatsappHref={whatsappHref}
+                                    />
+                                </FadeIn>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Sticky bottom contact bar — mobile only */}
+                <StickyContactBar
+                    propertyId={property.id}
+                    agentPhone={agents?.[0]?.phone}
+                    agentEmail={agents?.[0]?.email}
+                    agentWhatsapp={CONTACT_CONFIG.phoneRaw}
+                    propertyTitle={property.title}
+                />
+
+                {/* Spacer for sticky mobile CTA */}
+                <div className="lg:hidden h-20" />
             </div>
         </>
     );

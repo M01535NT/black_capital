@@ -23,8 +23,8 @@ const currencyMXN = new Intl.NumberFormat("es-MX", {
 });
 
 /**
- * Top block of the property detail page: status pill, business/use/type badges,
- * title, address, and price. Restored to a more visible size per design intent.
+ * Top block of the property detail page with premium styling aligned with Home design.
+ * Features hairline vertical accent, eyebrow tag, and dramatic typography.
  */
 export function PropertyHeader({
     businessType,
@@ -42,8 +42,16 @@ export function PropertyHeader({
     const statusLabel = STATUS_LABELS[status] || status;
 
     return (
-        <div className="space-y-4">
-            {/* Badges */}
+        <div className="relative pl-6 sm:pl-8 border-l border-gold-500/30 space-y-5">
+            {/* Eyebrow Tag con hairline horizontal */}
+            <div className="flex items-center gap-3 mb-2">
+                <span className="h-px w-10 bg-[var(--color-accent)]/60" />
+                <span className="text-[11px] tracking-[0.22em] uppercase text-foreground/70 font-semibold">
+                    {businessType} · {propertyUse} · {propertyType}
+                </span>
+            </div>
+
+            {/* Badges en fila */}
             <div className="flex flex-wrap items-center gap-2">
                 <Badge className="bg-gold-500 text-black font-semibold uppercase tracking-wider text-caption px-2.5 py-0.5">
                     {businessType}
@@ -72,22 +80,22 @@ export function PropertyHeader({
                 </span>
             </div>
 
-            {/* Title — restored to a more visible size for premium feel */}
-            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold uppercase tracking-wider text-foreground leading-tight">
+            {/* Título con tipografía dramática similar al Home */}
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-light leading-[0.95] tracking-tight text-foreground">
                 {title}
             </h1>
 
-            {/* Address */}
+            {/* Dirección con icono */}
             {address && (
-                <div className="flex items-start gap-2 text-foreground/50 text-sm">
-                    <MapPin className="size-4 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-2.5 text-foreground/50 text-sm">
+                    <MapPin className="size-4 mt-0.5 shrink-0 text-gold-500/80" />
                     <span className="leading-relaxed">{address}</span>
                 </div>
             )}
 
-            {/* Price */}
-            <div className="flex flex-wrap items-baseline gap-3">
-                <p className="text-2xl sm:text-3xl md:text-4xl font-numerics font-bold tracking-tight text-gold-500">
+            {/* Precio con formato premium y glow effect */}
+            <div className="flex flex-wrap items-baseline gap-3 pt-2">
+                <p className="text-3xl sm:text-4xl md:text-5xl font-numerics font-bold tracking-tight metallic-gold-static gold-glow">
                     {formatPrice(price, currency)}
                 </p>
                 {priceMxn && currency !== "MXN" && (
