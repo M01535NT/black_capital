@@ -1,0 +1,25 @@
+-- 20260605_drop_system_logs.sql
+-- Sprint 6: Limpieza
+--
+-- CONTEXTO:
+-- Tabla `system_logs` existe en el remoto pero NO está en ninguna
+-- migración local. Moisés no sabe quién la creó (sospecha: Hermes Agent
+-- en alguna sesión anterior). El código no la usa en ningún lado.
+--
+-- DIAGNÓSTICO:
+-- - 0 rows
+-- - Sin FK a auth.users (admin_uuid no valida nada)
+-- - Sin CHECK constraints en action_type o target_table
+-- - RLS correcto: solo authenticated puede acceder
+-- - PERO: el admin actual no usa Supabase Auth (cookie custom
+--   `bc_admin_session`), por lo que nadie puede escribir en esta tabla
+--   en la práctica
+--
+-- DECISIÓN: DROP. No aporta valor sin un sistema de auth integrado.
+-- Si en el futuro se quiere logging, el patrón correcto sería:
+--   1. Migrar a Supabase Auth
+--   2. Trigger AFTER INSERT/UPDATE/DELETE en tablas críticas
+--   3. Logging automático con auth.uid() en admin_uuid
+--   4. CHECK constraints en action_type y target_table
+
+DROP TABLE IF EXISTS public.system_logs CASCADE;

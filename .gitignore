@@ -53,3 +53,6 @@ next-env.d.ts
 ts_errors.txt
 
 .vercel
+
+# Supabase CLI temp files
+/supabase/.temp/
