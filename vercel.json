@@ -1,0 +1,17 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "next build",
+  "installCommand": "npm install",
+  "devCommand": "next dev --port 3000",
+  "outputDirectory": ".next",
+  "regions": ["iad1"],
+  "github": {
+    "silent": false,
+    "autoJobCancelation": true
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
+}

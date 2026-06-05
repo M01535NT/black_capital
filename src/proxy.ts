@@ -1,4 +1,4 @@
-/** @deprecated-convention For Next.js 16+ compatibility – uses legacy `middleware` naming. */
+/** Next.js 16+ proxy convention – replaces deprecated middleware. */
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { AUTH_COOKIE, isValidTokenFormat } from "@/lib/auth";
@@ -9,7 +9,7 @@ const PUBLIC_ADMIN_PATHS = ["/admin/login", "/api/admin/login"];
 // API routes that are public (lead capture, brochure send)
 const PUBLIC_API_PATHS = ["/api/send-brochure"];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Only handle /admin and /api routes
