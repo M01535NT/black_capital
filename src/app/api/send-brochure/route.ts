@@ -51,8 +51,8 @@ export async function POST(req: Request) {
     <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto">
         <tr>
             <td style="padding-bottom:32px;border-bottom:1px solid #222">
-                <h1 style="color:#D4AF37;font-size:24px;margin:0;font-weight:700;letter-spacing:-0.02em">
-                    BLACK <span style="color:#D4AF37">CORP</span>
+                <h1 style="color:#CFB155;font-size:24px;margin:0;font-weight:700;letter-spacing:-0.02em">
+                    BLACK <span style="color:#CFB155">CORP</span>
                 </h1>
                 <p style="color:#666;font-size:12px;margin:4px 0 0;text-transform:uppercase;letter-spacing:0.2em">
                     Plataforma Inmobiliaria
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
                     Hola <strong>${escapeHtml(name || "Inversionista")}</strong>,
                 </p>
                 <p style="font-size:14px;color:#999;line-height:1.6;margin:0 0 24px">
-                    Gracias por tu interes en <strong style="color:#D4AF37">${escapeHtml(property.title)}</strong>.
+                    Gracias por tu interes en <strong style="color:#CFB155">${escapeHtml(property.title)}</strong>.
                     Adjunto encontraras el documento <strong>${docLabel}</strong> con informacion detallada.
                 </p>
 
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
                     <tr>
                         <td style="padding:24px">
                             <p style="font-size:14px;color:#ccc;margin:0 0 4px">Documento solicitado:</p>
-                            <p style="font-size:18px;color:#D4AF37;font-weight:600;margin:0">${docLabel}</p>
+                            <p style="font-size:18px;color:#CFB155;font-weight:600;margin:0">${docLabel}</p>
                             <p style="font-size:13px;color:#666;margin:8px 0 0">Propiedad: ${escapeHtml(property.title)}</p>
                         </td>
                     </tr>
@@ -82,7 +82,7 @@ export async function POST(req: Request) {
                 ${pdfUrl ? `
                 <p style="font-size:13px;color:#888;margin:24px 0 0;line-height:1.5">
                     Si no puedes descargar el adjunto, accede al documento aqui:<br>
-                    <a href="${escapeHtml(pdfUrl)}" style="color:#D4AF37;text-decoration:underline">Descargar ${docLabel}</a>
+                    <a href="${escapeHtml(pdfUrl)}" style="color:#CFB155;text-decoration:underline">Descargar ${docLabel}</a>
                 </p>` : ""}
             </td>
         </tr>
@@ -175,9 +175,10 @@ export async function POST(req: Request) {
         return NextResponse.json({ success: true, message: "Documento enviado correctamente" });
 
     } catch (error) {
+        const message = error instanceof Error ? error.message : "Error interno del servidor";
         logger.error("API/brochure", "[send-brochure] Error:", error);
         return NextResponse.json(
-            { error: "Error al procesar la solicitud" },
+            { error: `Error al enviar brochure: ${message}` },
             { status: 500 }
         );
     }

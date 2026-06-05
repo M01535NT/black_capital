@@ -11,10 +11,10 @@
 import { SubBrandStats, type StatItem } from "@/components/shared/SubBrandStats";
 
 const stats: StatItem[] = [
-    { value: 420, label: "Millones USD en Transacciones", suffix: "+", prefix: "$" },
-    { value: 85, label: "Oficinas Corporativas", suffix: "+", prefix: "" },
-    { value: 18, label: "Plazas Comerciales", suffix: "+", prefix: "" },
-    { value: 95, label: "Tasa de Ocupación", suffix: "%", prefix: "" },
+    { value: 420, label: "Millones USD Comerciales", suffix: "+", prefix: "$" },
+    { value: 80, label: "Activos Clase A", suffix: "+", prefix: "" },
+    { value: 95, label: "% Ocupación Promedio", suffix: "%", prefix: "" },
+    { value: 12, label: "Años en Mercado", suffix: "+", prefix: "" },
 ];
 
 export function BusinessStats() {

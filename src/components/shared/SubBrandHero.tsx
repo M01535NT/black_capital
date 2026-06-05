@@ -13,8 +13,10 @@ export type Accent = "gold" | "steel";
 export interface SubBrandHeroProps {
     /** Eyebrow label rendered above the headline (e.g. "Black Luxury"). */
     brand: string;
-    /** Path to the hero background image. */
+    /** Path to the hero background image (PNG fallback). */
     backgroundImage: string;
+    /** Optional WebP version for browsers that support it. */
+    backgroundImageWebp?: string;
     /** Alt text for the background image. */
     backgroundAlt: string;
     /** Tailwind classes for the dark overlay gradient. */
@@ -57,6 +59,7 @@ const ACCENT_LABEL: Record<Accent, { text: string; separator: string; chevron: s
 export function SubBrandHero({
     brand,
     backgroundImage,
+    backgroundImageWebp,
     backgroundAlt,
     overlayClass = "from-black/60 via-black/40",
     accent,
@@ -86,16 +89,32 @@ export function SubBrandHero({
     const accentClasses = ACCENT_LABEL[accent];
 
     return (
-        <section className="relative w-full min-h-[95vh] flex flex-col items-center justify-center overflow-hidden">
-            {/* Background image */}
-            <Image
+        <section
+            aria-label={`${brand} — Presentación`}
+            className="relative w-full min-h-[95vh] flex flex-col items-center justify-center overflow-hidden"
+        >
+            {backgroundImageWebp ? (
+              <picture>
+                <source srcSet={backgroundImageWebp} type="image/webp" />
+                <Image
+                  src={backgroundImage}
+                  alt={backgroundAlt}
+                  fill
+                  priority
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              </picture>
+            ) : (
+              <Image
                 src={backgroundImage}
                 alt={backgroundAlt}
                 fill
                 priority
                 sizes="100vw"
                 className="object-cover"
-            />
+              />
+            )}
 
             {/* Dark overlay */}
             <div className={`absolute inset-0 bg-gradient-to-b ${overlayClass} to-background`} />

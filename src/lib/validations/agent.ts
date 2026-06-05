@@ -2,9 +2,17 @@ import { z } from "zod";
 
 export const agentSchema = z.object({
     full_name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
-    email: z.string().email("Correo inválido").optional().or(z.literal("")),
-    phone: z.string().optional().or(z.literal("")),
-    photo_url: z.string().optional().or(z.literal("")),
+    email: z
+        .string()
+        .email("Correo inválido")
+        .or(z.literal(""))
+        .optional(),
+    phone: z
+        .string()
+        .min(10, "El teléfono debe tener al menos 10 dígitos")
+        .or(z.literal(""))
+        .optional(),
+    photo_url: z.string().url("URL de foto inválida").or(z.literal("")).optional(),
     license_number: z.string().optional().or(z.literal("")),
     bio: z.string().optional().or(z.literal("")),
     is_active: z.boolean(),

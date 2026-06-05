@@ -139,7 +139,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
 
             {/* Filter Pills */}
             <div className="flex flex-wrap items-center gap-3 mb-6">
-                <div className="flex gap-2 p-1.5 bg-foreground/[0.03] rounded-full border border-foreground/5">
+                <div className="flex gap-2 p-1.5 bg-foreground/[0.03] rounded-full border border-foreground/5 overflow-x-auto scrollbar-none max-w-full">
                     <button
                         onClick={() => { setActiveBusiness(null); updateURL({ tipo: null }); }}
                         className={`${pillBase} ${!activeBusiness ? pillActive : pillInactive}`}
@@ -161,7 +161,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                     ))}
                 </div>
 
-                <div className="flex gap-2 p-1.5 bg-foreground/[0.03] rounded-full border border-foreground/5">
+                <div className="flex gap-2 p-1.5 bg-foreground/[0.03] rounded-full border border-foreground/5 overflow-x-auto scrollbar-none max-w-full">
                     {USES.map((use) => (
                         <button
                             key={use}

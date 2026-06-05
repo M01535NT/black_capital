@@ -5,360 +5,232 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-background: oklch(0.15 0 0);
-  /* Dark theme approx #0A0A0A */
-  --color-foreground: oklch(0.95 0 0);
-  /* Off-white */
+  --color-background: #0A0A0A;
+  --color-foreground: #FFFFFF;
 
-  /* Metallic Gold — WhatsApp gold reference: D4AF37 / FFD700 / 996515 */
-  --color-gold-solid: #D4AF37;
-  --color-gold-300: #F5E6B8;
-  /* lightest */
-  --color-gold-400: #E8C55A;
-  /* light gold */
-  --color-gold-500: #D4AF37;
-  /* MAIN GOLD — matches WhatsApp button */
-  --color-gold-600: #B8942F;
-  /* dark gold */
-  --color-gold-700: #8B7030;
-  /* darkest */
+  /* ── Premium Brushed Gold ──
+   * CFB155 = oro real, no amarillo plástico.
+   * Tiene calidez, profundidad y highlight crema.
+   * Inspirado en oro de relojería suiza.
+   */
+  --color-accent: #CFB155;
+  --color-accent-light: #DCC97A;
+  --color-accent-dark: #B8963A;
 
-  /* Industrial accent — cold steel blue-grey */
+  /* Compatibility aliases */
+  --color-gold-solid: var(--color-accent);
+  --color-gold-300: var(--color-accent-light);
+  --color-gold-400: var(--color-accent-light);
+  --color-gold-500: var(--color-accent);
+  --color-gold-600: var(--color-accent-dark);
+  --color-gold-700: #8B7230;
+  --color-gold: var(--color-accent);
+  --color-gold-rich: var(--color-accent-light);
+  --color-gold-mid: var(--color-accent);
+  --color-gold-soft: var(--color-accent-dark);
+
   --color-steel-400: oklch(0.55 0.03 250);
   --color-steel-500: oklch(0.45 0.02 250);
   --color-steel-600: oklch(0.35 0.02 250);
   --color-steel-700: oklch(0.25 0.01 250);
 
-  --font-sans: var(--font-inter), sans-serif;
-  --font-display: var(--font-display), sans-serif;
-  --font-numerics: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: var(--font-sans), sans-serif;
+  --font-display: var(--font-sans), sans-serif;
   --font-mono: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
 
-  /* ── Semantic Type Scale ── */
-  /* Display tiers (display font, uppercase, tight tracking) */
-  --text-display-1: clamp(3rem, 6vw, 4.5rem);       /* Hero / landing hero */
-  --text-display-2: clamp(2.25rem, 4.5vw, 3rem);    /* h1 — page hero */
-  --text-display-3: clamp(1.5rem, 3vw, 2rem);       /* h2 — section */
-  --text-display-4: clamp(1.125rem, 2vw, 1.375rem); /* h3 — card title */
-  --text-display-5: 1.0625rem;                       /* h4 — small heading */
+  --text-display-1: clamp(2.75rem, 6.5vw, 5rem);
+  --text-display-2: clamp(2rem, 4vw, 3rem);
+  --text-display-3: clamp(1.5rem, 3vw, 2rem);
+  --text-display-4: clamp(1.125rem, 2vw, 1.375rem);
+  --text-body-xl: 1.125rem;
+  --text-body-lg: 1.0625rem;
+  --text-body: 0.9375rem;
+  --text-body-sm: 0.8125rem;
+  --text-caption: 0.6875rem;
 
-  /* Body tiers (sans font, normal case) */
-  --text-body-xl: 1.125rem;   /* 18px — editorial / lead */
-  --text-body-lg: 1.0625rem;  /* 17px — important body */
-  --text-body: 0.9375rem;     /* 15px — default body */
-  --text-body-sm: 0.8125rem;  /* 13px — secondary body */
-  --text-caption: 0.6875rem;  /* 11px — overline / meta */
-
-  /* Line heights */
-  --leading-display: 1.05;
+  --leading-display: 1.08;
   --leading-snug: 1.2;
   --leading-body: 1.65;
   --leading-relaxed: 1.75;
 
-  /* Letter spacing */
-  --tracking-display: 0.02em;
-  --tracking-card: 0.12em;
-  --tracking-overline: 0.16em;
-  --tracking-wide-display: 0.2em;
-  --tracking-eyebrow: 0.24em;
-  --tracking-hero: 0.4em;
-  --tracking-mega: 0.5em;
-}
+  --tracking-display: -0.02em;
+  --tracking-card: 0.08em;
+  --tracking-overline: 0.12em;
+  --tracking-eyebrow: 0.18em;
+  --tracking-mega: 0.15em;
+  --tracking-hero: 0.06em;
+  --tracking-wide-display: 0.12em;
 
-:root {
-    color-scheme: dark;
-    --color-background-deep: oklch(0.10 0 0);
-    --color-background-elevated: oklch(0.18 0 0);
-    --color-surface: oklch(0.22 0 0);
-    --color-surface-hover: oklch(0.26 0 0);
-    --color-subtle: oklch(1 0 0 / 8%);
-    --color-border-subtle: oklch(1 0 0 / 8%);
-    --color-border-default: oklch(1 0 0 / 12%);--radius: 0.625rem;
+  --radius: 1rem;
 
-  /* Glassmorphism tokens */
-  --glass-bg: oklch(0.15 0 0 / 40%);
-  --glass-border: oklch(1 0 0 / 8%);
-  --glass-shadow: 0 8px 32px oklch(0 0 0 / 40%);
-
-  /* Gold gradient — WhatsApp gold reference */
-  --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #996515 100%);
-  --gradient-gold-text: linear-gradient(90deg, #8B7030 0%, #D4AF37 25%, #F5E6B8 50%, #D4AF37 75%, #8B7030 100%);
-
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ── Tipografia: Montserrat (display) + Inter (body) ── */
-/* Jerarquia: Hero > h1 > h2 > h3 > body > caption */
-/* Use Tailwind v4 tokens (text-display-1, text-display-2, …) for sizing. */
-/* Always pair a heading with a className — bare <h1> / <h2> fall back to */
-/* the browser default which is inconsistent with the design system. */
-
-/* Numeric data (stats, prices) */
-.font-numerics {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-@layer utilities {
-
-  /* ── Marquee ── */
-  @keyframes marquee {
-    0% {
-      transform: translateX(0%);
-    }
-
-    100% {
-      transform: translateX(-100%);
-    }
-  }
-
-  .animate-marquee {
-    animation: marquee 20s linear infinite;
-  }
-
-  /* ── Hero Gradient Shift ── */
-  @keyframes gradient-shift {
-
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-
-    25% {
-      background-position: 100% 50%;
-    }
-
-    50% {
-      background-position: 100% 100%;
-    }
-
-    75% {
-      background-position: 0% 100%;
-    }
-  }
-
-  .animate-gradient-shift {
-    background-size: 300% 300%;
-    animation: gradient-shift 12s ease infinite;
-  }
-
-  /* ── Gold Shimmer (badges, accents) ── */
-  @keyframes gold-shimmer {
-    0% {
-      background-position: -200% center;
-    }
-
-    100% {
-      background-position: 200% center;
-    }
-  }
-
-  .animate-gold-shimmer {
-    background: linear-gradient(110deg,
-        #8B7030 0%,
-        #F5E6B8 45%,
-        #D4AF37 55%,
-        #8B7030 100%);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: gold-shimmer 3s linear infinite;
-  }
-
-  /* ── Floating Orbs ── */
-  @keyframes float {
-
-    0%,
-    100% {
-      transform: translateY(0px) scale(1);
-    }
-
-    50% {
-      transform: translateY(-30px) scale(1.05);
-    }
-  }
-
-  .animate-float {
-    animation: float 8s ease-in-out infinite;
-  }
-
-  .animate-float-slow {
-    animation: float 12s ease-in-out infinite;
-  }
-
-  .animate-float-fast {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  /* ── Pulse Glow (borders) ── */
-  @keyframes pulse-glow {
-
-    0%,
-    100% {
-      opacity: 0.4;
-    }
-
-    50% {
-      opacity: 1;
-    }
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
-  }
-
-  /* ── Glassmorphism Utility ── */
-  .glass {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-  }
-
-  /* ── Noise/Grain Texture ── */
-  .grain-overlay {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.04;
-    pointer-events: none;
-    mix-blend-mode: overlay;
-  }
-
-  /* ── Metallic Reflective Gold ───────────────────────────────────
-     A real polished-metal feel needs:
-     1. A *very* dark base color, then a near-white highlight, then
-        back to dark — three stops, not a flat 50% gold.
-     2. Strong contrast between the darkest and lightest stops so
-        the shine is visible even on a dark background.
-     3. background-clip:text with a fallback solid color in case
-        background-clip is unsupported (older WebKit builds).
-     4. A slow linear animation (8s) so the highlight drifts, not
-        strobes.
-  */
-  .metallic-gold {
-    /* Fallback solid color for browsers without background-clip:text. */
-    color: #D4AF37;
-    background: linear-gradient(
-        100deg,
-        #6B5318 0%,
-        #8B7030 18%,
-        #D4AF37 38%,
-        #FFF1B8 50%,
-        #D4AF37 62%,
-        #8B7030 82%,
-        #6B5318 100%
-    );
-    background-size: 220% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: metallic-shine 9s linear infinite;
-  }
-
-  @keyframes metallic-shine {
-    from {
-      background-position: 200% center;
-    }
-    to {
-      background-position: -200% center;
-    }
-  }
-
-  /* A subtler variant for shorter spans (body, eyebrows) where the
-     full shine would feel theatrical. Single highlight, no animation. */
-  .metallic-gold-static {
-    color: #E8C55A;
-    background: linear-gradient(
-        100deg,
-        #8B7030 0%,
-        #D4AF37 35%,
-        #F5E6B8 50%,
-        #D4AF37 65%,
-        #8B7030 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  /* Soft gold halo behind metallic text — pairs with .metallic-gold
-     for the hero's reveal animation. Use sparingly. */
-  .text-glow-gold {
-    filter: drop-shadow(0 0 24px rgba(212, 175, 55, 0.18));
-  }
-}
-
-
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
-  --color-background: var(--color-background);
-  --color-foreground: var(--color-foreground);
   --color-border: var(--border);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer utilities {
+  /* ── Marquee ── */
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+  .animate-marquee {
+    animation: marquee 20s linear infinite;
+  }
+
+  /* ── Premium Brushed Metallic Gold Text ── */
+  .metallic-gold {
+    background: linear-gradient(100deg,
+        #8B7230 0%, #A88A35 18%, #B8963A 32%,
+        #CFB155 48%, #C4A84A 52%, #CFB155 56%,
+        #B8963A 72%, #A88A35 88%, #8B7230 100%);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: metallic-shine 12s linear infinite;
+  }
+  @keyframes metallic-shine {
+    from { background-position: 300% center; }
+    to { background-position: -300% center; }
+  }
+
+  .metallic-gold-static {
+    background: linear-gradient(100deg,
+        #8B7230 0%, #B8963A 30%, #CFB155 48%,
+        #C4A84A 52%, #CFB155 60%, #B8963A 80%, #8B7230 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* ── Brushed Gold CTA ── */
+  .brushed-gold {
+    background: linear-gradient(180deg,
+        #8B7230 0%, #A88A35 25%, #B8963A 42%,
+        #CFB155 49%, #C4A84A 51%, #CFB155 53%,
+        #B8963A 65%, #A88A35 82%, #8B7230 100%);
+    color: #0A0A0A;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Scroll Snap ── */
+  .scroll-snap-container {
+    scroll-snap-type: y proximity;
+  }
+  .scroll-snap-section {
+    scroll-snap-align: start;
+  }
+
+  /* ── Shimmer skeleton ── */
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .shimmer {
+    background: linear-gradient(90deg,
+        rgba(255,255,255,0.02) 0%,
+        rgba(207,177,85,0.05) 50%,
+        rgba(255,255,255,0.02) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+  }
+
+  /* ── Scroll progress ── */
+  .scroll-progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-accent-dark), var(--color-accent));
+    transition: width 0.1s linear;
+  }
+
+  /* ── Glass morphism (real) ── */
+  .glass {
+    background: rgba(10, 10, 10, 0.55);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  /* ── Edge-safe backdrop-filter fallback ── */
+  @supports not (backdrop-filter: blur(20px)) {
+    .glass {
+      background: rgba(18, 18, 18, 0.92);
+    }
+  }
+
+  /* ── Show/hide scrollbar ── */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ── Gold shimmer (brand stat cards) ── */
+  @keyframes gold-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .animate-gold-shimmer {
+    background: linear-gradient(110deg,
+        transparent 0%,
+        rgba(207,177,85,0.08) 40%,
+        rgba(207,177,85,0.12) 50%,
+        rgba(207,177,85,0.08) 60%,
+        transparent 100%);
+    background-size: 200% 100%;
+    animation: gold-shimmer 3.5s ease-in-out infinite;
+  }
+
+  /* ── Floating orbs (brand value sections) ── */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-12px) scale(1.03); }
+  }
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-8px) scale(1.02); }
+  }
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+  .animate-float-slow {
+    animation: float-slow 6s ease-in-out infinite;
+  }
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 3px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 14px);
+  --radius-4xl: calc(var(--radius) + 20px);
 }
 
 .dark {
@@ -387,301 +259,30 @@ body {
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
+  * { @apply border-border outline-ring/50; }
+  body { @apply bg-background text-foreground; }
 }
 
-/* ── Hide scrollbar ── */
-.scrollbar-none {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
-/* ── Safe area padding bottom (mobile notch) ── */
-.safe-area-pb {
-  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
-}
-
-/* ── Map grayscale filter (Google Maps embed) ── */
-.map-grayscale {
-  filter: grayscale(100%) invert(92%) contrast(83%);
-}
-
-/* ── prefers-reduced-motion: disable decorative animations ── */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-
-  .animate-marquee,
-  .animate-gradient-shift,
-  .animate-gold-shimmer,
-  .animate-float,
-  .animate-float-slow,
-  .animate-float-fast,
-  .animate-pulse-glow,
-  .metallic-gold {
-    animation: none !important;
-  }
-}
-/* ── Focus Styles (Accessibility) ── */
-*:focus-visible {
-    outline: 2px solid var(--color-gold-500);
-    outline-offset: 2px;
-    border-radius: 4px;
+  .animate-marquee, .metallic-gold { animation: none !important; }
 }
 
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-    outline: 2px solid var(--color-gold-500);
-    outline-offset: 2px;
-}
-
-/* Skip link focus style */
-a[href="#main-content"]:focus {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    z-index: 50;
-    padding: 0.75rem 1.5rem;
-    background: var(--color-gold-500);
-    color: black;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    text-decoration: none;
-}
-
-/* ── Print Stylesheet ────────────────────────────────────────────────── */
 @media print {
-  nav,
-  footer,
-  .no-print,
-  button,
-  [role="dialog"] {
-    display: none !important;
-  }
-
-  body {
-    background: white !important;
-    color: black !important;
-  }
-
-  .container {
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
-
-  img {
-    max-height: 60vh;
-    object-fit: contain;
-  }
-
-  a[href]::after {
-    content: " (" attr(href) ")";
-    font-size: 10px;
-  }
-}
-
-/* ── Range Slider (Gold Theme) ───────────────────────────────────────── */
-input[type="range"].slider-gold {
-  -webkit-appearance: none;
-  appearance: none;
-  background: oklch(0.26 0 0);
-  border-radius: 9999px;
-  height: 8px;
-}
-
-input[type="range"].slider-gold::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--color-gold-500);
-  cursor: pointer;
-  border: 3px solid oklch(0.15 0 0);
-  box-shadow: 0 2px 8px oklch(0.1 0 0 / 0.4);
-  transition: transform 0.15s ease;
-}
-
-input[type="range"].slider-gold::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
-}
-
-input[type="range"].slider-gold::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--color-gold-500);
-  cursor: pointer;
-  border: 3px solid oklch(0.15 0 0);
-  box-shadow: 0 2px 8px oklch(0.1 0 0 / 0.4);
-}
-
-/* ── Skeleton Shimmer ────────────────────────────────────────────────── */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.skeleton-shimmer {
-  background: linear-gradient(
-    90deg,
-    oklch(0.20 0 0) 0%,
-    oklch(0.25 0 0) 40%,
-    oklch(0.30 0 0) 50%,
-    oklch(0.25 0 0) 60%,
-    oklch(0.20 0 0) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.8s ease-in-out infinite;
-  border-radius: var(--radius);
-}
-
-/* Skeleton text lines */
-.skeleton-text {
-  height: 1em;
-  border-radius: 4px;
-}
-.skeleton-text-sm {
-  height: 0.75em;
-  border-radius: 3px;
-}
-
-/* ── Micro-interactions & Transitions ─────────────────────────────────── */
-
-/* Underline animation for text links */
-.link-underline {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 0% 1px;
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  transition: background-size 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.link-underline:hover {
-  background-size: 100% 1px;
-}
-
-/* Gold underline variant */
-.link-underline-gold {
-  background-image: linear-gradient(var(--color-gold-500), var(--color-gold-500));
-  background-size: 0% 1px;
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  transition: background-size 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  color: currentColor;
-}
-.link-underline-gold:hover {
-  background-size: 100% 1px;
-  color: var(--color-gold-500);
-}
-
-/* Button press effect */
-button:active:not(:disabled),
-.press-effect:active {
-  transform: scale(0.97);
-  transition: transform 0.1s ease;
-}
-
-/* Smooth page-level card hover (already in PropertyCard, but for generic cards) */
-.hover-lift {
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease;
-}
-.hover-lift:hover {
-  transform: translateY(-4px);
-}
-
-/* Gold border glow on focus within sections */
-.focus-glow:focus-within {
-  box-shadow: 0 0 0 2px oklch(0.6 0.15 80 / 0.2), 0 0 20px oklch(0.6 0.15 80 / 0.1);
-}
-
-/* Fade in animation for route transitions */
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-
-/* Stagger children utility (pair with animate-fade-in-up) */
-.stagger-children > *:nth-child(1) { animation-delay: 0s; }
-.stagger-children > *:nth-child(2) { animation-delay: 0.06s; }
-.stagger-children > *:nth-child(3) { animation-delay: 0.12s; }
-.stagger-children > *:nth-child(4) { animation-delay: 0.18s; }
-.stagger-children > *:nth-child(5) { animation-delay: 0.24s; }
-.stagger-children > *:nth-child(6) { animation-delay: 0.30s; }
-
-/* Smooth image zoom on hover (gallery cards) */
-.img-zoom {
-  overflow: hidden;
-}
-.img-zoom img {
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.img-zoom:hover img {
-  transform: scale(1.04);
-}
-
-/* Price tag highlight pulse (for featured properties) */
-@keyframes price-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 oklch(0.6 0.15 80 / 0.3); }
-  50% { box-shadow: 0 0 0 8px oklch(0.6 0.15 80 / 0); }
-}
-
-.price-pulse {
-  animation: price-pulse 2s ease-in-out infinite;
-}
-
-/* Reduce motion: disable all micro-interactions */
-@media (prefers-reduced-motion: reduce) {
-  .link-underline,
-  .link-underline-gold,
-  .hover-lift,
-  .img-zoom img {
-    transition: none !important;
-    animation: none !important;
-  }
-  .animate-fade-in-up {
-    animation: none !important;
-  }
-  .stagger-children > * {
-    animation-delay: 0s !important;
-  }
-  .price-pulse {
-    animation: none !important;
-  }
+  nav, footer, .no-print, button, [role="dialog"] { display: none !important; }
+  body { background: white !important; color: black !important; }
 }

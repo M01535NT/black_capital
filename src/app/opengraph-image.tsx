@@ -36,7 +36,7 @@ export default async function Image() {
                             letterSpacing: "-0.02em",
                         }}
                     >
-                        BLACK <span style={{ color: "#D4AF37" }}>CORP</span>
+                        BLACK <span style={{ color: "#CFB155" }}>CORP</span>
                     </div>
                     <div
                         style={{
@@ -59,9 +59,9 @@ export default async function Image() {
                                 key={brand}
                                 style={{
                                     padding: "12px 24px",
-                                    border: "1px solid #D4AF37",
+                                    border: "1px solid #CFB155",
                                     borderRadius: "8px",
-                                    color: "#D4AF37",
+                                    color: "#CFB155",
                                     fontSize: "18px",
                                     fontWeight: "500",
                                 }}

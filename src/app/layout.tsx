@@ -1,93 +1,63 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeGuard } from "@/components/theme-guard";
 import "./globals.css";
 
-/**
- * Font stack
- * -----------
- * Body:    Inter (400 / 500 / 600 / 700)  — neutral, high-legibility sans.
- * Display: Space Grotesk (500 / 600 / 700) — modern geometric grotesque with
- *          a slightly aggressive, brutalist character. Used for all
- *          headings, eyebrows, and the navbar / nav links. Pairs with
- *          Inter without competing.
- * Mono:    JetBrains Mono (400 / 500) — used for stat counters and any
- *          numeric data. Tabular-nums for stable column alignment. The
- *          editorial-brutalist look on big stats (12+, $0.3M) comes
- *          from monospace: it feels like a Bloomberg / WSJ number bar.
- */
-const inter = Inter({
-  variable: "--font-inter",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
   display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://blackcorporativo.com"),
   title: {
-    default: "Black Capital | Plataforma Inmobiliaria de Alta Gama",
+    default: "Black Capital — Inversión Inmobiliaria de Alta Gama en México",
     template: "%s | Black Capital",
   },
-  description: "Plataforma digital inmobiliaria de alta gama especializada en propiedades residenciales, comerciales e industriales en México. Análisis financiero estructurado para inversores institucionales y HNWI.",
+  description:
+    "Plataforma de inversión inmobiliaria premium. Propiedades residenciales, comerciales e industriales con análisis financiero estructurado para family offices e inversores institucionales.",
   keywords: [
-    "inmobiliaria de lujo",
-    "propiedades premium",
+    "inversión inmobiliaria México",
+    "propiedades de lujo",
     "bienes raíces corporativos",
-    "naves industriales",
-    "inversión inmobiliaria",
-    "México",
+    "family office",
+    "activos inmobiliarios",
     "CDMX",
     "Monterrey",
     "Guadalajara",
+    "Tijuana",
   ],
   authors: [{ name: "Black Capital" }],
   creator: "Black Capital",
   publisher: "Black Capital",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
+  formatDetection: { email: false, address: false, telephone: false },
   openGraph: {
     type: "website",
     locale: "es_MX",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "https://blackcorporativo.com",
+    url: "https://blackcorporativo.com",
     siteName: "Black Capital",
-    title: "Black Capital | Plataforma Inmobiliaria de Alta Gama",
-    description: "Propiedades residenciales, comerciales e industriales con análisis financiero estructurado para inversores institucionales.",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Black Capital - Plataforma Inmobiliaria Premium",
-      },
-    ],
+    title: "Black Capital — Inversión Inmobiliaria de Alta Gama",
+    description:
+      "Propiedades residenciales, comerciales e industriales con análisis financiero estructurado para inversores institucionales.",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Black Capital" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Black Capital",
-    description: "Plataforma inmobiliaria de alta gama en México",
+    description: "Plataforma de inversión inmobiliaria premium en México",
     images: ["/og-image.jpg"],
-    creator: "@black_corp",
   },
   robots: {
     index: true,
@@ -100,22 +70,24 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://blackcorporativo.com",
-  },
+  alternates: { canonical: "https://blackcorporativo.com" },
 };
 
 import { PostHogProvider } from "@/providers/posthog-provider";
 import { Toaster } from "@/components/ui/sonner";
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="es-MX" suppressHydrationWarning>
       <head>
+        <meta name="theme-color" content="#0a0a0a" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-title" content="Black Capital" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -131,24 +103,11 @@ export default function RootLayout({
             `,
           }}
         />
-        <noscript>
-          <style>{`
-            /* When JS is off, suppress framer-motion's hidden initial state
-               (opacity:0) so the hero and animated sections stay visible. */
-            [style*="opacity: 0"] { opacity: 1 !important; }
-            [style*="transform: translate"] { transform: none !important; }
-          `}</style>
-        </noscript>
       </head>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased min-h-screen flex flex-col bg-background text-foreground`}
+        className={`${jakarta.variable} ${jetbrainsMono.variable} antialiased min-h-screen flex flex-col bg-black text-white`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           <ThemeGuard />
           <PostHogProvider>
             {children}

@@ -26,6 +26,7 @@ export default function BlackIndustrialPage() {
                 secondaryCta={config.hero.secondaryCta}
                 highlights={config.hero.highlights}
                 gridLines={config.hero.gridLines}
+                cursorGlow={config.hero.cursorGlow}
             />
             <IndustrialValue />
             <IndustrialStats />

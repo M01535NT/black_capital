@@ -43,6 +43,7 @@ export type SubBrandKey = "luxury" | "business" | "industrial";
 export interface SubBrandHeroConfig {
     brand: string;
     backgroundImage: string;
+    backgroundImageWebp?: string;
     backgroundAlt: string;
     accent: Accent;
     /** Override default overlay gradient (industrial uses darker). */
@@ -55,6 +56,8 @@ export interface SubBrandHeroConfig {
     highlights?: Array<{ value: string; label: string }>;
     /** Decorative grid lines (industrial only). */
     gridLines?: boolean;
+    /** Whether to disable the gold cursor-follow glow (industrial). */
+    cursorGlow?: boolean;
 }
 
 export type PropertyUse = "Residencial" | "Comercial" | "Industrial";
@@ -130,6 +133,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         hero: {
             brand: "Black Luxury",
             backgroundImage: "/luxury-hero.png",
+            backgroundImageWebp: "/luxury-hero.webp",
             backgroundAlt: "Residencia de súper lujo",
             accent: "gold",
             headline: (
@@ -220,6 +224,18 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: "Black Luxury | Residencias de Súper Lujo en México",
             description:
                 "Residencias trofeo, penthouses de autor y desarrollos exclusivos para inversores HNWI. Propiedades curadas con análisis financiero personalizado.",
+            keywords: [
+                "residencias de lujo México",
+                "penthouses premium",
+                "inversión inmobiliaria alto patrimonio",
+                "propiedades exclusivas",
+                "Black Luxury",
+                "bienes raíces lujo",
+            ],
+            robots: "index, follow",
+            alternates: {
+                canonical: "https://blackcorporativo.com/black-luxury",
+            },
             openGraph: {
                 title: "Black Luxury | Residencias de Súper Lujo en México",
                 description:
@@ -227,6 +243,22 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Corporativo",
+                url: "https://blackcorporativo.com/black-luxury",
+                images: [
+                    {
+                        url: "https://blackcorporativo.com/luxury-hero.png",
+                        width: 1200,
+                        height: 630,
+                        alt: "Residencia de súper lujo Black Luxury",
+                    },
+                ],
+            },
+            twitter: {
+                card: "summary_large_image",
+                title: "Black Luxury | Residencias de Súper Lujo en México",
+                description:
+                    "Portafolio curado de propiedades de súper lujo con análisis financiero, acceso Off-Market y acompañamiento fiduciario.",
+                images: ["https://blackcorporativo.com/luxury-hero.png"],
             },
         },
     },
@@ -237,6 +269,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         hero: {
             brand: "Black Business",
             backgroundImage: "/business-hero.png",
+            backgroundImageWebp: "/business-hero.webp",
             backgroundAlt: "Oficina corporativa premium",
             accent: "gold",
             headline: (
@@ -326,6 +359,18 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: "Black Business | Activos Corporativos Clase A en México",
             description:
                 "Oficinas corporativas, locales comerciales y plazas premium. Activos para empresas que exigen ubicación estratégica, eficiencia operativa y retorno garantizado.",
+            keywords: [
+                "oficinas corporativas México",
+                "locales comerciales premium",
+                "inversión inmobiliaria comercial",
+                "activos clase A",
+                "Black Business",
+                "bienes raíces corporativos",
+            ],
+            robots: "index, follow",
+            alternates: {
+                canonical: "https://blackcorporativo.com/black-business",
+            },
             openGraph: {
                 title: "Black Business | Activos Corporativos Clase A",
                 description:
@@ -333,6 +378,22 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Corporativo",
+                url: "https://blackcorporativo.com/black-business",
+                images: [
+                    {
+                        url: "https://blackcorporativo.com/business-hero.png",
+                        width: 1200,
+                        height: 630,
+                        alt: "Oficina corporativa premium Black Business",
+                    },
+                ],
+            },
+            twitter: {
+                card: "summary_large_image",
+                title: "Black Business | Activos Corporativos Clase A",
+                description:
+                    "Portafolio curado de propiedades comerciales clase A con análisis financiero estructurado y acompañamiento corporativo integral.",
+                images: ["https://blackcorporativo.com/business-hero.png"],
             },
         },
     },
@@ -343,6 +404,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         hero: {
             brand: "Black Industrial",
             backgroundImage: "/industrial-hero.png",
+            backgroundImageWebp: "/industrial-hero.webp",
             backgroundAlt: "Complejo industrial moderno",
             accent: "steel",
             overlayClass: "from-black/70 via-black/50",
@@ -362,6 +424,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 { value: "8", label: "estados" },
             ],
             gridLines: true,
+            cursorGlow: false,
         },
         value: {
             eyebrow: "Verticales de activo",
@@ -439,6 +502,18 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: "Black Industrial | Naves, Bodegas y Parques Logísticos",
             description:
                 "Terrenos macro, naves industriales clase A y parques logísticos en los principales corredores de México. Análisis estructurado para inversión institucional.",
+            keywords: [
+                "naves industriales México",
+                "parques logísticos",
+                "terrenos industriales",
+                "inversión industrial institucional",
+                "Black Industrial",
+                "bienes raíces industriales",
+            ],
+            robots: "index, follow",
+            alternates: {
+                canonical: "https://blackcorporativo.com/black-industrial",
+            },
             openGraph: {
                 title: "Black Industrial | Infraestructura que Escala",
                 description:
@@ -446,6 +521,22 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Corporativo",
+                url: "https://blackcorporativo.com/black-industrial",
+                images: [
+                    {
+                        url: "https://blackcorporativo.com/industrial-hero.png",
+                        width: 1200,
+                        height: 630,
+                        alt: "Complejo industrial moderno Black Industrial",
+                    },
+                ],
+            },
+            twitter: {
+                card: "summary_large_image",
+                title: "Black Industrial | Infraestructura que Escala",
+                description:
+                    "Portafolio industrial con análisis estructurado para decisiones de inversión institucional en los principales corredores logísticos de México.",
+                images: ["https://blackcorporativo.com/industrial-hero.png"],
             },
         },
     },

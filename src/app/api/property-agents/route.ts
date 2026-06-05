@@ -39,8 +39,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/prop-agents", "[API /property-agents POST] Unexpected error:", err);
-    return NextResponse.json({ error: err instanceof Error ? err.message : "Internal error" }, { status: 500 });
+    return NextResponse.json({ error: `Error al asignar agente: ${message}` }, { status: 500 });
   }
 }
 
@@ -74,7 +75,8 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/prop-agents", "[API /property-agents DELETE] Unexpected error:", err);
-    return NextResponse.json({ error: err instanceof Error ? err.message : "Internal error" }, { status: 500 });
+    return NextResponse.json({ error: `Error al desasignar agente: ${message}` }, { status: 500 });
   }
 }

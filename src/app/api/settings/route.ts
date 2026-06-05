@@ -75,11 +75,9 @@ export async function GET() {
     const settings = await readSettings();
     return NextResponse.json(settings);
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/settings", "[Settings GET]", err);
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Error reading settings" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: `Error al leer configuración: ${message}` }, { status: 500 });
   }
 }
 
@@ -108,10 +106,8 @@ export async function POST(req: NextRequest) {
     await writeSettings(merged);
     return NextResponse.json(merged);
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/settings", "[Settings POST]", err);
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Error saving settings" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: `Error al guardar configuración: ${message}` }, { status: 500 });
   }
 }

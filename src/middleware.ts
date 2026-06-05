@@ -1,3 +1,4 @@
+/** @deprecated-convention For Next.js 16+ compatibility – uses legacy `middleware` naming. */
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { AUTH_COOKIE, isValidTokenFormat } from "@/lib/auth";

@@ -73,15 +73,15 @@ export function Logo({
     switch (tone) {
       case "gold":
         return {
-          bar: "#D4AF37",
+          bar: "#CFB155",
           black: "#F5F5F5",
-          capital: "#D4AF37",
+          capital: "#CFB155",
         };
       case "light":
         return {
-          bar: "#D4AF37",
+          bar: "#CFB155",
           black: "#FFFFFF",
-          capital: "#D4AF37",
+          capital: "#CFB155",
         };
       case "mono":
       default:

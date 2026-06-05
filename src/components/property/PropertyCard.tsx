@@ -117,9 +117,9 @@ export function PropertyCard({
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 {/* Use badge — top-left, neutral */}
-                <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex flex-col gap-1.5">
-                    <span className="px-2.5 py-1 sm:px-3 sm:py-1 text-caption sm:text-xs font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white rounded-full border border-white/10">
-                        {property.property_use}
+                <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-col gap-1">
+                    <span className="px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white rounded-full border border-white/10">
+                      {property.property_use}
                     </span>
                     {property.created_at && (
                         <PublishedBadge createdAt={property.created_at} />
@@ -127,23 +127,23 @@ export function PropertyCard({
                 </div>
 
                 {/* Action row — top-right: favorite + share + business badge */}
-                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex items-center gap-2">
+                <div className="absolute top-2 right-2 sm:top-4 sm:right-4 flex items-center gap-1 sm:gap-2">
                     <div className="no-print">
-                        <FavoriteButton
-                            propertyId={property.id}
-                            variant="icon"
-                        />
+                      <FavoriteButton
+                        propertyId={property.id}
+                        variant="icon"
+                      />
                     </div>
                     <div className="no-print">
-                        <ShareButton
-                            title={property.title}
-                            description={property.address || undefined}
-                            variant="icon"
-                            className="bg-black/60 backdrop-blur-md border-white/10 text-white hover:bg-black/80"
-                        />
+                      <ShareButton
+                        title={property.title}
+                        description={property.address || undefined}
+                        variant="icon"
+                        className="bg-black/60 backdrop-blur-md border-white/10 text-white hover:bg-black/80"
+                      />
                     </div>
-                    <span className="px-2.5 py-1 sm:px-3 sm:py-1 text-caption sm:text-xs font-bold uppercase tracking-wider bg-gold-500 text-black rounded-full">
-                        {property.business_type}
+                    <span className="px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-gold-500 text-black rounded-2xl">
+                      {property.business_type}
                     </span>
                 </div>
             </div>

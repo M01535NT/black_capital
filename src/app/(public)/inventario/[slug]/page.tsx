@@ -11,12 +11,11 @@ import { PropertyDescription } from "@/components/property/PropertyDescription";
 import { PropertyMedia } from "@/components/property/PropertyMedia";
 import { PropertyLocation } from "@/components/property/PropertyLocation";
 import { PropertySidebar } from "@/components/property/PropertySidebar";
-import { ContactCTA } from "@/components/property/ContactCTA";
 import { StickyContactBar } from "@/components/property/StickyContactBar";
 import { PropertyJsonLd } from "@/components/property/PropertyJsonLd";
 import { MortgageCalculator } from "@/components/tools/mortgage-calculator";
 import { FavoriteButton } from "@/components/property/favorite-button";
-import { formatPrice } from "@/lib/format";
+
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 import Link from "next/link";
 
@@ -312,12 +311,6 @@ export default async function PropertyDetailPage({
                 </div>
             </div>
 
-            <ContactCTA
-                variant="sticky"
-                whatsappHref={whatsappHref}
-                priceLabel={formatPrice(property.price, property.currency)}
-            />
-
             {/* Sticky bottom contact bar — mobile only */}
             <StickyContactBar
                 propertyId={property.id}
@@ -327,8 +320,8 @@ export default async function PropertyDetailPage({
                 propertyTitle={property.title}
             />
 
-            {/* Spacer for sticky mobile CTA + WhatsApp float */}
-            <div className="lg:hidden h-28" />
+            {/* Spacer for sticky mobile CTA */}
+            <div className="lg:hidden h-20" />
             </div>
         </>
     );

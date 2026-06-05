@@ -80,7 +80,9 @@ export function BrandInventory({
     };
 
     return (
-        <section className="w-full py-28 bg-background relative overflow-hidden">
+        <section
+            aria-label={`Inventario ${propertyUse}`}
+            className="w-full py-28 bg-background relative overflow-hidden">
             {/* Top separator */}
             <div className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${accent.separator} to-transparent`} />
 

@@ -38,10 +38,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/login", "[API /admin/login] Error:", err);
-    return NextResponse.json(
-      { error: "Error interno" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: `Error al iniciar sesión: ${message}` }, { status: 500 });
   }
 }

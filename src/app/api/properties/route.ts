@@ -12,6 +12,28 @@ const ALLOWED_COLUMNS = new Set([
   "custom_attributes", "images", "documents",
 ]);
 
+/**
+ * Traduce errores de Supabase a mensajes descriptivos en español
+ */
+function translateError(error: { code?: string; message?: string; details?: string }): string {
+    const msg = error.message || "";
+    const code = error.code || "";
+
+    if (code === "23505" || msg.includes("duplicate key") || msg.includes("unique constraint")) {
+        if (msg.includes("properties_slug_key") || msg.includes("slug")) {
+            return "Ya existe una propiedad con ese slug. Cambia el título o el slug manualmente.";
+        }
+        return "Ya existe un registro con ese valor. Verifica los datos.";
+    }
+    if (code === "23503" || msg.includes("foreign key")) {
+        return "No se puede realizar la operación porque hay datos relacionados.";
+    }
+    if (code === "42501" || msg.includes("permission")) {
+        return "No tienes permisos para realizar esta acción.";
+    }
+    return msg || "Error desconocido al procesar la solicitud";
+}
+
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
@@ -92,7 +114,7 @@ export async function POST(req: NextRequest) {
 
     if (error) {
       logger.error("API/properties", "[API /properties POST] Supabase error:", error);
-      return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ error: translateError(error) }, { status: 400 });
     }
 
     // Sync agent assignments — propagate error
@@ -108,11 +130,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ property }, { status: 201 });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/properties", "[API /properties POST] Unexpected error:", err);
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: `Error al crear propiedad: ${message}` }, { status: 500 });
   }
 }
 
@@ -151,7 +171,7 @@ export async function PUT(req: NextRequest) {
 
     if (error) {
       logger.error("API/properties", "[API /properties PUT] Supabase error:", error);
-      return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ error: translateError(error) }, { status: 400 });
     }
 
     if (agent_ids && Array.isArray(agent_ids)) {
@@ -166,15 +186,13 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({ property }, { status: 200 });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/properties", "[API /properties PUT] Unexpected error:", err);
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: `Error al actualizar propiedad: ${message}` }, { status: 500 });
   }
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
     if (!(await checkAuth())) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
@@ -192,8 +210,9 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ properties: properties || [] });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/properties", "[API /properties GET]", err);
-    return NextResponse.json({ error: "Error interno" }, { status: 500 });
+    return NextResponse.json({ error: `Error al obtener propiedades: ${message}` }, { status: 500 });
   }
 }
 
@@ -214,12 +233,13 @@ export async function DELETE(req: NextRequest) {
 
     if (error) {
       logger.error("API/properties", "[API /properties DELETE]", error);
-      return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ error: translateError(error) }, { status: 400 });
     }
 
     return NextResponse.json({ success: true });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/properties", "[API /properties DELETE]", err);
-    return NextResponse.json({ error: "Error interno" }, { status: 500 });
+    return NextResponse.json({ error: `Error al eliminar propiedad: ${message}` }, { status: 500 });
   }
 }

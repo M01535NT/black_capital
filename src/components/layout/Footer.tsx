@@ -73,14 +73,14 @@ function FooterNewsletter() {
                 placeholder="Tu correo corporativo"
                 autoComplete="email"
                 aria-label="Correo para suscribirse al directorio"
-                className="flex-1 bg-black/60 border-white/15 text-foreground placeholder:text-foreground/40 focus-visible:ring-gold-solid"
+                className="flex-1 bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-gold-mid px-0 py-2 text-sm font-light"
             />
             <Button
                 type="submit"
-                className="bg-gold-solid text-black hover:bg-gold-400 font-display text-xs font-bold uppercase tracking-eyebrow px-5 rounded-full"
+                className="brushed-gold text-sm font-bold tracking-wide px-8 py-4 rounded-2xl hover:brightness-105 hover:scale-[1.02] transition-all duration-300"
             >
                 Suscribir
-                <ArrowRight className="w-3.5 h-3.5 ml-1.5" aria-hidden="true" />
+                <span className="ml-1.5 text-base">&rarr;</span>
             </Button>
         </form>
     );
@@ -102,7 +102,7 @@ export function Footer() {
                 Second primary CTA of the page. Catches the user who scrolled
                 past the LeadMagnet form but is still considering. */}
             <div className="w-full border-y border-gold-500/15 bg-gradient-to-b from-zinc-950/60 to-background">
-                <div className="container mx-auto px-4 py-12 md:py-16">
+                <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                         <div>
                             <span className="font-display text-caption font-bold uppercase tracking-eyebrow text-gold-solid">
@@ -127,7 +127,7 @@ export function Footer() {
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-500/40 to-transparent pointer-events-none" />
 
             <FadeIn direction="up" delay={0.1}>
-                <div className="container mx-auto px-4 pt-12">
+                <div className="max-w-7xl mx-auto px-4 pt-12">
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-10">
                         {/* Brand */}
                         <div className="md:col-span-4 space-y-4">

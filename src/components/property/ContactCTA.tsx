@@ -16,7 +16,7 @@ export function ContactCTA({
 }) {
     if (variant === "sticky") {
         return (
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 p-3 bg-background/95 backdrop-blur-xl border-t border-foreground/10 safe-area-pb">
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 p-3 bg-[#0A0A0A]/95 backdrop-blur-xl border-t border-white/[0.06] shadow-2xl" style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))' }}>
                 <div className="flex items-center gap-3">
                     {priceLabel && (
                         <div className="flex-1 min-w-0">
@@ -50,10 +50,10 @@ export function ContactCTA({
                     Solicita información detallada o agenda una visita.
                 </p>
                 <a
-                    href={whatsappHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full py-3 rounded-full bg-gold-500 text-black font-semibold text-sm hover:bg-gold-400 transition-colors shadow-lg shadow-gold-500/25 active:scale-[0.98]"
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full py-3 rounded-full brushed-gold text-sm font-bold tracking-wide transition-all duration-300 hover:brightness-105"
                 >
                     <MessageCircle className="size-4" />
                     Contactar por WhatsApp

@@ -66,10 +66,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url: publicUrlData.publicUrl, path: data.path });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/upload", "[Upload] Unexpected error:", err);
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Error interno" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: `Error al subir archivo: ${message}` }, { status: 500 });
   }
 }

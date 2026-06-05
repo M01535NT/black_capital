@@ -63,8 +63,9 @@ export async function GET() {
 
     return NextResponse.json({ agents: agents || [] });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/agents", "[API /agents GET]", err);
-    return NextResponse.json({ error: "Error interno" }, { status: 500 });
+    return NextResponse.json({ error: `Error al obtener agentes: ${message}` }, { status: 500 });
   }
 }
 
@@ -107,10 +108,8 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ agent }, { status: 201 });
     } catch (err) {
-        return NextResponse.json(
-            { error: err instanceof Error ? err.message : "Error interno del servidor" },
-            { status: 500 }
-        );
+        const message = err instanceof Error ? err.message : "Error interno del servidor";
+        return NextResponse.json({ error: `Error en operación de agente: ${message}` }, { status: 500 });
     }
 }
 
@@ -153,10 +152,8 @@ export async function PUT(req: NextRequest) {
 
         return NextResponse.json({ agent }, { status: 200 });
     } catch (err) {
-        return NextResponse.json(
-            { error: err instanceof Error ? err.message : "Error interno del servidor" },
-            { status: 500 }
-        );
+        const message = err instanceof Error ? err.message : "Error interno del servidor";
+        return NextResponse.json({ error: `Error en operación de agente: ${message}` }, { status: 500 });
     }
 }
 
@@ -197,9 +194,7 @@ export async function DELETE(req: NextRequest) {
 
         return NextResponse.json({ success: true }, { status: 200 });
     } catch (err) {
-        return NextResponse.json(
-            { error: err instanceof Error ? err.message : "Error interno del servidor" },
-            { status: 500 }
-        );
+        const message = err instanceof Error ? err.message : "Error interno del servidor";
+        return NextResponse.json({ error: `Error en operación de agente: ${message}` }, { status: 500 });
     }
 }

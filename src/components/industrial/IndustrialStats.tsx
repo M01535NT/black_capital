@@ -14,10 +14,10 @@
 import { SubBrandStats, type StatItem } from "@/components/shared/SubBrandStats";
 
 const stats: StatItem[] = [
-    { value: 250000, label: "m² en Portafolio", suffix: "+", prefix: "" },
+    { value: 250, label: "Mil m² Portafolio", suffix: "K+", prefix: "" },
     { value: 45, label: "Naves Activas", suffix: "+", prefix: "" },
-    { value: 12, label: "Parques Logísticos", suffix: "+", prefix: "" },
-    { value: 8, label: "Estados Cubiertos", suffix: "", prefix: "" },
+    { value: 8, label: "Estados", suffix: "", prefix: "" },
+    { value: 12, label: "Años Track Record", suffix: "+", prefix: "" },
 ];
 
 export function IndustrialStats() {

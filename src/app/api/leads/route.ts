@@ -11,7 +11,7 @@ async function checkAuth(): Promise<boolean> {
   return !!(session?.value && (await validateSessionToken(session.value)));
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
     if (!(await checkAuth())) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
@@ -19,8 +19,9 @@ export async function GET(req: NextRequest) {
     const newCount = await getLeadsCount("new");
     return NextResponse.json({ newCount });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/leads", "[API /leads GET]", err);
-    return NextResponse.json({ error: "Error interno" }, { status: 500 });
+    return NextResponse.json({ error: `Error al obtener leads: ${message}` }, { status: 500 });
   }
 }
 
@@ -72,8 +73,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ lead: data }, { status: 201 });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/leads", "[API /leads POST]", err);
-    return NextResponse.json({ error: "Error interno" }, { status: 500 });
+    return NextResponse.json({ error: `Error al crear lead: ${message}` }, { status: 500 });
   }
 }
 
@@ -115,7 +117,8 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({ lead: data });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/leads", "[API /leads PUT]", err);
-    return NextResponse.json({ error: "Error interno" }, { status: 500 });
+    return NextResponse.json({ error: `Error al actualizar lead: ${message}` }, { status: 500 });
   }
 }

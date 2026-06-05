@@ -56,3 +56,7 @@ ts_errors.txt
 
 # Supabase CLI temp files
 /supabase/.temp/
+
+# WebP optimized assets — generated from PNG sources at build time.
+# Keep PNG originals; WebP is produced by asset pipeline.
+/public/*.webp
