@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Logo } from "./Logo";
 import {
     Drawer,
     DrawerContent,
@@ -232,23 +233,16 @@ export function Header() {
             className={cn(
                 "fixed top-5 left-1/2 -translate-x-1/2 w-[92%] max-w-7xl z-50",
                 "px-4 md:px-6 py-2 flex items-center justify-between gap-2",
-                "bg-black/75 backdrop-blur-xl border border-white/10 rounded-full",
-                "transition-[background-color,border-color,box-shadow] duration-300",
+                // Smoother scroll: 400ms ease on bg + border + shadow
+                "bg-black/70 backdrop-blur-xl border border-white/10 rounded-full",
+                "transition-all duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                 scrolled &&
-                    "bg-black/92 border-gold-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.6)]",
+                    "bg-black/90 border-gold-500/25 shadow-[0_10px_40px_rgba(0,0,0,0.6)] backdrop-saturate-150",
             )}
             role="banner"
         >
             {/* Left: Logo */}
-            <Link
-                href="/"
-                className="flex-shrink-0"
-                aria-label="Black Corporativo — Inicio"
-            >
-                <span className="font-display font-bold text-lg md:text-xl tracking-tight text-foreground whitespace-nowrap">
-                    BLACK <span className="text-gold-solid">CORP</span>
-                </span>
-            </Link>
+            <Logo href="/" variant="mark" size="sm" tone="gold" className="flex-shrink-0" />
 
             {/* Center: Desktop Navigation */}
             <nav
@@ -302,7 +296,7 @@ export function Header() {
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="hover:text-gold-solid text-foreground"
+                            className="lg:hidden hover:text-gold-solid text-foreground"
                             aria-label="Abrir menú de navegación"
                             aria-expanded={drawerOpen}
                         >

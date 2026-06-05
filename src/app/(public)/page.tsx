@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Hero } from "@/components/home/Hero";
 import { BottomMarquee } from "@/components/home/Marquees";
 import { BrandsGrid } from "@/components/home/BrandsGrid";
+import { ComoTrabajamos } from "@/components/home/ComoTrabajamos";
 import { FeaturedInventory } from "@/components/home/FeaturedInventory";
 import { SocialProof } from "@/components/home/SocialProof";
 import { LeadMagnet } from "@/components/home/LeadMagnet";
@@ -56,6 +57,7 @@ export default async function HomePage() {
         <>
             <Hero />
             <BrandsGrid />
+            <ComoTrabajamos />
             <FeaturedInventory />
             <SocialProof />
             <BottomMarquee />

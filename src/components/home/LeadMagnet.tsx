@@ -128,8 +128,8 @@ export function LeadMagnet() {
                             <div className="flex flex-col md:flex-row gap-12 relative z-10">
                                 {/* Left Copy */}
                                 <div className="flex-1 space-y-6">
-                                    <span className="animate-gold-shimmer font-bold uppercase tracking-eyebrow text-sm">
-                                        Acceso Privilegiado
+                                    <span className="font-display text-caption font-bold uppercase tracking-eyebrow text-gold-solid">
+                                        Directorio de Inversores · Q3 2026
                                     </span>
                                     <h2
                                         id="leadmagnet-title"
@@ -143,6 +143,31 @@ export function LeadMagnet() {
                                         acceso a inventario Off-Market antes de
                                         su publicación general.
                                     </p>
+                                    <ul className="space-y-2 text-body-sm text-foreground/55 pt-2">
+                                        <li className="flex items-start gap-2">
+                                            <span
+                                                className="mt-1.5 w-1 h-1 rounded-full bg-gold-solid flex-shrink-0"
+                                                aria-hidden="true"
+                                            />
+                                            Reportes trimestrales de mercado
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span
+                                                className="mt-1.5 w-1 h-1 rounded-full bg-gold-solid flex-shrink-0"
+                                                aria-hidden="true"
+                                            />
+                                            Alertas Off-Market con 48h de
+                                            anticipación
+                                        </li>
+                                        <li className="flex items-start gap-2">
+                                            <span
+                                                className="mt-1.5 w-1 h-1 rounded-full bg-gold-solid flex-shrink-0"
+                                                aria-hidden="true"
+                                            />
+                                            Acceso a modelo financiero por
+                                            activo
+                                        </li>
+                                    </ul>
                                 </div>
 
                                 {/* Right Form */}
@@ -169,13 +194,13 @@ export function LeadMagnet() {
                                             <div>
                                                 <label
                                                     htmlFor="full_name"
-                                                    className="sr-only"
+                                                    className="block text-caption uppercase tracking-overline text-foreground/55 mb-1.5 font-sans font-semibold"
                                                 >
                                                     Nombre Completo
                                                 </label>
                                                 <Input
                                                     id="full_name"
-                                                    placeholder="Nombre Completo"
+                                                    placeholder="Tu nombre"
                                                     autoComplete="name"
                                                     aria-invalid={
                                                         hasErr("full_name") ||
@@ -186,7 +211,7 @@ export function LeadMagnet() {
                                                             ? errNameId
                                                             : undefined
                                                     }
-                                                    className={`bg-black/50 border-white/10 text-foreground placeholder:text-foreground/50 focus-visible:ring-gold-500 ${
+                                                    className={`bg-black/50 border-white/10 text-foreground placeholder:text-foreground/40 focus-visible:ring-gold-500 ${
                                                         hasErr("full_name")
                                                             ? "border-red-500/60 focus-visible:ring-red-500/40"
                                                             : ""
@@ -203,15 +228,18 @@ export function LeadMagnet() {
                                             <div>
                                                 <label
                                                     htmlFor="company"
-                                                    className="sr-only"
+                                                    className="block text-caption uppercase tracking-overline text-foreground/55 mb-1.5 font-sans font-semibold"
                                                 >
-                                                    Empresa o Fondo
+                                                    Empresa o Fondo{" "}
+                                                    <span className="text-foreground/30 normal-case">
+                                                        · opcional
+                                                    </span>
                                                 </label>
                                                 <Input
                                                     id="company"
-                                                    placeholder="Empresa o Fondo"
+                                                    placeholder="Para inversores institucionales"
                                                     autoComplete="organization"
-                                                    className="bg-black/50 border-white/10 text-foreground placeholder:text-foreground/50 focus-visible:ring-gold-500"
+                                                    className="bg-black/50 border-white/10 text-foreground placeholder:text-foreground/40 focus-visible:ring-gold-500"
                                                     value={company}
                                                     onChange={(e) =>
                                                         setCompany(
@@ -226,14 +254,14 @@ export function LeadMagnet() {
                                             <div>
                                                 <label
                                                     htmlFor="email"
-                                                    className="sr-only"
+                                                    className="block text-caption uppercase tracking-overline text-foreground/55 mb-1.5 font-sans font-semibold"
                                                 >
                                                     Correo Corporativo
                                                 </label>
                                                 <Input
                                                     id="email"
                                                     type="email"
-                                                    placeholder="Correo Corporativo"
+                                                    placeholder="nombre@empresa.com"
                                                     autoComplete="email"
                                                     aria-invalid={
                                                         hasErr("email") ||
@@ -244,7 +272,7 @@ export function LeadMagnet() {
                                                             ? errEmailId
                                                             : undefined
                                                     }
-                                                    className={`bg-black/50 border-white/10 text-foreground placeholder:text-foreground/50 focus-visible:ring-gold-500 ${
+                                                    className={`bg-black/50 border-white/10 text-foreground placeholder:text-foreground/40 focus-visible:ring-gold-500 ${
                                                         hasErr("email")
                                                             ? "border-red-500/60 focus-visible:ring-red-500/40"
                                                             : ""
@@ -261,14 +289,17 @@ export function LeadMagnet() {
                                             <div>
                                                 <label
                                                     htmlFor="phone"
-                                                    className="sr-only"
+                                                    className="block text-caption uppercase tracking-overline text-foreground/55 mb-1.5 font-sans font-semibold"
                                                 >
-                                                    Teléfono (Opcional)
+                                                    Teléfono{" "}
+                                                    <span className="text-foreground/30 normal-case">
+                                                        · opcional
+                                                    </span>
                                                 </label>
                                                 <Input
                                                     id="phone"
                                                     type="tel"
-                                                    placeholder="Teléfono (Opcional)"
+                                                    placeholder="Te contactamos por WhatsApp"
                                                     autoComplete="tel"
                                                     aria-invalid={
                                                         hasErr("phone") ||
@@ -279,7 +310,7 @@ export function LeadMagnet() {
                                                             ? errPhoneId
                                                             : undefined
                                                     }
-                                                    className={`bg-black/50 border-white/10 text-foreground placeholder:text-foreground/50 focus-visible:ring-gold-500 ${
+                                                    className={`bg-black/50 border-white/10 text-foreground placeholder:text-foreground/40 focus-visible:ring-gold-500 ${
                                                         hasErr("phone")
                                                             ? "border-red-500/60 focus-visible:ring-red-500/40"
                                                             : ""

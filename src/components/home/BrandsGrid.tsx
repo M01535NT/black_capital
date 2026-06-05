@@ -58,7 +58,7 @@ export function BrandsGrid() {
                             <Link
                                 href={brand.href}
                                 aria-label={`Explorar ${brand.name}`}
-                                className="group relative overflow-hidden rounded-2xl img-zoom hover-lift aspect-square md:aspect-[4/5] flex flex-col justify-end p-8 border border-foreground/5 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl hover:shadow-gold-500/20 hover:border-gold-500/30"
+                                className="group relative overflow-hidden rounded-2xl img-zoom hover-lift aspect-square md:aspect-[4/5] flex flex-col justify-end p-8 border border-foreground/5 transition-all duration-500 hover:scale-[1.015] hover:shadow-2xl hover:shadow-gold-500/15 hover:border-gold-500/30"
                             >
                                 {/* Background Image */}
                                 <Image
@@ -67,31 +67,23 @@ export function BrandsGrid() {
                                     fill
                                     sizes="(max-width: 768px) 100vw, 33vw"
                                     placeholder="blur"
-                                    className="object-cover transition-all duration-700 group-hover:brightness-110 group-hover:scale-110"
+                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                                 />
 
-                                {/* Dark gradient overlay for readability */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-70 group-hover:opacity-85 transition-opacity duration-500" />
+                                {/* Dark gradient overlay for readability — slightly stronger on hover */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/20 opacity-80 group-hover:opacity-95 transition-opacity duration-500" />
 
-                                {/* Glassmorphic overlay on hover */}
-                                <div className="absolute inset-0 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-                                {/* Gold border glow */}
+                                {/* Gold border glow on hover (single restrained accent) */}
                                 <div className="absolute inset-0 rounded-2xl ring-1 ring-gold-500/0 group-hover:ring-gold-500/30 transition-all duration-500 pointer-events-none" />
 
-                                {/* Shine effect on hover */}
-                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-                                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                                </div>
-
-                                <div className="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <div className="relative z-10">
                                     <h3 className="text-display-4 text-foreground mb-2">
                                         {brand.name}
                                     </h3>
-                                    <p className="text-body-sm text-foreground/70 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                                    <p className="text-body-sm text-foreground/70 mb-6 max-h-0 overflow-hidden opacity-0 group-hover:max-h-24 group-hover:opacity-100 transition-all duration-500">
                                         {brand.description}
                                     </p>
-                                    <div className="inline-flex items-center gap-2 text-gold-500 font-display font-bold uppercase tracking-wide-display text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
+                                    <div className="inline-flex items-center gap-2 text-gold-500 font-display font-bold uppercase tracking-wide-display text-xs">
                                         Explorar Portafolio{" "}
                                         <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
                                     </div>

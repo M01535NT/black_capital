@@ -109,6 +109,14 @@ export default function RootLayout({
             `,
           }}
         />
+        <noscript>
+          <style>{`
+            /* When JS is off, suppress framer-motion's hidden initial state
+               (opacity:0) so the hero and animated sections stay visible. */
+            [style*="opacity: 0"] { opacity: 1 !important; }
+            [style*="transform: translate"] { transform: none !important; }
+          `}</style>
+        </noscript>
       </head>
       <body
         className={`${inter.variable} ${montserrat.variable} antialiased min-h-screen flex flex-col bg-background text-foreground`}

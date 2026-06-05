@@ -60,6 +60,15 @@ export async function SocialProof() {
                 aria-live="polite"
             >
                 <div className="container mx-auto px-4">
+                    <div className="text-center max-w-2xl mx-auto mb-12">
+                        <span className="font-display text-caption font-bold uppercase tracking-eyebrow text-gold-solid">
+                            Track Record
+                        </span>
+                        <p className="text-body text-foreground/60 mt-3">
+                            Cifras consolidadas al cierre del último trimestre
+                            fiscal, auditadas internamente.
+                        </p>
+                    </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                         {items.map((stat, i) => (
                             <div

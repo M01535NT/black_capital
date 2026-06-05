@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import Link from "next/link";
+import { ChevronDown, ArrowRight, CalendarCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { TopMarquee } from "./Marquees";
 
-const words = ["Legado", "Futuro", "Expansión"];
+const words = ["Patrimonio", "Visión", "Capital"];
 
 /* ── Staggered Letter Reveal Component ─────────────────────────────── */
 function StaggeredWord({ word, className }: { word: string; className?: string }) {
@@ -61,57 +63,58 @@ function StaggeredWord({ word, className }: { word: string; className?: string }
     );
 }
 
-/* Detect coarse pointer (mobile/tablet) at hook level so we never
-   mount the cursor-follow glow on touch devices. */
-function useIsCoarsePointer(): boolean {
-    const [coarse, setCoarse] = useState(false);
+/**
+ * Conditionally render the hero video. We skip the `<video>` tag entirely on
+ * (a) touch-only devices, (b) when `prefers-reduced-motion: reduce`, and
+ * (c) when the effective network type looks slow (3g / slow-2g). The poster
+ * frame still paints from the SVG, so first paint is never a black void.
+ *
+ * Trade-off: this hook only runs on the client, so the server-rendered HTML
+ * includes the `<video>` and React swaps it for the poster on the first
+ * hydration tick. That is acceptable because the `<video>` is decorative,
+ * `aria-hidden`, and the poster is identical visually.
+ */
+function useShouldRenderVideo(): boolean {
+    const [render, setRender] = useState(true);
+
     useEffect(() => {
-        const mq = window.matchMedia("(pointer: coarse)");
-        const update = () => setCoarse(mq.matches);
-        update();
-        mq.addEventListener("change", update);
-        return () => mq.removeEventListener("change", update);
+        if (typeof window === "undefined") return;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            setRender(false);
+            return;
+        }
+        if (window.matchMedia("(pointer: coarse)").matches) {
+            setRender(false);
+            return;
+        }
+        const conn = (navigator as Navigator & {
+            connection?: { effectiveType?: string; saveData?: boolean };
+        }).connection;
+        if (conn?.saveData) {
+            setRender(false);
+            return;
+        }
+        if (conn?.effectiveType && /^(slow-2g|2g|3g)$/.test(conn.effectiveType)) {
+            setRender(false);
+            return;
+        }
     }, []);
-    return coarse;
+
+    return render;
 }
 
 export function Hero() {
     const [index, setIndex] = useState(0);
     const shouldReduceMotion = useReducedMotion();
-    const isCoarsePointer = useIsCoarsePointer();
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const rafId = useRef<number | null>(null);
+    const shouldRenderVideo = useShouldRenderVideo();
 
     useEffect(() => {
         if (shouldReduceMotion) return;
-
-        // Throttle the cursor follow with rAF: only commit to state
-        // when the browser is ready to paint the next frame, so we
-        // avoid 1 re-render per mousemove (was 60–120 Hz on a fast mouse).
-        const handleMouseMove = (e: MouseEvent) => {
-            if (rafId.current !== null) return;
-            rafId.current = window.requestAnimationFrame(() => {
-                setMousePos({ x: e.clientX, y: e.clientY });
-                rafId.current = null;
-            });
-        };
-
-        window.addEventListener("mousemove", handleMouseMove, { passive: true });
-
         const intervalId = setInterval(() => {
             setIndex((prev) => (prev + 1) % words.length);
         }, 3500);
-
-        return () => {
-            window.removeEventListener("mousemove", handleMouseMove);
-            if (rafId.current !== null) {
-                window.cancelAnimationFrame(rafId.current);
-            }
-            clearInterval(intervalId);
-        };
+        return () => clearInterval(intervalId);
     }, [shouldReduceMotion]);
-
-    const showCursorGlow = !shouldReduceMotion && !isCoarsePointer;
 
     return (
         <section
@@ -121,26 +124,37 @@ export function Hero() {
             {/* ── Video Background ──
                 poster: shows immediately so first paint is not the black void
                 preload="metadata": only fetches the metadata first, full bytes
-                stream once autoplay starts (browser heuristics) */}
-            <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster="/hero-poster.svg"
-                className="absolute inset-0 w-full h-full object-cover z-[-2]"
-                aria-hidden="true"
-            >
-                <source src="/hero.webm" type="video/webm" />
-            </video>
+                stream once autoplay starts (browser heuristics).
+                Render is gated by useShouldRenderVideo to spare mobile data. */}
+            {shouldRenderVideo && (
+                <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    poster="/hero-poster.svg"
+                    className="absolute inset-0 w-full h-full object-cover z-[-2]"
+                    aria-hidden="true"
+                >
+                    <source src="/hero.webm" type="video/webm" />
+                </video>
+            )}
+            {/* ── Static poster fallback (also used on its own when video is skipped) ── */}
+            {!shouldRenderVideo && (
+                <div
+                    className="absolute inset-0 bg-cover bg-center z-[-2]"
+                    style={{ backgroundImage: "url(/hero-poster.svg)" }}
+                    aria-hidden="true"
+                />
+            )}
 
             {/* ── Layered Dark Overlay ──
                 gradient is more refined than a flat black/60: the top fades
                 to almost transparent (lets the gold poster glow through),
                 the middle anchors the text, the bottom prepares the
                 transition into the marquee. */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/55 to-black/80 z-[-1]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/85 z-[-1]" />
 
             {/* ── Editorial corner markers (always visible) ──
                 Small gold "BC" mark in the top-left, mirrored with the
@@ -172,23 +186,19 @@ export function Hero() {
                 className="absolute top-0 right-6 md:right-10 bottom-32 w-px bg-gradient-to-b from-gold-500/40 via-gold-500/10 to-transparent hidden md:block"
             />
 
-            {/* ── Cursor Follow Glow (desktop only) ──
-                mix-blend-screen makes the gold feel like real light
-                bleeding through the dark gradient instead of a flat blob. */}
-            {showCursorGlow && (
-                <motion.div
-                    className="absolute w-[480px] h-[480px] rounded-full bg-gold-500/10 blur-[120px] pointer-events-none z-0 mix-blend-screen"
-                    animate={{
-                        x: mousePos.x - 240,
-                        y: mousePos.y - 240,
-                    }}
-                    transition={{ type: "spring", damping: 30, stiffness: 150 }}
-                />
-            )}
-
             {/* ── Content ── */}
             <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12">
-                <div className="max-w-5xl space-y-12">
+                <div className="max-w-5xl space-y-8 md:space-y-10">
+                    {/* ── Eyebrow ── */}
+                    <motion.span
+                        initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                        className="inline-block font-display text-caption font-bold uppercase tracking-eyebrow text-gold-solid"
+                    >
+                        Boutique Inmobiliaria · México
+                    </motion.span>
+
                     {/* ── Main Headline ── */}
                     <motion.h1
                         initial={shouldReduceMotion ? {} : { opacity: 0, x: -50 }}
@@ -196,7 +206,7 @@ export function Hero() {
                         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                         className="text-display-1 font-display font-bold tracking-display uppercase text-foreground"
                     >
-                        Impulsamos <br />
+                        Estructuramos <br className="hidden sm:block" />
                         tu{" "}
                         {/* ── Staggered Letter Reveal (PRD requirement) ── */}
                         <span
@@ -230,7 +240,7 @@ export function Hero() {
                         className="w-24 h-px bg-gradient-to-r from-gold-500 to-gold-700 origin-left"
                     />
 
-                    {/* ── Subtitle ── */}
+                    {/* ── Value proposition (concrete, B2B) ── */}
                     <motion.p
                         initial={shouldReduceMotion ? {} : { opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -239,9 +249,62 @@ export function Hero() {
                             delay: shouldReduceMotion ? 0 : 0.5,
                             ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="text-body text-foreground/50 max-w-xl uppercase tracking-hero font-medium"
+                        className="text-body-lg md:text-body-xl text-foreground/75 max-w-2xl leading-relaxed"
                     >
-                        Generando valor para ti.
+                        Adquisición, estructuración y disposición de activos
+                        inmobiliarios premium —residenciales, comerciales e
+                        industriales— para inversores institucionales y
+                        family offices en México.
+                    </motion.p>
+
+                    {/* ── Primary + secondary CTA ── */}
+                    <motion.div
+                        initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                            duration: 0.8,
+                            delay: shouldReduceMotion ? 0 : 0.7,
+                            ease: [0.22, 1, 0.36, 1],
+                        }}
+                        className="flex flex-col sm:flex-row gap-3 pt-2"
+                    >
+                        <Button
+                            asChild
+                            size="lg"
+                            className="bg-gold-solid text-black hover:bg-gold-400 font-display text-xs font-bold uppercase tracking-eyebrow px-7 py-6 rounded-full shadow-[0_8px_24px_rgba(212,175,55,0.18)] hover:shadow-[0_8px_32px_rgba(212,175,55,0.32)] transition-all duration-300"
+                        >
+                            <Link href="/inventario">
+                                Ver Inventario Exclusivo
+                                <ArrowRight
+                                    className="w-4 h-4 ml-2"
+                                    aria-hidden="true"
+                                />
+                            </Link>
+                        </Button>
+                        <Button
+                            asChild
+                            size="lg"
+                            variant="outline"
+                            className="border-foreground/30 text-foreground hover:border-gold-solid hover:text-gold-solid hover:bg-transparent font-display text-xs font-bold uppercase tracking-eyebrow px-7 py-6 rounded-full transition-all duration-300"
+                        >
+                            <Link href="/contacto">
+                                <CalendarCheck
+                                    className="w-4 h-4 mr-2"
+                                    aria-hidden="true"
+                                />
+                                Agendar Asesoría
+                            </Link>
+                        </Button>
+                    </motion.div>
+
+                    {/* ── Trust microline (year, scope) ── */}
+                    <motion.p
+                        initial={shouldReduceMotion ? {} : { opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.1, duration: 0.8 }}
+                        className="font-display text-caption uppercase tracking-overline text-foreground/40 pt-2"
+                    >
+                        Más de 12 años · CDMX · Monterrey · Guadalajara · Tijuana
                     </motion.p>
                 </div>
             </div>
@@ -253,7 +316,7 @@ export function Hero() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2, duration: 1 }}
-                className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3"
+                className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 hidden sm:flex flex-col items-center gap-3"
             >
                 <span className="text-caption uppercase tracking-eyebrow text-foreground/50 font-medium">
                     Descubre más
