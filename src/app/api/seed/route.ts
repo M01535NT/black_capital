@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { validateSessionToken } from "@/lib/auth";
+import type { Database } from "@/types/database.types";
 
+type PropertyRow = Database["public"]["Tables"]["properties"]["Row"];
 // Same seed data as before — kept brief for space
 const seedProperties = [
   { title: "Residencia de Autor en Valle Real", slug: "residencia-autor-valle-real", description: "Espectacular residencia de 850 m² construidos sobre terreno de 1,200 m² en la zona más exclusiva de Valle Real, Zapopan.", property_use: "Residencial", property_type: "Casa", business_type: "Venta", price: 45000000, currency: "MXN", m2_construction: 850, m2_terrain: 1200, address: "Valle Real, Zapopan, Jalisco", cover_image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", is_project: false, is_assignment: false, is_featured: true, status: "Available" },
@@ -55,9 +57,9 @@ export async function POST(request: Request) {
     success: true,
     seededRows: data.length,
     breakdown: {
-      luxury: data.filter((p: any) => p.property_use === "Residencial").length,
-      business: data.filter((p: any) => p.property_use === "Comercial").length,
-      industrial: data.filter((p: any) => p.property_use === "Industrial").length,
+      luxury: data.filter((p: PropertyRow) => p.property_use === "Residencial").length,
+      business: data.filter((p: PropertyRow) => p.property_use === "Comercial").length,
+      industrial: data.filter((p: PropertyRow) => p.property_use === "Industrial").length,
     },
   });
 }

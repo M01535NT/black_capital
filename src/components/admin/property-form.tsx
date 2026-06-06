@@ -33,11 +33,16 @@ import { AgentSelect } from "./agent-select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
+import type { Database } from "@/types/database.types";
+
+type PropertyRow = Database["public"]["Tables"]["properties"]["Row"];
+
 interface PdfEntry {
     file: File;
     label: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- initialData is partially-typed DB row; zod validates at runtime
 export function PropertyForm({ initialData }: { initialData?: any }) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -215,7 +220,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
 
             // Step 2: Upload documents (multiple PDFs)
             let documents: { label: string; url: string }[] = [];
-            let uploadWarnings: string[] = [];
+            const uploadWarnings: string[] = [];
             if (pdfEntries.length > 0 && propertyData) {
                 try {
                     documents = await uploadDocuments(propertyData.id);

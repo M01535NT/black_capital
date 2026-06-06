@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Eyebrow } from "@/components/shared/eyebrow";
 
 interface Linea {
   id: string;
@@ -103,12 +104,7 @@ export function InvestmentTabs() {
       <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16">
         {/* ── Header ── */}
         <div className="mb-14 sm:mb-20 max-w-3xl">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="h-px w-10 bg-[var(--color-accent)]/60" />
-            <span className="text-[11px] tracking-[0.22em] uppercase text-white/70 font-semibold">
-              Tres líneas de inversión
-            </span>
-          </div>
+          <Eyebrow label="Tres líneas de inversión" />
           <h2 className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-light text-white leading-[1.05] tracking-[-0.03em] mb-5">
             Elige la que va <span className="metallic-gold-static">contigo</span>.
           </h2>

@@ -28,6 +28,13 @@ const nextConfig: NextConfig = {
         destination: "/legal/terminos-condiciones",
         permanent: true,
       },
+      // Canonical domain redirect (Jun 2026)
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "black-corporativo.com" }],
+        destination: "https://blackcorporativo.com/:path*",
+        permanent: true,
+      },
     ];
   },
   images: {

@@ -1,5 +1,6 @@
 import { Counter } from "@/components/ui/counter";
 import { getSocialStats } from "@/lib/stats";
+import { Eyebrow } from "@/components/shared/eyebrow";
 
 /**
  * Track Record — sección de autoridad con 4 columnas separadas por
@@ -56,12 +57,7 @@ export async function TrackRecord() {
         {/* ── Header ── */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-16 sm:mb-24">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="h-px w-10 bg-[var(--color-accent)]/60" />
-              <span className="text-[11px] tracking-[0.22em] uppercase text-white/70 font-semibold">
-                Track Record
-              </span>
-            </div>
+            <Eyebrow label="Track Record" />
             <h2 className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-light text-white leading-[1.05] tracking-[-0.03em]">
               Cifras auditadas.
               <br />

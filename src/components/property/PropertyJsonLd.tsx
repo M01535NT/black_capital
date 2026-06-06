@@ -52,8 +52,8 @@ export function PropertyJsonLd({
     const ld: Record<string, unknown> = {
         '@context': 'https://schema.org',
         '@type': 'RealEstateListing',
-        '@id': `https://blackcorporativo.com${url}`,
-        url: `https://blackcorporativo.com${url}`,
+        '@id': `https://blackcorporativo.vercel.app${url}`,
+        url: `https://blackcorporativo.vercel.app${url}`,
         name: title,
         description: description || `${propertyType} en ${address}`,
         image: coverImage || undefined,
@@ -89,7 +89,7 @@ export function PropertyJsonLd({
             worksFor: {
                 '@type': 'Organization',
                 name: 'Black Corporativo',
-                url: 'https://blackcorporativo.com',
+                url: 'https://blackcorporativo.vercel.app',
             },
         };
     }

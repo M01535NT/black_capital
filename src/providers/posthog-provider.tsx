@@ -32,6 +32,8 @@ function usePostHog(): PostHog | null {
                 "https://us.i.posthog.com",
             capture_pageview: false, // captured manually via PostHogPageView
         });
+        // ✅ Provider init: one-shot PostHog bootstrap, not derived state
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setClient(posthog);
     }, []);
     return client;

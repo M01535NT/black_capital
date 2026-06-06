@@ -102,7 +102,7 @@ export async function POST(req: Request) {
 
         // Build Resend payload
         const resendPayload: Record<string, unknown> = {
-            from: "Black Capital <docs@blackcorporativo.com>",
+            from: "Black Capital <docs@blackcorporativo.vercel.app>",
             to: [email],
             subject: `${docLabel}: ${property.title}`,
             html,

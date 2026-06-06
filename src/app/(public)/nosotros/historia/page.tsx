@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     description:
         "La historia de Black Corporativo: de operar en el mercado inmobiliario de Tijuana a construir una plataforma premium de inversión con presencia en Baja California.",
     alternates: {
-        canonical: "https://blackcorporativo.com/nosotros/historia",
+        canonical: "https://blackcorporativo.vercel.app/nosotros/historia",
     },
 };
 
@@ -55,7 +55,7 @@ export default function HistoriaPage() {
                         </span>
                         <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-display uppercase text-foreground mb-4">
                             De Tijuana para{" "}
-                            <span className="metallic-gold">Inversionistas</span>
+                            <span className="metallic-gold-static">Inversionistas</span>
                         </h1>
                         <p className="text-foreground/50 text-lg max-w-2xl mx-auto">
                             Una historia de crecimiento constante, construida sobre la confianza

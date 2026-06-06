@@ -37,6 +37,7 @@ export default async function AdminPropertyDetailPage({
 
     let agents: { id: string; full_name: string; email: string | null; phone: string | null }[] = [];
     if (assignments && assignments.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase property_agents row
         const agentIds = assignments.map((a: any) => a.agent_id);
         const { data: agentData } = await supabase
             .from("agents")

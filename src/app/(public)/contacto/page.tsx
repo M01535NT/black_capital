@@ -67,7 +67,7 @@ export default function ContactoPage() {
                         </span>
                         <h1 className="text-display-3 font-display font-semibold tracking-display uppercase text-4xl md:text-6xl text-foreground mb-6">
                             Hablemos de{" "}
-                            <span className="metallic-gold">Inversión</span>
+                            <span className="metallic-gold-static">Inversión</span>
                         </h1>
                         <p className="text-foreground/50 text-lg leading-relaxed max-w-2xl mx-auto">
                             Nuestro equipo está listo para atenderte. Ya sea que busques

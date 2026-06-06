@@ -5,7 +5,8 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { PropertyCard, type PropertyCardData } from "@/components/property/PropertyCard";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
+import { Eyebrow } from "@/components/shared/eyebrow";
 
 type FeaturedProperty = PropertyCardData & { property_type: string };
 const SKELETON_COUNT = 6;
@@ -21,7 +22,6 @@ export function InventoryShowcase() {
     setLoading(true);
     setError(null);
     try {
-      const supabase = createClient();
       const { data, error: qe } = await supabase
         .from("properties")
         .select(
@@ -63,12 +63,7 @@ export function InventoryShowcase() {
         {/* ── Header ── */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8 mb-14 sm:mb-20">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="h-px w-10 bg-[var(--color-accent)]/60" />
-              <span className="text-[11px] tracking-[0.22em] uppercase text-white/70 font-semibold">
-                Inventario
-              </span>
-            </div>
+            <Eyebrow label="Inventario" />
             <h2 className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-light text-white leading-[1.05] tracking-[-0.03em] mb-4">
               Propiedades con <span className="metallic-gold-static">potencial real</span>.
             </h2>

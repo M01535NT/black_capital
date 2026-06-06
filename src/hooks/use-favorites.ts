@@ -12,24 +12,27 @@ interface UseFavoritesReturn {
   hydrated: boolean;
 }
 
+function readFavorites(): string[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
+
 export function useFavorites(): UseFavoritesReturn {
-  const [favorites, setFavorites] = useState<string[]>([]);
+  // ✅ Lazy initializer reads localStorage once, no setState in effect needed
+  const [favorites, setFavorites] = useState<string[]>(readFavorites);
   const [hydrated, setHydrated] = useState(false);
 
-  // Hydrate from localStorage on mount
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setFavorites(JSON.parse(stored));
-      }
-    } catch {
-      // localStorage access can fail in some browsers
-    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHydrated(true);
   }, []);
 
-  // Sync to localStorage when favorites change
+  // Sync to localStorage when favorites change (skip initial empty sync)
   useEffect(() => {
     if (!hydrated) return;
     try {
