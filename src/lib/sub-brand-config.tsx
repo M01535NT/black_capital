@@ -133,7 +133,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         hero: {
             brand: "Black Luxury",
             backgroundImage: "/luxury-hero.png",
-            backgroundImageWebp: "/luxury-hero.webp",
+            backgroundImageWebp: "/hero-luxury.webp",
             backgroundAlt: "Casa residencial premium en fraccionamiento privado",
             accent: "gold",
             headline: (
@@ -271,7 +271,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         hero: {
             brand: "Black Business",
             backgroundImage: "/business-hero.png",
-            backgroundImageWebp: "/business-hero.webp",
+            backgroundImageWebp: "/hero-business.webp",
             backgroundAlt: "Local comercial en plaza corporativa de Tijuana",
             accent: "gold",
             headline: (

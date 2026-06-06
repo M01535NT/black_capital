@@ -2,17 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-import brandLuxury from "../../../public/brand-luxury.png";
-import brandLuxuryWebp from "../../../public/brand-luxury.webp";
-import brandBusiness from "../../../public/brand-business.png";
-import brandBusinessWebp from "../../../public/brand-business.webp";
-import brandIndustrial from "../../../public/brand-industrial.png";
-import brandIndustrialWebp from "../../../public/brand-industrial.webp";
 
 interface Linea {
   id: string;
@@ -22,8 +15,7 @@ interface Linea {
   description: string;
   longDescription: string;
   highlights: string[];
-  image: StaticImageData;
-  imageWebp: StaticImageData;
+  image: string;
   badge: string;
   metric: { value: string; label: string }[];
 }
@@ -43,8 +35,7 @@ const LINEAS: Linea[] = [
       "Estructura fiscal para inversionistas",
       "Acompañamiento post-venta",
     ],
-    image: brandLuxury,
-    imageWebp: brandLuxuryWebp,
+    image: "/brand-luxury.webp",
     badge: "Residencial",
     metric: [
       { value: "24+", label: "Activos bajo curaduría" },
@@ -66,8 +57,7 @@ const LINEAS: Linea[] = [
       "Inquilinos AAA verificados",
       "Modelos de salida definidos",
     ],
-    image: brandBusiness,
-    imageWebp: brandBusinessWebp,
+    image: "/brand-business.webp",
     badge: "Comercial",
     metric: [
       { value: "16+", label: "Activos bajo curaduría" },
@@ -89,8 +79,7 @@ const LINEAS: Linea[] = [
       "Build-to-suit disponible",
       "Contratos triple net",
     ],
-    image: brandIndustrial,
-    imageWebp: brandIndustrialWebp,
+    image: "/brand-industrial.webp",
     badge: "Industrial",
     metric: [
       { value: "12+", label: "Activos bajo curaduría" },
@@ -210,16 +199,13 @@ export function InvestmentTabs() {
               >
                 {/* Background image */}
                 <div className="absolute inset-0">
-                  <picture>
-                    <source srcSet={active.imageWebp.src} type="image/webp" />
-                    <Image
-                      src={active.image}
-                      alt={active.name}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 60vw"
-                      className="object-cover"
-                    />
-                  </picture>
+                  <Image
+                    src={active.image}
+                    alt={active.name}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 60vw"
+                    className="object-cover"
+                  />
                   {/* Layered dark overlays */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/55 to-[#050505]/30" />
                   <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#050505]/70" />

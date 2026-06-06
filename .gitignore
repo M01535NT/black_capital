@@ -50,6 +50,18 @@ Thumbs.db
 *.swp
 *.swo
 
+# Audit artifacts (local QA, never commit)
+playwright-audit/
+playwright-report/
+test-results/
+lighthouse-reports/
+
+# TypeScript build cache
+tsconfig.tsbuildinfo
+
+# Hermes project context
+.hermes/
+
 # Temporary files
 *.tmp
 *.temp

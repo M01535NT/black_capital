@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 
@@ -22,14 +22,7 @@ const MARQUEE = [...VALUES, ...VALUES];
 
 export function Hero() {
   const shouldReduceMotion = useReducedMotion();
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [wordIndex, setWordIndex] = useState(0);
-
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v || shouldReduceMotion) return;
-    v.play().catch(() => {});
-  }, [shouldReduceMotion]);
 
   useEffect(() => {
     if (shouldReduceMotion) return;
@@ -48,28 +41,8 @@ export function Hero() {
       {/* ── Top hairline (gold accent, 1px) ── */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent z-30" />
 
-      {/* ── Background ambience (full-bleed, very subtle) ── */}
-      <div className="absolute inset-0 z-0">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="/hero-poster.svg"
-          className="absolute inset-0 w-full h-full object-cover opacity-[0.10]"
-          style={{ filter: "brightness(0.6) contrast(1.15) saturate(0.7)" }}
-        >
-          <source src="/hero.webm" type="video/webm" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-br from-[#050505] via-[#050505]/90 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050505]" />
-        <div className="grain-overlay" />
-      </div>
-
       {/* ── Main content grid (12-col asymmetric) ── */}
-      <div className="relative z-10 w-full max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 py-24 sm:py-28 lg:py-32">
+      <div className="relative z-10 w-full max-w-[90rem] mx-auto px-4 sm:px-10 lg:px-16 py-8 sm:py-28 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center min-h-[68vh]">
           {/* ═══════ LEFT: Title block (cols 1-7) ═══════ */}
           <div className="lg:col-span-7 relative">
@@ -81,16 +54,16 @@ export function Hero() {
               initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
-              className="flex items-center gap-3 mb-8 sm:mb-10"
+              className="flex items-center gap-3 mb-3 sm:mb-10"
             >
-              <span className="h-px w-10 bg-[var(--color-accent)]/60" />
-              <span className="text-[11px] tracking-[0.22em] uppercase text-white/75 font-semibold">
+              <span className="h-px w-6 sm:w-10 bg-[var(--color-accent)]/60" />
+              <span className="text-[9px] sm:text-[11px] tracking-[0.22em] uppercase text-white/75 font-semibold">
                 Inversión inmobiliaria · Tijuana
               </span>
             </motion.div>
 
             {/* Massive title */}
-            <h1 className="text-[clamp(3rem,8.5vw,7rem)] font-light leading-[0.98] tracking-[-0.04em] text-white mb-10 sm:mb-12">
+            <h1 className="text-[clamp(2rem,8.5vw,7rem)] sm:text-[clamp(3rem,8.5vw,7rem)] font-light leading-[0.98] tracking-[-0.04em] text-white mb-4 sm:mb-12">
               <motion.span
                 initial={shouldReduceMotion ? {} : { opacity: 0, y: 32, filter: "blur(8px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -137,7 +110,7 @@ export function Hero() {
               initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[clamp(1.0625rem,1.4vw,1.25rem)] text-white/75 leading-[1.95] max-w-xl mb-12 sm:mb-14 font-light tracking-[0.005em]"
+              className="text-[clamp(0.875rem,1.4vw,1.25rem)] sm:text-[clamp(1.0625rem,1.4vw,1.25rem)] text-white/75 leading-[1.6] sm:leading-[1.95] max-w-xl mb-5 sm:mb-14 font-light tracking-[0.005em]"
             >
               Estructuramos, curamos y gestionamos activos residenciales, comerciales e industriales en Tijuana. Con análisis financiero claro, directo y sin rodeos.
             </motion.p>
@@ -147,18 +120,18 @@ export function Hero() {
               initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4"
+              className="flex flex-col sm:flex-row gap-2 sm:gap-4"
             >
               <Link
                 href="/inventario"
-                className="brushed-gold group inline-flex items-center justify-center gap-2.5 px-9 py-4 text-sm font-bold tracking-[0.06em] rounded-full hover:scale-[1.015] transition-all duration-300"
+                className="brushed-gold group inline-flex items-center justify-center gap-2 sm:gap-2.5 px-6 sm:px-9 py-3 sm:py-4 text-[13px] sm:text-sm font-bold tracking-[0.06em] rounded-full hover:scale-[1.015] transition-all duration-300"
               >
                 <span>Explorar Propiedades</span>
                 <span aria-hidden="true" className="text-base leading-none transition-transform duration-300 group-hover:translate-x-1">→</span>
               </Link>
               <Link
                 href="/contacto"
-                className="btn-ghost-gold inline-flex items-center justify-center gap-2.5 px-9 py-4 bg-white/[0.04] border border-white/35 text-white text-sm font-semibold tracking-[0.06em] rounded-full transition-colors duration-300 hover:border-[#D4AF37] hover:bg-white/[0.06]"
+                className="btn-ghost-gold inline-flex items-center justify-center gap-2 sm:gap-2.5 px-6 sm:px-9 py-3 sm:py-4 bg-white/[0.04] border border-white/35 text-white text-[13px] sm:text-sm font-semibold tracking-[0.06em] rounded-full transition-colors duration-300 hover:border-[#D4AF37] hover:bg-white/[0.06]"
               >
                 <span>Hablar con un Asesor</span>
               </Link>
@@ -170,7 +143,7 @@ export function Hero() {
             initial={shouldReduceMotion ? {} : { opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-5 relative aspect-[4/5] lg:aspect-[3/4] max-h-[80vh] order-first lg:order-last"
+            className="lg:col-span-5 relative aspect-[16/9] sm:aspect-[4/5] lg:aspect-[3/4] max-h-[35vh] sm:max-h-[80vh] max-w-sm mx-auto sm:max-w-none sm:mx-0 order-first lg:order-last"
           >
             <div className="relative w-full h-full overflow-hidden">
               {/* The visual: video with poster fallback */}
@@ -203,14 +176,14 @@ export function Hero() {
               initial={shouldReduceMotion ? {} : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.2 }}
-              className="absolute -bottom-5 -left-5 sm:-bottom-6 sm:-left-6 bg-[#050505]/95 border border-white/10 px-5 py-3 backdrop-blur-md"
+              className="absolute -bottom-2 -left-2 sm:-bottom-6 sm:-left-6 bg-[#050505]/95 border border-white/10 px-2 sm:px-5 py-1.5 sm:py-3 backdrop-blur-md"
             >
               <div className="flex items-center gap-3">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--color-accent)] opacity-60 animate-ping" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
                 </span>
-                <span className="text-[10px] tracking-[0.22em] uppercase text-white/80 font-semibold">
+                <span className="text-[8px] sm:text-[10px] tracking-[0.22em] uppercase text-white/80 font-semibold">
                   Live · Mercado
                 </span>
               </div>
@@ -238,7 +211,7 @@ export function Hero() {
       <div className="absolute bottom-0 inset-x-0 z-20">
         <div className="gold-divider-solid" />
         <div
-          className="flex overflow-hidden whitespace-nowrap py-5 bg-[#050505]/85 backdrop-blur-md"
+          className="flex overflow-hidden whitespace-nowrap py-3 sm:py-5 bg-[#050505]/85 backdrop-blur-md"
           role="presentation"
           aria-hidden="true"
         >
@@ -246,7 +219,7 @@ export function Hero() {
           <div className="animate-marquee inline-flex shrink-0">
             {VALUES.map((v, i) => (
               <span key={`a-${v}-${i}`} className="inline-flex items-center shrink-0">
-                <span className="px-6 sm:px-10 text-[11px] tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
+                <span className="px-3 sm:px-10 text-[9px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
                   {v}
                 </span>
                 <span className="text-[#D4AF37] text-sm select-none" aria-hidden="true">
@@ -258,7 +231,7 @@ export function Hero() {
           <div className="animate-marquee inline-flex shrink-0">
             {VALUES.map((v, i) => (
               <span key={`b-${v}-${i}`} className="inline-flex items-center shrink-0">
-                <span className="px-6 sm:px-10 text-[11px] tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
+                <span className="px-3 sm:px-10 text-[9px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
                   {v}
                 </span>
                 <span className="text-[#D4AF37] text-sm select-none" aria-hidden="true">

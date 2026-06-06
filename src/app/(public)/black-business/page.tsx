@@ -17,6 +17,7 @@ export default function BlackBusinessPage() {
             <SubBrandHero
                 brand={config.hero.brand}
                 backgroundImage={config.hero.backgroundImage}
+                backgroundImageWebp={config.hero.backgroundImageWebp}
                 backgroundAlt={config.hero.backgroundAlt}
                 accent={config.hero.accent}
                 headline={config.hero.headline}
