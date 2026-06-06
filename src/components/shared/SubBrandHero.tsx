@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
@@ -56,8 +56,6 @@ const ACCENT_LABEL: Record<Accent, { text: string; separator: string; chevron: s
     },
 };
 
-const isTouchDevice = (): boolean =>
-    typeof window !== "undefined" && "ontouchstart" in window;
 
 export function SubBrandHero({
     brand,
@@ -77,42 +75,40 @@ export function SubBrandHero({
 }: SubBrandHeroProps) {
     const shouldReduceMotion = useReducedMotion();
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const rafRef = useRef<number | null>(null);
-    const pendingRef = useRef<{ x: number; y: number } | null>(null);
-
-    const animateCursor = useCallback(() => {
-        if (!pendingRef.current) return;
-        setMousePos(pendingRef.current);
-        pendingRef.current = null;
-        rafRef.current = requestAnimationFrame(animateCursor);
-    }, []);
 
     useEffect(() => {
-        if (shouldReduceMotion || !cursorGlow || isTouchDevice()) return;
+        if (shouldReduceMotion || !cursorGlow) return;
+        if (typeof window === "undefined") return;
+        if (window.matchMedia("(pointer: coarse)").matches) return;
+        if (window.innerWidth < 1024) return;
 
-        const handleMouseMove = (e: MouseEvent) => {
-            pendingRef.current = { x: e.clientX, y: e.clientY };
-            if (!rafRef.current) {
-                rafRef.current = requestAnimationFrame(animateCursor);
-            }
+        let raf = 0;
+        let lastX = 0;
+        let lastY = 0;
+
+        const onMove = (e: MouseEvent) => {
+            lastX = e.clientX;
+            lastY = e.clientY;
+            if (raf) return;
+            raf = requestAnimationFrame(() => {
+                setMousePos({ x: lastX, y: lastY });
+                raf = 0;
+            });
         };
 
-        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mousemove", onMove, { passive: true });
         return () => {
-            window.removeEventListener("mousemove", handleMouseMove);
-            if (rafRef.current) {
-                cancelAnimationFrame(rafRef.current);
-                rafRef.current = null;
-            }
+            window.removeEventListener("mousemove", onMove);
+            if (raf) cancelAnimationFrame(raf);
         };
-    }, [shouldReduceMotion, cursorGlow, animateCursor]);
+    }, [shouldReduceMotion, cursorGlow]);
 
     const accentClasses = ACCENT_LABEL[accent];
 
     return (
         <section
             aria-label={`${brand} — Presentación`}
-            className="scroll-snap-section relative w-full min-h-[100svh] flex items-center overflow-hidden pb-[env(safe-area-inset-bottom,0px)]"
+            className="scroll-snap-section relative w-full min-h-[100svh] flex items-center overflow-hidden pt-24 pb-[calc(4rem+env(safe-area-inset-bottom,0px))] lg:pt-32 lg:pb-[calc(6rem+env(safe-area-inset-bottom,0px))]"
         >
             {backgroundImageWebp ? (
               <picture>
@@ -140,12 +136,12 @@ export function SubBrandHero({
             {/* Dark overlay */}
             <div className={`absolute inset-0 bg-gradient-to-b ${overlayClass} to-background`} />
 
-            {/* Cursor-follow glow (luxury/business) — throttled via rAF + early-return on touch */}
-            {cursorGlow && !shouldReduceMotion && !isTouchDevice() && (
+            {/* Cursor-follow glow (luxury/business) — throttled via rAF, early-return on touch + small screens */}
+            {cursorGlow && !shouldReduceMotion && (
                 <motion.div
-                    className="absolute w-[500px] h-[500px] rounded-full bg-gold-500/8 blur-[120px] pointer-events-none z-0"
-                    animate={{ x: mousePos.x - 250, y: mousePos.y - 250 }}
-                    transition={{ type: "spring", damping: 30, stiffness: 150 }}
+                    className="absolute w-[320px] h-[320px] rounded-full bg-gold-500/5 blur-[80px] pointer-events-none z-0"
+                    animate={{ x: mousePos.x - 160, y: mousePos.y - 160 }}
+                    transition={{ type: "tween", duration: 0.4, ease: "easeOut" }}
                 />
             )}
 
@@ -207,7 +203,7 @@ export function SubBrandHero({
                             initial={shouldReduceMotion ? {} : (gridLines ? { opacity: 0, x: -40 } : { opacity: 0, y: 40 })}
                             animate={{ opacity: 1, [gridLines ? "x" : "y"]: 0 }}
                             transition={{ duration: gridLines ? 0.8 : 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-display-1 font-display font-bold tracking-display uppercase text-foreground"
+                            className="text-[clamp(2rem,6.5vw,4.5rem)] font-display font-bold tracking-display uppercase text-foreground text-balance"
                         >
                             {headline}
                         </motion.h1>
@@ -225,7 +221,7 @@ export function SubBrandHero({
                             initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-base md:text-lg text-foreground/50 max-w-lg md:max-w-xl leading-relaxed"
+                            className="text-base sm:text-lg text-foreground/65 max-w-2xl leading-relaxed"
                         >
                             {subtitle}
                         </motion.p>
@@ -238,7 +234,7 @@ export function SubBrandHero({
                             className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
                         >
                             <Link href={primaryCta.href} className="w-full sm:w-auto">
-                                <Button className="w-full sm:w-auto min-h-[48px] bg-gold-500 text-black hover:bg-gold-400 font-bold tracking-widest uppercase px-8 py-3 sm:py-4 text-sm rounded-full group">
+                                <Button className="w-full sm:w-auto min-h-[48px] sm:min-h-[52px] bg-gold-500 text-black hover:bg-gold-400 font-bold tracking-widest uppercase px-8 py-3 sm:py-4 text-sm rounded-full group">
                                     {primaryCta.label}
                                     <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                                 </Button>
@@ -252,32 +248,6 @@ export function SubBrandHero({
                                 </Link>
                             )}
                         </motion.div>
-                    </div>
-
-                    {/* ═══ RIGHT: Highlights (cols 8-12, mobile-first: above text) ═══ */}
-                    <div className="lg:col-span-5 order-1 lg:order-2">
-                        {highlights && highlights.length > 0 && (
-                            <motion.div
-                                initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                                className="grid grid-cols-3 gap-4 sm:gap-6 lg:grid-cols-1 lg:gap-8"
-                            >
-                                {highlights.map((stat) => (
-                                    <div
-                                        key={stat.label}
-                                        className="flex flex-col lg:border-l lg:border-white/10 lg:pl-6"
-                                    >
-                                        <span className="text-2xl sm:text-3xl md:text-4xl font-numerics font-bold metallic-gold">
-                                            {stat.value}
-                                        </span>
-                                        <span className="text-[10px] sm:text-xs uppercase tracking-wide-display text-foreground/50 font-medium mt-1">
-                                            {stat.label}
-                                        </span>
-                                    </div>
-                                ))}
-                            </motion.div>
-                        )}
                     </div>
 
                 </div>
