@@ -138,20 +138,15 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             accent: "gold",
             headline: (
                 <>
-                    Casas Premium
-                    <br />
-                    en las Mejores <span className="metallic-gold-static">Zonas de Tijuana</span>
+                    Casas en las Mejores
+                    <br className="hidden sm:block" />
+                    <span className="metallic-gold-static">Zonas de Tijuana</span>
                 </>
             ),
             subtitle:
                 "Casas en fraccionamientos privados con seguridad 24/7, amenidades de primer nivel y ubicación estratégica. Para familias profesionales, empresarios e inversionistas que valoran plusvalía real.",
             primaryCta: { label: "Explorar Propiedades", href: "/inventario?brand=luxury" },
             secondaryCta: { label: "Solicitar Información", href: "#luxury-cta" },
-            highlights: [
-                { value: "15+", label: "fraccionamientos" },
-                { value: "200+", label: "propiedades" },
-                { value: "$120M+", label: "USD operados" },
-            ],
         },
         value: {
             eyebrow: "Residencial Premium",
@@ -280,21 +275,15 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             accent: "gold",
             headline: (
                 <>
-                    Centros Comerciales
-                    <br />
-                    y Locales en{" "}
-                    <span className="metallic-gold-static">Tijuana</span>
+                    Locales y Oficinas
+                    <br className="hidden sm:block" />
+                    en <span className="metallic-gold-static">Tijuana</span>
                 </>
             ),
             subtitle:
                 "Locales comerciales, oficinas y plazas en zonas de alto tráfico en Tijuana. Oportunidades de inversión con flujo comprobado y contratos transparentes.",
             primaryCta: { label: "Explorar Propiedades", href: "/inventario?brand=business" },
             secondaryCta: { label: "Asesoría Comercial", href: "#business-cta" },
-            highlights: [
-                { value: "92%", label: "ocupación" },
-                { value: "45+", label: "activos" },
-                { value: "8+", label: "años" },
-            ],
         },
         value: {
             eyebrow: "Oportunidades Comerciales",
@@ -424,19 +413,14 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             overlayClass: "from-black/70 via-black/50",
             headline: (
                 <>
-                    Naves Industriales
-                    <br />
-                    y <span className="metallic-gold-static">Parques Logísticos</span>
+                    Naves y Parques
+                    <br className="hidden sm:block" />
+                    <span className="metallic-gold-static">Industriales</span>
                 </>
             ),
             subtitle:
                 "Naves industriales, bodegas y espacios logísticos en los principales corredores industriales de Tijuana. Ubicación estratégica cerca de garitas y vías de exportación.",
             primaryCta: { label: "Ver Inventario Industrial", href: "/inventario?brand=industrial" },
-            highlights: [
-                { value: "85K+", label: "m² en portafolio" },
-                { value: "28+", label: "naves colocadas" },
-                { value: "4", label: "parques industriales" },
-            ],
             gridLines: true,
             cursorGlow: false,
         },
