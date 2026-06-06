@@ -1,10 +1,10 @@
 # **PRD: Black Corporativo (V3 Ultra-Condensada)**
 
 ## **1. Visión y Arquitectura**
-PWA inmobiliaria matriz de **Black Luxury, Black Business y Black Industrial**. Captura leads B2B/HNWI ofreciendo "Gated Content" (brochures financieros) a cambio de correos verificados. Stack: **Next.js 16, Tailwind v4, Supabase (RLS)**.
+PWA inmobiliaria matriz de **Black Luxury, Black Business y Black Industrial**. Captura leads de compradores, empresarios e inversionistas ofreciendo "Gated Content" (brochures financieros) a cambio de correos verificados. Stack: **Next.js 16, Tailwind v4, Supabase (RLS)**.
 
 ## **2. OKRs y Público**
-* **Público:** Institucional B2B (datos duros), Privados HNWI (exclusividad) y Wealth Managers.
+* **Público:** Institucional B2B (datos duros), Privados de alto patrimonio y Family Offices.
 * **Métricas:** 100 leads/mes, rebote <35%, entrega de PDF 99% (bloqueo estricto de correos temporales). Clasificación en <2 min.
 * **Rendimiento:** LCP <1.5s, CLS 0.00, 15% adopción PWA.
 
