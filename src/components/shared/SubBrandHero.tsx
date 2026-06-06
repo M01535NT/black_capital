@@ -76,6 +76,13 @@ export function SubBrandHero({
     const shouldReduceMotion = useReducedMotion();
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
+    // Deprecation: highlights moved to SubBrandStats sections
+    if (highlights && highlights.length > 0) {
+        console.warn(
+            `[SubBrandHero] "highlights" prop is deprecated. Las stats ahora están en la sección SubBrandStats correspondiente.`
+        );
+    }
+
     useEffect(() => {
         if (shouldReduceMotion || !cursorGlow) return;
         if (typeof window === "undefined") return;
