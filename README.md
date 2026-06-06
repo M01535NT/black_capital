@@ -1,12 +1,12 @@
 # Black Corporativo
 
-Plataforma digital inmobiliaria de alta gama. Boutique matriz de tres marcas especializadas:
+Plataforma digital inmobiliaria. Grupo matriz de tres marcas especializadas:
 
-- **Black Luxury** — Residencias trofeo y super lujo
+- **Black Luxury** — Residencias en fraccionamientos privados
 - **Black Business** — Activos corporativos clase A (oficinas, locales, plazas)
 - **Black Industrial** — Naves logisticas, bodegas y parques industriales
 
-Estructurada para inversores B2B y HNWI con interes en el mercado mexicano.
+Estructurada para familias, empresarios e inversionistas con interés en el mercado de Tijuana, Baja California.
 
 ## Stack
 
