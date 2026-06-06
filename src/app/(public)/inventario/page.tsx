@@ -6,8 +6,8 @@ import type { Metadata } from "next";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-    title: "Inventario de Propiedades | Black Corporativo",
-    description: "Explora nuestro portafolio de propiedades comerciales, industriales y residenciales premium con análisis financiero estructurado. Venta y renta de propiedades exclusivas.",
+    title: "Inventario de Propiedades en Tijuana | Casas, Comercial e Industrial | Black Corporativo",
+    description: "Explora nuestro catálogo de propiedades en Tijuana: casas residenciales, centros comerciales y naves industriales. Análisis financiero incluido. Venta y renta.",
 };
 
 function InventorySkeleton() {

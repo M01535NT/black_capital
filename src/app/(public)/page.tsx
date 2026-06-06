@@ -8,28 +8,36 @@ import { ValuesAccordion } from "@/components/home/ValuesAccordion";
 import { JsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Black Capital — Inversión Inmobiliaria de Alta Gama en México",
+  title: "Inmobiliaria Premium en Tijuana | Casas, Comercial e Industrial | Black Corporativo",
   description:
-    "Plataforma de inversión inmobiliaria premium. Estructuramos, curamos y gestionamos activos residenciales, comerciales e industriales para family offices e inversores institucionales en México.",
+    "Encuentra casas residenciales, centros comerciales y naves industriales en Tijuana. Análisis financiero estructurado para familias, empresarios e inversionistas en Baja California.",
   openGraph: {
-    title: "Black Capital — Inversión Inmobiliaria de Alta Gama",
+    title: "Inmobiliaria Premium en Tijuana | Casas, Comercial e Industrial | Black Corporativo",
     description:
-      "Propiedades residenciales, comerciales e industriales con análisis financiero estructurado. CDMX, Monterrey, Guadalajara, Tijuana.",
+      "Propiedades residenciales, comerciales e industriales en Tijuana con análisis financiero. Fraccionamientos privados, locales y naves industriales.",
     type: "website",
     locale: "es_MX",
-    siteName: "Black Capital",
+    siteName: "Black Corporativo",
   },
 };
 
 const ORGANIZATION_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "RealEstateAgent",
-  name: "Black Capital",
+  name: "Black Corporativo",
   description:
-    "Plataforma de inversión inmobiliaria de alta gama. Propiedades residenciales, comerciales e industriales con análisis financiero estructurado.",
+    "Inmobiliaria premium en Tijuana. Casas residenciales, centros comerciales y naves industriales con análisis financiero estructurado.",
   url: "https://blackcorporativo.com",
-  priceRange: "$$$$",
-  address: { "@type": "PostalAddress", addressCountry: "MX" },
+  priceRange: "$$$",
+  areaServed: {
+    "@type": "City",
+    name: "Tijuana",
+    containedInPlace: {
+      "@type": "State",
+      name: "Baja California",
+    },
+  },
+  address: { "@type": "PostalAddress", addressCountry: "MX", addressLocality: "Tijuana", addressRegion: "Baja California" },
   sameAs: [
     "https://instagram.com/blackcorporativo",
     "https://linkedin.com/company/blackcorporativo",
@@ -39,10 +47,10 @@ const ORGANIZATION_SCHEMA = {
 const WEBSITE_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Black Capital",
+  name: "Black Corporativo",
   url: "https://blackcorporativo.com",
   inLanguage: "es-MX",
-  publisher: { "@type": "RealEstateAgent", name: "Black Capital" },
+  publisher: { "@type": "RealEstateAgent", name: "Black Corporativo" },
 };
 
 const BREADCRUMB_SCHEMA = {

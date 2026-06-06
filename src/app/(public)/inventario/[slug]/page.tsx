@@ -77,9 +77,9 @@ export async function generateMetadata({
     }
 
     return {
-        title: `${property.title} | Black Corporativo`,
-        description: (property.description || `Propiedad en venta: ${property.title}`).slice(0, 160),
-        openGraph: property.cover_image ? { images: [{ url: property.cover_image }] } : undefined,
+        title: `${property.title} en Tijuana | Black Corporativo`,
+        description: (property.description || `Propiedad en venta en Tijuana: ${property.title}`).slice(0, 160),
+        openGraph: property.cover_image ? { images: [{ url: property.cover_image, alt: property.title }] } : undefined,
     };
 }
 
@@ -195,13 +195,15 @@ export default async function PropertyDetailPage({
             </div>
 
             <div className="relative z-10 w-full bg-background min-h-screen">
-                {/* Galería Full Width sin Hero encima - Borde inferior decorativo */}
-                <section className="w-full border-b border-white/[0.06]">
-                    <ImageGallery
-                        images={property.images || []}
-                        title={property.title}
-                        coverImage={property.cover_image}
-                    />
+                {/* Galería con padding para no sangrar a los bordes y respirar bajo el header fixed */}
+                <section className="w-full pt-16 lg:pt-20 border-b border-white/[0.06]">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-2">
+                        <ImageGallery
+                            images={property.images || []}
+                            title={property.title}
+                            coverImage={property.cover_image}
+                        />
+                    </div>
                 </section>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 space-y-12 md:space-y-16">

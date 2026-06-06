@@ -153,11 +153,12 @@ export function ImageGallery({
         <div
           className={cn(
             "relative w-full overflow-hidden cursor-pointer group",
-            // Alturas responsivas (vh + max-h)
-            "h-[35vh] max-h-[350px]",
-            "sm:h-[40vh] sm:max-h-[400px]",
-            "md:h-[55vh] md:max-h-[500px]",
-            "lg:h-[60vh] lg:max-h-[650px]",
+            // Componente compacto, no hero. Tope duro por breakpoint.
+            "aspect-[4/3] max-h-[320px]",
+            "sm:aspect-[16/10] sm:max-h-[360px]",
+            "md:aspect-[16/9] md:max-h-[420px]",
+            "lg:aspect-[16/9] lg:max-h-[460px]",
+            "xl:max-h-[520px]",
           )}
           onClick={() => openLightbox(activeIndex)}
           onTouchStart={handleTouchStart}
@@ -231,20 +232,20 @@ export function ImageGallery({
                   e.stopPropagation();
                   prev();
                 }}
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 size-11 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hidden sm:flex items-center justify-center text-white hover:bg-black/70 hover:border-white/20 active:scale-95"
+                className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-all duration-300 size-8 sm:size-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hidden sm:flex items-center justify-center text-white hover:bg-gold-500 hover:text-black hover:border-gold-500 active:scale-95"
                 aria-label="Imagen anterior"
               >
-                <ChevronLeft className="size-5" />
+                <ChevronLeft className="size-4 sm:size-5" />
               </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   next();
                 }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 size-11 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hidden sm:flex items-center justify-center text-white hover:bg-black/70 hover:border-white/20 active:scale-95"
+                className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-all duration-300 size-8 sm:size-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hidden sm:flex items-center justify-center text-white hover:bg-gold-500 hover:text-black hover:border-gold-500 active:scale-95"
                 aria-label="Imagen siguiente"
               >
-                <ChevronRight className="size-5" />
+                <ChevronRight className="size-4 sm:size-5" />
               </button>
             </>
           )}
@@ -252,7 +253,7 @@ export function ImageGallery({
 
         {/* ── Thumbnail strip ── */}
         {allImages.length > 1 && (
-          <div className="w-full bg-black/80 backdrop-blur-sm border-t border-white/5 px-3 sm:px-4 py-3 sm:py-4">
+          <div className="w-full bg-black/80 backdrop-blur-sm border-t border-white/5 px-3 sm:px-4 py-2.5 sm:py-3">
             <div
               ref={thumbContainerRef}
               className="flex gap-2 sm:gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none"
@@ -264,10 +265,9 @@ export function ImageGallery({
                   key={idx}
                   onClick={() => goTo(idx)}
                   className={cn(
-                    "relative shrink-0 rounded-xl overflow-hidden border-2 transition-all duration-300 snap-center",
-                    // Thumb sizes: 40 → 50 → 60 → 72
-                    "h-[40px] w-[40px]",
-                    "sm:h-[50px] sm:w-[50px]",
+                    "relative shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-300 snap-center",
+                    // Thumb sizes: 48 (móvil) → 60 (tablet) → 72 (desktop)
+                    "h-12 w-12",
                     "md:h-[60px] md:w-[60px]",
                     "lg:h-[72px] lg:w-[72px]",
                     idx === activeIndex

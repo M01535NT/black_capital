@@ -30,7 +30,7 @@ export async function TrackRecord() {
     {
       value: stats.clientsServed,
       display: stats.isLive && stats.clientsServed > 0 ? stats.clientsServed : 18,
-      label: "Family Offices",
+      label: "Clientes Activos",
       suffix: "+",
     },
     {
@@ -40,7 +40,7 @@ export async function TrackRecord() {
         stats.isLive && stats.portfolioValueMXN > 0
           ? Number((stats.portfolioValueMXN / 1_000_000).toFixed(1))
           : 1.1,
-      label: "Billones USD Operados",
+      label: "Millones USD Operados",
       suffix: "B",
       prefix: "$",
     },

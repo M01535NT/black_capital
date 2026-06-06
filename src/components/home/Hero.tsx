@@ -85,7 +85,7 @@ export function Hero() {
             >
               <span className="h-px w-10 bg-[var(--color-accent)]/60" />
               <span className="text-[11px] tracking-[0.22em] uppercase text-white/75 font-semibold">
-                Inversión inmobiliaria · México
+                Inversión inmobiliaria · Tijuana
               </span>
             </motion.div>
 
@@ -139,7 +139,7 @@ export function Hero() {
               transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
               className="text-[clamp(1.0625rem,1.4vw,1.25rem)] text-white/75 leading-[1.95] max-w-xl mb-12 sm:mb-14 font-light tracking-[0.005em]"
             >
-              Estructuramos, curamos y gestionamos activos residenciales, comerciales e industriales para family offices e inversores institucionales. Sin barreras, con presencia que respalda.
+              Estructuramos, curamos y gestionamos activos residenciales, comerciales e industriales en Tijuana. Con análisis financiero claro, directo y sin rodeos.
             </motion.p>
 
             {/* CTAs */}
