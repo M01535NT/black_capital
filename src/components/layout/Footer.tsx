@@ -159,7 +159,7 @@ export function Footer() {
                     <div className="col-span-2 md:col-span-4 space-y-5">
                         <Logo href="/" variant="full" size="md" tone="gold" />
                         <p className="text-[13px] text-white/55 leading-[1.7] font-light max-w-sm">
-                            Plataforma digital inmobiliaria de alta gama estructurada para inversores B2B y HNWI con interés en el mercado mexicano.
+                            Plataforma inmobiliaria premium en Tijuana, Baja California. Casas residenciales, centros comerciales y naves industriales con análisis financiero estructurado para compradores, empresarios e inversionistas.
                         </p>
                         <div className="flex gap-2 pt-2 flex-wrap">
                             {socialLinks.map((social) => {

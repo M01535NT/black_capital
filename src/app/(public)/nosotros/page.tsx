@@ -3,9 +3,9 @@ import { FadeIn, StaggerChildren, StaggerItem } from "@/components/ui/motion";
 import { Shield, Users, TrendingUp, Award } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Nosotros | Black Capital",
+    title: "Nosotros | Black Corporativo",
     description:
-        "Plataforma inmobiliaria digital de alto nivel especializada en activos residenciales de lujo, comerciales y logísticos en México.",
+        "Inmobiliaria premium en Tijuana especializada en casas residenciales, centros comerciales y naves industriales. Transparencia, análisis y resultados en cada operación.",
 };
 
 const pillars = [
@@ -19,7 +19,7 @@ const pillars = [
         icon: Users,
         title: "Relaciones de Confianza",
         description:
-            "Construimos relaciones a largo plazo con inversores, desarrolladores y family offices basadas en transparencia y resultados.",
+            "Construimos relaciones a largo plazo con compradores, vendedores e inversionistas basadas en transparencia y resultados.",
     },
     {
         icon: TrendingUp,
@@ -51,10 +51,10 @@ export default function NosotrosPage() {
                             <span className="metallic-gold">del Futuro</span>
                         </h1>
                         <p className="text-foreground/50 text-lg leading-relaxed max-w-2xl mx-auto">
-                            Black Capital es una plataforma digital inmobiliaria de alta gama
-                            estructurada para inversores B2B y HNWI con interés en el mercado
-                            mexicano. Operamos como puente entre los mejores activos inmobiliarios
-                            y los inversores más sofisticados.
+                            Black Capital es una plataforma inmobiliaria premium
+                            enfocada en Tijuana, Baja California. Conectamos a compradores,
+                            vendedores e inversionistas con los mejores activos residenciales,
+                            comerciales e industriales de la región.
                         </p>
                     </FadeIn>
                 </div>

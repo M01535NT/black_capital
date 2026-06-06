@@ -168,7 +168,7 @@ export function LeadMagnet() {
                   </label>
                   <Input
                     id="company"
-                    placeholder="Para inversores institucionales"
+                    placeholder="Empresa o particular"
                     autoComplete="organization"
                     className={inputClass}
                     value={company}

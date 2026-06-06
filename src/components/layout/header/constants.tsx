@@ -26,9 +26,9 @@ export const herramientasDropdown = [
 ];
 
 export const verticales = [
-  { name: "Black Luxury", href: "/black-luxury", desc: "Residencias trofeo y super lujo" },
-  { name: "Black Business", href: "/black-business", desc: "Activos corporativos clase A" },
-  { name: "Black Industrial", href: "/black-industrial", desc: "Naves y parques logisticos" },
+  { name: "Black Luxury", href: "/black-luxury", desc: "Casas en fraccionamientos privados" },
+  { name: "Black Business", href: "/black-business", desc: "Centros comerciales y oficinas" },
+  { name: "Black Industrial", href: "/black-industrial", desc: "Naves y parques industriales" },
 ];
 
 export const corporativoLinks = [

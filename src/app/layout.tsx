@@ -23,40 +23,39 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://blackcorporativo.com"),
   title: {
-    default: "Black Capital — Inversión Inmobiliaria de Alta Gama en México",
-    template: "%s | Black Capital",
+    default: "Inmobiliaria Premium en Tijuana | Casas, Comercial e Industrial | Black Corporativo",
+    template: "%s | Black Corporativo",
   },
   description:
-    "Plataforma de inversión inmobiliaria premium. Propiedades residenciales, comerciales e industriales con análisis financiero estructurado para family offices e inversores institucionales.",
+    "Encuentra casas residenciales, centros comerciales y naves industriales en Tijuana. Análisis financiero estructurado para familias, empresarios e inversionistas en Baja California.",
   keywords: [
-    "inversión inmobiliaria México",
-    "propiedades de lujo",
-    "bienes raíces corporativos",
-    "family office",
-    "activos inmobiliarios",
-    "CDMX",
-    "Monterrey",
-    "Guadalajara",
-    "Tijuana",
+    "inmobiliaria Tijuana",
+    "casas en Tijuana",
+    "centros comerciales Tijuana",
+    "naves industriales Tijuana",
+    "bienes raíces Tijuana",
+    "fraccionamientos privados",
+    "inversión inmobiliaria",
+    "Baja California",
   ],
-  authors: [{ name: "Black Capital" }],
-  creator: "Black Capital",
-  publisher: "Black Capital",
+  authors: [{ name: "Black Corporativo" }],
+  creator: "Black Corporativo",
+  publisher: "Black Corporativo",
   formatDetection: { email: false, address: false, telephone: false },
   openGraph: {
     type: "website",
     locale: "es_MX",
     url: "https://blackcorporativo.com",
-    siteName: "Black Capital",
-    title: "Black Capital — Inversión Inmobiliaria de Alta Gama",
+    siteName: "Black Corporativo",
+    title: "Inmobiliaria Premium en Tijuana | Black Corporativo",
     description:
-      "Propiedades residenciales, comerciales e industriales con análisis financiero estructurado para inversores institucionales.",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Black Capital" }],
+      "Casas residenciales, centros comerciales y naves industriales en Tijuana con análisis financiero estructurado.",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Black Corporativo" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Black Capital",
-    description: "Plataforma de inversión inmobiliaria premium en México",
+    title: "Inmobiliaria Premium en Tijuana | Black Corporativo",
+    description: "Casas, centros comerciales y naves industriales en Tijuana, Baja California.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -83,7 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#050505" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <meta name="apple-mobile-web-app-title" content="Black Capital" />
+        <meta name="apple-mobile-web-app-title" content="Black Corporativo" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

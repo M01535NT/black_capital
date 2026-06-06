@@ -8,11 +8,11 @@ import { CONTACT_CONFIG } from "@/lib/contact-config";
 export const metadata: Metadata = {
     title: "Contacto | Black Corporativo",
     description:
-        "Contacta a Black Corporativo. Oficinas corporativas, WhatsApp directo y consultoría personalizada para inversores B2B y HNWI en México.",
+        "Contacta a Black Corporativo. Oficinas en Tijuana, WhatsApp directo y asesoría personalizada para compradores e inversionistas en Baja California.",
     openGraph: {
         title: "Contacto | Black Corporativo",
         description:
-            "Consulta directa con nuestros asesores inmobiliarios especializados. Oficinas en CDMX. Atención a inversores institucionales y privados.",
+            "Consulta directa con nuestros asesores inmobiliarios. Oficinas en Tijuana, Baja California. Atención personalizada para compradores, vendedores e inversionistas.",
         type: "website",
         locale: "es_MX",
         siteName: "Black Corporativo",
