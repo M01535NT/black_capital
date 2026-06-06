@@ -147,6 +147,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 "Casas en fraccionamientos privados con seguridad 24/7, amenidades de primer nivel y ubicación estratégica. Para familias profesionales, empresarios e inversionistas que valoran plusvalía real.",
             primaryCta: { label: "Explorar Propiedades", href: "/inventario?brand=luxury" },
             secondaryCta: { label: "Solicitar Información", href: "#luxury-cta" },
+            highlights: [
+                { value: "15+", label: "fraccionamientos" },
+                { value: "200+", label: "propiedades" },
+                { value: "$120M+", label: "USD operados" },
+            ],
         },
         value: {
             eyebrow: "Residencial Premium",
