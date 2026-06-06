@@ -4,7 +4,7 @@ import { Home, Building2, Warehouse, Calculator, ArrowRightLeft, Percent, Phone 
 
 export const baseLinks = [
   { name: "Inicio", href: "/" },
-  { name: "Proyectos", href: "/inventario" },
+  { name: "Inventario", href: "/inventario" },
 ];
 
 export const ventaDropdown = [

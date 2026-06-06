@@ -7,25 +7,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const now = new Date();
 
     const staticPages: MetadataRoute.Sitemap = [
-        // ── Nivel 1: Home ──
+        // ── Nivel 1 ──
         { url: `${SITE_URL}/`, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
 
-        // ── Nivel 1: Servicios (divisiones) ──
+        // ── Divisiones ──
         { url: `${SITE_URL}/black-luxury`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
         { url: `${SITE_URL}/black-business`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
         { url: `${SITE_URL}/black-industrial`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
 
-        // ── Nivel 1: Catálogo unificado ──
+        // ── Sub-rutas de división ──
+        { url: `${SITE_URL}/black-luxury/inventario`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+        { url: `${SITE_URL}/black-luxury/contacto`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+        { url: `${SITE_URL}/black-business/inventario`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+        { url: `${SITE_URL}/black-business/contacto`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+        { url: `${SITE_URL}/black-industrial/inventario`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+        { url: `${SITE_URL}/black-industrial/contacto`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+
+        // ── Catálogo unificado ──
         { url: `${SITE_URL}/inventario`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
 
-        // ── Nivel 2: Herramientas ──
+        // ── Herramientas ──
         { url: `${SITE_URL}/herramientas`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
 
-        // ── Nivel 2: Corporativo ──
+        // ── Nosotros + subpáginas ──
         { url: `${SITE_URL}/nosotros`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+        { url: `${SITE_URL}/nosotros/equipo`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
+        { url: `${SITE_URL}/nosotros/historia`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
+        { url: `${SITE_URL}/nosotros/valores`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
+
+        // ── Contacto ──
         { url: `${SITE_URL}/contacto`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
 
-        // ── Nivel 3: Legal ──
+        // ── Legal ──
         { url: `${SITE_URL}/legal/aviso-privacidad`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
         { url: `${SITE_URL}/legal/terminos-condiciones`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     ];
