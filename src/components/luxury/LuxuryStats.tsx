@@ -1,22 +1,19 @@
 /**
  * LuxuryStats — animated counter grid for the Black Luxury landing.
  *
- * This file is a thin wrapper around the shared `SubBrandStats` component
- * (see `src/components/shared/SubBrandStats.tsx`). The original 120-line
- * implementation was merged into the shared component as part of the
- * June 2026 frontend pass; this re-export preserves the existing import
- * path for any external consumers.
+ * Thin wrapper around the shared `SubBrandStats` component.
+ * Content is drawn from SUB_BRAND_CONFIGS (single source of truth).
  */
 
-import { SubBrandStats, type StatItem } from "@/components/shared/SubBrandStats";
-
-const stats: StatItem[] = [
-    { value: 850, label: "Millones USD en Portafolio", suffix: "+", prefix: "$" },
-    { value: 120, label: "Propiedades Curadas", suffix: "+", prefix: "" },
-    { value: 35, label: "Desarrollos Exclusivos", suffix: "+", prefix: "" },
-    { value: 6, label: "Ciudades Premium", suffix: "", prefix: "" },
-];
+import { SubBrandStats } from "@/components/shared/SubBrandStats";
+import { SUB_BRAND_CONFIGS } from "@/lib/sub-brand-config";
 
 export function LuxuryStats() {
-    return <SubBrandStats brand="luxury" accent="gold" stats={stats} />;
+    return (
+        <SubBrandStats
+            brand="luxury"
+            accent="gold"
+            stats={SUB_BRAND_CONFIGS.luxury.stats}
+        />
+    );
 }
