@@ -85,7 +85,7 @@ export interface SubBrandCTAConfig {
     successMessage: string;
 }
 
-const PRIVACY_HREF = "/legal/privacidad";
+const PRIVACY_HREF = "/legal/aviso-privacidad";
 
 const DISPOSABLE_EMAIL_RE =
     /(tempmail|mailinator|guerrilla|yopmail|throwaway|10minute|trashmail)/i;

@@ -234,7 +234,7 @@ export function GatedBrochure({
                                             <div className="space-y-1 leading-tight">
                                                 <label htmlFor="brochure-privacy" className="text-xs text-foreground/50 cursor-pointer leading-relaxed">
                                                     Acepto el{" "}
-                                                    <a href="/legal/privacidad" className="text-gold-500 hover:underline font-medium" target="_blank" rel="noopener noreferrer">
+                                                    <a href="/legal/aviso-privacidad" className="text-gold-500 hover:underline font-medium" target="_blank" rel="noopener noreferrer">
                                                         Aviso de Privacidad
                                                     </a>
                                                     {" "}y autorizo que me contacten para prospección comercial.

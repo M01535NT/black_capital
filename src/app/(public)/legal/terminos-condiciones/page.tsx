@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import { FadeIn } from "@/components/ui/motion";
 
 export const metadata: Metadata = {
-    title: "Términos de Uso",
-    description: "Términos y condiciones de uso de la plataforma Black Corporativo",
+    title: "Términos y Condiciones | Black Corporativo",
+    description: "Términos y condiciones de uso de la plataforma Black Corporativo en Tijuana, Baja California.",
+    alternates: {
+        canonical: "https://blackcorporativo.com/legal/terminos-condiciones",
+    },
 };
 
 export default function TermsPage() {
@@ -13,7 +16,7 @@ export default function TermsPage() {
                 <div className="container mx-auto px-4 text-center">
                     <FadeIn>
                         <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-3">
-                            Términos de <span className="text-gold-500">Uso</span>
+                            Términos y <span className="text-gold-500">Condiciones</span>
                         </h1>
                         <p className="text-body text-foreground/60">
                             Última actualización: junio 2026
@@ -30,7 +33,7 @@ export default function TermsPage() {
                                 1. Aceptación de los Términos
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Al acceder y utilizar la plataforma Black Corporativo (en adelante, "la Plataforma"), usted acepta estar sujeto a estos Términos de Uso. Si no está de acuerdo con alguna parte de estos términos, no debe utilizar la Plataforma.
+                                Al acceder y utilizar la plataforma Black Corporativo (en adelante, "la Plataforma"), usted acepta estar sujeto a estos Términos y Condiciones. Si no está de acuerdo con alguna parte, no debe utilizar la Plataforma.
                             </p>
                         </section>
 
@@ -39,7 +42,7 @@ export default function TermsPage() {
                                 2. Descripción del Servicio
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Black Corporativo es una plataforma digital inmobiliaria que proporciona información sobre propiedades de lujo, comerciales e industriales en México. La Plataforma incluye listados de propiedades, análisis financieros, herramientas de inversión y servicios de contacto con agentes inmobiliarios.
+                                Black Corporativo es una plataforma inmobiliaria premium que proporciona información sobre propiedades residenciales, comerciales e industriales en Tijuana, Baja California. La Plataforma incluye listados de propiedades, análisis financieros, herramientas y servicios de contacto con asesores inmobiliarios.
                             </p>
                         </section>
 
@@ -82,7 +85,7 @@ export default function TermsPage() {
                                 6. Registro y Datos Personales
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Para acceder a ciertos servicios, puede ser necesario proporcionar información personal. El tratamiento de sus datos se rige por nuestro <a href="/legal/privacidad" className="text-gold-500 hover:underline">Aviso de Privacidad</a>. Usted es responsable de mantener la confidencialidad de sus credenciales de acceso.
+                                Para acceder a ciertos servicios, puede ser necesario proporcionar información personal. El tratamiento de sus datos se rige por nuestro <a href="/legal/aviso-privacidad" className="text-gold-500 hover:underline">Aviso de Privacidad</a>. Usted es responsable de mantener la confidencialidad de sus credenciales de acceso.
                             </p>
                         </section>
 
@@ -100,7 +103,7 @@ export default function TermsPage() {
                                 8. Enlaces a Terceros
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                La Plataforma puede contener enlaces a sitios web de terceros. Black Corporativo no controla ni asume responsabilidad por el contenido, políticas de privacidad o prácticas de dichos sitios. Le recomendamos revisar los términos de cualquier sitio web de terceros que visite.
+                                La Plataforma puede contener enlaces a sitios web de terceros. Black Corporativo no controla ni asume responsabilidad por el contenido, políticas de privacidad o prácticas de dichos sitios.
                             </p>
                         </section>
 
@@ -109,7 +112,7 @@ export default function TermsPage() {
                                 9. Modificaciones
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Black Corporativo se reserva el derecho de modificar estos Términos de Uso en cualquier momento. Las modificaciones entrarán en vigor inmediatamente después de su publicación en la Plataforma. Su uso continuado de la Plataforma después de dichas modificaciones constituye su aceptación de los nuevos términos.
+                                Black Corporativo se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento. Las modificaciones entrarán en vigor inmediatamente después de su publicación en la Plataforma.
                             </p>
                         </section>
 
@@ -118,7 +121,7 @@ export default function TermsPage() {
                                 10. Ley Aplicable y Jurisdicción
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Estos Términos de Uso se regirán e interpretarán de conformidad con las leyes de los Estados Unidos Mexicanos. Cualquier disputa que surja en relación con estos términos estará sujeta a la jurisdicción exclusiva de los tribunales competentes de la Ciudad de México.
+                                Estos Términos y Condiciones se regirán e interpretarán de conformidad con las leyes de los Estados Unidos Mexicanos. Cualquier disputa estará sujeta a la jurisdicción de los tribunales competentes de Tijuana, Baja California.
                             </p>
                         </section>
 
@@ -127,7 +130,7 @@ export default function TermsPage() {
                                 11. Contacto
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Si tiene preguntas sobre estos Términos de Uso, puede contactarnos a través de:
+                                Si tiene preguntas sobre estos Términos y Condiciones, puede contactarnos a través de:
                             </p>
                             <ul className="list-none space-y-2 text-foreground/70">
                                 <li><strong>Correo:</strong> contacto@blackcorporativo.com</li>

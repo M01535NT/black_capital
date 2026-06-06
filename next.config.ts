@@ -15,6 +15,21 @@ const withPWA = withPWAInit({
 
 const nextConfig: NextConfig = {
   turbopack: {},
+  async redirects() {
+    return [
+      // Legal slug rename (Jun 2026) — permanent 301
+      {
+        source: "/legal/privacidad",
+        destination: "/legal/aviso-privacidad",
+        permanent: true,
+      },
+      {
+        source: "/legal/terminos",
+        destination: "/legal/terminos-condiciones",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

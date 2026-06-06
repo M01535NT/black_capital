@@ -33,8 +33,8 @@ export const verticales = [
 
 export const corporativoLinks = [
   { name: "Nosotros", href: "/nosotros" },
-  { name: "Aviso de Privacidad", href: "/legal/privacidad" },
-  { name: "Terminos de Uso", href: "/legal/terminos" },
+  { name: "Aviso de Privacidad", href: "/legal/aviso-privacidad" },
+  { name: "Terminos de Uso", href: "/legal/terminos-condiciones" },
 ];
 
 export type DropdownKey = "venta" | "renta" | "herramientas";

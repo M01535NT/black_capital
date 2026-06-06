@@ -234,7 +234,7 @@ export function LeadMagnet() {
                   >
                     Acepto el{" "}
                     <a
-                      href="/legal/privacidad"
+                      href="/legal/aviso-privacidad"
                       className="text-gold-500 hover:text-gold-400 underline underline-offset-2"
                     >
                       Aviso de Privacidad

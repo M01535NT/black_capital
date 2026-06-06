@@ -5,13 +5,15 @@ import { CONTACT_CONFIG } from "@/lib/contact-config";
 export const metadata: Metadata = {
     title: "Aviso de Privacidad | Black Corporativo",
     description:
-        "Aviso de privacidad y política de protección de datos personales de Black Corporativo.",
+        "Aviso de privacidad y política de protección de datos personales de Black Corporativo. Conoce cómo protegemos tu información.",
+    alternates: {
+        canonical: "https://blackcorporativo.com/legal/aviso-privacidad",
+    },
 };
 
 export default function PrivacidadPage() {
     return (
         <div className="w-full flex-1 bg-background">
-            {/* Header */}
             <div className="bg-zinc-950 py-16 border-b border-gold-500/20 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.05,_transparent_50%)]" />
                 <div className="container mx-auto px-4 relative z-10">
@@ -19,12 +21,11 @@ export default function PrivacidadPage() {
                         Aviso de Privacidad
                     </h1>
                     <p className="text-gold-500/80 max-w-2xl text-lg">
-                        Última actualización: Febrero 2026
+                        Última actualización: Junio 2026
                     </p>
                 </div>
             </div>
 
-            {/* Content */}
             <FadeIn>
                 <div className="container mx-auto px-4 py-16 max-w-4xl">
                     <div className="prose prose-invert prose-lg max-w-none space-y-8 text-foreground/70">
@@ -33,7 +34,7 @@ export default function PrivacidadPage() {
                                 I. Responsable del Tratamiento
                             </h2>
                             <p>
-                                Black Corporativo, con domicilio en Ciudad de México, México, es responsable
+                                Black Corporativo, con domicilio en Tijuana, Baja California, México, es responsable
                                 del tratamiento de los datos personales que nos proporcione, los cuales serán
                                 protegidos conforme a lo dispuesto por la Ley Federal de Protección de Datos
                                 Personales en Posesión de los Particulares (&ldquo;LFPDPPP&rdquo;) y demás normatividad aplicable.
@@ -49,7 +50,7 @@ export default function PrivacidadPage() {
                                 <li>Nombre completo</li>
                                 <li>Correo electrónico</li>
                                 <li>Número telefónico</li>
-                                <li>Empresa o fondo de inversión (opcional)</li>
+                                <li>Empresa (opcional)</li>
                             </ul>
                         </section>
 
@@ -59,11 +60,11 @@ export default function PrivacidadPage() {
                             </h2>
                             <p>Sus datos personales serán utilizados para:</p>
                             <ul className="list-disc pl-6 space-y-2">
-                                <li>Envío de brochures ejecutivos y documentación de propiedades</li>
-                                <li>Contacto para prospección comercial inmobiliaria</li>
-                                <li>Clasificación y seguimiento como lead de inversión</li>
-                                <li>Envío de comunicaciones comerciales sobre oportunidades de inversión</li>
-                                <li>Análisis estadístico y mejora de nuestros servicios</li>
+                                <li>Envío de información sobre propiedades solicitadas</li>
+                                <li>Contacto para asesoría inmobiliaria personalizada</li>
+                                <li>Seguimiento de solicitudes de información</li>
+                                <li>Envío de comunicaciones sobre oportunidades relevantes</li>
+                                <li>Mejora de nuestros servicios y experiencia de usuario</li>
                             </ul>
                         </section>
 
