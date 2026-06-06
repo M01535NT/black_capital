@@ -29,14 +29,14 @@ export function Hero() {
     if (shouldReduceMotion) return;
     const id = setInterval(
       () => setWordIndex((p) => (p + 1) % ROTATING_WORDS.length),
-      3500,
+      4500,
     );
     return () => clearInterval(id);
   }, [shouldReduceMotion]);
 
   return (
     <section
-      className="scroll-snap-section relative min-h-[100dvh] flex items-center overflow-hidden bg-background"
+      className="scroll-snap-section relative min-h-[100dvh] flex items-center overflow-hidden bg-background pb-[env(safe-area-inset-bottom,0px)]"
       aria-label="Inicio"
     >
       {/* ── Top hairline (gold accent, 1px) ── */}
@@ -65,7 +65,6 @@ export function Hero() {
 
             {/* Massive title */}
             <h1 className="text-[clamp(2rem,8.5vw,7rem)] sm:text-[clamp(3rem,8.5vw,7rem)] font-light leading-[0.98] tracking-[-0.04em] text-white mb-4 sm:mb-12">
-              <span className="sr-only">Inmobiliaria en Tijuana — Casas, oficinas, locales y naves industriales. </span>
               <motion.span
                 initial={shouldReduceMotion ? {} : { opacity: 0, y: 32, filter: "blur(8px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
