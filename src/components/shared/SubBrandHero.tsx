@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
@@ -56,6 +56,9 @@ const ACCENT_LABEL: Record<Accent, { text: string; separator: string; chevron: s
     },
 };
 
+const isTouchDevice = (): boolean =>
+    typeof window !== "undefined" && "ontouchstart" in window;
+
 export function SubBrandHero({
     brand,
     backgroundImage,
@@ -74,24 +77,42 @@ export function SubBrandHero({
 }: SubBrandHeroProps) {
     const shouldReduceMotion = useReducedMotion();
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const rafRef = useRef<number | null>(null);
+    const pendingRef = useRef<{ x: number; y: number } | null>(null);
+
+    const animateCursor = useCallback(() => {
+        if (!pendingRef.current) return;
+        setMousePos(pendingRef.current);
+        pendingRef.current = null;
+        rafRef.current = requestAnimationFrame(animateCursor);
+    }, []);
 
     useEffect(() => {
-        if (shouldReduceMotion || !cursorGlow) return;
+        if (shouldReduceMotion || !cursorGlow || isTouchDevice()) return;
 
         const handleMouseMove = (e: MouseEvent) => {
-            setMousePos({ x: e.clientX, y: e.clientY });
+            pendingRef.current = { x: e.clientX, y: e.clientY };
+            if (!rafRef.current) {
+                rafRef.current = requestAnimationFrame(animateCursor);
+            }
         };
 
         window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, [shouldReduceMotion, cursorGlow]);
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            if (rafRef.current) {
+                cancelAnimationFrame(rafRef.current);
+                rafRef.current = null;
+            }
+        };
+    }, [shouldReduceMotion, cursorGlow, animateCursor]);
 
     const accentClasses = ACCENT_LABEL[accent];
 
     return (
         <section
             aria-label={`${brand} — Presentación`}
-            className="relative w-full min-h-[95vh] flex flex-col items-center justify-center overflow-hidden"
+            className="scroll-snap-section relative w-full min-h-[100svh] flex items-center overflow-hidden pb-[env(safe-area-inset-bottom,0px)]"
         >
             {backgroundImageWebp ? (
               <picture>
@@ -119,8 +140,8 @@ export function SubBrandHero({
             {/* Dark overlay */}
             <div className={`absolute inset-0 bg-gradient-to-b ${overlayClass} to-background`} />
 
-            {/* Cursor-follow glow (luxury/business) */}
-            {cursorGlow && !shouldReduceMotion && (
+            {/* Cursor-follow glow (luxury/business) — throttled via rAF + early-return on touch */}
+            {cursorGlow && !shouldReduceMotion && !isTouchDevice() && (
                 <motion.div
                     className="absolute w-[500px] h-[500px] rounded-full bg-gold-500/8 blur-[120px] pointer-events-none z-0"
                     animate={{ x: mousePos.x - 250, y: mousePos.y - 250 }}
@@ -155,100 +176,110 @@ export function SubBrandHero({
             {/* Noise overlay */}
             <div className="grain-overlay" />
 
-            {/* Content */}
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12">
-                <div className="max-w-5xl space-y-10">
-                    {/* Eyebrow label */}
-                    <motion.div
-                        initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                        className="flex items-center gap-4"
-                    >
-                        <div className={cn(
-                            "w-12 h-px",
-                            accent === "gold"
-                                ? "bg-gradient-to-r from-gold-700 to-gold-400"
-                                : "bg-steel-500",
-                        )} />
-                        <span
-                            className={cn("text-xs font-bold uppercase tracking-mega", accentClasses.text)}
-                        >
-                            {brand}
-                        </span>
-                    </motion.div>
+            {/* ═══════ Content: asymmetric grid (7+5 desktop, 1-col mobile) ═══════ */}
+            <div className="relative z-10 w-full max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 py-8 sm:py-28 lg:py-32">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-end min-h-[68vh]">
 
-                    {/* Headline */}
-                    <motion.h1
-                        initial={shouldReduceMotion ? {} : (gridLines ? { opacity: 0, x: -40 } : { opacity: 0, y: 40 })}
-                        animate={{ opacity: 1, [gridLines ? "x" : "y"]: 0 }}
-                        transition={{ duration: gridLines ? 0.8 : 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-display-1 font-display font-bold tracking-display uppercase text-foreground"
-                    >
-                        {headline}
-                    </motion.h1>
-
-                    {/* Separator */}
-                    <motion.div
-                        initial={shouldReduceMotion ? {} : { scaleX: 0, opacity: 0 }}
-                        animate={{ scaleX: 1, opacity: 1 }}
-                        transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className={`w-24 h-px bg-gradient-to-r ${accentClasses.separator} origin-left`}
-                    />
-
-                    {/* Subtitle */}
-                    <motion.p
-                        initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-base md:text-lg text-foreground/50 max-w-lg md:max-w-xl leading-relaxed"
-                    >
-                        {subtitle}
-                    </motion.p>
-
-                    {/* Highlights (industrial) */}
-                    {highlights && highlights.length > 0 && (
+                    {/* ═══ LEFT: Text block (cols 1-7) ═══ */}
+                    <div className="lg:col-span-7 order-2 lg:order-1 space-y-6 sm:space-y-8 lg:space-y-10">
+                        {/* Eyebrow label */}
                         <motion.div
                             initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                            className="flex flex-wrap gap-8 md:gap-12 pt-4"
+                            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                            className="flex items-center gap-4"
                         >
-                            {highlights.map((stat) => (
-                                <div key={stat.label} className="flex flex-col">
-                                    <span className="text-3xl md:text-4xl font-numerics font-bold metallic-gold">
-                                        {stat.value}
-                                    </span>
-                                    <span className="text-xs uppercase tracking-wide-display text-foreground/50 font-medium mt-1">
-                                        {stat.label}
-                                    </span>
-                                </div>
-                            ))}
-                        </motion.div>
-                    )}
-
-                    {/* CTAs */}
-                    <motion.div
-                        initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                        className="flex flex-wrap items-center gap-6"
-                    >
-                        <Link href={primaryCta.href}>
-                            <Button className="bg-gold-500 text-black hover:bg-gold-400 font-bold tracking-widest uppercase px-8 py-6 text-sm rounded-full group">
-                                {primaryCta.label}
-                                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                            </Button>
-                        </Link>
-                        {secondaryCta && (
-                            <Link
-                                href={secondaryCta.href}
-                                className="text-sm text-foreground/50 hover:text-gold-500 uppercase tracking-eyebrow font-medium transition-colors"
+                            <div className={cn(
+                                "w-12 h-px",
+                                accent === "gold"
+                                    ? "bg-gradient-to-r from-gold-700 to-gold-400"
+                                    : "bg-steel-500",
+                            )} />
+                            <span
+                                className={cn("text-xs font-bold uppercase tracking-mega", accentClasses.text)}
                             >
-                                {secondaryCta.label}
+                                {brand}
+                            </span>
+                        </motion.div>
+
+                        {/* Headline */}
+                        <motion.h1
+                            initial={shouldReduceMotion ? {} : (gridLines ? { opacity: 0, x: -40 } : { opacity: 0, y: 40 })}
+                            animate={{ opacity: 1, [gridLines ? "x" : "y"]: 0 }}
+                            transition={{ duration: gridLines ? 0.8 : 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                            className="text-display-1 font-display font-bold tracking-display uppercase text-foreground"
+                        >
+                            {headline}
+                        </motion.h1>
+
+                        {/* Separator */}
+                        <motion.div
+                            initial={shouldReduceMotion ? {} : { scaleX: 0, opacity: 0 }}
+                            animate={{ scaleX: 1, opacity: 1 }}
+                            transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                            className={`w-24 h-px bg-gradient-to-r ${accentClasses.separator} origin-left`}
+                        />
+
+                        {/* Subtitle */}
+                        <motion.p
+                            initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                            className="text-base md:text-lg text-foreground/50 max-w-lg md:max-w-xl leading-relaxed"
+                        >
+                            {subtitle}
+                        </motion.p>
+
+                        {/* CTAs */}
+                        <motion.div
+                            initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
+                        >
+                            <Link href={primaryCta.href} className="w-full sm:w-auto">
+                                <Button className="w-full sm:w-auto min-h-[48px] bg-gold-500 text-black hover:bg-gold-400 font-bold tracking-widest uppercase px-8 py-3 sm:py-4 text-sm rounded-full group">
+                                    {primaryCta.label}
+                                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                                </Button>
                             </Link>
+                            {secondaryCta && (
+                                <Link
+                                    href={secondaryCta.href}
+                                    className="text-sm text-foreground/50 hover:text-gold-500 uppercase tracking-eyebrow font-medium transition-colors"
+                                >
+                                    {secondaryCta.label}
+                                </Link>
+                            )}
+                        </motion.div>
+                    </div>
+
+                    {/* ═══ RIGHT: Highlights (cols 8-12, mobile-first: above text) ═══ */}
+                    <div className="lg:col-span-5 order-1 lg:order-2">
+                        {highlights && highlights.length > 0 && (
+                            <motion.div
+                                initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                                className="grid grid-cols-3 gap-4 sm:gap-6 lg:grid-cols-1 lg:gap-8"
+                            >
+                                {highlights.map((stat) => (
+                                    <div
+                                        key={stat.label}
+                                        className="flex flex-col lg:border-l lg:border-white/10 lg:pl-6"
+                                    >
+                                        <span className="text-2xl sm:text-3xl md:text-4xl font-numerics font-bold metallic-gold">
+                                            {stat.value}
+                                        </span>
+                                        <span className="text-[10px] sm:text-xs uppercase tracking-wide-display text-foreground/50 font-medium mt-1">
+                                            {stat.label}
+                                        </span>
+                                    </div>
+                                ))}
+                            </motion.div>
                         )}
-                    </motion.div>
+                    </div>
+
                 </div>
             </div>
 
