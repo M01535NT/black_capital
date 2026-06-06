@@ -28,7 +28,7 @@ const ORGANIZATION_SCHEMA = {
   description:
     "Inmobiliaria premium en Tijuana. Casas residenciales, centros comerciales y naves industriales con análisis financiero estructurado.",
   url: "https://blackcorporativo.com",
-  priceRange: "$$$",
+  priceRange: "$$",
   areaServed: {
     "@type": "City",
     name: "Tijuana",
