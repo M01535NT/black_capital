@@ -228,7 +228,6 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 "casas en Tijuana",
                 "fraccionamientos privados Tijuana",
                 "residencial plus Tijuana",
-                "casas de lujo Tijuana",
                 "Chapultepec Tijuana",
                 "Playas de Tijuana",
                 "casas en venta Tijuana",
