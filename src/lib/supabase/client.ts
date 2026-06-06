@@ -6,6 +6,7 @@ function createMockClient() {
   }
   const noop = () => Promise.resolve({ data: null, error: new Error("No Supabase config") })
   const emptyArray = () => Promise.resolve({ data: [], error: null })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mock chainer simulates Supabase fluent API
   const chain = (obj: any) => {
     obj.eq = () => obj
     obj.order = () => obj
@@ -15,7 +16,9 @@ function createMockClient() {
     obj.single = noop
     return obj
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mock return type mimics Supabase query builder
   const fromReturn: any = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- variadic select args match Supabase signature
     select: (...args: any[]) => chain({ ...fromReturn }),
     insert: () => ({ select: () => chain({ ...fromReturn }), single: noop, data: null, error: null }),
     update: () => chain({ ...fromReturn }),

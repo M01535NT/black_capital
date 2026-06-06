@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 
-const ROTATING_WORDS = ["Patrimonio", "Inteligencia", "Black"] as const;
+const ROTATING_WORDS = ["Patrimonio", "Disciplina", "Transparencia"] as const;
 
 const VALUES = [
   "Honestidad",
@@ -88,7 +88,7 @@ export function Hero() {
                       exit={shouldReduceMotion ? undefined : { opacity: 0, y: -16, filter: "blur(4px)" }}
                       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                       className="metallic-gold-static gold-glow inline-block"
-                      aria-live="polite"
+                      aria-live="off"
                     >
                       {ROTATING_WORDS[wordIndex]}
                     </motion.span>
@@ -147,11 +147,13 @@ export function Hero() {
           >
             <div className="relative w-full h-full overflow-hidden">
               {/* The visual: video with poster fallback */}
+              {/* TODO: replace SVG poster with JPG/WebP + <img fetchpriority="high"> for LCP optimization */}
               <video
                 autoPlay
                 muted
                 loop
                 playsInline
+                preload="metadata"
                 poster="/hero-poster.svg"
                 className="absolute inset-0 w-full h-full object-cover"
               >
@@ -187,21 +189,6 @@ export function Hero() {
                   Live · Mercado
                 </span>
               </div>
-            </motion.div>
-
-            {/* Vertical "01" stamp (desktop only) */}
-            <motion.div
-              initial={shouldReduceMotion ? {} : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.2, delay: 1.4 }}
-              className="hidden lg:flex absolute -right-10 top-1/2 -translate-y-1/2 flex-col items-center gap-3"
-              aria-hidden="true"
-            >
-              <div className="w-px h-12 bg-gradient-to-b from-transparent to-[var(--color-accent)]/50" />
-              <span className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-semibold [writing-mode:vertical-rl] rotate-180">
-                Black · 01
-              </span>
-              <div className="w-px h-12 bg-gradient-to-t from-transparent to-[var(--color-accent)]/50" />
             </motion.div>
           </motion.div>
         </div>

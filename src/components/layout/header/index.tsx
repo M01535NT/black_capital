@@ -26,12 +26,27 @@ export function Header() {
   };
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        setScrolled((prev) => {
+          const next = window.scrollY > 80;
+          return next === prev ? prev : next;
+        });
+        raf = 0;
+      });
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   useEffect(() => {
+    // ✅ Close dropdown on route change — legitimate side-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOpenDropdown(null);
   }, [pathname]);
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useInView } from "framer-motion";
+import { Eyebrow } from "@/components/shared/eyebrow";
 import { useRef } from "react";
 import { Search, Gem, FileSignature, KeyRound, type LucideIcon } from "lucide-react";
 
@@ -53,12 +54,7 @@ export function MethodologyTimeline() {
       <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16">
         {/* ── Header ── */}
         <div className="max-w-2xl mb-16 sm:mb-24">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="h-px w-10 bg-[var(--color-accent)]/60" />
-            <span className="text-[11px] tracking-[0.22em] uppercase text-white/70 font-semibold">
-              Metodología
-            </span>
-          </div>
+          <Eyebrow label="Metodología" />
           <h2
             id="metodologia-title"
             className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-light text-white leading-[1.05] tracking-[-0.03em] mb-5"

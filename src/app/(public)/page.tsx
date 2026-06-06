@@ -27,7 +27,7 @@ const ORGANIZATION_SCHEMA = {
   name: "Black Corporativo",
   description:
     "Inmobiliaria premium en Tijuana. Casas residenciales, centros comerciales y naves industriales con análisis financiero estructurado.",
-  url: "https://blackcorporativo.com",
+  url: "https://blackcorporativo.vercel.app",
   priceRange: "$$",
   areaServed: {
     "@type": "City",
@@ -48,22 +48,9 @@ const WEBSITE_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "Black Corporativo",
-  url: "https://blackcorporativo.com",
+  url: "https://blackcorporativo.vercel.app",
   inLanguage: "es-MX",
   publisher: { "@type": "RealEstateAgent", name: "Black Corporativo" },
-};
-
-const BREADCRUMB_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Inicio",
-      item: "https://blackcorporativo.com",
-    },
-  ],
 };
 
 export default function HomePage() {
@@ -77,7 +64,6 @@ export default function HomePage() {
       <ValuesAccordion />
       <JsonLd id="ld-org" data={ORGANIZATION_SCHEMA} />
       <JsonLd id="ld-web" data={WEBSITE_SCHEMA} />
-      <JsonLd id="ld-breadcrumb" data={BREADCRUMB_SCHEMA} />
     </main>
   );
 }

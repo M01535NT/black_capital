@@ -40,6 +40,7 @@ export default async function AdminDashboard() {
     // ── Leads by status ──
     const leadsByStatus = await getLeadsByStatus();
     const statusCounts: Record<string, number> = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase leads status row
     (leadsByStatus || []).forEach((l: any) => {
         statusCounts[l.status] = (statusCounts[l.status] || 0) + 1;
     });
@@ -239,6 +240,7 @@ export default async function AdminDashboard() {
                     </div>
                     {recentLeads && recentLeads.length > 0 ? (
                         <div className="space-y-2">
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {recentLeads.map((lead: any) => (
                                 <Link
                                     key={lead.id}
@@ -293,6 +295,7 @@ export default async function AdminDashboard() {
                     </div>
                     {recentProperties && recentProperties.length > 0 ? (
                         <div className="space-y-3">
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {recentProperties.map((prop: any) => (
                                 <Link
                                     key={prop.id}

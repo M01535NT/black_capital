@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     description:
         "Los valores que guían a Black Corporativo: transparencia, compromiso, disciplina y resultados. Conoce los principios que aplicamos en cada operación inmobiliaria en Tijuana.",
     alternates: {
-        canonical: "https://blackcorporativo.com/nosotros/valores",
+        canonical: "https://blackcorporativo.vercel.app/nosotros/valores",
     },
 };
 
@@ -61,7 +61,7 @@ export default function ValoresPage() {
                             Nuestros Principios
                         </span>
                         <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-display uppercase text-foreground mb-4">
-                            Lo Que <span className="metallic-gold">Nos Define</span>
+                            Lo Que <span className="metallic-gold-static">Nos Define</span>
                         </h1>
                         <p className="text-foreground/50 text-lg max-w-2xl mx-auto">
                             Seis principios que aplicamos en cada operación. No son marketing —

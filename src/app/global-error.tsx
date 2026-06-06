@@ -1,6 +1,7 @@
 "use client";
 
 import { AlertTriangle, RefreshCw, Home } from "lucide-react";
+import Link from "next/link";
 
 export default function GlobalError({
     error,
@@ -28,13 +29,13 @@ export default function GlobalError({
                             <RefreshCw className="w-4 h-4" />
                             Reintentar
                         </button>
-                        <a
+                        <Link
                             href="/"
                             className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg border border-white/20 text-white font-semibold hover:border-gold-500/50 transition-colors"
                         >
                             <Home className="w-4 h-4" />
                             Ir al inicio
-                        </a>
+                        </Link>
                     </div>
                     {error.digest && (
                         <p className="mt-6 text-xs text-white/30 font-mono">

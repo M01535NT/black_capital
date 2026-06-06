@@ -275,6 +275,7 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
 
         setSubmitting(true);
         try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- form payload, validated by zod schema
             const payload: any = {
                 full_name: form.full_name,
                 email: form.email,

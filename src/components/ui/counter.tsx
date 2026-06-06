@@ -48,6 +48,8 @@ export function Counter({
         // 0 → 0 or equal values: nothing to animate.
         if (to === from) {
             hasAnimated.current = true;
+            // ✅ Animation edge case: seed display to target value, guarded by ref
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setCount(to);
             return;
         }

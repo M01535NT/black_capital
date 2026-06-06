@@ -55,7 +55,7 @@ export default function HerramientasPage() {
                         </span>
                         <h1 className="text-display-3 font-display font-semibold tracking-display uppercase text-4xl md:text-6xl text-foreground mb-6">
                             Herramientas para{" "}
-                            <span className="metallic-gold">Inversionistas</span>
+                            <span className="metallic-gold-static">Inversionistas</span>
                         </h1>
                         <p className="text-foreground/50 text-lg leading-relaxed max-w-2xl mx-auto">
                             Recursos financieros y analíticos diseñados para inversores

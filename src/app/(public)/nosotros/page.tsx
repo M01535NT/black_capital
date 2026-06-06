@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     description:
         "Inmobiliaria premium en Tijuana especializada en casas residenciales, centros comerciales y naves industriales. Transparencia, análisis y resultados en cada operación.",
     alternates: {
-        canonical: "https://blackcorporativo.com/nosotros",
+        canonical: "https://blackcorporativo.vercel.app/nosotros",
     },
 };
 
@@ -70,7 +70,7 @@ export default function NosotrosPage() {
                         </span>
                         <h1 className="text-display-3 font-display font-semibold tracking-display uppercase text-4xl md:text-6xl text-foreground mb-6">
                             La Plataforma Inmobiliaria{" "}
-                            <span className="metallic-gold">del Futuro</span>
+                            <span className="metallic-gold-static">del Futuro</span>
                         </h1>
                         <p className="text-foreground/50 text-lg leading-relaxed max-w-2xl mx-auto">
                             Black Capital es una plataforma inmobiliaria premium

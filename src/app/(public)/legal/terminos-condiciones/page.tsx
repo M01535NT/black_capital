@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     title: "Términos y Condiciones | Black Corporativo",
     description: "Términos y condiciones de uso de la plataforma Black Corporativo en Tijuana, Baja California.",
     alternates: {
-        canonical: "https://blackcorporativo.com/legal/terminos-condiciones",
+        canonical: "https://blackcorporativo.vercel.app/legal/terminos-condiciones",
     },
 };
 
@@ -33,7 +33,7 @@ export default function TermsPage() {
                                 1. Aceptación de los Términos
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Al acceder y utilizar la plataforma Black Corporativo (en adelante, "la Plataforma"), usted acepta estar sujeto a estos Términos y Condiciones. Si no está de acuerdo con alguna parte, no debe utilizar la Plataforma.
+                                Al acceder y utilizar la plataforma Black Corporativo (en adelante, &quot;la Plataforma&quot;), usted acepta estar sujeto a estos Términos y Condiciones. Si no está de acuerdo con alguna parte, no debe utilizar la Plataforma.
                             </p>
                         </section>
 
@@ -133,7 +133,7 @@ export default function TermsPage() {
                                 Si tiene preguntas sobre estos Términos y Condiciones, puede contactarnos a través de:
                             </p>
                             <ul className="list-none space-y-2 text-foreground/70">
-                                <li><strong>Correo:</strong> contacto@blackcorporativo.com</li>
+                                <li><strong>Correo:</strong> contacto@blackcorporativo.vercel.app</li>
                                 <li><strong>WhatsApp:</strong> +52 (664) 104 9491</li>
                             </ul>
                         </section>

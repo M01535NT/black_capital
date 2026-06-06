@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Check, ChevronDown, User, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface AgentOption {
     id: string;
@@ -115,7 +116,7 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
                         <div className="p-4 text-center text-sm text-red-400">{error}</div>
                     ) : agents.length === 0 ? (
                         <div className="p-4 text-center text-sm text-foreground/50">
-                            No hay agentes activos. <a href="/admin/agents/new" className="text-gold-500 underline">Registra uno</a>
+                            No hay agentes activos. <Link href="/admin/agents/new" className="text-gold-500 underline">Registra uno</Link>
                         </div>
                     ) : (
                         <div className="max-h-60 overflow-y-auto divide-y divide-foreground/5">

@@ -122,15 +122,16 @@ export function ImageGallery({
     }
   };
 
+  // ── Lightbox swipe refs (must be before early return) ──
+  const lightboxTouchStartX = useRef(0);
+  const lightboxTouchEndX = useRef(0);
+
   if (allImages.length === 0) return null;
 
   const displayIndex = lightboxOpen ? lightboxIndex : activeIndex;
   const hasError = imageErrors.has(displayIndex);
   const isLoading = !hasError && !hasLoaded.has(displayIndex);
 
-  // ── Lightbox swipe handlers ──
-  const lightboxTouchStartX = useRef(0);
-  const lightboxTouchEndX = useRef(0);
   const handleLightboxTouchStart = (e: React.TouchEvent) => {
     lightboxTouchStartX.current = e.touches[0].clientX;
   };

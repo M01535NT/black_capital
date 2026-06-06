@@ -22,6 +22,7 @@ export default async function AgentsPage() {
     }
 
     // Count properties per agent
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase agents query row
     const agentIds = (agents || []).map((a: any) => a.id);
     const { data: assignments } = agentIds.length > 0
         ? await supabase
@@ -31,12 +32,13 @@ export default async function AgentsPage() {
         : { data: [] };
 
     const propertyCounts = new Map<string, number>();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase property_agents row
     (assignments || []).forEach((pa: any) => {
         propertyCounts.set(pa.agent_id, (propertyCounts.get(pa.agent_id) || 0) + 1);
     });
 
     // Count leads won per agent
-    let leadsWonCounts = new Map<string, number>();
+    const leadsWonCounts = new Map<string, number>();
     if (agentIds.length > 0) {
         try {
             const { data: leadsWon } = await supabase
@@ -44,6 +46,7 @@ export default async function AgentsPage() {
                 .select("assigned_agent_id")
                 .in("assigned_agent_id", agentIds)
                 .eq("status", "won");
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase leads query row
             (leadsWon || []).forEach((l: any) => {
                 if (l.assigned_agent_id) {
                     leadsWonCounts.set(l.assigned_agent_id, (leadsWonCounts.get(l.assigned_agent_id) || 0) + 1);
@@ -54,7 +57,9 @@ export default async function AgentsPage() {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase agents query row
     const activeAgents = (agents || []).filter((a: any) => a.is_active);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase agents query row
     const inactiveAgents = (agents || []).filter((a: any) => !a.is_active);
 
     return (
@@ -87,6 +92,7 @@ export default async function AgentsPage() {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                     {agents.map((agent: any) => {
                         const propsCount = propertyCounts.get(agent.id) || 0;
                         const wonCount = leadsWonCounts.get(agent.id) || 0;

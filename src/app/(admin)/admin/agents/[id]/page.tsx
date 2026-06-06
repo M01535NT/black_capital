@@ -35,8 +35,10 @@ export default async function AgentDetailPage({
         .select("property_id")
         .eq("agent_id", id);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase row from property_agents join
     const propertyIds = (assignments || []).map((a: any) => a.property_id);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase query result for property list
     let properties: any[] = [];
     if (propertyIds.length > 0) {
         const { data: props } = await supabase

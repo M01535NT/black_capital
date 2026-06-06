@@ -31,7 +31,9 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
     const brandProcessed = useRef(false);
 
     // Handle "brand" query param for backwards compatibility from brand page CTAs
+    /* eslint-disable react-hooks/set-state-in-effect */
     useEffect(() => {
+        // ✅ Sync brand→use mapping into URL state, guarded by brandProcessed ref
         if (brandProcessed.current) return;
         const brand = searchParams.get("brand");
         if (brand && !activeUse) {
@@ -46,9 +48,10 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
             }
         }
     }, [searchParams, pathname, router, activeUse]);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     const filtered = useMemo(() => {
-        let result = properties.filter((p) => {
+        const result = properties.filter((p) => {
             const matchSearch = p.title.toLowerCase().includes(searchTerm.toLowerCase());
             const matchBusiness = activeBusiness ? p.business_type.toLowerCase() === activeBusiness.toLowerCase() : true;
             const matchUse = activeUse ? p.property_use === activeUse : true;

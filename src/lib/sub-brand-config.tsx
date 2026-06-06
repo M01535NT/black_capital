@@ -101,7 +101,7 @@ const baseJsonLd = {
     provider: {
         "@type": "RealEstateAgent",
         name: "Black Corporativo",
-        url: "https://blackcorporativo.com",
+        url: "https://blackcorporativo.vercel.app",
     },
 } as const;
 
@@ -140,7 +140,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 <>
                     Casas Premium
                     <br />
-                    en las Mejores <span className="metallic-gold">Zonas de Tijuana</span>
+                    en las Mejores <span className="metallic-gold-static">Zonas de Tijuana</span>
                 </>
             ),
             subtitle:
@@ -153,7 +153,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: (
                 <>
                     Tu Hogar en las Zonas de{" "}
-                    <span className="metallic-gold">Mayor Plusvalía</span>
+                    <span className="metallic-gold-static">Mayor Plusvalía</span>
                 </>
             ),
             description:
@@ -235,7 +235,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             ],
             robots: "index, follow",
             alternates: {
-                canonical: "https://blackcorporativo.com/black-luxury",
+                canonical: "https://blackcorporativo.vercel.app/black-luxury",
             },
             openGraph: {
                 title: "Casas Residenciales Premium en Tijuana | Fraccionamientos Privados",
@@ -244,10 +244,10 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Corporativo",
-                url: "https://blackcorporativo.com/black-luxury",
+                url: "https://blackcorporativo.vercel.app/black-luxury",
                 images: [
                     {
-                        url: "https://blackcorporativo.com/luxury-hero.png",
+                        url: "https://blackcorporativo.vercel.app/luxury-hero.png",
                         width: 1200,
                         height: 630,
                         alt: "Casa residencial premium en Tijuana",
@@ -259,7 +259,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 title: "Casas Residenciales Premium en Tijuana | Fraccionamientos Privados",
                 description:
                     "Casas en los mejores fraccionamientos de Tijuana. Residencial Plus con seguridad 24/7, amenidades premium y ubicación estratégica.",
-                images: ["https://blackcorporativo.com/luxury-hero.png"],
+                images: ["https://blackcorporativo.vercel.app/luxury-hero.png"],
             },
         },
     },
@@ -278,7 +278,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                     Centros Comerciales
                     <br />
                     y Locales en{" "}
-                    <span className="metallic-gold">Tijuana</span>
+                    <span className="metallic-gold-static">Tijuana</span>
                 </>
             ),
             subtitle:
@@ -291,7 +291,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: (
                 <>
                     Activos que Generan{" "}
-                    <span className="metallic-gold">Rentabilidad Real</span>
+                    <span className="metallic-gold-static">Rentabilidad Real</span>
                 </>
             ),
             description:
@@ -373,7 +373,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             ],
             robots: "index, follow",
             alternates: {
-                canonical: "https://blackcorporativo.com/black-business",
+                canonical: "https://blackcorporativo.vercel.app/black-business",
             },
             openGraph: {
                 title: "Centros Comerciales y Locales en Tijuana | Inversión Comercial",
@@ -382,10 +382,10 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Corporativo",
-                url: "https://blackcorporativo.com/black-business",
+                url: "https://blackcorporativo.vercel.app/black-business",
                 images: [
                     {
-                        url: "https://blackcorporativo.com/business-hero.png",
+                        url: "https://blackcorporativo.vercel.app/business-hero.png",
                         width: 1200,
                         height: 630,
                         alt: "Local comercial en Tijuana",
@@ -397,7 +397,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 title: "Centros Comerciales y Locales en Tijuana | Inversión Comercial",
                 description:
                     "Locales comerciales, oficinas y plazas en zonas de alto tráfico en Tijuana. Análisis de cap rate y flujo operativo incluido.",
-                images: ["https://blackcorporativo.com/business-hero.png"],
+                images: ["https://blackcorporativo.vercel.app/business-hero.png"],
             },
         },
     },
@@ -416,7 +416,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 <>
                     Naves Industriales
                     <br />
-                    y <span className="metallic-gold">Parques Logísticos</span>
+                    y <span className="metallic-gold-static">Parques Logísticos</span>
                 </>
             ),
             subtitle:
@@ -435,7 +435,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: (
                 <>
                     Infraestructura Industrial en{" "}
-                    <span className="metallic-gold">Tijuana</span>
+                    <span className="metallic-gold-static">Tijuana</span>
                 </>
             ),
             description:
@@ -517,7 +517,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             ],
             robots: "index, follow",
             alternates: {
-                canonical: "https://blackcorporativo.com/black-industrial",
+                canonical: "https://blackcorporativo.vercel.app/black-industrial",
             },
             openGraph: {
                 title: "Naves Industriales y Parques Logísticos en Tijuana | Black Corporativo",
@@ -526,10 +526,10 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Corporativo",
-                url: "https://blackcorporativo.com/black-industrial",
+                url: "https://blackcorporativo.vercel.app/black-industrial",
                 images: [
                     {
-                        url: "https://blackcorporativo.com/industrial-hero.png",
+                        url: "https://blackcorporativo.vercel.app/industrial-hero.png",
                         width: 1200,
                         height: 630,
                         alt: "Nave industrial en Tijuana",
@@ -541,7 +541,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 title: "Naves Industriales y Parques Logísticos en Tijuana | Black Corporativo",
                 description:
                     "Naves industriales, bodegas y parques logísticos en Tijuana. Conectividad estratégica cerca de garitas y corredores de exportación T-MEC.",
-                images: ["https://blackcorporativo.com/industrial-hero.png"],
+                images: ["https://blackcorporativo.vercel.app/industrial-hero.png"],
             },
         },
     },

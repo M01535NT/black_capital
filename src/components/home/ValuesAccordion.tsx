@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Eyebrow } from "@/components/shared/eyebrow";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -36,7 +37,7 @@ const VALUES: Value[] = [
  * con animación al pasar el cursor. Click fija el estado activo.
  */
 export function ValuesAccordion() {
-  const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const [activeIdx, setActiveIdx] = useState<number | null>(0); // first item open by default for mobile (no hover)
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const shouldReduce = useReducedMotion();
 
@@ -51,12 +52,7 @@ export function ValuesAccordion() {
       <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16">
         {/* ── Header ── */}
         <div className="max-w-2xl mb-16 sm:mb-24">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="h-px w-10 bg-[var(--color-accent)]/60" />
-            <span className="text-[11px] tracking-[0.22em] uppercase text-white/70 font-semibold">
-              Nuestra palabra
-            </span>
-          </div>
+          <Eyebrow label="Nuestra palabra" />
           <h2 className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-light text-white leading-[1.05] tracking-[-0.03em]">
             Nuestro <span className="metallic-gold-static">compromiso</span>.
           </h2>
@@ -81,7 +77,7 @@ export function ValuesAccordion() {
                 <button
                   type="button"
                   onClick={() => setActiveIdx(activeIdx === i ? null : i)}
-                  aria-expanded={isFocused}
+                  aria-expanded={activeIdx === i}
                   className="group w-full text-left py-10 sm:py-14 lg:py-16 flex items-start gap-6 sm:gap-10 transition-opacity duration-700"
                   style={{ opacity: isDimmed ? 0.35 : isFocused ? 1 : 0.55 }}
                 >

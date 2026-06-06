@@ -28,6 +28,7 @@ export default async function EditPropertyPage({
         .select("agent_id")
         .eq("property_id", id);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase property_agents row
     const agentIds = (assignments || []).map((a: any) => a.agent_id);
 
     return (

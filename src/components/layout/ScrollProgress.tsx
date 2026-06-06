@@ -20,6 +20,8 @@ export function ScrollProgress() {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        // ✅ Hydration guard: SSR produces null, client flips to true
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMounted(true);
     }, []);
 

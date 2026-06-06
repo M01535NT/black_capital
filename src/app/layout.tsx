@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/site-url";
 import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
@@ -9,7 +10,7 @@ import "./globals.css";
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"], // 200 unused, 800 only in LeadMagnet (likely orphan)
   display: "swap",
 });
 
@@ -21,7 +22,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://blackcorporativo.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Inmobiliaria Premium en Tijuana | Casas, Comercial e Industrial | Black Corporativo",
     template: "%s | Black Corporativo",
@@ -45,12 +46,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_MX",
-    url: "https://blackcorporativo.com",
+    url: "https://blackcorporativo.vercel.app",
     siteName: "Black Corporativo",
     title: "Inmobiliaria Premium en Tijuana | Black Corporativo",
     description:
       "Casas residenciales, centros comerciales y naves industriales en Tijuana con análisis financiero estructurado.",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Black Corporativo" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: { canonical: "https://blackcorporativo.com" },
+  alternates: { canonical: "https://blackcorporativo.vercel.app" },
 };
 
 import { PostHogProvider } from "@/providers/posthog-provider";

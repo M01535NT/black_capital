@@ -13,6 +13,7 @@ interface AssignPropertiesButtonProps {
 
 export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertiesButtonProps) {
     const [open, setOpen] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase query result, typed at runtime by property schema
     const [properties, setProperties] = useState<any[]>([]);
     const [selected, setSelected] = useState<string[]>(assignedIds);
     const [loading, setLoading] = useState(false);

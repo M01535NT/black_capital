@@ -109,7 +109,7 @@ export function BrandInventory({
                         {highlight && (
                             <>
                                 {" "}
-                                <span className="metallic-gold">{highlight}</span>
+                                <span className="metallic-gold-static">{highlight}</span>
                             </>
                         )}
                     </h2>

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     description:
         "Conoce al equipo de Black Corporativo. Asesores inmobiliarios especializados en Tijuana con experiencia en los mercados residencial, comercial e industrial.",
     alternates: {
-        canonical: "https://blackcorporativo.com/nosotros/equipo",
+        canonical: "https://blackcorporativo.vercel.app/nosotros/equipo",
     },
 };
 
@@ -37,7 +37,7 @@ export default function EquipoPage() {
                         </span>
                         <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-display uppercase text-foreground mb-4">
                             Las Personas Detrás de{" "}
-                            <span className="metallic-gold">Black Corporativo</span>
+                            <span className="metallic-gold-static">Black Corporativo</span>
                         </h1>
                         <p className="text-foreground/50 text-lg max-w-2xl mx-auto">
                             Asesores inmobiliarios con conocimiento profundo del mercado de Tijuana.
