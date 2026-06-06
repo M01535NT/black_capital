@@ -29,7 +29,7 @@ const tools = [
         icon: BarChart3,
         title: "Reportes de Mercado",
         description:
-            "Análisis trimestrales del mercado inmobiliario mexicano por segmento: residencial de lujo, comercial e industrial.",
+            "Análisis trimestrales del mercado inmobiliario mexicano por segmento: residencial premium, comercial e industrial.",
         status: "Próximamente",
     },
     {
