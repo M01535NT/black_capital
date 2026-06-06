@@ -7,6 +7,7 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { PropertyCard, type PropertyCardData } from "@/components/property/PropertyCard";
 import { supabase } from "@/lib/supabase/client";
 import { Eyebrow } from "@/components/shared/eyebrow";
+import { Section } from "@/components/layout/Section";
 
 type FeaturedProperty = PropertyCardData & { property_type: string };
 const SKELETON_COUNT = 6;
@@ -54,12 +55,7 @@ export function InventoryShowcase() {
   };
 
   return (
-    <section
-      id="inventario"
-      className="scroll-snap-section relative py-24 sm:py-32 lg:py-40 bg-[#050505] border-t border-white/[0.04]"
-      aria-label="Inventario destacado"
-    >
-      <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16">
+    <Section id="inventario" label="Inventario destacado" containerWidth="wide">
         {/* ── Header ── */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8 mb-14 sm:mb-20">
           <div className="max-w-2xl">
@@ -130,6 +126,10 @@ export function InventoryShowcase() {
             </p>
           </div>
         ) : (
+          <div className="relative">
+            {/* Fade edges — indica que hay más contenido desplazable */}
+            <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" aria-hidden="true" />
+            <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" aria-hidden="true" />
           <motion.div
             ref={trackRef}
             initial={shouldReduce ? false : { opacity: 0 }}
@@ -155,6 +155,7 @@ export function InventoryShowcase() {
               </div>
             ))}
           </motion.div>
+          </div>
         )}
 
         {/* Mobile: See-all link at the bottom */}
@@ -167,7 +168,6 @@ export function InventoryShowcase() {
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
-      </div>
-    </section>
+    </Section>
   );
 }

@@ -1,9 +1,10 @@
 "use client";
 
 import { motion, useReducedMotion, useInView } from "framer-motion";
-import { Eyebrow } from "@/components/shared/eyebrow";
 import { useRef } from "react";
 import { Search, Gem, FileSignature, KeyRound, type LucideIcon } from "lucide-react";
+import { Section } from "@/components/layout/Section";
+import { SectionHeader } from "@/components/shared/SectionHeader";
 
 interface Step {
   number: string;
@@ -40,31 +41,17 @@ const STEPS: Step[] = [
 ];
 
 export function MethodologyTimeline() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.3 });
   const shouldReduce = useReducedMotion();
 
   return (
-    <section
-      ref={containerRef}
-      id="metodologia"
-      className="scroll-snap-section relative py-24 sm:py-32 lg:py-40 bg-[#050505] border-t border-white/[0.04]"
-      aria-labelledby="metodologia-title"
-    >
-      <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16">
-        {/* ── Header ── */}
-        <div className="max-w-2xl mb-16 sm:mb-24">
-          <Eyebrow label="Metodología" />
-          <h2
-            id="metodologia-title"
-            className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-light text-white leading-[1.05] tracking-[-0.03em] mb-5"
-          >
-            Cuatro fases que <span className="metallic-gold-static">estructuran</span> cada operación.
-          </h2>
-          <p className="text-[clamp(0.9375rem,1.2vw,1.0625rem)] text-white/65 leading-[1.7] font-light">
-            Sin improvisación. Entregables definidos en cada etapa, con hitos claros y comunicación directa.
-          </p>
-        </div>
+    <Section ref={containerRef} id="metodologia" label="Metodología" containerWidth="wide">
+      <SectionHeader
+        eyebrow="Metodología"
+        title={<>Cuatro fases que <span className="metallic-gold-static">estructuran</span> cada operación.</>}
+        description="Sin improvisación. Entregables definidos en cada etapa, con hitos claros y comunicación directa."
+      />
 
         {/* ── Timeline (desktop: horizontal, mobile: vertical) ── */}
         <div className="relative">
@@ -98,7 +85,7 @@ export function MethodologyTimeline() {
                     {/* Node circle */}
                     <div className="relative shrink-0 lg:mb-10">
                       <div
-                        className="w-14 h-14 rounded-full border border-[var(--color-accent)]/40 bg-[#050505] flex items-center justify-center group-hover:border-[var(--color-accent)] transition-colors duration-500"
+                        className="w-14 h-14 rounded-full border border-accent/40 bg-background flex items-center justify-center group-hover:border-accent transition-colors duration-500"
                         aria-hidden="true"
                       >
                         <Icon className="w-5 h-5 text-[var(--color-accent)]" strokeWidth={1.25} />
@@ -141,7 +128,6 @@ export function MethodologyTimeline() {
             })}
           </ol>
         </div>
-      </div>
-    </section>
+    </Section>
   );
 }

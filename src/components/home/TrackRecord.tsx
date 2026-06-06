@@ -1,6 +1,7 @@
 import { Counter } from "@/components/ui/counter";
 import { getSocialStats } from "@/lib/stats";
 import { Eyebrow } from "@/components/shared/eyebrow";
+import { Section } from "@/components/layout/Section";
 
 /**
  * Track Record — sección de autoridad con 4 columnas separadas por
@@ -48,12 +49,7 @@ export async function TrackRecord() {
   ];
 
   return (
-    <section
-      id="track-record"
-      className="scroll-snap-section relative py-24 sm:py-32 lg:py-40 bg-[#050505] border-t border-white/[0.04]"
-      aria-label="Track record"
-    >
-      <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16">
+    <Section id="track-record" label="Track record" containerWidth="wide">
         {/* ── Header ── */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-16 sm:mb-24">
           <div className="max-w-2xl">
@@ -127,7 +123,6 @@ export async function TrackRecord() {
         <p className="mt-12 sm:mt-16 text-[10px] tracking-[0.18em] uppercase text-white/30 font-semibold max-w-2xl">
           Datos auditables. Cumplimiento LFPIORPI Art. 27 y disposiciones COFECE aplicables.
         </p>
-      </div>
-    </section>
+    </Section>
   );
 }

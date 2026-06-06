@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Eyebrow } from "@/components/shared/eyebrow";
+import { SectionHeader } from "@/components/shared/SectionHeader";
+import { Section } from "@/components/layout/Section";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -44,19 +45,11 @@ export function ValuesAccordion() {
   const focusIdx = hoveredIdx ?? activeIdx;
 
   return (
-    <section
-      id="valores"
-      className="scroll-snap-section relative py-24 sm:py-32 lg:py-40 bg-[#050505] border-t border-white/[0.04]"
-      aria-label="Nuestra palabra"
-    >
-      <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16">
-        {/* ── Header ── */}
-        <div className="max-w-2xl mb-16 sm:mb-24">
-          <Eyebrow label="Nuestra palabra" />
-          <h2 className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-light text-white leading-[1.05] tracking-[-0.03em]">
-            Nuestro <span className="metallic-gold-static">compromiso</span>.
-          </h2>
-        </div>
+    <Section id="valores" label="Nuestra palabra">
+      <SectionHeader
+        eyebrow="Nuestra palabra"
+        title={<>Nuestro <span className="metallic-gold-static">compromiso</span>.</>}
+      />
 
         {/* ── List ── */}
         <ul
@@ -126,7 +119,7 @@ export function ValuesAccordion() {
                     className={cn(
                       "shrink-0 mt-2 w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-500",
                       isFocused
-                        ? "border-[#D4AF37] text-[#D4AF37] rotate-45"
+                        ? "border-accent text-accent rotate-45"
                         : "border-white/30 text-white/70",
                     )}
                     aria-hidden="true"
@@ -138,7 +131,6 @@ export function ValuesAccordion() {
             );
           })}
         </ul>
-      </div>
-    </section>
+    </Section>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 const ROTATING_WORDS = ["Patrimonio", "Disciplina", "Transparencia"] as const;
 
@@ -35,7 +36,7 @@ export function Hero() {
 
   return (
     <section
-      className="scroll-snap-section relative min-h-[100dvh] flex items-center overflow-hidden bg-[#050505]"
+      className="scroll-snap-section relative min-h-[100dvh] flex items-center overflow-hidden bg-background"
       aria-label="Inicio"
     >
       {/* ── Top hairline (gold accent, 1px) ── */}
@@ -64,6 +65,7 @@ export function Hero() {
 
             {/* Massive title */}
             <h1 className="text-[clamp(2rem,8.5vw,7rem)] sm:text-[clamp(3rem,8.5vw,7rem)] font-light leading-[0.98] tracking-[-0.04em] text-white mb-4 sm:mb-12">
+              <span className="sr-only">Inmobiliaria en Tijuana — Casas, oficinas, locales y naves industriales. </span>
               <motion.span
                 initial={shouldReduceMotion ? {} : { opacity: 0, y: 32, filter: "blur(8px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -99,7 +101,7 @@ export function Hero() {
                     animate={{ scaleX: 1 }}
                     transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
                     style={{ transformOrigin: "left" }}
-                    className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-transparent"
+                    className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-accent via-accent-end to-transparent"
                   />
                 </span>
               </motion.span>
@@ -131,7 +133,7 @@ export function Hero() {
               </Link>
               <Link
                 href="/contacto"
-                className="btn-ghost-gold inline-flex items-center justify-center gap-2 sm:gap-2.5 px-6 sm:px-9 py-3 sm:py-4 bg-white/[0.04] border border-white/35 text-white text-[13px] sm:text-sm font-semibold tracking-[0.06em] rounded-full transition-colors duration-300 hover:border-[#D4AF37] hover:bg-white/[0.06]"
+                className="btn-ghost-gold inline-flex items-center justify-center gap-2 sm:gap-2.5 px-6 sm:px-9 py-3 sm:py-4 bg-white/[0.04] border border-white/35 text-white text-[13px] sm:text-sm font-semibold tracking-[0.06em] rounded-full transition-colors duration-300 hover:border-accent hover:bg-white/[0.06]"
               >
                 <span>Hablar con un Asesor</span>
               </Link>
@@ -146,23 +148,31 @@ export function Hero() {
             className="lg:col-span-5 relative aspect-[16/9] sm:aspect-[4/5] lg:aspect-[3/4] max-h-[35vh] sm:max-h-[80vh] max-w-sm mx-auto sm:max-w-none sm:mx-0 order-first lg:order-last"
           >
             <div className="relative w-full h-full overflow-hidden">
-              {/* The visual: video with poster fallback */}
-              {/* TODO: replace SVG poster with JPG/WebP + <img fetchpriority="high"> for LCP optimization */}
+              {/* LCP layer: static WebP loads instantly, video enhances if supported */}
+              <Image
+                src="/hero-poster.webp"
+                alt="Black Corporativo — Inversión inmobiliaria en Tijuana"
+                fill
+                priority
+                fetchPriority="high"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="object-cover"
+              />
               <video
                 autoPlay
                 muted
                 loop
                 playsInline
-                preload="metadata"
-                poster="/hero-poster.svg"
+                preload="none"
+                poster="/hero-poster.webp"
                 className="absolute inset-0 w-full h-full object-cover"
               >
                 <source src="/hero.webm" type="video/webm" />
               </video>
 
               {/* Layered dark overlays for depth */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/25 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#050505]/70" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-background/70" />
 
               {/* Subtle grain */}
               <div className="grain-overlay" />
@@ -178,7 +188,7 @@ export function Hero() {
               initial={shouldReduceMotion ? {} : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.2 }}
-              className="absolute -bottom-2 -left-2 sm:-bottom-6 sm:-left-6 bg-[#050505]/95 border border-white/10 px-2 sm:px-5 py-1.5 sm:py-3 backdrop-blur-md"
+              className="absolute -bottom-2 -left-2 sm:-bottom-6 sm:-left-6 bg-background/95 border border-white/10 px-2 sm:px-5 py-1.5 sm:py-3 backdrop-blur-md"
             >
               <div className="flex items-center gap-3">
                 <span className="relative flex h-2 w-2">
@@ -198,7 +208,7 @@ export function Hero() {
       <div className="absolute bottom-0 inset-x-0 z-20">
         <div className="gold-divider-solid" />
         <div
-          className="flex overflow-hidden whitespace-nowrap py-3 sm:py-5 bg-[#050505]/85 backdrop-blur-md"
+          className="flex overflow-hidden whitespace-nowrap py-3 sm:py-5 bg-background/85 backdrop-blur-md"
           role="presentation"
           aria-hidden="true"
         >
@@ -209,7 +219,7 @@ export function Hero() {
                 <span className="px-3 sm:px-10 text-[9px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
                   {v}
                 </span>
-                <span className="text-[#D4AF37] text-sm select-none" aria-hidden="true">
+                <span className="text-accent text-sm select-none" aria-hidden="true">
                   •
                 </span>
               </span>
@@ -221,7 +231,7 @@ export function Hero() {
                 <span className="px-3 sm:px-10 text-[9px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
                   {v}
                 </span>
-                <span className="text-[#D4AF37] text-sm select-none" aria-hidden="true">
+                <span className="text-accent text-sm select-none" aria-hidden="true">
                   •
                 </span>
               </span>

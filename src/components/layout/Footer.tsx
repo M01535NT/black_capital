@@ -89,7 +89,7 @@ export function Footer() {
         <footer
             role="contentinfo"
             aria-label="Pie de página"
-            className="w-full bg-[#050505] mt-auto relative"
+            className="w-full bg-background mt-auto relative"
         >
             {/* ═══════ CTA FINAL MASIVO ═══════ */}
             <div className="relative border-t border-b border-white/[0.04] overflow-hidden">

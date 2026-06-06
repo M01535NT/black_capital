@@ -6,7 +6,8 @@ import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Eyebrow } from "@/components/shared/eyebrow";
+import { SectionHeader } from "@/components/shared/SectionHeader";
+import { Section } from "@/components/layout/Section";
 
 interface Linea {
   id: string;
@@ -96,22 +97,12 @@ export function InvestmentTabs() {
   const active = LINEAS.find((l) => l.id === activeId) ?? LINEAS[0];
 
   return (
-    <section
-      id="lineas"
-      className="scroll-snap-section relative py-24 sm:py-32 lg:py-40 bg-[#050505] border-t border-white/[0.04]"
-      aria-label="Líneas de inversión"
-    >
-      <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16">
-        {/* ── Header ── */}
-        <div className="mb-14 sm:mb-20 max-w-3xl">
-          <Eyebrow label="Tres líneas de inversión" />
-          <h2 className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-light text-white leading-[1.05] tracking-[-0.03em] mb-5">
-            Elige la que va <span className="metallic-gold-static">contigo</span>.
-          </h2>
-          <p className="text-[clamp(0.9375rem,1.2vw,1.0625rem)] text-white/65 leading-[1.7] font-light max-w-xl">
-            Sin tecnicismos. Tres caminos claros para hacer crecer tu patrimonio, cada uno con su tesis de inversión y perfil de riesgo.
-          </p>
-        </div>
+    <Section id="lineas" label="Líneas de inversión" containerWidth="wide">
+      <SectionHeader
+        eyebrow="Tres líneas de inversión"
+        title={<>Elige la que va <span className="metallic-gold-static">contigo</span>.</>}
+        description="Sin tecnicismos. Tres caminos claros para hacer crecer tu patrimonio, cada uno con su tesis de inversión y perfil de riesgo."
+      />
 
         {/* ── Tabs + Detail ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
@@ -203,8 +194,8 @@ export function InvestmentTabs() {
                     className="object-cover"
                   />
                   {/* Layered dark overlays */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/55 to-[#050505]/30" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#050505]/70" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-background/30" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-background/70" />
                   <div className="grain-overlay" />
                   {/* Hairline borders */}
                   <div className="absolute inset-0 border border-white/[0.04]" />
@@ -257,7 +248,6 @@ export function InvestmentTabs() {
             </AnimatePresence>
           </div>
         </div>
-      </div>
-    </section>
+    </Section>
   );
 }

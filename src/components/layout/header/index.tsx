@@ -59,7 +59,7 @@ export function Header() {
         // Initial: transparente, sin borde
         !scrolled && "bg-transparent",
         // Scrolled: blur + border inferior gold 20% (1px)
-        scrolled && "bg-[#050505]/70 backdrop-blur-md border-b border-[var(--color-accent)]/20",
+        scrolled && "bg-background/70 backdrop-blur-md border-b border-accent/20",
       )}
       role="banner"
     >
