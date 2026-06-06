@@ -36,7 +36,7 @@ export function Hero() {
 
   return (
     <section
-      className="scroll-snap-section relative min-h-[100dvh] flex items-center overflow-hidden bg-background pb-[env(safe-area-inset-bottom,0px)]"
+      className="scroll-snap-section relative min-h-[100svh] flex items-center overflow-hidden bg-background pt-16 lg:pt-20 pb-[env(safe-area-inset-bottom,0px)]"
       aria-label="Inicio"
     >
       {/* ── Top hairline (gold accent, 1px) ── */}
@@ -64,7 +64,7 @@ export function Hero() {
             </motion.div>
 
             {/* Massive title */}
-            <h1 className="text-[clamp(2rem,8.5vw,7rem)] sm:text-[clamp(3rem,8.5vw,7rem)] font-light leading-[0.98] tracking-[-0.04em] text-white mb-4 sm:mb-12">
+            <h1 className="text-[clamp(2.25rem,7vw,5rem)] font-light leading-[0.98] tracking-[-0.04em] text-white mb-4 sm:mb-12 text-balance">
               <motion.span
                 initial={shouldReduceMotion ? {} : { opacity: 0, y: 32, filter: "blur(8px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -111,7 +111,7 @@ export function Hero() {
               initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[clamp(0.875rem,1.4vw,1.25rem)] sm:text-[clamp(1.0625rem,1.4vw,1.25rem)] text-white/75 leading-[1.6] sm:leading-[1.95] max-w-xl mb-5 sm:mb-14 font-light tracking-[0.005em]"
+              className="text-[clamp(1rem,1.4vw,1.25rem)] sm:text-[clamp(1.0625rem,1.4vw,1.25rem)] text-white/75 leading-[1.6] sm:leading-[1.95] max-w-xl mb-5 sm:mb-14 font-light tracking-[0.005em]"
             >
               Estructuramos, curamos y gestionamos activos residenciales, comerciales e industriales en Tijuana. Con análisis financiero claro, directo y sin rodeos.
             </motion.p>
@@ -125,7 +125,7 @@ export function Hero() {
             >
               <Link
                 href="/inventario"
-                className="brushed-gold group inline-flex items-center justify-center gap-2 sm:gap-2.5 px-6 sm:px-9 py-3 sm:py-4 text-[13px] sm:text-sm font-bold tracking-[0.06em] rounded-full hover:scale-[1.015] transition-all duration-300"
+                className="brushed-gold group w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-2.5 px-6 sm:px-9 py-3 sm:py-4 text-[13px] sm:text-sm font-bold tracking-[0.06em] rounded-full hover:scale-[1.015] transition-all duration-300 min-h-[48px]"
               >
                 <span>Explorar Propiedades</span>
                 <span aria-hidden="true" className="text-base leading-none transition-transform duration-300 group-hover:translate-x-1">→</span>
@@ -162,7 +162,7 @@ export function Hero() {
                 muted
                 loop
                 playsInline
-                preload="none"
+                preload="metadata"
                 poster="/hero-poster.webp"
                 className="absolute inset-0 w-full h-full object-cover"
               >
