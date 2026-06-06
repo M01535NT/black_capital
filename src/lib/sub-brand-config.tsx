@@ -147,6 +147,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 "Casas en fraccionamientos privados con seguridad 24/7, amenidades de primer nivel y ubicación estratégica. Para familias profesionales, empresarios e inversionistas que valoran plusvalía real.",
             primaryCta: { label: "Explorar Propiedades", href: "/inventario?brand=luxury" },
             secondaryCta: { label: "Solicitar Información", href: "#luxury-cta" },
+            highlights: [
+                { value: "15+", label: "fraccionamientos" },
+                { value: "200+", label: "propiedades" },
+                { value: "$120M+", label: "USD operados" },
+            ],
         },
         value: {
             eyebrow: "Residencial Premium",
@@ -284,7 +289,12 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             subtitle:
                 "Locales comerciales, oficinas y plazas en zonas de alto tráfico en Tijuana. Oportunidades de inversión con flujo comprobado y contratos transparentes.",
             primaryCta: { label: "Explorar Propiedades", href: "/inventario?brand=business" },
-            secondaryCta: { label: "Solicitar Asesoría Comercial", href: "#business-cta" },
+            secondaryCta: { label: "Asesoría Comercial", href: "#business-cta" },
+            highlights: [
+                { value: "92%", label: "ocupación" },
+                { value: "45+", label: "activos" },
+                { value: "8+", label: "años" },
+            ],
         },
         value: {
             eyebrow: "Oportunidades Comerciales",
