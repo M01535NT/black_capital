@@ -138,11 +138,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             accent: "gold",
             headline: (
                 <>
-                    Residencial premium en Tijuana.
+                    Casas en Tijuana.
                 </>
             ),
             subtitle:
-                "Vista de ejemplo para casas en fraccionamientos privados, amenidades y ubicación estratégica. Cuando el inventario real esté listo, esta sección se actualizará desde el panel.",
+                "Residencial seleccionado por zona, valor y estilo de vida.",
             primaryCta: { label: "Explorar Propiedades", href: "/inventario?brand=luxury" },
             secondaryCta: { label: "Solicitar Información", href: "#luxury-cta" },
         },
@@ -271,11 +271,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             accent: "gold",
             headline: (
                 <>
-                    Activos comerciales para operar o invertir.
+                    Espacios para operar.
                 </>
             ),
             subtitle:
-                "Vista de ejemplo para locales, oficinas y plazas en zonas de alto tráfico. El contenido real se cargará desde el panel cuando esté disponible.",
+                "Locales, oficinas y plazas con lectura comercial.",
             primaryCta: { label: "Explorar Propiedades", href: "/inventario?brand=business" },
             secondaryCta: { label: "Asesoría Comercial", href: "#business-cta" },
         },
@@ -405,11 +405,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             overlayClass: "from-black/70 via-black/50",
             headline: (
                 <>
-                    Espacios industriales para operación logística.
+                    Operación industrial.
                 </>
             ),
             subtitle:
-                "Vista de ejemplo para naves, bodegas y espacios logísticos. El contenido real se cargará desde el panel cuando esté disponible.",
+                "Naves, bodegas y corredores logísticos en Tijuana.",
             primaryCta: { label: "Ver Inventario Industrial", href: "/inventario?brand=industrial" },
             gridLines: true,
             cursorGlow: false,

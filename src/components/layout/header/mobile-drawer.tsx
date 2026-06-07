@@ -32,8 +32,8 @@ interface MobileDrawerProps {
 
 function NavGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="space-y-4">
-      <h3 className="font-display text-[11px] uppercase tracking-overline text-gold-solid/90 font-bold">
+    <div className="space-y-2.5">
+      <h3 className="font-display text-[10px] uppercase tracking-[0.18em] text-gold-solid/90 font-bold">
         {title}
       </h3>
       {children}
@@ -86,9 +86,9 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-80 sm:w-96 lg:w-[420px] rounded-none bg-[#0a0a0a]/95 backdrop-blur-2xl border-l border-gold-500/15">
-        <div className="mx-auto w-full max-w-sm p-6 overflow-y-auto">
-          <DrawerHeader className="px-0 pt-0 text-left flex flex-row items-center justify-between">
-            <DrawerTitle className="font-display text-2xl font-bold tracking-tight text-foreground">
+        <div className="mx-auto flex h-full w-full max-w-sm flex-col overflow-hidden p-4 sm:p-5">
+          <DrawerHeader className="shrink-0 px-0 pb-3 pt-0 text-left flex flex-row items-center justify-between">
+            <DrawerTitle className="font-display text-xl font-bold tracking-tight text-foreground">
               Menu
             </DrawerTitle>
             <button
@@ -100,53 +100,52 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
             </button>
           </DrawerHeader>
 
-          <div className="py-6 space-y-8">
-            <NavGroup title="Navegacion">
-              <div className="flex flex-col gap-3">
-                {baseLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    className={cn(
-                      "font-display text-lg font-bold uppercase tracking-wide transition-colors",
-                      isActive(link.href) ? "text-gold-solid" : "text-foreground hover:text-gold-solid",
-                    )}
-                    onClick={handleClose}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-              </div>
-            </NavGroup>
+          <div className="flex flex-1 flex-col justify-between gap-4 border-t border-white/[0.06] pt-4">
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-2">
+                  {baseLinks.map((link) => (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      className={cn(
+                        "flex min-h-10 items-center justify-center border border-white/[0.08] px-3 text-center font-display text-[12px] font-bold uppercase tracking-[0.12em] transition-colors",
+                        isActive(link.href) ? "border-gold-solid/45 text-gold-solid" : "text-foreground hover:border-gold-solid/40 hover:text-gold-solid",
+                      )}
+                      onClick={handleClose}
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                </div>
 
-            <NavGroup title="Nuestras Marcas">
-              <div className="flex flex-col gap-4">
+            <NavGroup title="Marcas">
+              <div className="grid gap-2">
                 {verticales.map((link) => (
-                  <Link key={link.name} href={link.href} onClick={handleClose} className="group focus-visible:outline-none">
+                  <Link key={link.name} href={link.href} onClick={handleClose} className="group border border-white/[0.06] bg-white/[0.02] px-3 py-2.5 focus-visible:outline-none">
                     <span className={cn(
-                      "font-display text-lg font-bold tracking-wide transition-colors",
+                      "font-display text-sm font-bold tracking-wide transition-colors",
                       isActive(link.href) ? "text-gold-solid" : "text-foreground group-hover:text-gold-solid",
                     )}>
                       {link.name}
                     </span>
-                    <p className="text-xs text-foreground/50 mt-0.5">{link.desc}</p>
+                    <p className="mt-0.5 truncate text-[11px] text-foreground/45">{link.desc}</p>
                   </Link>
                 ))}
               </div>
             </NavGroup>
 
             <NavGroup title="Herramientas">
-              <div className="flex flex-col gap-3">
+              <div className="grid gap-2">
                 {herramientasDropdown.map((item) => {
                   const Icon = item.icon;
                   return (
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="flex items-center gap-3 text-sm font-medium text-foreground/80 hover:text-gold-solid transition-colors"
+                      className="flex min-h-8 items-center gap-2 text-xs font-medium text-foreground/78 hover:text-gold-solid transition-colors"
                       onClick={handleClose}
                     >
-                      <Icon className="w-4 h-4 text-gold-solid/80" aria-hidden="true" />
+                      <Icon className="w-3.5 h-3.5 text-gold-solid/80" aria-hidden="true" />
                       {item.name}
                     </Link>
                   );
@@ -155,13 +154,13 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
             </NavGroup>
 
             <NavGroup title="Corporativo">
-              <div className="flex flex-col gap-3">
+              <div className="grid grid-cols-1 gap-2">
                 {corporativoLinks.map((link) => (
                   <Link
                     key={link.name}
                     href={link.href}
                     className={cn(
-                      "text-sm font-medium transition-colors",
+                      "text-xs font-medium transition-colors",
                       isActive(link.href) ? "text-gold-solid" : "text-foreground/80 hover:text-gold-solid",
                     )}
                     onClick={handleClose}
@@ -171,12 +170,13 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
                 ))}
               </div>
             </NavGroup>
+            </div>
 
             {/* Contacto CTA */}
-            <div className="pt-2">
+            <div className="shrink-0">
               <Link
                 href="/contacto"
-                className="flex items-center justify-center gap-2 w-full py-3 px-6 border border-gold-solid/60 rounded-full text-gold-solid font-semibold text-sm hover:bg-gold-solid hover:text-black transition-all"
+                className="flex min-h-10 items-center justify-center gap-2 w-full px-5 border border-gold-solid/60 rounded-full text-gold-solid font-semibold text-sm hover:bg-gold-solid hover:text-black transition-all"
                 onClick={handleClose}
               >
                 <Phone className="w-4 h-4" aria-hidden="true" />

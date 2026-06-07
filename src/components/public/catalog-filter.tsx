@@ -86,7 +86,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
     };
 
     const hasFilters = activeBusiness || activeUse || searchTerm || sort !== "newest";
-    const pillBase = "min-h-10 px-4 text-[11px] font-bold uppercase tracking-[0.14em] transition-colors";
+    const pillBase = "flex min-h-10 w-full items-center justify-center px-2 text-center text-[10px] font-bold uppercase tracking-[0.12em] transition-colors sm:px-4 sm:text-[11px] sm:tracking-[0.14em]";
     const pillActive = "bg-[var(--color-accent)] text-black";
     const pillInactive = "border border-white/[0.08] bg-white/[0.025] text-white/62 hover:border-[var(--color-accent)]/35 hover:text-white";
 
@@ -166,7 +166,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                 </div>
 
                 <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-2">
-                    <div className="flex flex-wrap gap-2">
+                    <div className="grid grid-cols-3 gap-2">
                         <button
                             type="button"
                             onClick={() => {
@@ -193,7 +193,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                         ))}
                     </div>
 
-                    <div className="flex flex-wrap gap-2 lg:justify-end">
+                    <div className="grid grid-cols-3 gap-2">
                         {USES.map((use) => (
                             <button
                                 key={use}

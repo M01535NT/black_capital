@@ -303,7 +303,7 @@ export function Footer() {
                         © {new Date().getFullYear()} Black Capital. Todos los derechos reservados.
                     </p>
                     <p className="text-[10px] tracking-[0.18em] uppercase text-white/30">
-                        Hecho con discreción en México
+                        Representación inmobiliaria profesional
                     </p>
                 </div>
             </div>
