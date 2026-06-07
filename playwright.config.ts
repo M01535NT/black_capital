@@ -14,6 +14,10 @@ export default defineConfig({
         {
             name: 'chromium',
             use: { ...devices['Desktop Chrome'] },
+        },
+        {
+            name: 'chrome',
+            use: { ...devices['Desktop Chrome'], channel: 'chrome' },
         }
     ],
     // 👇 Este es el bloque mágico que enciende tu entorno local antes de las pruebas

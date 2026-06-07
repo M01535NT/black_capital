@@ -6,7 +6,7 @@
 
 const isProd = process.env.NODE_ENV === "production";
 
-function fmt(level: string, tag: string, ...args: unknown[]) {
+function fmt(level: string, tag: string) {
     const ts = new Date().toISOString();
     return `[${ts}] [${level}] [${tag}]`;
 }

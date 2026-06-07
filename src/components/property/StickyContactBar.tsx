@@ -13,7 +13,6 @@ interface StickyContactBarProps {
 }
 
 export function StickyContactBar({
-  propertyId,
   agentPhone,
   agentEmail,
   agentWhatsapp,

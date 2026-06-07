@@ -11,10 +11,10 @@ export function SpecRow({
     mono?: boolean;
 }) {
     return (
-        <div className="flex items-center justify-between gap-3 py-1">
-            <span className="text-caption text-foreground/50 uppercase tracking-wider">{label}</span>
+        <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] py-2 last:border-b-0">
+            <span className="text-[10px] uppercase tracking-[0.16em] text-white/45">{label}</span>
             <span
-                className={`text-sm font-medium text-foreground text-right ${
+                className={`text-right text-sm font-medium text-white/78 ${
                     mono ? "font-mono text-xs" : ""
                 }`}
             >

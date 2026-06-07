@@ -20,31 +20,25 @@ export function MetricCard({
     return (
         <div 
             className={cn(
-                "group relative overflow-hidden rounded-2xl border transition-all duration-500 flex items-center gap-3 p-4",
+                "group relative flex items-center gap-3 overflow-hidden border p-4 transition-colors duration-300",
                 variant === "featured"
-                    ? "bg-gradient-to-br from-gold-500/10 to-transparent border-gold-500/30 hover:border-gold-500/60 hover:shadow-[0_0_30px_-8px_rgba(212,175,55,0.15)]"
-                    : "bg-card border-foreground/5 hover:border-gold-500/15"
+                    ? "border-[var(--color-accent)]/28 bg-white/[0.035] hover:border-[var(--color-accent)]/50"
+                    : "border-white/[0.08] bg-white/[0.025] hover:border-[var(--color-accent)]/30"
             )}
         >
-            {/* Gradient overlay on hover */}
-            <div className="absolute inset-0 bg-gradient-to-br from-gold-500/0 to-gold-500/0 group-hover:to-gold-500/5 transition-all duration-500" />
-            
-            {/* Icon container */}
             <div className={cn(
-                "size-10 rounded-full flex items-center justify-center shrink-0 border transition-all duration-500",
+                "flex size-10 shrink-0 items-center justify-center rounded-full border transition-colors duration-300",
                 variant === "featured"
-                    ? "bg-gold-500/20 border-gold-500/40 text-gold-500 group-hover:scale-110 group-hover:bg-gold-500/30"
-                    : "bg-gold-500/10 border-gold-500/20 text-gold-500"
+                    ? "border-[var(--color-accent)]/40 bg-[var(--color-accent)] text-black"
+                    : "border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 text-[var(--color-accent)]"
             )}>
                 {icon}
             </div>
-            
-            {/* Label and Value */}
             <div className="relative min-w-0">
-                <p className="text-caption uppercase tracking-card text-foreground/50 font-semibold">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">
                     {label}
                 </p>
-                <p className="font-numerics font-semibold text-foreground text-sm sm:text-base truncate">
+                <p className="truncate text-sm font-semibold text-white sm:text-base">
                     {value}
                 </p>
             </div>

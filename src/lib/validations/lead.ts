@@ -38,7 +38,17 @@ export const leadSchema = z.object({
             { message: "El teléfono debe tener al menos 10 dígitos" }
         ),
     privacy_accepted: z.boolean().refine(val => val === true, { message: "Debes aceptar el aviso de privacidad" }),
-    source: z.enum(["organic", "campaign", "referral", "other", "landing_luxury", "landing_business", "landing_industrial"]),
+    source: z.enum([
+        "organic",
+        "campaign",
+        "referral",
+        "other",
+        "newsletter",
+        "brochure",
+        "landing_luxury",
+        "landing_business",
+        "landing_industrial",
+    ]),
     property_id: z.string().uuid().optional().nullable(),
     notes: z.string().optional().nullable(),
     status: z.enum(["new", "contacted", "qualified", "lost", "won"]),

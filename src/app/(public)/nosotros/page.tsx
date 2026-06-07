@@ -5,7 +5,7 @@ import { Eyebrow } from "@/components/shared/eyebrow";
 import { Shield, Users, TrendingUp, Award, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Nosotros | Black Corporativo",
+    title: "Nosotros | Black Capital",
     description:
         "Inmobiliaria premium en Tijuana especializada en casas residenciales, centros comerciales y naves industriales. Transparencia, análisis y resultados en cada operación.",
     alternates: {
@@ -44,7 +44,7 @@ const subpaginas = [
     {
         href: "/nosotros/equipo",
         titulo: "Equipo",
-        descripcion: "Conoce a las personas detrás de Black Corporativo.",
+        descripcion: "Conoce a las personas detrás de Black Capital.",
     },
     {
         href: "/nosotros/historia",

@@ -5,7 +5,7 @@ import { Eyebrow } from "@/components/shared/eyebrow";
 import { Calculator, FileSpreadsheet, BarChart3, Download, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Herramientas para Inversionistas | Black Corporativo",
+    title: "Herramientas para Inversionistas | Black Capital",
     description:
         "Herramientas financieras y recursos exclusivos para inversionistas inmobiliarios: calculadoras, reportes de mercado y análisis comparativos.",
 };
@@ -144,6 +144,37 @@ export default function HerramientasPage() {
                             </div>
                         );
                     })}
+                </div>
+            </Section>
+
+            <Section id="solicitar-analisis" label="Solicitar análisis" spacing="tight" containerWidth="wide">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-t border-white/[0.06] py-12 sm:py-16">
+                    <div className="lg:col-span-7">
+                        <Eyebrow label="Placeholder editable" />
+                        <h2 className="text-display-3 font-light text-white leading-display tracking-headline text-balance">
+                            Cuando el panel esté listo, estos recursos se podrán publicar por etapa.
+                        </h2>
+                    </div>
+                    <div className="lg:col-span-5 flex flex-col items-start lg:items-end justify-end gap-5">
+                        <p className="text-body-sm text-white/58 leading-relaxed max-w-md lg:text-right">
+                            Por ahora, el flujo útil es consultar inventario o solicitar un análisis personalizado con el equipo.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                            <Link
+                                href="/inventario"
+                                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:border-[var(--color-accent)]"
+                            >
+                                Inventario
+                                <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                            </Link>
+                            <Link
+                                href="/contacto?interes=analisis"
+                                className="inline-flex min-h-11 items-center justify-center rounded-full bg-gold-500 px-5 text-[11px] font-bold uppercase tracking-[0.16em] text-black transition-colors hover:bg-gold-400"
+                            >
+                                Solicitar análisis
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </Section>
         </div>

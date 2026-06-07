@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calculator, TrendingUp, DollarSign, Percent } from "lucide-react";
+import { Calculator, DollarSign, Percent } from "lucide-react";
 
 interface MortgageCalculatorProps {
   price: number;
@@ -13,7 +13,6 @@ interface MortgageCalculatorProps {
 export function MortgageCalculator({
   price,
   currency,
-  businessType,
 }: MortgageCalculatorProps) {
   const [downPayment, setDownPayment] = useState(20);
   const [years, setYears] = useState(15);

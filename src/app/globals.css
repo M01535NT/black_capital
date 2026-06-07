@@ -39,8 +39,8 @@
   --color-steel-600: oklch(0.35 0.02 250);
   --color-steel-700: oklch(0.25 0.01 250);
 
-  --font-sans: var(--font-sans), sans-serif;
-  --font-display: var(--font-sans), sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Plus Jakarta Sans Fallback", sans-serif;
+  --font-display: "Plus Jakarta Sans", "Plus Jakarta Sans Fallback", sans-serif;
   --font-mono: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
 
   /* ── Display scale (fluid) ── */

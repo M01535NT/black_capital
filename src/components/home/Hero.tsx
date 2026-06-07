@@ -18,9 +18,6 @@ const VALUES = [
   "Resultados",
 ];
 
-// Duplicamos la lista para el efecto de loop infinito del marquee
-const MARQUEE = [...VALUES, ...VALUES];
-
 export function Hero() {
   const shouldReduceMotion = useReducedMotion();
   const [wordIndex, setWordIndex] = useState(0);
@@ -150,7 +147,7 @@ export function Hero() {
               {/* LCP layer: static WebP loads instantly, video enhances if supported */}
               <Image
                 src="/hero-poster.webp"
-                alt="Black Corporativo — Inversión inmobiliaria en Tijuana"
+                alt="Black Capital — Inversión inmobiliaria en Tijuana"
                 fill
                 priority
                 fetchPriority="high"

@@ -24,8 +24,8 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Inmobiliaria Premium en Tijuana | Casas, Comercial e Industrial | Black Corporativo",
-    template: "%s | Black Corporativo",
+    default: "Inmobiliaria Premium en Tijuana | Casas, Comercial e Industrial | Black Capital",
+    template: "%s | Black Capital",
   },
   description:
     "Encuentra casas residenciales, centros comerciales y naves industriales en Tijuana. Análisis financiero estructurado para familias, empresarios e inversionistas en Baja California.",
@@ -39,22 +39,22 @@ export const metadata: Metadata = {
     "inversión inmobiliaria",
     "Baja California",
   ],
-  authors: [{ name: "Black Corporativo" }],
-  creator: "Black Corporativo",
-  publisher: "Black Corporativo",
+  authors: [{ name: "Black Capital" }],
+  creator: "Black Capital",
+  publisher: "Black Capital",
   formatDetection: { email: false, address: false, telephone: false },
   openGraph: {
     type: "website",
     locale: "es_MX",
     url: "https://blackcorporativo.vercel.app",
-    siteName: "Black Corporativo",
-    title: "Inmobiliaria Premium en Tijuana | Black Corporativo",
+    siteName: "Black Capital",
+    title: "Inmobiliaria Premium en Tijuana | Black Capital",
     description:
       "Casas residenciales, centros comerciales y naves industriales en Tijuana con análisis financiero estructurado.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Inmobiliaria Premium en Tijuana | Black Corporativo",
+    title: "Inmobiliaria Premium en Tijuana | Black Capital",
     description: "Casas, centros comerciales y naves industriales en Tijuana, Baja California.",
     images: ["/og-image.jpg"],
   },
@@ -82,7 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#050505" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <meta name="apple-mobile-web-app-title" content="Black Corporativo" />
+        <meta name="apple-mobile-web-app-title" content="Black Capital" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

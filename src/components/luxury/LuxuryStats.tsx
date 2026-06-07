@@ -12,6 +12,8 @@ export function LuxuryStats() {
     return (
         <SubBrandStats
             brand="luxury"
+            eyebrow="Indicadores de ejemplo"
+            title="Muestra visual para el catálogo residencial."
             accent="gold"
             stats={SUB_BRAND_CONFIGS.luxury.stats}
         />

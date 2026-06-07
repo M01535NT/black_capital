@@ -59,7 +59,7 @@ const sizeMap: Record<NonNullable<LogoProps["size"]>, number> = {
  * viewBox where every unit maps to meaningful pixels.
  */
 export function Logo({
-  variant: _variant = "mark",
+  variant = "mark",
   size = "md",
   tone = "gold",
   href,
@@ -94,7 +94,7 @@ export function Logo({
   })();
 
   // Width follows the 220:72 aspect → width = height * (220 / 72).
-  const width = height * (220 / 72);
+  const width = height * ((variant === "full" ? 236 : 220) / 72);
 
   // viewBox is 220x72. font-size is in viewBox units. At height=72 the
   // text renders at these exact pixel sizes. At other heights it scales.

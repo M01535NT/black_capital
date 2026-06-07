@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { motion, useReducedMotion as useFramerReducedMotion } from 'framer-motion'
 
 /**

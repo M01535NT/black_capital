@@ -7,20 +7,15 @@ import {
     getRecentLeads,
     getRecentProperties,
 } from "@/lib/data";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-    Plus,
     Building2,
     Users,
     UserCircle,
     TrendingUp,
     ArrowRight,
     Mail,
-    Phone,
     CalendarDays,
-    ClipboardList,
-    Briefcase,
     Eye,
 } from "lucide-react";
 import Link from "next/link";
@@ -132,7 +127,7 @@ export default async function AdminDashboard() {
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
                     <h2 className="font-display uppercase tracking-wider text-3xl text-foreground">Dashboard</h2>
-                    <p className="text-foreground/50 text-sm mt-1">Panel de control de Black Corporativo.</p>
+                    <p className="text-foreground/50 text-sm mt-1">Panel de control de Black Capital.</p>
                 </div>
                 <div className="flex items-center gap-3 bg-card border border-foreground/10 rounded-xl px-4 py-2">
                     <CalendarDays className="w-4 h-4 text-gold-500" />

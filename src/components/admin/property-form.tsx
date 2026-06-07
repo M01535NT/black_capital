@@ -4,7 +4,6 @@ import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import imageCompression from "browser-image-compression";
 import { propertySchema, PropertyFormValues } from "@/lib/validations/property";
 
@@ -28,14 +27,8 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, UploadCloud, X, Plus } from "lucide-react";
+import { Loader2, UploadCloud, X } from "lucide-react";
 import { AgentSelect } from "./agent-select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-
-import type { Database } from "@/types/database.types";
-
-type PropertyRow = Database["public"]["Tables"]["properties"]["Row"];
 
 interface PdfEntry {
     file: File;

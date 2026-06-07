@@ -192,7 +192,7 @@ export async function PUT(req: NextRequest) {
   }
 }
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   try {
     if (!(await checkAuth())) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });

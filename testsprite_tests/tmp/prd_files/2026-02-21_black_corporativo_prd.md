@@ -1,12 +1,12 @@
-# **Product Requirements Document (PRD): Black Corporativo (V2 Extendida)**
+# **Product Requirements Document (PRD): Black Capital (V2 Extendida)**
 
 ## **1\. Resumen Ejecutivo y Visión del Producto**
 
-Black Corporativo es una plataforma digital inmobiliaria de alta gama estructurada como una Progressive Web App (PWA). Actúa como la empresa matriz de tres inmobiliarias gemelas o marcas hijas: **Black Luxury**, **Black Business** y **Black Industrial**.
+Black Capital es una plataforma digital inmobiliaria de alta gama estructurada como una Progressive Web App (PWA). Actúa como la empresa matriz de tres inmobiliarias gemelas o marcas hijas: **Black Luxury**, **Black Business** y **Black Industrial**.
 
 Su propósito principal es la captación automatizada, calificación predictiva y gestión de leads B2B y B2C (High Net Worth Individuals \- HNWI). El inventario está unificado, pero segmentado estrictamente por su uso de suelo: **Residencial** (operado por Black Luxury), **Comercial** (operado por Black Business) e **Industrial** (operado por Black Industrial). Adicionalmente, cuenta con atributos transversales para oportunidades de **Cesiones** y **Proyectos**.
 
-En un mercado inmobiliario saturado de plataformas genéricas con altas tasas de rebote, Black Corporativo se posiciona como una herramienta de *Inbound Marketing* de precisión. El sistema opera bajo un modelo de "Gated Content" (contenido bloqueado): intercambia el acceso a información financiera privilegiada (brochures interactivos, proyecciones de ROI, análisis de Cap Rate y due diligence preliminar) por datos de contacto verificados.
+En un mercado inmobiliario saturado de plataformas genéricas con altas tasas de rebote, Black Capital se posiciona como una herramienta de *Inbound Marketing* de precisión. El sistema opera bajo un modelo de "Gated Content" (contenido bloqueado): intercambia el acceso a información financiera privilegiada (brochures interactivos, proyecciones de ROI, análisis de Cap Rate y due diligence preliminar) por datos de contacto verificados.
 
 La arquitectura subyacente está diseñada para garantizar una latencia mínima (utilizando Next.js 16 y Tailwind v4 sobre una red Edge), disponibilidad sin conexión (Offline-First para inversores en movimiento), seguridad a nivel bancario (Supabase RLS) y un ciclo de vida de desarrollo impulsado y auditado por inteligencia artificial (Google Antigravity, TestSprite MCP), lo que asegura una escalabilidad operativa sin precedentes.
 

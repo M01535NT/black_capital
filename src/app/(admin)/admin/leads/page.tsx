@@ -1,7 +1,6 @@
 import { requireAdminSession } from "@/lib/auth";
 import { logger } from "@/lib/logger";
 import { LeadsPageClient } from "./leads-client";
-import { getRecentLeads, getLeadsCount } from "@/lib/data";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { DbAgent, DbLead } from "@/lib/db-types";
 
@@ -29,10 +28,6 @@ export default async function LeadsPage() {
     if (supabaseError) {
         logger.error("admin/leads", "[LeadsPage] Supabase error:", supabaseError);
     }
-
-    // Also get total count for debugging
-    const totalLeads = await getLeadsCount();
-    const newLeads = await getLeadsCount("new");
 
     return (
         <LeadsPageClient

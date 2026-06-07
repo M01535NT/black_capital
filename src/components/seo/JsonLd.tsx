@@ -14,7 +14,7 @@
  *   <JsonLd data={{
  *     "@context": "https://schema.org",
  *     "@type": "RealEstateAgent",
- *     name: "Black Corporativo",
+ *     name: "Black Capital",
  *   }} />
  */
 

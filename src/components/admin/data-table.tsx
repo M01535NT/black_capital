@@ -81,6 +81,8 @@ export function DataTable<TData extends object>({
         return result;
     }, [data, globalSearch, activeFilters, searchFields]);
 
+    // TanStack Table returns function-heavy instances that React Compiler intentionally skips.
+    // eslint-disable-next-line react-hooks/incompatible-library
     const table = useReactTable({
         data: filteredData,
         columns,

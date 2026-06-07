@@ -58,13 +58,6 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
         setSaving(true);
         setMessage("");
         try {
-            // Get current notes from the server via fetch
-            const readRes = await fetch("/api/leads", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id: leadId }),
-            });
-
             // Append note locally
             const timestamp = new Date().toLocaleString("es-MX");
             const newNote = `[${timestamp}] ${notes}`;

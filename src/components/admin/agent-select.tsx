@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Check, ChevronDown, User, X } from "lucide-react";
+import { Check, ChevronDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -38,7 +38,7 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
                 } else {
                     setError("Error al cargar agentes");
                 }
-            } catch (err) {
+            } catch {
                 setError("Error de conexión");
             } finally {
                 setLoading(false);

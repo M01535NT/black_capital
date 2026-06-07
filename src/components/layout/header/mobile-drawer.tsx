@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Phone } from "lucide-react";
+import { X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -53,14 +53,39 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="hover:text-gold-solid/90 hover:bg-white/5 text-foreground"
+          className={cn(
+            "group relative h-11 w-11 overflow-hidden rounded-full border transition-all duration-300",
+            "border-white/12 bg-black/20 text-foreground hover:border-gold-solid/55 hover:bg-white/[0.06]",
+            "focus-visible:ring-2 focus-visible:ring-gold-solid focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            open && "border-gold-solid/55 bg-gold-solid/10",
+          )}
           aria-label="Abrir menu de navegacion"
         >
-          <Menu className="h-5 w-5" aria-hidden="true" />
+          <span className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--color-accent)_0%,transparent_62%)] opacity-0 transition-opacity duration-300 group-hover:opacity-10" />
+          <span className="relative flex h-4 w-5 flex-col justify-between" aria-hidden="true">
+            <span
+              className={cn(
+                "h-px w-5 origin-left bg-current transition-transform duration-300",
+                open && "translate-x-0.5 rotate-45",
+              )}
+            />
+            <span
+              className={cn(
+                "h-px w-3.5 self-end bg-current transition-all duration-300 group-hover:w-5",
+                open && "opacity-0",
+              )}
+            />
+            <span
+              className={cn(
+                "h-px w-5 origin-left bg-current transition-transform duration-300",
+                open && "translate-x-0.5 -rotate-45",
+              )}
+            />
+          </span>
           <span className="sr-only">Abrir menu</span>
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-80 sm:w-96 rounded-none bg-[#0a0a0a]/95 backdrop-blur-2xl border-l border-gold-500/15">
+      <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-80 sm:w-96 lg:w-[420px] rounded-none bg-[#0a0a0a]/95 backdrop-blur-2xl border-l border-gold-500/15">
         <div className="mx-auto w-full max-w-sm p-6 overflow-y-auto">
           <DrawerHeader className="px-0 pt-0 text-left flex flex-row items-center justify-between">
             <DrawerTitle className="font-display text-2xl font-bold tracking-tight text-foreground">

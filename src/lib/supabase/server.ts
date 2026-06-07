@@ -6,7 +6,6 @@ function createMockClient() {
     console.warn("[Supabase] createMockClient: NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY not set");
   }
   const noop = () => Promise.resolve({ data: null, error: new Error("No Supabase config") })
-  const emptyArray = () => Promise.resolve({ data: [], error: null })
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mock chainer simulates Supabase fluent API
   const chain = (obj: any) => {
     obj.eq = () => obj
@@ -19,8 +18,7 @@ function createMockClient() {
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mock return type mimics Supabase query builder
   const fromReturn: any = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- variadic select args match Supabase signature
-    select: (...args: any[]) => chain({ ...fromReturn }),
+    select: () => chain({ ...fromReturn }),
     insert: () => ({ select: () => chain({ ...fromReturn }), single: noop, data: null, error: null }),
     update: () => chain({ ...fromReturn }),
     delete: () => chain({ ...fromReturn }),

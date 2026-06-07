@@ -41,7 +41,8 @@ export function AgentForm({ initialData }: AgentFormProps) {
                 bio: "",
                 is_active: true,
             };
-            const { id, ...rest } = initialData;
+            const { id: _id, ...rest } = initialData;
+            void _id;
             return rest;
         })(),
     });

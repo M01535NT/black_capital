@@ -1,4 +1,4 @@
-# Black Corporativo
+# Black Capital
 
 Plataforma digital inmobiliaria. Grupo matriz de tres marcas especializadas:
 
@@ -97,4 +97,4 @@ El proyecto se despliega automaticamente en Vercel al hacer push a la rama maste
 
 ## Licencia
 
-Privado. Todos los derechos reservados — Black Corporativo.
+Privado. Todos los derechos reservados — Black Capital.

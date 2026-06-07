@@ -40,20 +40,19 @@ export function ContactCTA({
     }
 
     return (
-        <div className="bg-card border border-foreground/10 rounded-2xl p-5 space-y-4 relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--color-gold-500)/0.04,_transparent_60%)]" />
+        <div className="relative overflow-hidden border border-white/[0.08] bg-white/[0.025] p-5">
             <div className="relative z-10 space-y-4">
-                <h3 className="font-display text-caption font-bold uppercase tracking-wide-display text-foreground/50">
+                <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/48">
                     ¿Te interesa?
                 </h3>
-                <p className="text-sm text-foreground/50 leading-relaxed">
+                <p className="text-sm leading-relaxed text-white/58">
                     Solicita información detallada o agenda una visita.
                 </p>
                 <a
                   href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full py-3 rounded-full brushed-gold text-sm font-bold tracking-wide transition-all duration-300 hover:brightness-105"
+                  className="brushed-gold flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm font-bold tracking-wide transition-all duration-300 hover:brightness-105"
                 >
                     <MessageCircle className="size-4" />
                     Contactar por WhatsApp

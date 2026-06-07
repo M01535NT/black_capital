@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Building2, Warehouse, Calculator, ArrowRightLeft, Percent, Phone } from "lucide-react";
+import { Home, Building2, Warehouse, Calculator, ArrowRightLeft, Percent } from "lucide-react";
 
 export const baseLinks = [
   { name: "Inicio", href: "/" },

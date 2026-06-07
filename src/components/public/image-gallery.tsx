@@ -17,7 +17,6 @@ export function ImageGallery({
   images,
   title,
   coverImage,
-  videos = [],
 }: ImageGalleryProps) {
   // ── Build unique ordered image list (cover first, no duplicates) ──
   const allImages: string[] = [];
@@ -144,13 +143,10 @@ export function ImageGallery({
     }
   };
 
-  // Total media = images + videos (videos shown as badge in lightbox only for now)
-  const totalMedia = allImages.length + (videos?.length ?? 0);
-
   return (
     <>
       {/* ── Main Carousel ── */}
-      <div className="relative w-full rounded-2xl overflow-hidden bg-black border border-white/[0.05] shadow-2xl shadow-black/40">
+      <div className="relative w-full overflow-hidden border border-white/[0.08] bg-black shadow-2xl shadow-black/40">
         <div
           className={cn(
             "relative w-full overflow-hidden cursor-pointer group",
@@ -213,14 +209,14 @@ export function ImageGallery({
 
           {/* Expand icon hint */}
           <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="size-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center">
+            <div className="flex size-10 items-center justify-center rounded-full border border-white/10 bg-black/50 backdrop-blur-md">
               <ZoomIn className="size-4 text-white/80" />
             </div>
           </div>
 
           {/* Counter */}
           <div className="absolute bottom-4 right-4 z-20">
-            <span className="px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white/90 text-xs font-numerics font-medium border border-white/10">
+            <span className="rounded-full border border-white/10 bg-black/60 px-3 py-1.5 text-xs font-medium text-white/90 backdrop-blur-md">
               {displayIndex + 1} / {allImages.length}
             </span>
           </div>
@@ -233,7 +229,7 @@ export function ImageGallery({
                   e.stopPropagation();
                   prev();
                 }}
-                className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-all duration-300 size-8 sm:size-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hidden sm:flex items-center justify-center text-white hover:bg-gold-500 hover:text-black hover:border-gold-500 active:scale-95"
+                className="absolute left-2 top-1/2 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/50 text-white opacity-0 backdrop-blur-md transition-all duration-300 hover:border-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-black focus-visible:opacity-100 active:scale-95 group-hover:opacity-100 sm:left-3 sm:flex sm:size-10"
                 aria-label="Imagen anterior"
               >
                 <ChevronLeft className="size-4 sm:size-5" />
@@ -243,7 +239,7 @@ export function ImageGallery({
                   e.stopPropagation();
                   next();
                 }}
-                className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-all duration-300 size-8 sm:size-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hidden sm:flex items-center justify-center text-white hover:bg-gold-500 hover:text-black hover:border-gold-500 active:scale-95"
+                className="absolute right-2 top-1/2 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/50 text-white opacity-0 backdrop-blur-md transition-all duration-300 hover:border-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-black focus-visible:opacity-100 active:scale-95 group-hover:opacity-100 sm:right-3 sm:flex sm:size-10"
                 aria-label="Imagen siguiente"
               >
                 <ChevronRight className="size-4 sm:size-5" />
@@ -266,13 +262,13 @@ export function ImageGallery({
                   key={idx}
                   onClick={() => goTo(idx)}
                   className={cn(
-                    "relative shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-300 snap-center",
+                    "relative shrink-0 snap-center overflow-hidden border-2 transition-all duration-300",
                     // Thumb sizes: 48 (móvil) → 60 (tablet) → 72 (desktop)
                     "h-12 w-12",
                     "md:h-[60px] md:w-[60px]",
                     "lg:h-[72px] lg:w-[72px]",
                     idx === activeIndex
-                      ? "border-gold-500 shadow-[0_0_12px_rgba(212,175,55,0.35)]"
+                      ? "border-[var(--color-accent)] shadow-[0_0_12px_rgba(212,175,55,0.35)]"
                       : "border-transparent opacity-50 hover:opacity-80 hover:border-white/20",
                   )}
                   aria-label={`Ver imagen ${idx + 1}`}
@@ -292,7 +288,7 @@ export function ImageGallery({
                     />
                   )}
                   {idx === activeIndex && (
-                    <div className="absolute inset-0 bg-gold-500/15 pointer-events-none" />
+                    <div className="absolute inset-0 bg-[var(--color-accent)]/15 pointer-events-none" />
                   )}
                 </button>
               ))}
@@ -317,14 +313,14 @@ export function ImageGallery({
           >
             <button
               onClick={closeLightbox}
-              className="absolute top-4 right-4 z-10 size-11 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 flex items-center justify-center text-white transition-all active:scale-95"
+              className="absolute right-4 top-4 z-10 flex size-11 items-center justify-center rounded-full border border-white/10 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 active:scale-95"
               aria-label="Cerrar galería"
             >
               <X className="size-5" />
             </button>
 
             <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10">
-              <span className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-sm font-numerics font-medium border border-white/10">
+              <span className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-md">
                 {lightboxIndex + 1} / {allImages.length}
               </span>
             </div>
@@ -368,7 +364,7 @@ export function ImageGallery({
                     e.stopPropagation();
                     prev();
                   }}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 size-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 hidden sm:flex items-center justify-center text-white transition-all active:scale-95"
+                  className="absolute left-4 top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 sm:flex"
                   aria-label="Imagen anterior"
                 >
                   <ChevronLeft className="size-5" />
@@ -378,7 +374,7 @@ export function ImageGallery({
                     e.stopPropagation();
                     next();
                   }}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 size-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 hidden sm:flex items-center justify-center text-white transition-all active:scale-95"
+                  className="absolute right-4 top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 sm:flex"
                   aria-label="Imagen siguiente"
                 >
                   <ChevronRight className="size-5" />
@@ -388,15 +384,15 @@ export function ImageGallery({
 
             {/* Lightbox thumbnails */}
             {allImages.length > 1 && (
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-2 p-2 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 max-w-[90vw] overflow-x-auto scrollbar-none">
+              <div className="scrollbar-none absolute bottom-6 left-1/2 z-10 flex max-w-[90vw] -translate-x-1/2 gap-2 overflow-x-auto border border-white/10 bg-black/60 p-2 backdrop-blur-md">
                 {allImages.map((src, idx) => (
                   <button
                     key={idx}
                     onClick={() => setLightboxIndex(idx)}
                     className={cn(
-                      "size-10 rounded-lg overflow-hidden border-2 transition-all duration-200 shrink-0",
+                      "size-10 shrink-0 overflow-hidden border-2 transition-all duration-200",
                       idx === lightboxIndex
-                        ? "border-gold-500"
+                        ? "border-[var(--color-accent)]"
                         : "border-transparent opacity-40 hover:opacity-70",
                     )}
                     aria-label={`Ir a imagen ${idx + 1}`}

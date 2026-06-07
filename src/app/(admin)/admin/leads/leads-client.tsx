@@ -5,11 +5,10 @@ import { DataTable } from "@/components/admin/data-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { PlusCircle, Loader2, X, Check, ChevronDown, Users, Mail, Phone } from "lucide-react";
+import { PlusCircle, Loader2, X, Check, ChevronDown, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface Lead {

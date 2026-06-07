@@ -4,7 +4,7 @@ import { useRef, useCallback, useEffect, KeyboardEvent } from "react";
 import Link from "next/link";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { navLinkBase, navLinkActive, type DropdownDef, type DropdownKey } from "./constants";
+import { navLinkBase, navLinkActive, type DropdownDef } from "./constants";
 
 interface NavDropdownProps {
   def: DropdownDef;

@@ -51,7 +51,7 @@ export function PropertyJsonLd({
 
     const ld: Record<string, unknown> = {
         '@context': 'https://schema.org',
-        '@type': 'RealEstateListing',
+        '@type': mappedType,
         '@id': `https://blackcorporativo.vercel.app${url}`,
         url: `https://blackcorporativo.vercel.app${url}`,
         name: title,
@@ -67,9 +67,20 @@ export function PropertyJsonLd({
             '@type': 'Offer',
             price: price,
             priceCurrency: currency || 'MXN',
+            businessFunction: businessType,
             availability: 'https://schema.org/InStock',
         },
     };
+
+    if (priceMxn != null && currency !== "MXN") {
+        ld.additionalProperty = [
+            {
+                "@type": "PropertyValue",
+                name: "Precio aproximado MXN",
+                value: priceMxn,
+            },
+        ];
+    }
 
     if (m2Construction != null) {
         (ld.offers as Record<string, unknown>).floorSize = {
@@ -79,16 +90,24 @@ export function PropertyJsonLd({
         };
     }
 
+    if (m2Terrain != null) {
+        ld.landSize = {
+            '@type': 'QuantitativeValue',
+            value: m2Terrain,
+            unitCode: 'MTK',
+        };
+    }
+
     if (agents && agents.length > 0) {
         const agent = agents[0];
         ld.broker = {
             '@type': 'RealEstateAgent',
-            name: agent.full_name || 'Black Corporativo',
+            name: agent.full_name || 'Black Capital',
             ...(agent.email && { email: agent.email }),
             ...(agent.phone && { telephone: agent.phone }),
             worksFor: {
                 '@type': 'Organization',
-                name: 'Black Corporativo',
+                name: 'Black Capital',
                 url: 'https://blackcorporativo.vercel.app',
             },
         };

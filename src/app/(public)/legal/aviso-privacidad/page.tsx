@@ -3,9 +3,9 @@ import { FadeIn } from "@/components/ui/motion";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 export const metadata: Metadata = {
-    title: "Aviso de Privacidad | Black Corporativo",
+    title: "Aviso de Privacidad | Black Capital",
     description:
-        "Aviso de privacidad y política de protección de datos personales de Black Corporativo. Conoce cómo protegemos tu información.",
+        "Aviso de privacidad y política de protección de datos personales de Black Capital. Conoce cómo protegemos tu información.",
     alternates: {
         canonical: "https://blackcorporativo.vercel.app/legal/aviso-privacidad",
     },
@@ -34,7 +34,7 @@ export default function PrivacidadPage() {
                                 I. Responsable del Tratamiento
                             </h2>
                             <p>
-                                Black Corporativo, con domicilio en Tijuana, Baja California, México, es responsable
+                                Black Capital, con domicilio en Tijuana, Baja California, México, es responsable
                                 del tratamiento de los datos personales que nos proporcione, los cuales serán
                                 protegidos conforme a lo dispuesto por la Ley Federal de Protección de Datos
                                 Personales en Posesión de los Particulares (&ldquo;LFPDPPP&rdquo;) y demás normatividad aplicable.

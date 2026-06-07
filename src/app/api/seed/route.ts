@@ -22,7 +22,7 @@ const seedProperties = [
 ];
 
 // Changed from GET to POST — must be called intentionally, not accidental GET
-export async function POST(request: Request) {
+export async function POST() {
   // Auth check
   const { cookies } = await import("next/headers");
   const cookieStore = await cookies();

@@ -29,10 +29,10 @@ export function FavoriteButton({
       <button
         onClick={handleClick}
         className={cn(
-          "inline-flex items-center gap-2 px-3 py-1.5 text-sm rounded-full border transition-all",
+          "inline-flex min-h-10 items-center gap-2 rounded-full border px-4 text-[11px] font-bold uppercase tracking-[0.14em] transition-colors",
           active
-            ? "bg-gold-500/10 border-gold-500/30 text-gold-500"
-            : "bg-foreground/5 border-foreground/10 text-foreground/70 hover:text-gold-500 hover:border-gold-500/30",
+            ? "border-[var(--color-accent)]/35 bg-[var(--color-accent)]/10 text-[var(--color-accent)]"
+            : "border-white/[0.08] bg-white/[0.025] text-white/60 hover:border-[var(--color-accent)]/35 hover:text-[var(--color-accent)]",
           !hydrated && "opacity-0",
           className
         )}

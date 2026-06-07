@@ -1,8 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { UserPlus, Mail, Phone, Shield, ChevronRight, Building2, Users, BarChart3, Edit, Eye } from "lucide-react";
+import { UserPlus, Mail, Phone, Shield, Edit, Eye } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 

@@ -12,6 +12,8 @@ export function IndustrialStats() {
     return (
         <SubBrandStats
             brand="industrial"
+            eyebrow="Indicadores de ejemplo"
+            title="Muestra visual para portafolio industrial."
             accent="steel"
             stats={SUB_BRAND_CONFIGS.industrial.stats}
         />

@@ -47,8 +47,6 @@ type SimilarProperty = {
 const SECTION_HEADING =
     "font-display text-xs font-bold uppercase tracking-wide-display text-foreground/50";
 
-const SECTION_DIVIDER = "h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent";
-
 export async function generateMetadata({
     params,
 }: {
@@ -73,11 +71,11 @@ export async function generateMetadata({
     }
 
     if (!property) {
-        return { title: "Propiedad no encontrada | Black Corporativo" };
+        return { title: "Propiedad no encontrada | Black Capital" };
     }
 
     return {
-        title: `${property.title} en Tijuana | Black Corporativo`,
+        title: `${property.title} en Tijuana | Black Capital`,
         description: (property.description || `Propiedad en venta en Tijuana: ${property.title}`).slice(0, 160),
         openGraph: property.cover_image ? { images: [{ url: property.cover_image, alt: property.title }] } : undefined,
     };
@@ -187,17 +185,9 @@ export default async function PropertyDetailPage({
                 url={`/inventario/${slug}`}
             />
             
-            {/* Fondo decorativo global similar al Home */}
-            <div className="fixed inset-0 z-0 pointer-events-none">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.08,_transparent_50%)]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--color-gold-500)/0.05,_transparent_40%)]" />
-                <div className="grain-overlay opacity-[0.03]" />
-            </div>
-
-            <div className="relative z-10 w-full bg-background min-h-screen">
-                {/* Galería con padding para no sangrar a los bordes y respirar bajo el header fixed */}
-                <section className="w-full pt-16 lg:pt-20 border-b border-white/[0.06]">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-2">
+            <div className="w-full min-h-screen bg-background">
+                <section className="w-full border-b border-white/[0.06] pt-24 lg:pt-28">
+                    <div className="mx-auto max-w-[90rem] px-6 pb-6 pt-6 sm:px-10 lg:px-16">
                         <ImageGallery
                             images={property.images || []}
                             title={property.title}
@@ -206,9 +196,8 @@ export default async function PropertyDetailPage({
                     </div>
                 </section>
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 space-y-12 md:space-y-16">
+                <div className="mx-auto max-w-[90rem] space-y-10 px-6 py-10 sm:px-10 md:py-16 lg:px-16">
                     
-                    {/* Breadcrumbs y Actions con FadeIn */}
                     <FadeIn direction="up" delay={0.1}>
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                             <Breadcrumbs
@@ -225,7 +214,7 @@ export default async function PropertyDetailPage({
                                 />
                                 <Link
                                     href="/inventario"
-                                    className="inline-flex items-center gap-1.5 text-xs text-foreground/50 hover:text-gold-500 transition-colors shrink-0 font-display uppercase tracking-wider"
+                                    className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full border border-white/[0.08] px-4 text-[11px] font-bold uppercase tracking-[0.14em] text-white/58 transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
                                 >
                                     <ArrowLeft className="size-3" />
                                     Volver
@@ -234,9 +223,8 @@ export default async function PropertyDetailPage({
                         </div>
                     </FadeIn>
 
-                    <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
-                        {/* LEFT COLUMN */}
-                        <div className="flex-1 min-w-0 space-y-12 md:space-y-16">
+                    <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
+                        <div className="min-w-0 space-y-12 md:space-y-16 lg:col-span-8">
                             
                             <FadeIn direction="up" delay={0.2}>
                                 <PropertyHeader
@@ -312,8 +300,7 @@ export default async function PropertyDetailPage({
                             )}
                         </div>
 
-                        {/* RIGHT COLUMN */}
-                        <div className="lg:w-[380px] xl:w-[400px] shrink-0">
+                        <div className="lg:col-span-4">
                             <div className="sticky top-24 space-y-8">
                                 <FadeIn direction="left" delay={0.4}>
                                     <PropertySidebar

@@ -3,7 +3,7 @@ import { requireAdminSession } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, Mail, Phone, Shield, Building2, Calendar, ExternalLink, Edit, UserPlus } from "lucide-react";
+import { ChevronLeft, Mail, Phone, Shield, Building2, ExternalLink, Edit } from "lucide-react";
 import Link from "next/link";
 import { AssignPropertiesButton } from "./assign-properties";
 import Image from "next/image";
@@ -85,9 +85,11 @@ export default async function AgentDetailPage({
                         <div className="flex flex-col items-center text-center">
                             <div className="w-24 h-24 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 text-3xl font-bold border-2 border-gold-500/20 overflow-hidden mb-4">
                                 {agent.photo_url ? (
-                                    <img
+                                    <Image
                                         src={agent.photo_url}
                                         alt={agent.full_name}
+                                        width={96}
+                                        height={96}
                                         className="w-full h-full object-cover"
                                     />
                                 ) : (

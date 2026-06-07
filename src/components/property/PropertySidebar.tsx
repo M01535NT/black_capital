@@ -1,4 +1,3 @@
-import { PropertyCard, type PropertyCardData } from "./PropertyCard";
 import { AgentCard, type AgentInfo } from "./AgentCard";
 import { SpecRow } from "./SpecRow";
 import { DocumentCard, type DocumentLink } from "./DocumentCard";
@@ -6,9 +5,9 @@ import { ContactCTA } from "./ContactCTA";
 import { formatArea } from "@/lib/format";
 
 const SECTION_HEADING =
-    "font-display text-caption font-bold uppercase tracking-wide-display text-foreground/50";
+    "text-[11px] font-bold uppercase tracking-[0.18em] text-white/48";
 
-const CARD_CLASS = "bg-card border border-foreground/10 rounded-2xl p-5 space-y-4";
+const CARD_CLASS = "border border-white/[0.08] bg-white/[0.025] p-5 space-y-4";
 
 interface PropertySidebarProps {
     agents: AgentInfo[];

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createClient } from "@/lib/supabase/client";
 import posthog from "posthog-js";
 import { toast } from "sonner";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
@@ -88,15 +87,21 @@ export function GatedBrochure({
         const cleanPhone = (data.phone ?? "").replace(/[^0-9+]/g, "");
 
         try {
-            // Insert lead into Supabase
-            const supabase = createClient();
-            const { error } = await supabase.from("leads").insert([{
-                ...data,
-                phone: cleanPhone,
-                downloaded_at: new Date().toISOString(),
-            }]);
+            const leadResponse = await fetch("/api/public-leads", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    ...data,
+                    source: "brochure",
+                    phone: cleanPhone,
+                    downloaded_at: new Date().toISOString(),
+                }),
+            });
 
-            if (error) throw error;
+            if (!leadResponse.ok) {
+                const body = await leadResponse.json().catch(() => null);
+                throw new Error(body?.error || "No se pudo registrar el lead");
+            }
 
             // Send document via email (fire-and-forget, don't block UI)
             fetch("/api/send-brochure", {
@@ -113,7 +118,7 @@ export function GatedBrochure({
 
             setIsSuccess(true);
             toast.success("Documento enviado a tu correo");
-        } catch (error) {
+        } catch {
             // Lead capture error silently handled
             toast.error("Ocurrió un error. Intenta nuevamente.");
         } finally {

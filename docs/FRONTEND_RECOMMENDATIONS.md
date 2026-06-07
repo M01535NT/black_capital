@@ -1,4 +1,4 @@
-# Black Corporativo — Frontend Quality Recommendations
+# Black Capital — Frontend Quality Recommendations
 
 > **Status:** Living document. Last updated after the May/June 2026 frontend overhaul.
 > **Audience:** Frontend engineers and AI agents working on the codebase.

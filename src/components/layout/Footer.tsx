@@ -1,5 +1,6 @@
 "use client";
 
+import { FormEvent, useState } from "react";
 import Link from "next/link";
 import {
     Linkedin,
@@ -44,10 +45,44 @@ const corpLinks = [
  * Single-field action contra /api/leads. Honeypot anti-bot.
  */
 function FooterNewsletter() {
+    const [email, setEmail] = useState("");
+    const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+
+    async function onSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        setStatus("submitting");
+
+        const formData = new FormData(event.currentTarget);
+        const honeypot = String(formData.get("company_honeypot") || "");
+
+        try {
+            const response = await fetch("/api/public-leads", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    company_honeypot: honeypot,
+                    full_name: "Suscriptor newsletter",
+                    email,
+                    phone: "",
+                    privacy_accepted: true,
+                    source: "newsletter",
+                    status: "new",
+                    notes: "Newsletter footer",
+                }),
+            });
+
+            if (!response.ok) throw new Error("No se pudo registrar");
+
+            setEmail("");
+            setStatus("success");
+        } catch {
+            setStatus("error");
+        }
+    }
+
     return (
         <form
-            action="/api/leads"
-            method="post"
+            onSubmit={onSubmit}
             className="flex flex-col sm:flex-row gap-2 max-w-md"
             aria-label="Suscripción al directorio de inversores"
         >
@@ -63,6 +98,8 @@ function FooterNewsletter() {
                 type="email"
                 name="email"
                 required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
                 placeholder="Tu correo corporativo"
                 autoComplete="email"
                 aria-label="Correo para suscribirse al directorio"
@@ -70,11 +107,19 @@ function FooterNewsletter() {
             />
             <Button
                 type="submit"
+                disabled={status === "submitting"}
                 className="btn-ghost-gold border border-[var(--color-accent)]/40 text-white text-[11px] font-semibold uppercase tracking-[0.16em] rounded-full px-6 py-3 hover:border-[var(--color-accent)]"
             >
-                <span>Suscribir</span>
+                <span>{status === "submitting" ? "Enviando" : "Suscribir"}</span>
                 <span aria-hidden="true" className="ml-1.5 text-[var(--color-accent)]">→</span>
             </Button>
+            <p className="sr-only" aria-live="polite">
+                {status === "success"
+                    ? "Solicitud registrada"
+                    : status === "error"
+                    ? "No se pudo registrar la solicitud"
+                    : ""}
+            </p>
         </form>
     );
 }

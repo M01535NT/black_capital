@@ -1,9 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Section } from "@/components/layout/Section";
-import { Eyebrow } from "@/components/shared/eyebrow";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { MapPin, Maximize2, ArrowRight } from "lucide-react";
+import { ArrowRight, ImageIcon, MapPin, Maximize2 } from "lucide-react";
 
 interface BrandProperty {
     id: string;
@@ -15,6 +13,8 @@ interface BrandProperty {
     currency: string;
     m2_construction: number | null;
     cover_image: string | null;
+    isPlaceholder?: boolean;
+    priceLabel?: string;
 }
 
 interface BrandInventoryProps {
@@ -27,12 +27,10 @@ interface BrandInventoryProps {
     accentColor: "gold" | "steel";
     eyebrow?: string;
     limit?: number;
+    useLiveData?: boolean;
 }
 
-async function getBrandProperties(
-    propertyUse: string,
-    limit: number
-): Promise<BrandProperty[]> {
+async function getBrandProperties(propertyUse: string, limit: number): Promise<BrandProperty[]> {
     try {
         const supabase = createAdminClient();
         const { data, error } = await supabase
@@ -57,11 +55,132 @@ async function getBrandProperties(
 const formatPrice = (price: number, currency: string) =>
     new Intl.NumberFormat("es-MX", { style: "currency", currency }).format(price);
 
-/**
- * BrandInventory — server-rendered, 3-up featured properties for sub-brand
- * landings. Estilo A: sin glass cards, sin shimmer animado. Vlines doradas
- * entre cards (mismo patrón que TrackRecord).
- */
+const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandProperty[]> = {
+    Residencial: [
+        {
+            id: "placeholder-residencial-1",
+            slug: null,
+            title: "Casa premium en fraccionamiento privado",
+            property_type: "Residencial",
+            business_type: "Zona residencial",
+            price: 0,
+            currency: "USD",
+            m2_construction: 320,
+            cover_image: null,
+            isPlaceholder: true,
+            priceLabel: "Precio de ejemplo",
+        },
+        {
+            id: "placeholder-residencial-2",
+            slug: null,
+            title: "Residencia familiar con amenidades",
+            property_type: "Residencial",
+            business_type: "Alta plusvalía",
+            price: 0,
+            currency: "USD",
+            m2_construction: 260,
+            cover_image: null,
+            isPlaceholder: true,
+            priceLabel: "Editable desde admin",
+        },
+        {
+            id: "placeholder-residencial-3",
+            slug: null,
+            title: "Preventa residencial seleccionada",
+            property_type: "Preventa",
+            business_type: "Entrega programada",
+            price: 0,
+            currency: "USD",
+            m2_construction: 210,
+            cover_image: null,
+            isPlaceholder: true,
+            priceLabel: "Contenido temporal",
+        },
+    ],
+    Comercial: [
+        {
+            id: "placeholder-comercial-1",
+            slug: null,
+            title: "Local comercial en zona de alto flujo",
+            property_type: "Local",
+            business_type: "Renta / venta",
+            price: 0,
+            currency: "USD",
+            m2_construction: 140,
+            cover_image: null,
+            isPlaceholder: true,
+            priceLabel: "Precio de ejemplo",
+        },
+        {
+            id: "placeholder-comercial-2",
+            slug: null,
+            title: "Oficina ejecutiva lista para operar",
+            property_type: "Oficina",
+            business_type: "Corporativo",
+            price: 0,
+            currency: "USD",
+            m2_construction: 180,
+            cover_image: null,
+            isPlaceholder: true,
+            priceLabel: "Editable desde admin",
+        },
+        {
+            id: "placeholder-comercial-3",
+            slug: null,
+            title: "Espacio en plaza comercial",
+            property_type: "Plaza",
+            business_type: "Alto tráfico",
+            price: 0,
+            currency: "USD",
+            m2_construction: 95,
+            cover_image: null,
+            isPlaceholder: true,
+            priceLabel: "Contenido temporal",
+        },
+    ],
+    Industrial: [
+        {
+            id: "placeholder-industrial-1",
+            slug: null,
+            title: "Nave industrial clase A",
+            property_type: "Nave",
+            business_type: "Logística",
+            price: 0,
+            currency: "USD",
+            m2_construction: 2500,
+            cover_image: null,
+            isPlaceholder: true,
+            priceLabel: "Precio de ejemplo",
+        },
+        {
+            id: "placeholder-industrial-2",
+            slug: null,
+            title: "Bodega con patio de maniobra",
+            property_type: "Bodega",
+            business_type: "Almacenaje",
+            price: 0,
+            currency: "USD",
+            m2_construction: 1800,
+            cover_image: null,
+            isPlaceholder: true,
+            priceLabel: "Editable desde admin",
+        },
+        {
+            id: "placeholder-industrial-3",
+            slug: null,
+            title: "Espacio logístico en corredor industrial",
+            property_type: "Industrial",
+            business_type: "Exportación",
+            price: 0,
+            currency: "USD",
+            m2_construction: 4200,
+            cover_image: null,
+            isPlaceholder: true,
+            priceLabel: "Contenido temporal",
+        },
+    ],
+};
+
 export async function BrandInventory({
     brandSlug,
     propertyUse,
@@ -69,145 +188,118 @@ export async function BrandInventory({
     highlight,
     subtitle,
     ctaText,
-    accentColor,
-    eyebrow = "Inventario activo",
+    eyebrow = "Inventario ejemplo",
     limit = 3,
+    useLiveData = false,
 }: BrandInventoryProps) {
-    void accentColor;
-    const properties = await getBrandProperties(propertyUse, limit);
+    const properties = useLiveData ? await getBrandProperties(propertyUse, limit) : [];
+    const displayProperties = properties.length > 0
+        ? properties
+        : PLACEHOLDER_PROPERTIES[propertyUse].slice(0, limit);
 
     return (
-        <Section
+        <section
             id={`${brandSlug}-inventory`}
-            label={`Inventario ${propertyUse}`}
-            spacing="default"
-            containerWidth="wide"
+            aria-label={`Inventario ${propertyUse}`}
+            className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24"
         >
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-14 sm:mb-20">
-                <div className="max-w-2xl">
-                    <Eyebrow label={eyebrow} />
-                    <h2 className="text-display-2 font-light text-white leading-display tracking-headline">
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <div className="max-w-3xl">
+                    <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                        {eyebrow}
+                    </p>
+                    <h2 className="text-display-2 font-light leading-display tracking-headline text-white">
                         {title}
-                        {highlight && (
-                            <>
-                                {" "}
-                                <span className="metallic-gold-static">{highlight}</span>
-                            </>
-                        )}
+                        {highlight && <> <span className="metallic-gold-static">{highlight}</span></>}
                     </h2>
                 </div>
-                <p className="text-body-fluid-sm text-white/55 leading-relaxed font-light max-w-md sm:text-right">
+                <p className="max-w-xl text-sm leading-7 text-white/58 sm:text-right">
                     {subtitle}
                 </p>
             </div>
 
-            {/* 3-col grid con vlines */}
-            {properties.length > 0 ? (
-                <div className="relative grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-white/[0.06]" role="list">
-                    {/* Vertical vlines (desktop) */}
-                    <div
-                        className="hidden md:block absolute top-0 bottom-0 left-1/3 w-px bg-gradient-to-b from-transparent via-[var(--color-accent)]/30 to-transparent pointer-events-none"
-                        aria-hidden="true"
-                    />
-                    <div
-                        className="hidden md:block absolute top-0 bottom-0 left-2/3 w-px bg-gradient-to-b from-transparent via-[var(--color-accent)]/30 to-transparent pointer-events-none"
-                        aria-hidden="true"
-                    />
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+                {displayProperties.map((prop) => {
+                    const href = prop.isPlaceholder
+                        ? `/contacto?interes=${encodeURIComponent(propertyUse)}`
+                        : `/inventario/${prop.slug || prop.id}`;
 
-                    {properties.map((prop, i) => {
-                        const isLeft = i % 3 === 0;
-                        const isRight = i % 3 === 2;
-                        return (
-                            <Link
-                                key={prop.id}
-                                href={`/inventario/${prop.slug || prop.id}`}
-                                role="listitem"
-                                className={
-                                    "group relative flex flex-col transition-colors duration-500 hover:bg-white/[0.015] " +
-                                    (!isLeft ? "md:border-l md:border-white/[0.06] " : "")
-                                }
-                            >
-                                {/* Image */}
-                                <div className="relative aspect-[16/10] overflow-hidden bg-white/[0.02]">
-                                    {prop.cover_image ? (
-                                        <Image
-                                            src={prop.cover_image}
-                                            alt={prop.title}
-                                            fill
-                                            sizes="(max-width: 768px) 100vw, 33vw"
-                                            className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                                        />
-                                    ) : (
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <span className="text-white/40 text-[10px] tracking-[0.2em] uppercase font-semibold">
-                                                En preparación
-                                            </span>
-                                        </div>
-                                    )}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
-
-                                    {/* Type badge */}
-                                    <div className="absolute top-4 left-4 px-3 py-1 bg-background/85 backdrop-blur-md border border-[var(--color-accent)]/25 text-[10px] tracking-[0.2em] uppercase text-[var(--color-accent)] font-semibold rounded-full">
-                                        {prop.property_type}
-                                    </div>
-                                </div>
-
-                                {/* Info */}
-                                <div className="p-6 sm:p-8 flex-1 flex flex-col">
-                                    <h3 className="text-display-4 font-semibold text-white tracking-snug mb-4 group-hover:text-[var(--color-accent-light)] transition-colors duration-300">
-                                        {prop.title}
-                                    </h3>
-                                    <div className="flex items-center gap-4 text-[13px] text-white/55 mb-4 flex-wrap">
-                                        <span className="inline-flex items-center gap-1.5">
-                                            <MapPin className="w-3.5 h-3.5 text-[var(--color-accent)]" aria-hidden="true" />
-                                            {prop.business_type}
+                    return (
+                        <article
+                            key={prop.id}
+                            className="group overflow-hidden border border-white/[0.08] bg-white/[0.025]"
+                        >
+                            <div className="relative aspect-[16/10] overflow-hidden bg-white/[0.02]">
+                                {prop.cover_image ? (
+                                    <Image
+                                        src={prop.cover_image}
+                                        alt={prop.title}
+                                        fill
+                                        sizes="(max-width: 1024px) 100vw, 33vw"
+                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
+                                ) : (
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-[linear-gradient(135deg,rgba(255,255,255,0.04),rgba(212,175,55,0.08),rgba(255,255,255,0.02))]">
+                                        <ImageIcon className="mb-3 h-5 w-5 text-[var(--color-accent)]/70" aria-hidden="true" />
+                                        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/44">
+                                            Imagen de ejemplo
                                         </span>
-                                        {prop.m2_construction && (
-                                            <span className="inline-flex items-center gap-1.5">
-                                                <Maximize2 className="w-3.5 h-3.5 text-[var(--color-accent)]" aria-hidden="true" />
-                                                {prop.m2_construction.toLocaleString()} m²
-                                            </span>
-                                        )}
                                     </div>
-                                    <p className="text-stat-md font-light metallic-gold-static tabular-nums leading-stat mt-auto">
-                                        {formatPrice(prop.price, prop.currency)}
-                                    </p>
-                                </div>
-
-                                {/* Right border on last col (mobile) */}
-                                {!isRight && (
-                                    <div className="md:hidden absolute bottom-0 left-0 right-0 h-px bg-white/[0.06]" aria-hidden="true" />
                                 )}
-                            </Link>
-                        );
-                    })}
-                </div>
-            ) : (
-                <div className="border-t border-b border-white/[0.06] py-16 sm:py-20 text-center max-w-2xl mx-auto">
-                    <div className="w-16 h-16 rounded-full border border-[var(--color-accent)]/40 flex items-center justify-center mx-auto mb-6">
-                        <span className="text-[var(--color-accent)] text-2xl" aria-hidden="true">✦</span>
-                    </div>
-                    <h3 className="text-display-4 font-semibold text-white/70 tracking-snug mb-3">
-                        Portafolio en curación
-                    </h3>
-                    <p className="text-body-sm text-white/55 leading-relaxed font-light max-w-md mx-auto">
-                        Nuestro equipo está seleccionando los mejores activos de {propertyUse.toLowerCase()}.
-                        Solicita acceso anticipado para ser el primero en conocerlos.
-                    </p>
-                </div>
-            )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
+                                <div className="absolute left-4 top-4 rounded-full border border-[var(--color-accent)]/30 bg-background/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+                                    {prop.isPlaceholder ? "Ejemplo" : prop.property_type}
+                                </div>
+                                <div className="absolute bottom-4 left-4 right-4">
+                                    <h3 className="text-xl font-semibold text-white">{prop.title}</h3>
+                                </div>
+                            </div>
 
-            {/* CTA al inventario completo */}
-            <div className="mt-14 sm:mt-20 text-center">
+                            <div className="space-y-5 p-5">
+                                <div className="flex flex-wrap gap-4 text-[13px] text-white/55">
+                                    <span className="inline-flex items-center gap-1.5">
+                                        <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
+                                        {prop.business_type}
+                                    </span>
+                                    {prop.m2_construction && (
+                                        <span className="inline-flex items-center gap-1.5">
+                                            <Maximize2 className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
+                                            {prop.m2_construction.toLocaleString()} m²
+                                        </span>
+                                    )}
+                                </div>
+                                <p className="text-xs uppercase tracking-[0.16em] text-white/42">
+                                    {prop.priceLabel ?? formatPrice(prop.price, prop.currency)}
+                                </p>
+                                <div className="flex flex-col gap-2 sm:flex-row">
+                                    <Link
+                                        href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
+                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.12em] text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                                    >
+                                        Inventario
+                                    </Link>
+                                    <Link
+                                        href={href}
+                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-white/10 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.12em] text-white/75 transition-colors hover:border-white/30"
+                                    >
+                                        Solicitar
+                                    </Link>
+                                </div>
+                            </div>
+                        </article>
+                    );
+                })}
+            </div>
+
+            <div className="mt-10 text-center">
                 <Link
                     href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
-                    className="btn-ghost-gold inline-flex items-center gap-2 px-7 py-3.5 border border-[var(--color-accent)]/30 text-white text-[11px] font-semibold uppercase tracking-[0.16em] rounded-full hover:border-[var(--color-accent)] transition-colors duration-300"
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:border-[var(--color-accent)]"
                 >
-                    <span>{ctaText}</span>
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+                    {ctaText}
+                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </Link>
             </div>
-        </Section>
+        </section>
     );
 }

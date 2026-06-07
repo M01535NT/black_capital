@@ -3,9 +3,9 @@ import { FadeIn, StaggerChildren, StaggerItem } from "@/components/ui/motion";
 import { Shield, Eye, Handshake, Target, Scale, Zap } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Nuestros Valores | Black Corporativo",
+    title: "Nuestros Valores | Black Capital",
     description:
-        "Los valores que guían a Black Corporativo: transparencia, compromiso, disciplina y resultados. Conoce los principios que aplicamos en cada operación inmobiliaria en Tijuana.",
+        "Los valores que guían a Black Capital: transparencia, compromiso, disciplina y resultados. Conoce los principios que aplicamos en cada operación inmobiliaria en Tijuana.",
     alternates: {
         canonical: "https://blackcorporativo.vercel.app/nosotros/valores",
     },
@@ -53,32 +53,32 @@ const valores = [
 export default function ValoresPage() {
     return (
         <div className="w-full flex-1 bg-background">
-            <div className="bg-zinc-950 py-16 border-b border-gold-500/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.05,_transparent_50%)]" />
+            <div className="relative overflow-hidden border-b border-white/[0.06] bg-background pt-32 pb-16 sm:pt-40 sm:pb-20">
+                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent" />
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <FadeIn>
                         <span className="text-xs font-bold uppercase tracking-mega text-gold-500/80 mb-4 inline-block">
                             Nuestros Principios
                         </span>
-                        <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-display uppercase text-foreground mb-4">
+                        <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-display uppercase text-foreground mb-4 text-balance">
                             Lo Que <span className="metallic-gold-static">Nos Define</span>
                         </h1>
-                        <p className="text-foreground/50 text-lg max-w-2xl mx-auto">
-                            Seis principios que aplicamos en cada operación. No son marketing —
-                            son la forma en que trabajamos desde el día uno.
+                        <p className="text-foreground/58 text-lg max-w-2xl mx-auto leading-relaxed">
+                            Seis principios aplicados a cada operación: claridad, disciplina,
+                            verificación y seguimiento hasta el cierre.
                         </p>
                     </FadeIn>
                 </div>
             </div>
 
             <div className="container mx-auto px-4 py-20">
-                <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 max-w-6xl mx-auto border-t border-white/[0.06]">
                     {valores.map((v) => {
                         const Icon = v.icon;
                         return (
                             <StaggerItem key={v.titulo}>
-                                <div className="group p-8 rounded-2xl border border-gold-500/10 bg-zinc-950/40 backdrop-blur-sm hover:border-gold-500/30 hover:shadow-2xl hover:shadow-gold-500/5 transition-all duration-700 h-full">
-                                    <div className="w-12 h-12 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-6 group-hover:bg-gold-500/20 group-hover:border-gold-500/40 transition-all duration-500">
+                                <div className="group p-8 border-b md:border-r border-white/[0.06] bg-white/[0.01] transition-colors duration-500 hover:bg-white/[0.025] h-full">
+                                    <div className="w-12 h-12 rounded-md bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-6 group-hover:bg-gold-500/20 group-hover:border-gold-500/40 transition-all duration-500">
                                         <Icon className="w-5 h-5 text-gold-500" aria-hidden="true" />
                                     </div>
                                     <h3 className="font-display text-lg font-semibold text-foreground mb-3">

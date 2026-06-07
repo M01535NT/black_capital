@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { AlertTriangle, RefreshCw } from "lucide-react";
 
 export default function PropertiesError({
-    error,
     reset,
 }: {
     error: Error & { digest?: string };

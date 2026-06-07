@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { FadeIn } from "@/components/ui/motion";
 
 export const metadata: Metadata = {
-    title: "Nuestra Historia | Black Corporativo",
+    title: "Nuestra Historia | Black Capital",
     description:
-        "La historia de Black Corporativo: de operar en el mercado inmobiliario de Tijuana a construir una plataforma premium de inversión con presencia en Baja California.",
+        "La historia de Black Capital: de operar en el mercado inmobiliario de Tijuana a construir una plataforma premium de inversión con presencia en Baja California.",
     alternates: {
         canonical: "https://blackcorporativo.vercel.app/nosotros/historia",
     },
@@ -15,7 +15,7 @@ const hitos = [
         anio: "2018",
         titulo: "El Inicio",
         descripcion:
-            "Black Corporativo nace en Tijuana con la visión de profesionalizar la intermediación inmobiliaria en Baja California. Las primeras operaciones fueron residenciales, conectando a familias con su hogar ideal en fraccionamientos privados de la ciudad.",
+            "Black Capital nace en Tijuana con la visión de profesionalizar la intermediación inmobiliaria en Baja California. Las primeras operaciones fueron residenciales, conectando a familias con su hogar ideal en fraccionamientos privados de la ciudad.",
     },
     {
         anio: "2020",
@@ -46,18 +46,18 @@ const hitos = [
 export default function HistoriaPage() {
     return (
         <div className="w-full flex-1 bg-background">
-            <div className="bg-zinc-950 py-16 border-b border-gold-500/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.05,_transparent_50%)]" />
+            <div className="relative overflow-hidden border-b border-white/[0.06] bg-background pt-32 pb-16 sm:pt-40 sm:pb-20">
+                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent" />
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <FadeIn>
                         <span className="text-xs font-bold uppercase tracking-mega text-gold-500/80 mb-4 inline-block">
                             Nuestra Trayectoria
                         </span>
-                        <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-display uppercase text-foreground mb-4">
+                        <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-display uppercase text-foreground mb-4 text-balance">
                             De Tijuana para{" "}
                             <span className="metallic-gold-static">Inversionistas</span>
                         </h1>
-                        <p className="text-foreground/50 text-lg max-w-2xl mx-auto">
+                        <p className="text-foreground/58 text-lg max-w-2xl mx-auto leading-relaxed">
                             Una historia de crecimiento constante, construida sobre la confianza
                             de nuestros clientes y el conocimiento profundo del mercado inmobiliario
                             de Baja California.

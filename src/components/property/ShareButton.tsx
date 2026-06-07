@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Share2, Copy, Check } from 'lucide-react'
+import { Share2, Check } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface ShareButtonProps {
@@ -43,7 +43,7 @@ export function ShareButton({
       setCopied(true)
       toast.success('Enlace copiado al portapapeles')
       setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
+    } catch {
       toast.error('No se pudo copiar el enlace')
     }
   }

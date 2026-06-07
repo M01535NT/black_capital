@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Save, Settings, Image, Type, Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+import { Loader2, Save, Image as ImageIcon, Type, Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 
 interface AppSettings {
     heroVideoUrl: string;
@@ -129,7 +128,7 @@ export default function SettingsPage() {
             {/* Hero */}
             <Card>
                 <CardHeader className="flex flex-row items-center gap-3">
-                    <Image className="w-5 h-5 text-gold-500" />
+                    <ImageIcon className="w-5 h-5 text-gold-500" />
                     <CardTitle>Hero Homepage</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">

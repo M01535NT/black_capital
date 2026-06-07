@@ -1,6 +1,5 @@
 import { Calendar, Ruler, Building2, ShieldCheck } from "lucide-react";
 import { MetricCard } from "./MetricCard";
-import { getAttributeIcon } from "@/lib/property-constants";
 import { formatShortDate, formatArea } from "@/lib/format";
 
 interface PropertyMetricsProps {
@@ -12,7 +11,7 @@ interface PropertyMetricsProps {
 }
 
 const SECTION_HEADING =
-    "font-display text-xs font-bold uppercase tracking-wide-display text-foreground/50";
+    "text-[11px] font-bold uppercase tracking-[0.18em] text-white/48";
 
 /**
  * The "Características" section with premium styling.
@@ -67,12 +66,12 @@ export function PropertyMetrics({
             
             {/* Custom Attributes como tags */}
             {Object.entries(customAttributes).length > 0 && (
-                <div className="pt-6 border-t border-foreground/10">
+                <div className="border-t border-white/[0.08] pt-6">
                     <div className="flex flex-wrap gap-2">
                         {Object.entries(customAttributes).map(([key, value]) => (
                             <span 
                                 key={key} 
-                                className="px-3 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-xs font-semibold uppercase tracking-wider text-gold-500"
+                                className="border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-accent)]"
                             >
                                 {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
                             </span>

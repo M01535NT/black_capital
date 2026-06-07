@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { FadeIn } from "@/components/ui/motion";
 
 export const metadata: Metadata = {
-    title: "Términos y Condiciones | Black Corporativo",
-    description: "Términos y condiciones de uso de la plataforma Black Corporativo en Tijuana, Baja California.",
+    title: "Términos y Condiciones | Black Capital",
+    description: "Términos y condiciones de uso de la plataforma Black Capital en Tijuana, Baja California.",
     alternates: {
         canonical: "https://blackcorporativo.vercel.app/legal/terminos-condiciones",
     },
@@ -33,7 +33,7 @@ export default function TermsPage() {
                                 1. Aceptación de los Términos
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Al acceder y utilizar la plataforma Black Corporativo (en adelante, &quot;la Plataforma&quot;), usted acepta estar sujeto a estos Términos y Condiciones. Si no está de acuerdo con alguna parte, no debe utilizar la Plataforma.
+                                Al acceder y utilizar la plataforma Black Capital (en adelante, &quot;la Plataforma&quot;), usted acepta estar sujeto a estos Términos y Condiciones. Si no está de acuerdo con alguna parte, no debe utilizar la Plataforma.
                             </p>
                         </section>
 
@@ -42,7 +42,7 @@ export default function TermsPage() {
                                 2. Descripción del Servicio
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Black Corporativo es una plataforma inmobiliaria premium que proporciona información sobre propiedades residenciales, comerciales e industriales en Tijuana, Baja California. La Plataforma incluye listados de propiedades, análisis financieros, herramientas y servicios de contacto con asesores inmobiliarios.
+                                Black Capital es una plataforma inmobiliaria premium que proporciona información sobre propiedades residenciales, comerciales e industriales en Tijuana, Baja California. La Plataforma incluye listados de propiedades, análisis financieros, herramientas y servicios de contacto con asesores inmobiliarios.
                             </p>
                         </section>
 
@@ -67,7 +67,7 @@ export default function TermsPage() {
                                 4. Propiedad Intelectual
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Todo el contenido de la Plataforma, incluyendo pero no limitado a textos, gráficos, logotipos, imágenes, fotografías, videos, software y código fuente, es propiedad de Black Corporativo o de sus licenciantes y está protegido por las leyes de propiedad intelectual mexicanas e internacionales.
+                                Todo el contenido de la Plataforma, incluyendo pero no limitado a textos, gráficos, logotipos, imágenes, fotografías, videos, software y código fuente, es propiedad de Black Capital o de sus licenciantes y está protegido por las leyes de propiedad intelectual mexicanas e internacionales.
                             </p>
                         </section>
 
@@ -76,7 +76,7 @@ export default function TermsPage() {
                                 5. Información de Propiedades
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                La información sobre propiedades publicada en la Plataforma se proporciona de buena fe y se basa en datos obtenidos de fuentes consideradas confiables. Sin embargo, Black Corporativo no garantiza la exactitud, integridad o disponibilidad actual de dicha información. Los análisis financieros son estimaciones y no constituyen asesoramiento financiero profesional.
+                                La información sobre propiedades publicada en la Plataforma se proporciona de buena fe y se basa en datos obtenidos de fuentes consideradas confiables. Sin embargo, Black Capital no garantiza la exactitud, integridad o disponibilidad actual de dicha información. Los análisis financieros son estimaciones y no constituyen asesoramiento financiero profesional.
                             </p>
                         </section>
 
@@ -94,7 +94,7 @@ export default function TermsPage() {
                                 7. Limitación de Responsabilidad
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                En la máxima medida permitida por la ley aplicable, Black Corporativo no será responsable por daños indirectos, incidentales, especiales, consecuentes o punitivos, incluyendo pero no limitado a pérdida de beneficios, datos, uso o buena voluntad, resultantes de su uso o incapacidad para usar la Plataforma.
+                                En la máxima medida permitida por la ley aplicable, Black Capital no será responsable por daños indirectos, incidentales, especiales, consecuentes o punitivos, incluyendo pero no limitado a pérdida de beneficios, datos, uso o buena voluntad, resultantes de su uso o incapacidad para usar la Plataforma.
                             </p>
                         </section>
 
@@ -103,7 +103,7 @@ export default function TermsPage() {
                                 8. Enlaces a Terceros
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                La Plataforma puede contener enlaces a sitios web de terceros. Black Corporativo no controla ni asume responsabilidad por el contenido, políticas de privacidad o prácticas de dichos sitios.
+                                La Plataforma puede contener enlaces a sitios web de terceros. Black Capital no controla ni asume responsabilidad por el contenido, políticas de privacidad o prácticas de dichos sitios.
                             </p>
                         </section>
 
@@ -112,7 +112,7 @@ export default function TermsPage() {
                                 9. Modificaciones
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Black Corporativo se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento. Las modificaciones entrarán en vigor inmediatamente después de su publicación en la Plataforma.
+                                Black Capital se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento. Las modificaciones entrarán en vigor inmediatamente después de su publicación en la Plataforma.
                             </p>
                         </section>
 

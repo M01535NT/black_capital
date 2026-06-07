@@ -100,30 +100,30 @@ const baseJsonLd = {
     numberOfItems: 0,
     provider: {
         "@type": "RealEstateAgent",
-        name: "Black Corporativo",
+        name: "Black Capital",
         url: "https://blackcorporativo.vercel.app",
     },
 } as const;
 
 const LUXURY_STATS: StatItem[] = [
-    { value: 120, label: "Millones USD en Portafolio", suffix: "+", prefix: "$" },
-    { value: 85, label: "Propiedades Colocadas", suffix: "+", prefix: "" },
-    { value: 14, label: "Fraccionamientos Premium", suffix: "", prefix: "" },
-    { value: 5, label: "Zonas en Tijuana", suffix: "", prefix: "" },
+    { value: 3, label: "Tipos de propiedad", suffix: "", prefix: "" },
+    { value: 24, label: "Horas para responder", suffix: "h", prefix: "" },
+    { value: 5, label: "Zonas de ejemplo", suffix: "", prefix: "" },
+    { value: 1, label: "Catálogo editable", suffix: "", prefix: "" },
 ];
 
 const BUSINESS_STATS: StatItem[] = [
-    { value: 45, label: "Millones USD Comerciales", suffix: "+", prefix: "$" },
-    { value: 32, label: "Locales y Oficinas", suffix: "+", prefix: "" },
-    { value: 92, label: "% Ocupación Promedio", suffix: "%", prefix: "" },
-    { value: 8, label: "Años en Tijuana", suffix: "+", prefix: "" },
+    { value: 3, label: "Formatos comerciales", suffix: "", prefix: "" },
+    { value: 24, label: "Horas para responder", suffix: "h", prefix: "" },
+    { value: 4, label: "Variables de análisis", suffix: "", prefix: "" },
+    { value: 1, label: "Catálogo editable", suffix: "", prefix: "" },
 ];
 
 const INDUSTRIAL_STATS: StatItem[] = [
-    { value: 85, label: "Mil m² en Portafolio", suffix: "K+", prefix: "" },
-    { value: 28, label: "Naves Colocadas", suffix: "+", prefix: "" },
-    { value: 4, label: "Parques Industriales", suffix: "", prefix: "" },
-    { value: 8, label: "Años Track Record", suffix: "+", prefix: "" },
+    { value: 3, label: "Tipos industriales", suffix: "", prefix: "" },
+    { value: 24, label: "Horas para responder", suffix: "h", prefix: "" },
+    { value: 4, label: "Criterios logísticos", suffix: "", prefix: "" },
+    { value: 1, label: "Portafolio editable", suffix: "", prefix: "" },
 ];
 
 export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
@@ -138,13 +138,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             accent: "gold",
             headline: (
                 <>
-                    Casas en las Mejores
-                    <br className="hidden sm:block" />
-                    <span className="metallic-gold-static">Zonas de Tijuana</span>
+                    Residencial premium en Tijuana.
                 </>
             ),
             subtitle:
-                "Casas en fraccionamientos privados con seguridad 24/7, amenidades de primer nivel y ubicación estratégica. Para familias profesionales, empresarios e inversionistas que valoran plusvalía real.",
+                "Vista de ejemplo para casas en fraccionamientos privados, amenidades y ubicación estratégica. Cuando el inventario real esté listo, esta sección se actualizará desde el panel.",
             primaryCta: { label: "Explorar Propiedades", href: "/inventario?brand=luxury" },
             secondaryCta: { label: "Solicitar Información", href: "#luxury-cta" },
         },
@@ -152,12 +150,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             eyebrow: "Residencial Premium",
             title: (
                 <>
-                    Tu Hogar en las Zonas de{" "}
-                    <span className="metallic-gold-static">Mayor Plusvalía</span>
+                    Segmenta propiedades residenciales desde el primer clic.
                 </>
             ),
             description:
-                "Cada propiedad ha sido seleccionada por ubicación, seguridad, diseño arquitectónico y potencial de plusvalía en los fraccionamientos más buscados de Tijuana.",
+                "La estructura está preparada para mostrar propiedades por ubicación, seguridad, diseño arquitectónico y potencial de plusvalía cuando el catálogo real esté disponible.",
             items: [
                 {
                     icon: Crown,
@@ -186,7 +183,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: "Casas en",
             highlight: "Tijuana",
             subtitle:
-                "Cada propiedad ha sido verificada, analizada financieramente y cuenta con expediente legal completo para darte tranquilidad en tu inversión.",
+                "Muestra de cómo se presentará el inventario residencial real con ubicación, superficies, precios y estado comercial administrables.",
             ctaText: "Ver Todas las Propiedades",
             accentColor: "gold",
         },
@@ -201,7 +198,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: "Recibe el Catálogo",
             titleHighlight: "de Casas Disponibles",
             description:
-                "Listado actualizado con fotos, precios, ubicación y análisis de plusvalía de casas en fraccionamientos privados de Tijuana. Sin compromiso.",
+                "Solicita información y te contactaremos cuando el catálogo residencial real esté listo para publicarse.",
             indicator: "Respuesta en menos de 24h",
             companyLabel: "Empresa (opcional)",
             companyPlaceholder: "Empresa o particular",
@@ -220,7 +217,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 "Casas en fraccionamientos privados con seguridad 24/7, amenidades y ubicación premium en las mejores zonas de Tijuana, Baja California.",
         },
         metadata: {
-            title: "Casas Residenciales Premium en Tijuana | Fraccionamientos Privados | Black Corporativo",
+            title: "Casas Residenciales Premium en Tijuana | Fraccionamientos Privados | Black Capital",
             description:
                 "Encuentra tu casa ideal en los mejores fraccionamientos de Tijuana. Residencial Plus con seguridad 24/7, amenidades y ubicación estratégica. Agenda visita.",
             keywords: [
@@ -230,7 +227,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 "Chapultepec Tijuana",
                 "Playas de Tijuana",
                 "casas en venta Tijuana",
-                "Black Corporativo",
+                "Black Capital",
             ],
             robots: "index, follow",
             alternates: {
@@ -242,7 +239,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                     "Casas en los mejores fraccionamientos de Tijuana. Residencial Plus con seguridad 24/7, amenidades premium y ubicación estratégica.",
                 type: "website",
                 locale: "es_MX",
-                siteName: "Black Corporativo",
+                siteName: "Black Capital",
                 url: "https://blackcorporativo.vercel.app/black-luxury",
                 images: [
                     {
@@ -274,13 +271,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             accent: "gold",
             headline: (
                 <>
-                    Locales y Oficinas
-                    <br className="hidden sm:block" />
-                    en <span className="metallic-gold-static">Tijuana</span>
+                    Activos comerciales para operar o invertir.
                 </>
             ),
             subtitle:
-                "Locales comerciales, oficinas y plazas en zonas de alto tráfico en Tijuana. Oportunidades de inversión con flujo comprobado y contratos transparentes.",
+                "Vista de ejemplo para locales, oficinas y plazas en zonas de alto tráfico. El contenido real se cargará desde el panel cuando esté disponible.",
             primaryCta: { label: "Explorar Propiedades", href: "/inventario?brand=business" },
             secondaryCta: { label: "Asesoría Comercial", href: "#business-cta" },
         },
@@ -288,12 +283,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             eyebrow: "Oportunidades Comerciales",
             title: (
                 <>
-                    Activos que Generan{" "}
-                    <span className="metallic-gold-static">Rentabilidad Real</span>
+                    Ordena oportunidades comerciales por uso y zona.
                 </>
             ),
             description:
-                "Cada propiedad comercial ha sido analizada bajo criterios de ubicación, flujo peatonal, cap rate y proyección de plusvalía en el mercado de Tijuana.",
+                "La estructura está preparada para ordenar activos comerciales por ubicación, flujo, formato y potencial de operación cuando el catálogo real esté disponible.",
             items: [
                 {
                     icon: Briefcase,
@@ -322,7 +316,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: "Locales y",
             highlight: "Oficinas",
             subtitle:
-                "Cada activo ha sido evaluado por ubicación, flujo peatonal, retorno y potencial de plusvalía para asegurar tu inversión.",
+                "Muestra de cómo se presentará el inventario comercial real con formato, superficie y datos de operación administrables.",
             ctaText: "Ver Todas las Propiedades",
             accentColor: "gold",
         },
@@ -337,7 +331,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: "Encuentra el Espacio",
             titleHighlight: "Ideal para tu Negocio",
             description:
-                "Análisis de mercado comercial en Tijuana, proyecciones de rendimiento y asesoría personalizada para optimizar tu inversión inmobiliaria comercial.",
+                "Solicita información y te contactaremos cuando el catálogo comercial real esté listo para publicarse.",
             indicator: "Respuesta en menos de 24h",
             companyLabel: "Empresa",
             companyPlaceholder: "Empresa",
@@ -356,7 +350,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 "Locales comerciales, oficinas ejecutivas y plazas en zonas de alto tráfico de Tijuana, Baja California.",
         },
         metadata: {
-            title: "Centros Comerciales y Locales en Tijuana | Inversión Comercial | Black Corporativo",
+            title: "Centros Comerciales y Locales en Tijuana | Inversión Comercial | Black Capital",
             description:
                 "Locales comerciales, oficinas y plazas en zonas de alto tráfico en Tijuana. Inversión segura con flujo comprobado y contratos transparentes. Solicita información.",
             keywords: [
@@ -366,7 +360,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 "plazas comerciales Tijuana",
                 "inversión comercial Tijuana",
                 "renta de locales Tijuana",
-                "Black Corporativo",
+                "Black Capital",
             ],
             robots: "index, follow",
             alternates: {
@@ -378,7 +372,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                     "Locales comerciales, oficinas y plazas en zonas de alto tráfico en Tijuana. Análisis de cap rate y flujo operativo incluido.",
                 type: "website",
                 locale: "es_MX",
-                siteName: "Black Corporativo",
+                siteName: "Black Capital",
                 url: "https://blackcorporativo.vercel.app/black-business",
                 images: [
                     {
@@ -411,13 +405,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             overlayClass: "from-black/70 via-black/50",
             headline: (
                 <>
-                    Naves y Parques
-                    <br className="hidden sm:block" />
-                    <span className="metallic-gold-static">Industriales</span>
+                    Espacios industriales para operación logística.
                 </>
             ),
             subtitle:
-                "Naves industriales, bodegas y espacios logísticos en los principales corredores industriales de Tijuana. Ubicación estratégica cerca de garitas y vías de exportación.",
+                "Vista de ejemplo para naves, bodegas y espacios logísticos. El contenido real se cargará desde el panel cuando esté disponible.",
             primaryCta: { label: "Ver Inventario Industrial", href: "/inventario?brand=industrial" },
             gridLines: true,
             cursorGlow: false,
@@ -426,12 +418,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             eyebrow: "Verticales de Activo",
             title: (
                 <>
-                    Infraestructura Industrial en{" "}
-                    <span className="metallic-gold-static">Tijuana</span>
+                    Filtra naves, bodegas y suelo industrial con claridad.
                 </>
             ),
             description:
-                "Tres clases de activo industrial con análisis estructurado de ubicación, conectividad, capacidad y retorno para operaciones en la frontera más dinámica de México.",
+                "La estructura está preparada para presentar activos industriales por ubicación, conectividad, capacidad y criterios logísticos cuando el catálogo real esté disponible.",
             items: [
                 {
                     icon: Factory,
@@ -460,7 +451,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: "Naves y",
             highlight: "Bodegas",
             subtitle:
-                "Cada activo ha sido evaluado por ubicación, conectividad, capacidad y retorno para operaciones industriales en Tijuana.",
+                "Muestra de cómo se presentará el inventario industrial real con superficie, uso, conectividad y estado comercial administrables.",
             ctaText: "Ver Todas las Propiedades",
             accentColor: "steel",
         },
@@ -474,7 +465,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: "Recibe Nuestro Portafolio",
             titleHighlight: "Industrial Actualizado",
             description:
-                "Análisis con cap rates, ocupación histórica y proyecciones de rendimiento para cada nave y bodega disponible en los parques industriales de Tijuana.",
+                "Solicita información y te contactaremos cuando el portafolio industrial real esté listo para publicarse.",
             companyLabel: "Empresa",
             companyPlaceholder: "Empresa *",
             companyRequired: true,
@@ -492,7 +483,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 "Naves industriales, bodegas y parques logísticos en los principales corredores industriales de Tijuana, Baja California.",
         },
         metadata: {
-            title: "Naves Industriales y Parques Logísticos en Tijuana | Black Corporativo",
+            title: "Naves Industriales y Parques Logísticos en Tijuana | Black Capital",
             description:
                 "Naves industriales, bodegas y parques logísticos en Tijuana. Ubicación estratégica cerca de garitas y corredores de exportación. Contáctanos.",
             keywords: [
@@ -502,19 +493,19 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 "zona industrial Otay",
                 "logística Tijuana",
                 "manufactura Tijuana",
-                "Black Corporativo",
+                "Black Capital",
             ],
             robots: "index, follow",
             alternates: {
                 canonical: "https://blackcorporativo.vercel.app/black-industrial",
             },
             openGraph: {
-                title: "Naves Industriales y Parques Logísticos en Tijuana | Black Corporativo",
+                title: "Naves Industriales y Parques Logísticos en Tijuana | Black Capital",
                 description:
                     "Naves industriales, bodegas y parques logísticos en Tijuana. Conectividad estratégica cerca de garitas y corredores de exportación T-MEC.",
                 type: "website",
                 locale: "es_MX",
-                siteName: "Black Corporativo",
+                siteName: "Black Capital",
                 url: "https://blackcorporativo.vercel.app/black-industrial",
                 images: [
                     {
@@ -527,7 +518,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             },
             twitter: {
                 card: "summary_large_image",
-                title: "Naves Industriales y Parques Logísticos en Tijuana | Black Corporativo",
+                title: "Naves Industriales y Parques Logísticos en Tijuana | Black Capital",
                 description:
                     "Naves industriales, bodegas y parques logísticos en Tijuana. Conectividad estratégica cerca de garitas y corredores de exportación T-MEC.",
                 images: ["https://blackcorporativo.vercel.app/industrial-hero.png"],

@@ -1,10 +1,22 @@
 import { NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
 import { createClient } from "@/lib/supabase/server";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
-// TODO: Implement rate limiting (max 5 requests/min per IP)
-// Consider using Vercel's @vercel/edge or upstash/ratelimit
 export async function POST(req: Request) {
+    const ip = getClientIp(req.headers);
+    const rate = checkRateLimit(`send-brochure:${ip}`, {
+        limit: 5,
+        windowMs: 60 * 1000,
+    });
+
+    if (!rate.allowed) {
+        return NextResponse.json(
+            { error: "Demasiadas solicitudes. Intenta de nuevo en un momento." },
+            { status: 429, headers: { "Retry-After": String(rate.retryAfter) } }
+        );
+    }
+
     try {
         const body = await req.json();
         const { email, propertyId, name, pdfUrl, docType } = body;
@@ -110,10 +122,13 @@ export async function POST(req: Request) {
 
         // Attach PDF — only if URL is from our Supabase storage (SSRF prevention)
         if (pdfUrl) {
+            const configuredSupabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL
+                ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
+                : null;
             const allowedDomains = [
                 "supabase.co",
-                "tewfdfmicifpdecxcpfy.supabase.co",
-            ];
+                configuredSupabaseHost,
+            ].filter(Boolean) as string[];
             let pdfHost: string | null = null;
             try {
                 pdfHost = new URL(pdfUrl).hostname;

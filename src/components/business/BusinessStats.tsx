@@ -12,6 +12,8 @@ export function BusinessStats() {
     return (
         <SubBrandStats
             brand="business"
+            eyebrow="Indicadores de ejemplo"
+            title="Muestra visual para activos comerciales."
             accent="gold"
             stats={SUB_BRAND_CONFIGS.business.stats}
         />
