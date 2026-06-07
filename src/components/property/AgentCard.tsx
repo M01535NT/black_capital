@@ -17,7 +17,7 @@ export interface AgentInfo {
 export function AgentCard({ agent }: { agent: AgentInfo }) {
     return (
         <div className="flex items-start gap-4">
-            <div className="size-14 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 font-semibold shrink-0 border border-gold-500/20 overflow-hidden">
+            <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 font-semibold text-[var(--color-accent)]">
                 {agent.photo_url ? (
                     <Image
                         src={agent.photo_url}
@@ -31,11 +31,11 @@ export function AgentCard({ agent }: { agent: AgentInfo }) {
                 )}
             </div>
             <div className="min-w-0 flex-1 space-y-1.5">
-                <p className="font-semibold text-foreground leading-tight text-body">
+                <p className="font-semibold leading-tight text-white">
                     {agent.full_name}
                 </p>
                 {agent.license_number && (
-                    <p className="text-caption text-foreground/50 uppercase tracking-wider">
+                    <p className="text-caption uppercase tracking-wider text-white/45">
                         Céd. {agent.license_number}
                     </p>
                 )}
@@ -45,7 +45,7 @@ export function AgentCard({ agent }: { agent: AgentInfo }) {
                             href={`https://wa.me/${agent.phone.replace(/[^0-9]/g, "")}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold hover:bg-emerald-500/20 transition-colors w-fit"
+                            className="inline-flex w-fit items-center gap-2 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/10 px-3 py-1.5 text-xs font-semibold text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
                         >
                             <MessageCircle className="size-3" />
                             WhatsApp
@@ -54,7 +54,7 @@ export function AgentCard({ agent }: { agent: AgentInfo }) {
                     {agent.email && (
                         <a
                             href={`mailto:${agent.email}`}
-                            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-foreground/5 text-foreground/50 border border-foreground/10 text-xs font-medium hover:text-foreground/70 hover:border-foreground/20 transition-colors w-fit"
+                            className="inline-flex w-fit items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-white/56 transition-colors hover:border-white/18 hover:text-white"
                         >
                             <Mail className="size-3" />
                             Email

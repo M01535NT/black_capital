@@ -11,12 +11,19 @@ interface ImageGalleryProps {
   title: string;
   coverImage?: string | null;
   videos?: string[];
+  summary?: {
+    businessType: string;
+    propertyUse: string;
+    priceLabel: string;
+    address?: string | null;
+  };
 }
 
 export function ImageGallery({
   images,
   title,
   coverImage,
+  summary,
 }: ImageGalleryProps) {
   // ── Build unique ordered image list (cover first, no duplicates) ──
   const allImages: string[] = [];
@@ -215,11 +222,36 @@ export function ImageGallery({
           </div>
 
           {/* Counter */}
-          <div className="absolute bottom-4 right-4 z-20">
+          <div className="absolute left-4 top-4 z-20">
             <span className="rounded-full border border-white/10 bg-black/60 px-3 py-1.5 text-xs font-medium text-white/90 backdrop-blur-md">
               {displayIndex + 1} / {allImages.length}
             </span>
           </div>
+
+          {summary && (
+            <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/88 via-black/55 to-transparent p-4 pt-16 sm:p-6 sm:pt-20">
+              <div className="max-w-4xl">
+                <div className="mb-3 flex flex-wrap gap-2">
+                  <span className="border border-[var(--color-accent)]/35 bg-black/45 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--color-accent)] backdrop-blur">
+                    {summary.businessType}
+                  </span>
+                  <span className="border border-white/10 bg-black/45 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white/72 backdrop-blur">
+                    {summary.propertyUse}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                  <p className="text-2xl font-semibold tracking-tight text-[var(--color-accent)] sm:text-4xl">
+                    {summary.priceLabel}
+                  </p>
+                  {summary.address && (
+                    <p className="max-w-md text-sm leading-6 text-white/70 sm:text-right">
+                      {summary.address}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Navigation arrows (desktop hover) */}
           {allImages.length > 1 && (

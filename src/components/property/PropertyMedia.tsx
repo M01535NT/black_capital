@@ -14,7 +14,7 @@ export function PropertyMedia({
     if (!videoUrls?.length && !tourEmbeds?.length) return null;
 
     return (
-        <div className="space-y-8 md:space-y-10">
+        <div className="space-y-6 md:space-y-10">
             <VideoEmbed urls={videoUrls || []} />
             <TourEmbed urls={tourEmbeds || []} />
         </div>

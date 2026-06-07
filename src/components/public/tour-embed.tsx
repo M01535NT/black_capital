@@ -24,15 +24,18 @@ export function TourEmbed({ urls }: TourEmbedProps) {
     if (validUrls.length === 0) return null;
 
     return (
-        <section className="space-y-4">
-            <h2 className="font-display text-xs font-bold uppercase tracking-wide-display text-foreground/50">
-                Recorrido Virtual 360°
-            </h2>
+        <section className="space-y-5">
+            <div className="flex items-center gap-3">
+                <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
+                <h2 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/48">
+                    Recorrido Virtual 360°
+                </h2>
+            </div>
             <div className="space-y-4">
                 {validUrls.map((embedUrl, i) => (
                     <div
                         key={i}
-                        className="w-full aspect-video rounded-2xl overflow-hidden bg-background-elevated border border-foreground/5 shadow-lg"
+                        className="aspect-video w-full overflow-hidden border border-white/[0.08] bg-white/[0.025]"
                     >
                         <iframe
                             src={embedUrl}
@@ -40,7 +43,7 @@ export function TourEmbed({ urls }: TourEmbedProps) {
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; xr-spatial-tracking"
                             allowFullScreen
                             loading="lazy"
-                            className="w-full h-full"
+                            className="h-full w-full"
                         />
                     </div>
                 ))}

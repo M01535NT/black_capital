@@ -52,7 +52,7 @@ export function StickyContactBar({
                   href={buildWhatsappUrl(agentWhatsapp)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl brushed-gold text-sm font-bold tracking-wide transition-all duration-300 hover:brightness-105"
+                  className="brushed-gold flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-bold tracking-wide transition-all duration-300 hover:brightness-105"
                 >
                   <MessageCircle className="w-5 h-5" />
                   <span>WhatsApp</span>
@@ -61,7 +61,7 @@ export function StickyContactBar({
               {agentPhone && (
                 <a
                   href={`tel:${agentPhone}`}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-white/[0.04] border border-white/[0.08] text-white text-sm font-semibold transition-all duration-300 hover:bg-white/[0.08]"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/[0.08]"
                 >
                   <Phone className="w-5 h-5" />
                   <span>Llamar</span>
@@ -70,7 +70,7 @@ export function StickyContactBar({
               {agentEmail && (
                 <a
                   href={`mailto:${agentEmail}`}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-white/[0.04] border border-white/[0.08] text-white text-sm font-semibold transition-all duration-300 hover:bg-white/[0.08]"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/[0.08]"
                 >
                   <Mail className="w-5 h-5" />
                   <span>Email</span>

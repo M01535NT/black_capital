@@ -13,11 +13,11 @@ import { PropertyLocation } from "@/components/property/PropertyLocation";
 import { PropertySidebar } from "@/components/property/PropertySidebar";
 import { StickyContactBar } from "@/components/property/StickyContactBar";
 import { PropertyJsonLd } from "@/components/property/PropertyJsonLd";
-import { MortgageCalculator } from "@/components/tools/mortgage-calculator";
 import { FavoriteButton } from "@/components/property/favorite-button";
 import { FadeIn } from "@/components/ui/motion";
 
 import { CONTACT_CONFIG } from "@/lib/contact-config";
+import { formatPrice } from "@/lib/format";
 import Link from "next/link";
 
 export const revalidate = 60;
@@ -45,7 +45,7 @@ type SimilarProperty = {
 };
 
 const SECTION_HEADING =
-    "font-display text-xs font-bold uppercase tracking-wide-display text-foreground/50";
+    "text-[11px] font-bold uppercase tracking-[0.18em] text-white/48";
 
 export async function generateMetadata({
     params,
@@ -166,6 +166,7 @@ export default async function PropertyDetailPage({
 
     const whatsappMessage = encodeURIComponent(`Hola, me interesa la propiedad: ${property.title}`);
     const whatsappHref = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+    const priceLabel = formatPrice(property.price, property.currency);
 
     return (
         <>
@@ -186,35 +187,44 @@ export default async function PropertyDetailPage({
             />
             
             <div className="w-full min-h-screen bg-background">
-                <section className="w-full border-b border-white/[0.06] pt-24 lg:pt-28">
-                    <div className="mx-auto max-w-[90rem] px-6 pb-6 pt-6 sm:px-10 lg:px-16">
+                <section className="w-full border-b border-white/[0.06] pt-20 lg:pt-28">
+                    <div className="mx-auto max-w-[90rem] px-4 pb-5 pt-4 sm:px-10 sm:pt-6 lg:px-16">
                         <ImageGallery
                             images={property.images || []}
                             title={property.title}
                             coverImage={property.cover_image}
+                            summary={{
+                                businessType: property.business_type,
+                                propertyUse: property.property_use,
+                                priceLabel,
+                                address: property.address,
+                            }}
                         />
                     </div>
                 </section>
 
-                <div className="mx-auto max-w-[90rem] space-y-10 px-6 py-10 sm:px-10 md:py-16 lg:px-16">
+                <div className="mx-auto max-w-[90rem] space-y-8 px-4 py-8 sm:px-10 md:space-y-10 md:py-16 lg:px-16">
                     
                     <FadeIn direction="up" delay={0.1}>
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                            <Breadcrumbs
-                                items={[
-                                    { label: "Inventario", href: "/inventario" },
-                                    { label: property.business_type, href: `/inventario?business=${encodeURIComponent(property.business_type)}` },
-                                    { label: property.title },
-                                ]}
-                            />
-                            <div className="flex items-center gap-2">
+                        <div className="grid grid-cols-1 gap-4 sm:flex sm:items-center sm:justify-between">
+                            <div className="min-w-0 overflow-hidden">
+                                <Breadcrumbs
+                                    items={[
+                                        { label: "Inventario", href: "/inventario" },
+                                        { label: property.business_type, href: `/inventario?business=${encodeURIComponent(property.business_type)}` },
+                                        { label: property.title },
+                                    ]}
+                                />
+                            </div>
+                            <div className="flex w-full items-center gap-2 sm:w-auto sm:justify-end">
                                 <FavoriteButton
                                     propertyId={property.id}
                                     variant="pill"
+                                    className="flex-1 justify-center sm:flex-none"
                                 />
                                 <Link
                                     href="/inventario"
-                                    className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full border border-white/[0.08] px-4 text-[11px] font-bold uppercase tracking-[0.14em] text-white/58 transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                                    className="inline-flex min-h-10 flex-1 shrink-0 items-center justify-center gap-1.5 rounded-full border border-white/[0.08] px-4 text-[11px] font-bold uppercase tracking-[0.14em] text-white/58 transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] sm:flex-none"
                                 >
                                     <ArrowLeft className="size-3" />
                                     Volver
@@ -224,7 +234,7 @@ export default async function PropertyDetailPage({
                     </FadeIn>
 
                     <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
-                        <div className="min-w-0 space-y-12 md:space-y-16 lg:col-span-8">
+                        <div className="min-w-0 space-y-10 md:space-y-16 lg:col-span-8">
                             
                             <FadeIn direction="up" delay={0.2}>
                                 <PropertyHeader
@@ -252,7 +262,11 @@ export default async function PropertyDetailPage({
                             </FadeIn>
 
                             <FadeIn direction="up" delay={0.4}>
-                                {property.description && <PropertyDescription description={property.description} />}
+                                {property.description && (
+                                    <div className="border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6">
+                                        <PropertyDescription description={property.description} />
+                                    </div>
+                                )}
                             </FadeIn>
 
                             {(property.video_urls?.length || property.tour_embeds?.length) ? (
@@ -270,22 +284,22 @@ export default async function PropertyDetailPage({
                                 </FadeIn>
                             )}
 
-                            {/* Mortgage Calculator — only for sale properties */}
-                            {property.business_type === "Venta" && (
-                                <FadeIn direction="up" delay={0.7}>
-                                    <MortgageCalculator
-                                        price={property.price}
-                                        currency={property.currency}
-                                        businessType={property.business_type}
-                                    />
-                                </FadeIn>
-                            )}
-
                             {similar.length > 0 && (
                                 <FadeIn direction="up" delay={0.8}>
-                                    <section className="space-y-6 pt-8 border-t border-white/[0.06]">
-                                        <h2 className={SECTION_HEADING}>Propiedades Similares</h2>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <section className="space-y-6 border-t border-white/[0.06] pt-8">
+                                        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                                            <div className="flex items-center gap-3">
+                                                <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
+                                                <h2 className={SECTION_HEADING}>Propiedades Similares</h2>
+                                            </div>
+                                            <Link
+                                                href={`/inventario?uso=${encodeURIComponent(property.property_use)}`}
+                                                className="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent)]"
+                                            >
+                                                Ver inventario
+                                            </Link>
+                                        </div>
+                                        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                                             {similar.map((sp, i) => (
                                                 <PropertyCard
                                                     key={sp.id}
@@ -301,7 +315,7 @@ export default async function PropertyDetailPage({
                         </div>
 
                         <div className="lg:col-span-4">
-                            <div className="sticky top-24 space-y-8">
+                            <div className="space-y-8 lg:sticky lg:top-24">
                                 <FadeIn direction="left" delay={0.4}>
                                     <PropertySidebar
                                         agents={agents}
@@ -315,6 +329,7 @@ export default async function PropertyDetailPage({
                                         }}
                                         documents={documents}
                                         whatsappHref={whatsappHref}
+                                        priceLabel={priceLabel}
                                     />
                                 </FadeIn>
                             </div>

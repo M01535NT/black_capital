@@ -35,20 +35,20 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-            <nav aria-label="Breadcrumb">
-                <ol className="flex items-center gap-1.5 text-sm text-foreground/50">
+            <nav aria-label="Breadcrumb" className="overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <ol className="flex w-max max-w-full items-center gap-1.5 text-sm text-foreground/50">
                     {allItems.map((item, i) => (
                         <li key={i} className="flex items-center gap-1.5">
                             {i > 0 && <ChevronRight className="h-3.5 w-3.5 text-foreground/20 shrink-0" />}
                             {i === allItems.length - 1 || !item.href ? (
-                                <span className="text-foreground/70 font-medium truncate max-w-[180px] sm:max-w-[260px]">
+                                <span className="block max-w-[160px] truncate font-medium text-foreground/70 sm:max-w-[260px]">
                                     {i === 0 && <Home className="h-3.5 w-3.5 inline mr-1 -mt-0.5" />}
                                     {item.label}
                                 </span>
                             ) : (
                                 <Link
                                     href={item.href}
-                                    className="hover:text-gold-500 transition-colors truncate max-w-[180px] sm:max-w-[260px]"
+                                    className="block max-w-[160px] truncate transition-colors hover:text-[var(--color-accent)] sm:max-w-[260px]"
                                 >
                                     {i === 0 && <Home className="h-3.5 w-3.5 inline mr-1 -mt-0.5" />}
                                     {item.label}

@@ -1,8 +1,8 @@
 import { AgentCard, type AgentInfo } from "./AgentCard";
 import { SpecRow } from "./SpecRow";
 import { DocumentCard, type DocumentLink } from "./DocumentCard";
-import { ContactCTA } from "./ContactCTA";
 import { formatArea } from "@/lib/format";
+import { MessageCircle } from "lucide-react";
 
 const SECTION_HEADING =
     "text-[11px] font-bold uppercase tracking-[0.18em] text-white/48";
@@ -21,6 +21,7 @@ interface PropertySidebarProps {
     };
     documents: DocumentLink[];
     whatsappHref: string;
+    priceLabel: string;
 }
 
 const SECTION_CARD_TITLE = SECTION_HEADING;
@@ -29,24 +30,28 @@ const SECTION_CARD_TITLE = SECTION_HEADING;
  * Right column of the property detail page: agent(s), technical sheet, documents, CTA.
  * Composes the small extracted components into the full sidebar.
  */
-export function PropertySidebar({ agents, property, documents, whatsappHref }: PropertySidebarProps) {
+export function PropertySidebar({ agents, property, documents, whatsappHref, priceLabel }: PropertySidebarProps) {
     return (
         <aside className="lg:w-[360px] xl:w-[380px] shrink-0 lg:self-start lg:sticky lg:top-24 space-y-5">
-            {/* Agent Card */}
-            {agents.length > 0 && (
-                <div className={CARD_CLASS}>
-                    <h3 className={SECTION_CARD_TITLE}>
-                        {agents.length === 1 ? "Asesor a Cargo" : "Asesores a Cargo"}
-                    </h3>
-                    <div className={agents.length > 1 ? "space-y-5" : ""}>
-                        {agents.map((agent) => (
-                            <AgentCard key={agent.id} agent={agent} />
-                        ))}
-                    </div>
-                </div>
-            )}
+            <div className="border border-[var(--color-accent)]/25 bg-white/[0.035] p-5">
+                <p className={SECTION_CARD_TITLE}>Panel de decisión</p>
+                <p className="mt-4 text-3xl font-semibold tracking-tight text-[var(--color-accent)]">
+                    {priceLabel}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-white/58">
+                    Solicita disponibilidad, condiciones y visita con un asesor.
+                </p>
+                <a
+                    href={whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="brushed-gold mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-5 text-sm font-bold"
+                >
+                    <MessageCircle className="size-4" aria-hidden="true" />
+                    Contactar por WhatsApp
+                </a>
+            </div>
 
-            {/* Property Specs Card */}
             <div className={CARD_CLASS}>
                 <h3 className={SECTION_CARD_TITLE}>Ficha Técnica</h3>
                 <div className="space-y-3">
@@ -69,6 +74,19 @@ export function PropertySidebar({ agents, property, documents, whatsappHref }: P
                 </div>
             </div>
 
+            {agents.length > 0 && (
+                <div className={CARD_CLASS}>
+                    <h3 className={SECTION_CARD_TITLE}>
+                        {agents.length === 1 ? "Asesor a Cargo" : "Asesores a Cargo"}
+                    </h3>
+                    <div className={agents.length > 1 ? "space-y-5" : ""}>
+                        {agents.map((agent) => (
+                            <AgentCard key={agent.id} agent={agent} />
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {/* Documents */}
             {documents.length > 0 && (
                 <div className={CARD_CLASS}>
@@ -81,8 +99,6 @@ export function PropertySidebar({ agents, property, documents, whatsappHref }: P
                 </div>
             )}
 
-            {/* Contact CTA */}
-            <ContactCTA variant="sidebar" whatsappHref={whatsappHref} />
         </aside>
     );
 }

@@ -81,6 +81,7 @@ test.describe("Public UI follow-up", () => {
         await expect(page.getByRole("link", { name: /Volver/i })).toBeVisible();
         await expect(page.getByRole("heading", { name: "Ficha Técnica" })).toBeVisible();
         await expect(page.getByRole("link", { name: /Contactar por WhatsApp/i })).toBeVisible();
+        await expect(page.getByText(/calculadora|hipoteca/i)).toHaveCount(0);
 
         const whatsappFloat = page.getByTestId("whatsapp-float");
         await expect(whatsappFloat).toBeVisible();
