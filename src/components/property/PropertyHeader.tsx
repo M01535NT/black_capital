@@ -1,5 +1,4 @@
 import { MapPin } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { STATUS_LABELS, STATUS_CLASSES } from "@/lib/property-constants";
 import { formatPrice } from "@/lib/format";
 
@@ -22,6 +21,24 @@ const currencyMXN = new Intl.NumberFormat("es-MX", {
     maximumFractionDigits: 0,
 });
 
+function formatDisplayTitle(title: string) {
+    const normalized = title.replace(/\s+/g, " ").trim();
+    const isUppercase = normalized === normalized.toLocaleUpperCase("es-MX");
+
+    if (!isUppercase) return normalized;
+
+    const lowercaseWords = new Set(["de", "del", "en", "la", "las", "el", "los", "y"]);
+
+    return normalized
+        .toLocaleLowerCase("es-MX")
+        .split(" ")
+        .map((word, index) => {
+            if (index > 0 && lowercaseWords.has(word)) return word;
+            return word.charAt(0).toLocaleUpperCase("es-MX") + word.slice(1);
+        })
+        .join(" ");
+}
+
 /**
  * Top block of the property detail page with premium styling aligned with Home design.
  * Features hairline vertical accent, eyebrow tag, and dramatic typography.
@@ -40,6 +57,7 @@ export function PropertyHeader({
 }: PropertyHeaderProps) {
     const statusClass = STATUS_CLASSES[status] || "text-foreground/50 border-foreground/15";
     const statusLabel = STATUS_LABELS[status] || status;
+    const displayTitle = formatDisplayTitle(title);
 
     return (
         <div className="grid gap-6 border-b border-white/[0.06] pb-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
@@ -47,40 +65,28 @@ export function PropertyHeader({
                 <div className="flex items-center gap-3">
                     <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
                     <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/68">
-                        {businessType} · {propertyUse} · {propertyType}
+                        {businessType} · {propertyUse}
                     </span>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                    <Badge className="bg-[var(--color-accent)] px-2.5 py-0.5 text-caption font-semibold uppercase tracking-wider text-black">
-                        {businessType}
-                    </Badge>
-                    <Badge
-                        variant="outline"
-                        className="border-white/15 px-2.5 py-0.5 text-caption uppercase tracking-wider"
-                    >
-                        {propertyUse}
-                    </Badge>
-                    <Badge
-                        variant="outline"
-                        className="border-white/15 px-2.5 py-0.5 text-caption uppercase tracking-wider"
-                    >
+                    <span className="border border-white/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/68">
                         {propertyType}
-                    </Badge>
+                    </span>
                     {isProject && (
-                        <Badge className="bg-white/[0.08] px-2.5 py-0.5 text-caption uppercase tracking-wider text-white">
+                        <span className="border border-white/15 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/68">
                             Proyecto
-                        </Badge>
+                        </span>
                     )}
                     <span
-                        className={`text-caption font-semibold px-2.5 py-0.5 border ${statusClass}`}
+                        className={`border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] ${statusClass}`}
                     >
                         {statusLabel}
                     </span>
                 </div>
 
-                <h1 className="text-4xl font-light leading-[1.02] tracking-tight text-white text-balance sm:text-5xl lg:text-6xl">
-                    {title}
+                <h1 className="max-w-3xl text-4xl font-light leading-[1.05] tracking-normal text-white text-balance sm:text-5xl lg:text-6xl">
+                    {displayTitle}
                 </h1>
 
                 {address && (

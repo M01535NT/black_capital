@@ -21,7 +21,6 @@ interface PropertySidebarProps {
     };
     documents: DocumentLink[];
     whatsappHref: string;
-    priceLabel: string;
 }
 
 const SECTION_CARD_TITLE = SECTION_HEADING;
@@ -30,16 +29,16 @@ const SECTION_CARD_TITLE = SECTION_HEADING;
  * Right column of the property detail page: agent(s), technical sheet, documents, CTA.
  * Composes the small extracted components into the full sidebar.
  */
-export function PropertySidebar({ agents, property, documents, whatsappHref, priceLabel }: PropertySidebarProps) {
+export function PropertySidebar({ agents, property, documents, whatsappHref }: PropertySidebarProps) {
     return (
         <aside className="lg:w-[360px] xl:w-[380px] shrink-0 lg:self-start lg:sticky lg:top-24 space-y-5">
             <div className="border border-[var(--color-accent)]/25 bg-white/[0.035] p-5">
-                <p className={SECTION_CARD_TITLE}>Panel de decisión</p>
-                <p className="mt-4 text-3xl font-semibold tracking-tight text-[var(--color-accent)]">
-                    {priceLabel}
-                </p>
+                <p className={SECTION_CARD_TITLE}>Siguiente paso</p>
+                <h2 className="mt-4 text-2xl font-light leading-tight text-white">
+                    Confirma disponibilidad y agenda visita.
+                </h2>
                 <p className="mt-2 text-sm leading-6 text-white/58">
-                    Solicita disponibilidad, condiciones y visita con un asesor.
+                    Un asesor puede validar condiciones, documentación y tiempos de respuesta.
                 </p>
                 <a
                     href={whatsappHref}

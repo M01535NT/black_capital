@@ -151,11 +151,11 @@ export function ImageGallery({
           className={cn(
             "relative w-full overflow-hidden cursor-pointer group",
             // Componente compacto, no hero. Tope duro por breakpoint.
-            "aspect-[4/3] max-h-[320px]",
-            "sm:aspect-[16/10] sm:max-h-[360px]",
-            "md:aspect-[16/9] md:max-h-[420px]",
-            "lg:aspect-[16/9] lg:max-h-[460px]",
-            "xl:max-h-[520px]",
+            "aspect-[3/4] max-h-[520px]",
+            "sm:aspect-[4/3] sm:max-h-[560px]",
+            "md:aspect-[16/10] md:max-h-[600px]",
+            "lg:aspect-[16/9] lg:max-h-[620px]",
+            "xl:max-h-[680px]",
           )}
           onClick={() => openLightbox(activeIndex)}
           onTouchStart={handleTouchStart}

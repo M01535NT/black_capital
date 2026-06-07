@@ -7,19 +7,20 @@ import {
   CheckCircle2,
   Home,
   MapPin,
-  Search,
   Warehouse,
 } from "lucide-react";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { HomeCounters } from "@/components/home/HomeCounters";
+import { HomeHeroHeadline } from "@/components/home/HomeHeroHeadline";
 
 export const metadata: Metadata = {
-  title: "Inmobiliaria en Tijuana | Residencial, Comercial e Industrial | Black Capital",
+  title: "Inmobiliaria Premium en Tijuana",
   description:
-    "Explora oportunidades residenciales, comerciales e industriales en Tijuana. Inventario ejemplo, filtros por zona y contacto directo para compradores, empresarios e inversionistas.",
+    "Compra, venta y renta de casas en zona dorada de Tijuana, plazas comerciales y naves industriales con opinión de valor, dictamen comercial y plan de marketing.",
   openGraph: {
-    title: "Black Capital | Inmobiliaria en Tijuana",
+    title: "Black Capital | Inmobiliaria Premium en Tijuana",
     description:
-      "Propiedades residenciales, comerciales e industriales en Tijuana con atención directa para leads comerciales.",
+      "Representación inmobiliaria para vender, comprar o rentar activos residenciales, comerciales e industriales en Tijuana.",
     type: "website",
     locale: "es_MX",
     siteName: "Black Capital",
@@ -51,8 +52,8 @@ const segments = [
     inventoryHref: "/inventario?uso=Residencial",
     image: "/brand-luxury.webp",
     icon: Home,
-    copy: "Casas, departamentos y preventas para familias e inversionistas.",
-    zones: "Playas, Chapultepec, Zona Río",
+    copy: "Casas en zona dorada.",
+    zones: "Chapultepec · Zona Río · Playas",
   },
   {
     title: "Comercial",
@@ -60,8 +61,8 @@ const segments = [
     inventoryHref: "/inventario?uso=Comercial",
     image: "/brand-business.webp",
     icon: Building2,
-    copy: "Locales, oficinas y plazas para operación, renta o inversión.",
-    zones: "Otay, Centro, Díaz Ordaz",
+    copy: "Locales y plazas comerciales.",
+    zones: "Zona Río · Otay · Díaz Ordaz",
   },
   {
     title: "Industrial",
@@ -69,21 +70,53 @@ const segments = [
     inventoryHref: "/inventario?uso=Industrial",
     image: "/brand-industrial.webp",
     icon: Warehouse,
-    copy: "Naves, bodegas y suelo industrial cerca de corredores logísticos.",
-    zones: "Otay, Pacífico, Florido",
+    copy: "Naves y suelo industrial.",
+    zones: "Otay · Pacífico · El Florido",
   },
 ];
 
 const process = [
-  "Filtramos por presupuesto, zona, m² y uso de suelo.",
-  "Validamos información comercial antes de presentarla al cliente.",
-  "Capturamos el lead y lo dejamos listo para seguimiento desde admin.",
+  "Analizamos ubicación, condición y comparables.",
+  "Definimos valor, mensaje y perfil objetivo.",
+  "Gestionamos marketing, negociación y cierre.",
+];
+
+const advisoryPaths = [
+  {
+    audience: "Compradores",
+    title: "Comprar con criterio.",
+    copy: "Definimos perfil, filtramos opciones y negociamos con datos.",
+    steps: ["Perfil de búsqueda", "Opciones viables", "Cierre acompañado"],
+  },
+  {
+    audience: "Vendedores",
+    title: "Vender con estrategia.",
+    copy: "Opinión de valor, precio de salida y plan comercial.",
+    steps: ["Dictamen inicial", "Marketing sobrio", "Seguimiento comercial"],
+  },
+  {
+    audience: "Arrendadores",
+    title: "Rentar sin improvisar.",
+    copy: "Perfilamos interesados, cuidamos condiciones y documentamos entrega.",
+    steps: ["Renta objetivo", "Prospectos calificados", "Contrato y entrega"],
+  },
+];
+
+const values = [
+  "Honestidad",
+  "Compromiso",
+  "Disciplina",
+  "Conocimiento",
+  "Transparencia",
+  "Experiencia",
+  "Integridad",
+  "Resultados",
 ];
 
 export default function HomePage() {
   return (
     <main className="bg-background">
-      <section className="relative min-h-[92svh] overflow-hidden border-b border-white/[0.06] pt-24 lg:pt-28">
+      <section className="relative min-h-[100svh] overflow-hidden border-b border-white/[0.06] pt-24 lg:pt-28">
         <Image
           src="/hero-poster.webp"
           alt="Propiedades e inversión inmobiliaria en Tijuana"
@@ -95,18 +128,15 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/35" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
 
-        <div className="relative z-10 mx-auto grid min-h-[calc(92svh-6rem)] max-w-[90rem] grid-cols-1 items-center gap-10 px-6 py-12 sm:px-10 lg:grid-cols-12 lg:px-16">
-          <div className="lg:col-span-7">
+        <div className="relative z-10 mx-auto grid min-h-[calc(100svh-6rem)] max-w-[90rem] grid-cols-1 items-center px-6 pb-28 pt-10 sm:px-10 sm:pb-32 lg:grid-cols-12 lg:px-16">
+          <div className="lg:col-span-8">
             <div className="mb-6 inline-flex items-center gap-2 border border-white/10 bg-black/35 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">
               <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" />
               Tijuana, Baja California
             </div>
-            <h1 className="max-w-4xl text-display-1 font-light leading-hero tracking-tight text-white text-balance">
-              Encuentra el activo inmobiliario correcto.
-            </h1>
-            <p className="mt-6 max-w-2xl text-body-fluid text-white/72 leading-relaxed">
-              Una experiencia más clara para compradores, empresarios e inversionistas:
-              inventario por tipo, filtros útiles y contacto directo para iniciar seguimiento comercial.
+            <HomeHeroHeadline />
+            <p className="mt-6 max-w-xl text-base leading-8 text-white/66 sm:text-lg">
+              Compra, venta y renta inmobiliaria en Tijuana con estrategia.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -114,45 +144,36 @@ export default function HomePage() {
                 href="/inventario"
                 className="brushed-gold inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full px-7 text-sm font-bold"
               >
-                Ver inventario ejemplo
+                Ver inventario
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/contacto"
                 className="inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full border border-white/18 bg-white/[0.04] px-7 text-sm font-semibold text-white hover:border-[var(--color-accent)]"
               >
-                Hablar con un asesor
+                Solicitar asesoría
               </Link>
             </div>
           </div>
+        </div>
 
-          <div className="lg:col-span-5">
-            <div className="border border-white/10 bg-background/82 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl">
-              <div className="flex items-center gap-3 border-b border-white/[0.08] pb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-accent)] text-black">
-                  <Search className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">Búsqueda rápida</p>
-                  <p className="text-xs text-white/50">Placeholder editable desde admin</p>
-                </div>
-              </div>
-              <div className="grid gap-3 py-4">
-                {["Tipo de operación", "Zona de Tijuana", "Rango de precio", "m² o uso de suelo"].map((label) => (
-                  <div key={label} className="flex items-center justify-between border border-white/[0.08] bg-white/[0.03] px-4 py-3">
-                    <span className="text-sm text-white/65">{label}</span>
-                    <span className="text-xs uppercase tracking-[0.14em] text-[var(--color-accent)]">Seleccionar</span>
-                  </div>
+        <div className="absolute inset-x-0 top-[calc(100svh-3.5rem)] z-20 sm:top-[calc(100svh-4rem)]">
+          <div className="h-px bg-[var(--color-accent)]/25" />
+          <div className="flex overflow-hidden whitespace-nowrap bg-background/88 py-4 backdrop-blur-md sm:py-5">
+            {[0, 1].map((track) => (
+              <div key={track} className="animate-marquee inline-flex shrink-0">
+                {values.map((value, index) => (
+                  <span key={`${track}-${value}-${index}`} className="inline-flex shrink-0 items-center">
+                    <span className="px-5 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/78 transition-colors duration-300 hover:text-[var(--color-accent)] sm:px-10 sm:text-[11px]">
+                      {value}
+                    </span>
+                    <span className="select-none text-[var(--color-accent)]" aria-hidden="true">
+                      •
+                    </span>
+                  </span>
                 ))}
               </div>
-              <Link
-                href="/inventario"
-                className="inline-flex w-full items-center justify-center gap-2 bg-white px-5 py-3 text-sm font-bold text-black"
-              >
-                Buscar propiedades
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -164,11 +185,11 @@ export default function HomePage() {
               Tres líneas de negocio
             </p>
             <h2 className="text-display-2 font-light leading-display tracking-headline text-white">
-              Segmenta desde el primer clic.
+              Activos con demanda real.
             </h2>
           </div>
           <p className="max-w-xl text-sm leading-7 text-white/58">
-            El contenido real se cargará desde el panel de administración. Por ahora se muestran ejemplos para validar estructura, ritmo visual y conversión.
+            Residencial, comercial e industrial en Tijuana.
           </p>
         </div>
 
@@ -215,10 +236,51 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-24">
           <div className="lg:col-span-5">
             <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+              Asesoría inmobiliaria
+            </p>
+            <h2 className="text-display-2 font-light leading-display tracking-headline text-white">
+              Según tu objetivo.
+            </h2>
+            <p className="mt-6 max-w-md text-sm leading-7 text-white/58">
+              Comprar, vender o rentar exige procesos distintos. El punto de partida cambia; el criterio no.
+            </p>
+          </div>
+          <div className="grid gap-4 lg:col-span-7">
+            {advisoryPaths.map((path) => (
+              <article key={path.audience} className="border border-white/[0.08] bg-background/70 p-5">
+                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+                      {path.audience}
+                    </p>
+                    <h3 className="text-xl font-light text-white">{path.title}</h3>
+                  </div>
+                  <p className="max-w-sm text-sm leading-6 text-white/58">{path.copy}</p>
+                </div>
+                <div className="grid gap-2 sm:grid-cols-3">
+                  {path.steps.map((step, index) => (
+                    <div key={step} className="flex items-center gap-2 border border-white/[0.08] bg-white/[0.025] px-3 py-3">
+                      <span className="text-[10px] font-bold text-[var(--color-accent)]">0{index + 1}</span>
+                      <span className="text-xs font-medium text-white/68">{step}</span>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <HomeCounters />
+
+      <section className="border-y border-white/[0.06] bg-white/[0.02]">
+        <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-24">
+          <div className="lg:col-span-5">
+            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
               Flujo comercial
             </p>
             <h2 className="text-display-2 font-light leading-display tracking-headline text-white">
-              Menos fricción, mejor seguimiento.
+              Marketing y negociación.
             </h2>
           </div>
           <div className="grid gap-4 lg:col-span-7">

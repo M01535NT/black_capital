@@ -16,7 +16,6 @@ import { FavoriteButton } from "@/components/property/favorite-button";
 import { FadeIn } from "@/components/ui/motion";
 
 import { CONTACT_CONFIG } from "@/lib/contact-config";
-import { formatPrice } from "@/lib/format";
 import Link from "next/link";
 
 export const revalidate = 60;
@@ -165,8 +164,6 @@ export default async function PropertyDetailPage({
 
     const whatsappMessage = encodeURIComponent(`Hola, me interesa la propiedad: ${property.title}`);
     const whatsappHref = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
-    const priceLabel = formatPrice(property.price, property.currency);
-
     return (
         <>
             <PropertyJsonLd
@@ -315,7 +312,6 @@ export default async function PropertyDetailPage({
                                         }}
                                         documents={documents}
                                         whatsappHref={whatsappHref}
-                                        priceLabel={priceLabel}
                                     />
                                 </FadeIn>
                             </div>
