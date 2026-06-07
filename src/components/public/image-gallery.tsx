@@ -249,10 +249,8 @@ export function ImageGallery({
           <div className="w-full bg-black/80 backdrop-blur-sm border-t border-white/5 px-3 sm:px-4 py-2.5 sm:py-3">
             <div
               ref={thumbContainerRef}
-              className="flex gap-2 sm:gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none"
+              className="scrollbar-none flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-px-3 sm:gap-3 sm:scroll-px-4"
             >
-              {/* Left padding to allow first thumb to center on mobile */}
-              <div className="shrink-0 w-1 sm:w-2" aria-hidden="true" />
               {allImages.map((src, idx) => (
                 <button
                   key={idx}
@@ -288,7 +286,6 @@ export function ImageGallery({
                   )}
                 </button>
               ))}
-              <div className="shrink-0 w-1 sm:w-2" aria-hidden="true" />
             </div>
           </div>
         )}

@@ -158,12 +158,6 @@ export default async function PropertyDetailPage({
         Object.assign(customAttrs, property.custom_attributes);
     }
 
-    const whatsappNumber = agents.length > 0 && agents[0]?.phone
-        ? agents[0].phone.replace(/[^0-9]/g, "")
-        : CONTACT_CONFIG.phoneRaw;
-
-    const whatsappMessage = encodeURIComponent(`Hola, me interesa la propiedad: ${property.title}`);
-    const whatsappHref = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
     return (
         <>
             <PropertyJsonLd
@@ -182,7 +176,7 @@ export default async function PropertyDetailPage({
                 url={`/inventario/${slug}`}
             />
             
-            <div className="w-full min-h-screen bg-background">
+            <div className="min-h-screen w-full overflow-x-hidden bg-background">
                 <section className="w-full border-b border-white/[0.06] pt-20 lg:pt-28">
                     <div className="mx-auto max-w-[90rem] px-4 pb-5 pt-4 sm:px-10 sm:pt-6 lg:px-16">
                         <ImageGallery
@@ -311,7 +305,6 @@ export default async function PropertyDetailPage({
                                             property_use: property.property_use,
                                         }}
                                         documents={documents}
-                                        whatsappHref={whatsappHref}
                                     />
                                 </FadeIn>
                             </div>

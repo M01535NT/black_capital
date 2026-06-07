@@ -2,7 +2,6 @@ import { AgentCard, type AgentInfo } from "./AgentCard";
 import { SpecRow } from "./SpecRow";
 import { DocumentCard, type DocumentLink } from "./DocumentCard";
 import { formatArea } from "@/lib/format";
-import { MessageCircle } from "lucide-react";
 
 const SECTION_HEADING =
     "text-[11px] font-bold uppercase tracking-[0.18em] text-white/48";
@@ -20,7 +19,6 @@ interface PropertySidebarProps {
         property_use: string | null;
     };
     documents: DocumentLink[];
-    whatsappHref: string;
 }
 
 const SECTION_CARD_TITLE = SECTION_HEADING;
@@ -29,28 +27,9 @@ const SECTION_CARD_TITLE = SECTION_HEADING;
  * Right column of the property detail page: agent(s), technical sheet, documents, CTA.
  * Composes the small extracted components into the full sidebar.
  */
-export function PropertySidebar({ agents, property, documents, whatsappHref }: PropertySidebarProps) {
+export function PropertySidebar({ agents, property, documents }: PropertySidebarProps) {
     return (
-        <aside className="lg:w-[360px] xl:w-[380px] shrink-0 lg:self-start lg:sticky lg:top-24 space-y-5">
-            <div className="border border-[var(--color-accent)]/25 bg-white/[0.035] p-5">
-                <p className={SECTION_CARD_TITLE}>Siguiente paso</p>
-                <h2 className="mt-4 text-2xl font-light leading-tight text-white">
-                    Confirma disponibilidad y agenda visita.
-                </h2>
-                <p className="mt-2 text-sm leading-6 text-white/58">
-                    Un asesor puede validar condiciones, documentación y tiempos de respuesta.
-                </p>
-                <a
-                    href={whatsappHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="brushed-gold mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-5 text-sm font-bold"
-                >
-                    <MessageCircle className="size-4" aria-hidden="true" />
-                    Contactar por WhatsApp
-                </a>
-            </div>
-
+        <aside className="w-full min-w-0 space-y-5 lg:w-[360px] lg:shrink-0 lg:self-start lg:sticky lg:top-24 xl:w-[380px]">
             <div className={CARD_CLASS}>
                 <h3 className={SECTION_CARD_TITLE}>Ficha Técnica</h3>
                 <div className="space-y-3">
@@ -97,6 +76,16 @@ export function PropertySidebar({ agents, property, documents, whatsappHref }: P
                     </div>
                 </div>
             )}
+
+            <div className="border border-[var(--color-accent)]/25 bg-white/[0.035] p-5">
+                <p className={SECTION_CARD_TITLE}>Siguiente paso</p>
+                <h2 className="mt-4 text-2xl font-light leading-tight text-white">
+                    Confirma disponibilidad y agenda visita.
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-white/58">
+                    Un asesor puede validar condiciones, documentación y tiempos de respuesta.
+                </p>
+            </div>
 
         </aside>
     );

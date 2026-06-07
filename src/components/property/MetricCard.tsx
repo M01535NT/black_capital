@@ -15,16 +15,16 @@ export function MetricCard({
 }: MetricCardProps) {
     return (
         <div 
-            className="group relative flex min-h-[132px] flex-col items-center justify-center gap-3 overflow-hidden border border-white/[0.08] bg-white/[0.025] p-4 text-center transition-colors duration-300 hover:border-[var(--color-accent)]/30"
+            className="group relative flex min-h-[104px] min-w-0 flex-col items-center justify-center gap-2 overflow-hidden border border-white/[0.08] bg-white/[0.025] p-2 text-center transition-colors duration-300 hover:border-[var(--color-accent)]/30 sm:min-h-[132px] sm:gap-3 sm:p-4"
         >
-            <div className="flex size-9 shrink-0 items-center justify-center border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 text-[var(--color-accent)] transition-colors duration-300">
+            <div className="flex size-8 shrink-0 items-center justify-center border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 text-[var(--color-accent)] transition-colors duration-300 sm:size-9">
                 {icon}
             </div>
             <div className="relative min-w-0 space-y-1">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/45">
+                <p className="break-words text-[7px] font-semibold uppercase leading-tight tracking-normal text-white/45 sm:text-[10px] sm:tracking-[0.16em]">
                     {label}
                 </p>
-                <p className="text-sm font-semibold text-white sm:text-base">
+                <p className="break-words text-[11px] font-semibold leading-tight text-white sm:text-base">
                     {value}
                 </p>
             </div>
