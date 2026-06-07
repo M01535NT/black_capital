@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRight, Home } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export interface BreadcrumbItem {
     label: string;
@@ -11,10 +11,9 @@ interface BreadcrumbsProps {
 }
 
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
-    const allItems: BreadcrumbItem[] = [
-        { label: "Inicio", href: "/" },
-        ...items,
-    ];
+    const allItems: BreadcrumbItem[] = [{ label: "Inicio", href: "/" }, ...items];
+    const parentItem = [...allItems].reverse().find((item, index) => index > 0 && item.href);
+    const currentItem = allItems[allItems.length - 1];
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || (typeof window !== "undefined" ? window.location.origin : "");
 
@@ -35,28 +34,18 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-            <nav aria-label="Breadcrumb" className="overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                <ol className="flex w-max max-w-full items-center gap-1.5 text-sm text-foreground/50">
-                    {allItems.map((item, i) => (
-                        <li key={i} className="flex items-center gap-1.5">
-                            {i > 0 && <ChevronRight className="h-3.5 w-3.5 text-foreground/20 shrink-0" />}
-                            {i === allItems.length - 1 || !item.href ? (
-                                <span className="block max-w-[160px] truncate font-medium text-foreground/70 sm:max-w-[260px]">
-                                    {i === 0 && <Home className="h-3.5 w-3.5 inline mr-1 -mt-0.5" />}
-                                    {item.label}
-                                </span>
-                            ) : (
-                                <Link
-                                    href={item.href}
-                                    className="block max-w-[160px] truncate transition-colors hover:text-[var(--color-accent)] sm:max-w-[260px]"
-                                >
-                                    {i === 0 && <Home className="h-3.5 w-3.5 inline mr-1 -mt-0.5" />}
-                                    {item.label}
-                                </Link>
-                            )}
-                        </li>
-                    ))}
-                </ol>
+            <nav aria-label="Breadcrumb" className="min-w-0">
+                {parentItem?.href ? (
+                    <Link
+                        href={parentItem.href}
+                        className="inline-flex min-h-9 max-w-full items-center gap-2 rounded-full border border-white/[0.08] px-4 text-[11px] font-bold uppercase tracking-[0.14em] text-white/56 transition-colors hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)]"
+                    >
+                        <ArrowLeft className="size-3.5 shrink-0" aria-hidden="true" />
+                        <span className="truncate">Volver a {parentItem.label}</span>
+                    </Link>
+                ) : (
+                    <span className="block truncate text-sm text-white/45">{currentItem.label}</span>
+                )}
             </nav>
         </>
     );

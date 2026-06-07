@@ -39,7 +39,6 @@ export function PropertyMetrics({
                         icon={<Ruler className="size-4" />}
                         label="Terreno"
                         value={formatArea(m2Terrain, "")}
-                        variant="featured"
                     />
                 )}
                 {m2Construction && (
@@ -47,7 +46,6 @@ export function PropertyMetrics({
                         icon={<Building2 className="size-4" />}
                         label="Construcción"
                         value={formatArea(m2Construction, "")}
-                        variant="featured"
                     />
                 )}
                 <MetricCard

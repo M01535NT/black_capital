@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { ArrowLeft } from "lucide-react";
 import { ImageGallery } from "@/components/public/image-gallery";
 import { Breadcrumbs } from "@/components/public/breadcrumbs";
 import { PropertyCard } from "@/components/property/PropertyCard";
@@ -193,12 +192,6 @@ export default async function PropertyDetailPage({
                             images={property.images || []}
                             title={property.title}
                             coverImage={property.cover_image}
-                            summary={{
-                                businessType: property.business_type,
-                                propertyUse: property.property_use,
-                                priceLabel,
-                                address: property.address,
-                            }}
                         />
                     </div>
                 </section>
@@ -222,13 +215,6 @@ export default async function PropertyDetailPage({
                                     variant="pill"
                                     className="flex-1 justify-center sm:flex-none"
                                 />
-                                <Link
-                                    href="/inventario"
-                                    className="inline-flex min-h-10 flex-1 shrink-0 items-center justify-center gap-1.5 rounded-full border border-white/[0.08] px-4 text-[11px] font-bold uppercase tracking-[0.14em] text-white/58 transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] sm:flex-none"
-                                >
-                                    <ArrowLeft className="size-3" />
-                                    Volver
-                                </Link>
                             </div>
                         </div>
                     </FadeIn>
