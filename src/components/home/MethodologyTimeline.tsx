@@ -80,7 +80,7 @@ export function MethodologyTimeline() {
                   transition={{ duration: 0.6, delay: 0.2 + i * 0.15, ease: [0.22, 1, 0.36, 1] }}
                   className="relative"
                 >
-                  {/* Node (desktop) / Top mark (mobile) */}
+                    {/* Node (desktop) / Top mark (mobile) */}
                   <div className="flex items-start gap-5 lg:flex-col lg:items-start lg:gap-0">
                     {/* Node circle */}
                     <div className="relative shrink-0 lg:mb-10">
@@ -88,7 +88,7 @@ export function MethodologyTimeline() {
                         className="w-14 h-14 rounded-full border border-accent/40 bg-background flex items-center justify-center group-hover:border-accent transition-colors duration-500"
                         aria-hidden="true"
                       >
-                        <Icon className="w-5 h-5 text-[var(--color-accent)]" strokeWidth={1.25} />
+                        <Icon className="w-6 h-6 text-[var(--color-accent)]" strokeWidth={1.5} />
                       </div>
                       {/* Inner dot, animates in */}
                       <motion.div
@@ -107,10 +107,10 @@ export function MethodologyTimeline() {
                         </span>
                         <span className="h-px flex-1 bg-white/[0.08] lg:hidden" />
                       </div>
-                      <h3 className="text-[clamp(1.125rem,1.6vw,1.375rem)] font-semibold text-white tracking-[-0.01em] mb-3">
+                      <h3 className="text-display-4 font-semibold text-white tracking-snug mb-3">
                         {step.title}
                       </h3>
-                      <p className="text-[13px] text-white/60 leading-[1.7] font-light max-w-xs">
+                      <p className="text-body-sm text-white/60 leading-relaxed font-light max-w-xs">
                         {step.body}
                       </p>
                     </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { FadeIn, StaggerChildren, StaggerItem } from "@/components/ui/motion";
+import { Section } from "@/components/layout/Section";
+import { Eyebrow } from "@/components/shared/eyebrow";
 import { Shield, Users, TrendingUp, Award, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -60,76 +61,128 @@ const subpaginas = [
 export default function NosotrosPage() {
     return (
         <div className="w-full flex-1 bg-background">
-            {/* Hero */}
-            <div className="bg-zinc-950 py-24 border-b border-gold-500/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.05,_transparent_50%)]" />
-                <div className="container mx-auto px-4 relative z-10 text-center max-w-4xl">
-                    <FadeIn>
-                        <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-mega mb-6 inline-block">
-                            Acerca de Nosotros
-                        </span>
-                        <h1 className="text-display-3 font-display font-semibold tracking-display uppercase text-4xl md:text-6xl text-foreground mb-6">
-                            La Plataforma Inmobiliaria{" "}
-                            <span className="metallic-gold-static">del Futuro</span>
-                        </h1>
-                        <p className="text-foreground/50 text-lg leading-relaxed max-w-2xl mx-auto">
-                            Black Capital es una plataforma inmobiliaria premium
-                            enfocada en Tijuana, Baja California. Conectamos a compradores,
-                            vendedores e inversionistas con los mejores activos residenciales,
-                            comerciales e industriales de la región.
-                        </p>
-                    </FadeIn>
+            {/* Hero — mismo lenguaje que Home */}
+            <section
+                aria-label="Nosotros"
+                className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 lg:pt-48 lg:pb-24 bg-background border-b border-white/[0.04] overflow-hidden"
+            >
+                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent" />
+                <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+                        <div className="lg:col-span-8">
+                            <Eyebrow label="Acerca de nosotros" />
+                            <h1 className="text-display-1 font-light text-white leading-hero tracking-tight text-balance">
+                                Plataforma inmobiliaria con{" "}
+                                <span className="metallic-gold-static gold-glow">criterio</span>.
+                            </h1>
+                            <p className="text-body-fluid text-white/70 leading-relaxed font-light max-w-2xl mt-6 sm:mt-10">
+                                Black Capital es una plataforma inmobiliaria premium enfocada en Tijuana, Baja
+                                California. Conectamos a compradores, vendedores e inversionistas con los mejores
+                                activos residenciales, comerciales e industriales de la región.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            {/* Subpáginas de navegación */}
-            <div className="container mx-auto px-4 py-16">
-                <FadeIn>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                        {subpaginas.map((s) => (
+            {/* Subpáginas — links con hairlines (sin glass cards) */}
+            <Section id="subpaginas" label="Secciones" spacing="default" containerWidth="wide">
+                <div className="flex items-end justify-between gap-8 mb-14 sm:mb-20">
+                    <div className="max-w-2xl">
+                        <Eyebrow label="Profundiza" />
+                        <h2 className="text-display-2 font-light text-white leading-display tracking-headline">
+                            Conoce más sobre nosotros.
+                        </h2>
+                    </div>
+                </div>
+
+                <ul className="grid grid-cols-1 md:grid-cols-3 border-t border-white/[0.06]" role="list">
+                    {subpaginas.map((s, i) => (
+                        <li
+                            key={s.href}
+                            className={
+                                "border-b md:border-b-0 border-white/[0.06] " +
+                                (i < subpaginas.length - 1 ? "md:border-r md:border-white/[0.06] " : "")
+                            }
+                        >
                             <Link
-                                key={s.href}
                                 href={s.href}
-                                className="group p-6 rounded-2xl border border-gold-500/10 bg-zinc-950/40 backdrop-blur-sm hover:border-gold-500/30 transition-all duration-500"
+                                className="group block p-8 sm:p-10 lg:p-12 transition-colors duration-500 hover:bg-white/[0.015]"
                             >
-                                <h3 className="font-display text-lg font-semibold text-foreground mb-2 group-hover:text-gold-500 transition-colors">
+                                <span className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-accent)] font-semibold">
+                                    /{String(i + 1).padStart(2, "0")}
+                                </span>
+                                <h3 className="text-display-4 font-semibold text-white tracking-snug mt-4 mb-3 group-hover:text-[var(--color-accent-light)] transition-colors duration-300">
                                     {s.titulo}
                                 </h3>
-                                <p className="text-foreground/50 text-sm mb-4">
+                                <p className="text-body-sm text-white/60 leading-relaxed font-light mb-6 max-w-xs">
                                     {s.descripcion}
                                 </p>
-                                <span className="inline-flex items-center gap-1 text-xs text-gold-500 font-medium uppercase tracking-wider">
-                                    Explorar <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                                <span className="inline-flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase text-white/55 font-semibold group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                                    Explorar
+                                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
                                 </span>
                             </Link>
-                        ))}
-                    </div>
-                </FadeIn>
-            </div>
+                        </li>
+                    ))}
+                </ul>
+            </Section>
 
-            {/* Pilares */}
-            <div className="container mx-auto px-4 py-24 border-t border-white/[0.04]">
-                <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                    {pillars.map((pillar) => {
+            {/* Pilares — 2×2 con vlines y hairline horizontal (mismo patrón que TrackRecord) */}
+            <Section id="pilares" label="Pilares" spacing="default" containerWidth="wide">
+                <div className="flex items-end justify-between gap-8 mb-14 sm:mb-20">
+                    <div className="max-w-2xl">
+                        <Eyebrow label="Pilares" />
+                        <h2 className="text-display-2 font-light text-white leading-display tracking-headline">
+                            Cuatro principios.{" "}
+                            <span className="text-white/45">Cero excepciones.</span>
+                        </h2>
+                    </div>
+                    <p className="text-body-fluid-sm text-white/55 leading-relaxed font-light max-w-md sm:text-right hidden sm:block">
+                        Lo que audita cada activo antes de salir al mercado, y lo que firma cada operación antes de cerrar.
+                    </p>
+                </div>
+
+                <div className="relative grid grid-cols-1 md:grid-cols-2 gap-0 border-t border-white/[0.06]" role="list">
+                    {/* Horizontal hairline entre filas (mobile-first) */}
+                    <div
+                        className="md:hidden absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent pointer-events-none"
+                        aria-hidden="true"
+                    />
+                    {/* Vertical hairline entre columnas (desktop) */}
+                    <div
+                        className="hidden md:block absolute top-0 bottom-0 left-1/2 w-px bg-gradient-to-b from-transparent via-[var(--color-accent)]/30 to-transparent pointer-events-none"
+                        aria-hidden="true"
+                    />
+
+                    {pillars.map((pillar, i) => {
                         const Icon = pillar.icon;
                         return (
-                            <StaggerItem key={pillar.title}>
-                                <div className="group p-10 rounded-2xl border border-gold-500/10 bg-zinc-950/40 backdrop-blur-sm hover:border-gold-500/30 hover:shadow-2xl hover:shadow-gold-500/5 transition-all duration-700">
-                                    <div className="w-14 h-14 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-8 group-hover:bg-gold-500/20 transition-all duration-500">
-                                        <Icon className="w-6 h-6 text-gold-500" />
-                                    </div>
-                                    <h3 className="text-display-4 font-display font-semibold tracking-wide uppercase text-xl text-foreground mb-4">
-                                        {pillar.title}
-                                    </h3>
-                                    <p className="text-foreground/50 text-sm leading-relaxed">
-                                        {pillar.description}
-                                    </p>
+                            <div
+                                key={pillar.title}
+                                role="listitem"
+                                className={
+                                    "relative p-8 sm:p-10 lg:p-14 flex flex-col items-start " +
+                                    (i < 2 ? "border-b md:border-b border-white/[0.06]" : "")
+                                }
+                            >
+                                <span className="text-[10px] tracking-[0.2em] uppercase text-white/40 font-semibold mb-6">
+                                    /{String(i + 1).padStart(2, "0")}
+                                </span>
+                                <div className="w-14 h-14 rounded-full border border-[var(--color-accent)]/40 flex items-center justify-center mb-8" aria-hidden="true">
+                                    <Icon className="w-6 h-6 text-[var(--color-accent)]" strokeWidth={1.5} />
                                 </div>
-                            </StaggerItem>
+                                <h3 className="text-display-4 font-semibold text-white tracking-snug mb-3">
+                                    {pillar.title}
+                                </h3>
+                                <p className="text-body-sm text-white/60 leading-relaxed font-light max-w-xs">
+                                    {pillar.description}
+                                </p>
+                            </div>
                         );
                     })}
-                </StaggerChildren>
-            </div>
+                </div>
+            </Section>
         </div>
     );
 }

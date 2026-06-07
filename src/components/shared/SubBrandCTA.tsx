@@ -1,36 +1,21 @@
 /**
- * SubBrandCTA — gated-access lead-capture panel for the 3 sub-brand
- * landings.
+ * SubBrandCTA — gated-access lead-capture para los 3 sub-brand landings.
  *
  * Replaces:
  *   - src/components/luxury/LuxuryCTA.tsx
  *   - src/components/business/BusinessCTA.tsx
  *   - src/components/industrial/IndustrialCTA.tsx
  *
- * The 3 originals were ~90% duplicated. The per-brand visual chrome
- * (glass panel for luxury/business, steel + corner accents for industrial)
- * and content (eyebrow, copy, submit label, success message) are now
- * driven by a single `config` object.
- *
- * The old component names are preserved via thin re-exports in the
- * per-brand folders so no import path has to change elsewhere.
- *
- * Design rules:
- *   - form input chrome is brand-driven (gold for luxury/business,
- *     steel for industrial)
- *   - submit button is always gold-500 (CTA color is constant)
- *   - "steel" panel chrome replaces the "glass" utility with explicit
- *     bg-background/80 + corner accent borders
- *   - success state is wrapped in role="status" + aria-live="polite"
- *     so screen readers announce it
- *   - the privacy checkbox uses a stable id and is wired to a labelled
- *     error region when validation fails
+ * Premium Estilo A: layout 50/50 (copy a la izquierda, form a la
+ * derecha), separados por una vline dorada. Sin glass panel, sin
+ * chrome steel/industrial. Inputs con underline (border-b) y submit
+ * brushed-gold. La única diferenciación entre marcas es el campo
+ * "Empresa" (siempre visible si `companyRequired`).
  */
 
 "use client";
 
-import { useState } from "react";
-import { useId } from "react";
+import { useState, useId } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -40,16 +25,12 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { FadeIn } from "@/components/ui/motion";
-import { Loader2, CheckCircle2, Download, Lock } from "lucide-react";
+import { Loader2, CheckCircle2, Lock, Download, ArrowRight } from "lucide-react";
 
 export type SubBrand = "luxury" | "business" | "industrial";
-export type Accent = "gold" | "steel";
 
 export interface SubBrandCTAConfig {
     brand: SubBrand;
-    /** Visual chrome. "luxury" = glass panel, gold borders. "industrial" = steel + corner accents. */
-    panel: "luxury" | "industrial";
     /** Lead source string for analytics + DB. */
     source: string;
     /** Prefix for the `notes` field. */
@@ -60,7 +41,7 @@ export interface SubBrandCTAConfig {
     /** id on the wrapping <section> so the SubBrandHero's secondary CTA can link to it. */
     sectionId?: string;
     /** Override default py. */
-    py?: string;
+    spacing?: "default" | "tight" | "loose" | "none";
 
     /* ── Header content ───────────────────────────────────────────── */
     eyebrowIcon: "lock" | "download";
@@ -70,8 +51,6 @@ export interface SubBrandCTAConfig {
     description: string;
     /** "Respuesta en menos de 24h" pill (luxury/business). */
     indicator?: string;
-    /** Tag chips (industrial only). */
-    tags?: string[];
 
     /* ── Form ─────────────────────────────────────────────────────── */
     companyLabel: string;
@@ -112,6 +91,13 @@ function buildSchema(companyRequired: boolean) {
 }
 
 type CTAFormValues = z.infer<ReturnType<typeof buildSchema>>;
+
+const SECTION_SPACING = {
+    none: "py-0",
+    tight: "py-16 sm:py-20 lg:py-24",
+    default: "py-24 sm:py-32 lg:py-32",
+    loose: "py-32 sm:py-40 lg:py-56",
+} as const;
 
 export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -180,352 +166,190 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
         }
     }
 
-    /* ── Visual chrome ───────────────────────────────────────────── */
-    const isIndustrial = config.panel === "industrial";
-    const isLuxury = config.panel === "luxury";
-
-    const topBorderClass = isIndustrial
-        ? "via-steel-500/30"
-        : "via-gold-500/30";
-    const bottomBorderClass = isIndustrial
-        ? "via-gold-500/30"
-        : "via-gold-500/20";
-
-    const inputChrome = isIndustrial
-        ? "bg-black/50 border-steel-500/20 focus-visible:ring-gold-500 rounded-none"
-        : "bg-black/30 border-gold-500/15 text-white placeholder:text-white/25 focus-visible:ring-gold-500 rounded-xl";
-    const submitChrome = isIndustrial
-        ? "w-full bg-gold-500 text-black hover:bg-gold-400 font-bold tracking-widest uppercase mt-4 rounded-none"
-        : "w-full bg-gold-500 text-black hover:bg-gold-400 font-bold tracking-widest uppercase mt-4 rounded-full";
-    const checkboxChrome = isIndustrial
-        ? "border-steel-500/30 data-[state=checked]:bg-gold-500 data-[state=checked]:text-black mt-1"
-        : "border-gold-500/20 data-[state=checked]:bg-gold-500 data-[state=checked]:text-black mt-1";
-
     return (
         <section
             id={config.sectionId}
             aria-label={`Solicitud de acceso ${config.brand}`}
-            className={`w-full ${config.py ?? "py-28"} bg-background relative overflow-hidden`}
+            className={`w-full bg-background relative border-t border-b border-white/[0.04] ${SECTION_SPACING[config.spacing ?? "default"]}`}
         >
-            {/* Decorative borders */}
-            <div
-                className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${topBorderClass} to-transparent`}
-                aria-hidden="true"
-            />
-            <div
-                className={`absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent ${bottomBorderClass} to-transparent`}
-                aria-hidden="true"
-            />
+            <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16">
+                {!isSuccess ? (
+                    <div className="relative grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-start">
+                        {/* Vertical vline (desktop) */}
+                        <div
+                            className="hidden md:block absolute top-0 bottom-0 left-1/2 w-px bg-gradient-to-b from-transparent via-[var(--color-accent)]/30 to-transparent pointer-events-none"
+                            aria-hidden="true"
+                        />
 
-            {/* Floating glow (luxury/business only) */}
-            {isLuxury && (
-                <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gold-500/[0.03] blur-[150px] pointer-events-none"
-                    aria-hidden="true"
-                />
-            )}
+                        {/* Left — Copy */}
+                        <div className="space-y-6">
+                            <div className="flex items-center gap-3">
+                                {config.eyebrowIcon === "lock" ? (
+                                    <Lock className="w-4 h-4 text-[var(--color-accent)]" aria-hidden="true" />
+                                ) : (
+                                    <Download className="w-4 h-4 text-[var(--color-accent)]" aria-hidden="true" />
+                                )}
+                                <span className="text-[11px] tracking-[0.22em] uppercase text-white/70 font-semibold">
+                                    {config.eyebrow}
+                                </span>
+                            </div>
 
-            <div className="container mx-auto px-4">
-                <FadeIn direction="up" delay={0.1}>
-                    <div
-                        className={
-                            isIndustrial
-                                ? "max-w-5xl mx-auto bg-background/80 backdrop-blur-sm border border-steel-500/20 p-8 md:p-12 relative overflow-hidden"
-                                : "max-w-5xl mx-auto glass rounded-3xl p-8 md:p-14 relative overflow-hidden border border-gold-500/15"
-                        }
-                    >
-                        {/* Inner glows (luxury/business) */}
-                        {isLuxury && (
-                            <>
-                                <div
-                                    className="absolute top-0 right-0 w-96 h-96 bg-gold-500/[0.05] rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"
-                                    aria-hidden="true"
-                                />
-                                <div
-                                    className="absolute bottom-0 left-0 w-72 h-72 bg-gold-600/[0.05] rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none"
-                                    aria-hidden="true"
-                                />
-                            </>
-                        )}
+                            <h2 className="text-display-2 font-light text-white leading-display tracking-headline">
+                                {config.title}
+                                <br />
+                                <span className="metallic-gold-static">{config.titleHighlight}</span>
+                            </h2>
 
-                        {/* Corner accents (industrial) */}
-                        {isIndustrial && (
-                            <>
-                                <div
-                                    className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-gold-500/30"
-                                    aria-hidden="true"
-                                />
-                                <div
-                                    className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-gold-500/30"
-                                    aria-hidden="true"
-                                />
-                                <div
-                                    className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-gold-500/30"
-                                    aria-hidden="true"
-                                />
-                                <div
-                                    className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-gold-500/30"
-                                    aria-hidden="true"
-                                />
-                                <div
-                                    className="absolute top-0 right-0 w-96 h-96 bg-steel-500/[0.05] rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"
-                                    aria-hidden="true"
-                                />
-                            </>
-                        )}
+                            <p className="text-body-fluid-sm text-white/65 leading-relaxed font-light max-w-md">
+                                {config.description}
+                            </p>
 
-                        {!isSuccess ? (
-                            <div
-                                className={`flex flex-col md:flex-row relative z-10 ${
-                                    isIndustrial ? "gap-12" : "gap-14"
-                                }`}
-                            >
-                                {/* Left Copy */}
-                                <div className="flex-1 space-y-6">
-                                    <div className="flex items-center gap-3">
-                                        {config.eyebrowIcon === "lock" ? (
-                                            <Lock
-                                                className="w-4 h-4 text-gold-500"
-                                                aria-hidden="true"
-                                            />
-                                        ) : (
-                                            <Download
-                                                className="w-5 h-5 text-gold-500"
-                                                aria-hidden="true"
-                                            />
-                                        )}
-                                        <span className="animate-gold-shimmer font-bold uppercase tracking-widest text-sm">
-                                            {config.eyebrow}
-                                        </span>
-                                    </div>
+                            {config.indicator && (
+                                <div className="flex items-center gap-3 pt-2 text-white/55 text-[10px] tracking-[0.2em] uppercase font-semibold">
+                                    <span className="w-2 h-2 rounded-full bg-[var(--color-accent)]" aria-hidden="true" />
+                                    {config.indicator}
+                                </div>
+                            )}
+                        </div>
 
-                                    <h2 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl md:text-4xl text-foreground">
-                                        {config.title}
-                                        <br />
-                                        <span className="metallic-gold">
-                                            {config.titleHighlight}
-                                        </span>
-                                    </h2>
-
-                                    <p
-                                        className={`text-body-lg max-w-md leading-relaxed ${
-                                            isIndustrial
-                                                ? "text-foreground/50"
-                                                : "text-foreground/50"
-                                        }`}
-                                    >
-                                        {config.description}
-                                    </p>
-
-                                    {config.indicator && (
-                                        <div className="flex items-center gap-3 pt-2 text-foreground/50 text-xs uppercase tracking-widest">
-                                            <div
-                                                className="w-2 h-2 rounded-full bg-gold-500/50"
-                                                aria-hidden="true"
-                                            />
-                                            {config.indicator}
-                                        </div>
-                                    )}
-
-                                    {config.tags && config.tags.length > 0 && (
-                                        <div className="flex flex-wrap gap-4 pt-2">
-                                            {config.tags.map((tag) => (
-                                                <span
-                                                    key={tag}
-                                                    className="px-3 py-1 border border-steel-500/20 text-xs font-bold uppercase tracking-widest text-steel-400"
-                                                >
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                        </div>
+                        {/* Right — Form */}
+                        <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            className="space-y-6"
+                            noValidate
+                        >
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+                                <div className="space-y-1">
+                                    <Input
+                                        placeholder="Nombre Completo"
+                                        className="w-full bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-3 text-sm font-light"
+                                        aria-invalid={hasErr("fullName") || undefined}
+                                        {...register("fullName")}
+                                    />
+                                    {errors.fullName && (
+                                        <p className="text-xs text-red-400">
+                                            {errors.fullName.message}
+                                        </p>
                                     )}
                                 </div>
-
-                                {/* Right Form */}
-                                <div className="flex-1">
-                                    <form
-                                        onSubmit={handleSubmit(onSubmit)}
-                                        className="space-y-4"
-                                        noValidate
-                                    >
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div className="space-y-1">
-                                                <Input
-                                                    placeholder="Nombre Completo"
-                                                    className={inputChrome}
-                                                    aria-invalid={
-                                                        hasErr("fullName") ||
-                                                        undefined
-                                                    }
-                                                    {...register("fullName")}
-                                                />
-                                                {errors.fullName && (
-                                                    <p className="text-xs text-red-400">
-                                                        {errors.fullName.message}
-                                                    </p>
-                                                )}
-                                            </div>
-                                            <div className="space-y-1">
-                                                <Input
-                                                    placeholder={config.companyPlaceholder}
-                                                    className={inputChrome}
-                                                    aria-invalid={
-                                                        hasErr("company") ||
-                                                        undefined
-                                                    }
-                                                    {...register("company")}
-                                                />
-                                                {errors.company && (
-                                                    <p className="text-xs text-red-400">
-                                                        {errors.company.message}
-                                                    </p>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div className="space-y-1">
-                                                <Input
-                                                    type="email"
-                                                    placeholder={config.emailPlaceholder}
-                                                    className={inputChrome}
-                                                    aria-invalid={
-                                                        hasErr("email") ||
-                                                        undefined
-                                                    }
-                                                    {...register("email")}
-                                                />
-                                                {errors.email && (
-                                                    <p className="text-xs text-red-400">
-                                                        {errors.email.message}
-                                                    </p>
-                                                )}
-                                            </div>
-                                            <div className="space-y-1">
-                                                <Input
-                                                    type="tel"
-                                                    placeholder="Teléfono (Opcional)"
-                                                    className={inputChrome}
-                                                    aria-invalid={
-                                                        hasErr("phone") ||
-                                                        undefined
-                                                    }
-                                                    {...register("phone")}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="flex items-start space-x-3 pt-2">
-                                            <Checkbox
-                                                id={privacyId}
-                                                checked={privacyValue}
-                                                onCheckedChange={(checked) =>
-                                                    setValue(
-                                                        "privacy",
-                                                        checked === true,
-                                                        { shouldValidate: true }
-                                                    )
-                                                }
-                                                aria-invalid={
-                                                    hasErr("privacy") ||
-                                                    undefined
-                                                }
-                                                aria-describedby={
-                                                    hasErr("privacy")
-                                                        ? errPrivacyId
-                                                        : undefined
-                                                }
-                                                className={checkboxChrome}
-                                            />
-                                            <label
-                                                htmlFor={privacyId}
-                                                className="text-body text-foreground/60 leading-tight cursor-pointer"
-                                            >
-                                                Acepto el{" "}
-                                                <a
-                                                    href={PRIVACY_HREF}
-                                                    className="text-gold-500 hover:underline"
-                                                >
-                                                    Aviso de Privacidad
-                                                </a>{" "}
-                                                y consiento el tratamiento de
-                                                mis datos para prospección
-                                                comercial.
-                                            </label>
-                                        </div>
-                                        {errors.privacy && (
-                                            <p
-                                                id={errPrivacyId}
-                                                className="text-xs text-red-400"
-                                            >
-                                                {errors.privacy.message}
-                                            </p>
-                                        )}
-
-                                        <Button
-                                            type="submit"
-                                            disabled={isSubmitting}
-                                            className={submitChrome}
-                                        >
-                                            {isSubmitting ? (
-                                                <Loader2
-                                                    className="mr-2 h-4 w-4 animate-spin"
-                                                    aria-hidden="true"
-                                                />
-                                            ) : null}
-                                            {isSubmitting
-                                                ? "Procesando..."
-                                                : config.submitLabel}
-                                        </Button>
-                                    </form>
+                                <div className="space-y-1">
+                                    <Input
+                                        placeholder={config.companyPlaceholder}
+                                        className="w-full bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-3 text-sm font-light"
+                                        aria-invalid={hasErr("company") || undefined}
+                                        {...register("company")}
+                                    />
+                                    {errors.company && (
+                                        <p className="text-xs text-red-400">
+                                            {errors.company.message}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
-                        ) : (
-                            <div
-                                className={`relative z-10 flex flex-col items-center justify-center text-center space-y-4 ${
-                                    isIndustrial ? "py-12" : "py-16"
-                                }`}
-                                role="status"
-                                aria-live="polite"
-                            >
-                                <div
-                                    className={`flex items-center justify-center mb-4 ${
-                                        isIndustrial
-                                            ? "w-16 h-16 bg-gold-500/20"
-                                            : "w-20 h-20 rounded-full bg-gold-500/15"
-                                    }`}
-                                >
-                                    <CheckCircle2
-                                        className={`text-gold-500 ${
-                                            isIndustrial
-                                                ? "w-8 h-8"
-                                                : "w-10 h-10"
-                                        }`}
-                                        aria-hidden="true"
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+                                <div className="space-y-1">
+                                    <Input
+                                        type="email"
+                                        placeholder={config.emailPlaceholder}
+                                        className="w-full bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-3 text-sm font-light"
+                                        aria-invalid={hasErr("email") || undefined}
+                                        {...register("email")}
+                                    />
+                                    {errors.email && (
+                                        <p className="text-xs text-red-400">
+                                            {errors.email.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="space-y-1">
+                                    <Input
+                                        type="tel"
+                                        placeholder="Teléfono (Opcional)"
+                                        className="w-full bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-3 text-sm font-light"
+                                        aria-invalid={hasErr("phone") || undefined}
+                                        {...register("phone")}
                                     />
                                 </div>
-                                <h3
-                                    className={`text-2xl font-bold text-foreground ${
-                                        isIndustrial
-                                            ? "uppercase tracking-wider"
-                                            : ""
-                                    }`}
-                                >
-                                    {config.successTitle}
-                                </h3>
-                                <p
-                                    className={`max-w-md ${
-                                        isIndustrial
-                                            ? "text-foreground/50"
-                                            : "text-foreground/50"
-                                    }`}
-                                >
-                                    {config.successMessage}
-                                </p>
                             </div>
-                        )}
+
+                            <div className="flex items-start space-x-3 pt-4">
+                                <Checkbox
+                                    id={privacyId}
+                                    checked={privacyValue}
+                                    onCheckedChange={(checked) =>
+                                        setValue(
+                                            "privacy",
+                                            checked === true,
+                                            { shouldValidate: true }
+                                        )
+                                    }
+                                    aria-invalid={hasErr("privacy") || undefined}
+                                    aria-describedby={
+                                        hasErr("privacy") ? errPrivacyId : undefined
+                                    }
+                                    className="mt-1 border-white/30 data-[state=checked]:bg-[var(--color-accent)] data-[state=checked]:text-black"
+                                />
+                                <label
+                                    htmlFor={privacyId}
+                                    className="text-sm text-white/65 leading-relaxed cursor-pointer font-light"
+                                >
+                                    Acepto el{" "}
+                                    <a
+                                        href={PRIVACY_HREF}
+                                        className="text-[var(--color-accent)] hover:underline underline-offset-4"
+                                    >
+                                        Aviso de Privacidad
+                                    </a>{" "}
+                                    y consiento el tratamiento de mis datos para prospección comercial.
+                                </label>
+                            </div>
+                            {errors.privacy && (
+                                <p
+                                    id={errPrivacyId}
+                                    className="text-xs text-red-400"
+                                >
+                                    {errors.privacy.message}
+                                </p>
+                            )}
+
+                            <div className="pt-4">
+                                <Button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="brushed-gold w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 text-[13px] font-bold tracking-[0.06em] rounded-full hover:scale-[1.015] transition-all duration-300 min-h-[48px]"
+                                >
+                                    {isSubmitting ? (
+                                        <Loader2
+                                            className="mr-2 h-4 w-4 animate-spin"
+                                            aria-hidden="true"
+                                        />
+                                    ) : null}
+                                    {isSubmitting ? "Procesando..." : config.submitLabel}
+                                    {!isSubmitting && (
+                                        <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                                    )}
+                                </Button>
+                            </div>
+                        </form>
                     </div>
-                </FadeIn>
+                ) : (
+                    <div
+                        className="text-center max-w-xl mx-auto py-12"
+                        role="status"
+                        aria-live="polite"
+                    >
+                        <div className="w-20 h-20 rounded-full border border-[var(--color-accent)]/40 flex items-center justify-center mx-auto mb-6">
+                            <CheckCircle2 className="w-10 h-10 text-[var(--color-accent)]" aria-hidden="true" />
+                        </div>
+                        <h3 className="text-display-3 font-light text-white leading-display tracking-headline mb-4">
+                            {config.successTitle}
+                        </h3>
+                        <p className="text-body-fluid-sm text-white/65 leading-relaxed font-light">
+                            {config.successMessage}
+                        </p>
+                    </div>
+                )}
             </div>
         </section>
     );

@@ -89,7 +89,7 @@ export function ValuesAccordion() {
                   <div className="flex-1 min-w-0">
                     <h3
                       className={cn(
-                        "text-[clamp(1.5rem,2.8vw,2.5rem)] font-light leading-[1.1] tracking-[-0.02em] transition-colors duration-700",
+                        "text-[clamp(1.5rem,2.8vw,2.5rem)] font-light leading-display tracking-display transition-colors duration-700",
                         isFocused ? "text-white" : "text-white/90",
                       )}
                     >
@@ -106,7 +106,7 @@ export function ValuesAccordion() {
                           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                           className="overflow-hidden"
                         >
-                          <p className="text-[clamp(0.9375rem,1.15vw,1.0625rem)] text-white/90 leading-[1.75] font-light max-w-3xl pt-6">
+                          <p className="text-body-fluid-sm text-white/90 leading-relaxed font-light max-w-3xl pt-6">
                             {v.body}
                           </p>
                         </motion.div>

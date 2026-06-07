@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { CatalogFilter } from "@/components/public/catalog-filter";
+import { Eyebrow } from "@/components/shared/eyebrow";
 import { Suspense } from "react";
 import type { Metadata } from "next";
 
@@ -14,14 +15,14 @@ function InventorySkeleton() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {[...Array(6)].map((_, i) => (
-                <div key={i} className="rounded-2xl border border-foreground/5 bg-card overflow-hidden animate-pulse">
-                    <div className="aspect-[4/3] bg-foreground/[0.03]" />
+                <div key={i} className="rounded-sm border border-white/[0.06] bg-white/[0.02] overflow-hidden animate-pulse">
+                    <div className="aspect-[4/3] bg-white/[0.02]" />
                     <div className="p-5 space-y-3">
-                        <div className="h-5 bg-foreground/[0.06] rounded-lg w-3/4" />
-                        <div className="h-4 bg-foreground/[0.04] rounded-lg w-1/2" />
-                        <div className="flex justify-between pt-3 border-t border-foreground/5">
-                            <div className="h-3 bg-foreground/[0.04] rounded w-20" />
-                            <div className="h-4 bg-foreground/[0.06] rounded w-24" />
+                        <div className="h-5 bg-white/[0.04] rounded-sm w-3/4" />
+                        <div className="h-4 bg-white/[0.04] rounded-sm w-1/2" />
+                        <div className="flex justify-between pt-3 border-t border-white/[0.06]">
+                            <div className="h-3 bg-white/[0.04] rounded-sm w-20" />
+                            <div className="h-4 bg-white/[0.04] rounded-sm w-24" />
                         </div>
                     </div>
                 </div>
@@ -45,26 +46,30 @@ async function InventoryContent() {
 export default function InventoryPage() {
     return (
         <div className="w-full flex-1 flex flex-col bg-background">
-            {/* Hero */}
-            <div className="relative overflow-hidden border-b border-gold-500/10">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.06,_transparent_60%)]" />
-                <div
-                    className="grain-overlay"
-                    aria-hidden="true"
-                />
-                <div className="container mx-auto px-4 py-16 md:py-20 relative z-10">
-                    <h1 className="text-display-2 text-foreground mb-3">
-                        Inventario
-                    </h1>
-                    <p className="text-body text-foreground/50 max-w-xl leading-relaxed">
-                        Explora nuestro portafolio de propiedades
-                        comerciales, industriales y residenciales premium con
-                        análisis financiero estructurado.
-                    </p>
+            {/* Hero — mismo lenguaje que Home (Section + Eyebrow + display-1) */}
+            <section
+                aria-label="Inventario"
+                className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 lg:pt-48 lg:pb-24 bg-background border-b border-white/[0.04] overflow-hidden"
+            >
+                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent" />
+                <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+                        <div className="lg:col-span-8">
+                            <Eyebrow label="Catálogo completo" />
+                            <h1 className="text-display-1 font-light text-white leading-hero tracking-tight text-balance">
+                                Inventario con{" "}
+                                <span className="metallic-gold-static gold-glow">análisis</span>.
+                            </h1>
+                            <p className="text-body-fluid text-white/70 leading-relaxed font-light max-w-2xl mt-6 sm:mt-10">
+                                Casas residenciales, centros comerciales y naves industriales en Tijuana. Cada activo con
+                                Cap Rate, TIR y comparativos de mercado — sin maquillaje, sin formularios eternos.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div className="container mx-auto px-4 py-10 pb-24">
+            <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 w-full py-10 lg:py-16">
                 <Suspense fallback={<InventorySkeleton />}>
                     <InventoryContent />
                 </Suspense>

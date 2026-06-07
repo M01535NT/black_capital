@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { FadeIn, StaggerChildren, StaggerItem } from "@/components/ui/motion";
-import { Phone, Mail, MapPin, Clock, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Section } from "@/components/layout/Section";
+import { Eyebrow } from "@/components/shared/eyebrow";
+import { Phone, Mail, MapPin, Clock, ArrowRight } from "lucide-react";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 export const metadata: Metadata = {
@@ -57,95 +57,126 @@ const contactCards = [
 export default function ContactoPage() {
     return (
         <div className="w-full flex-1 bg-background">
-            {/* Hero */}
-            <div className="bg-zinc-950 py-24 border-b border-gold-500/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.05,_transparent_50%)]" />
-                <div className="container mx-auto px-4 relative z-10 text-center max-w-4xl">
-                    <FadeIn>
-                        <span className="animate-gold-shimmer text-xs font-bold uppercase tracking-mega mb-6 inline-block">
-                            Contacto Directo
-                        </span>
-                        <h1 className="text-display-3 font-display font-semibold tracking-display uppercase text-4xl md:text-6xl text-foreground mb-6">
-                            Hablemos de{" "}
-                            <span className="metallic-gold-static">Inversión</span>
-                        </h1>
-                        <p className="text-foreground/50 text-lg leading-relaxed max-w-2xl mx-auto">
-                            Nuestro equipo está listo para atenderte. Ya sea que busques
-                            una propiedad específica, requieras un análisis financiero o
-                            desees explorar oportunidades de inversión en México.
-                        </p>
-                    </FadeIn>
-                </div>
-            </div>
-
-            {/* Contact Cards */}
-            <div className="container mx-auto px-4 py-24">
-                <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                    {contactCards.map((card) => {
-                        const Icon = card.icon;
-                        return (
-                            <StaggerItem key={card.title}>
-                                <div className="group p-10 rounded-2xl border border-gold-500/10 bg-zinc-950/40 backdrop-blur-sm hover:border-gold-500/30 hover:shadow-2xl hover:shadow-gold-500/5 transition-all duration-700 flex flex-col h-full">
-                                    <div className="w-14 h-14 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-8 group-hover:bg-gold-500/20 transition-all duration-500">
-                                        <Icon className="w-6 h-6 text-gold-500" />
-                                    </div>
-                                    <h3 className="text-display-4 font-display font-semibold tracking-wide uppercase text-xl text-foreground mb-4">
-                                        {card.title}
-                                    </h3>
-                                    <div className="space-y-1 mb-6 flex-1">
-                                        {card.lines.map((line, i) => (
-                                            <p key={i} className="text-foreground/50 text-sm">
-                                                {line}
-                                            </p>
-                                        ))}
-                                    </div>
-                                    {card.action && (
-                                        <a
-                                            href={card.action.href}
-                                            target={card.action.external ? "_blank" : undefined}
-                                            rel={card.action.external ? "noopener noreferrer" : undefined}
-                                        >
-                                            <Button className="bg-gold-500 text-black hover:bg-gold-400 font-bold group/btn">
-                                                {card.action.label}
-                                                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
-                                            </Button>
-                                        </a>
-                                    )}
-                                </div>
-                            </StaggerItem>
-                        );
-                    })}
-                </StaggerChildren>
-            </div>
-
-            {/* CTA Final */}
-            <div className="container mx-auto px-4 pb-24">
-                <FadeIn>
-                    <div className="max-w-3xl mx-auto text-center p-12 rounded-2xl border border-gold-500/20 bg-zinc-950/60 backdrop-blur-sm">
-                        <h2 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl text-foreground mb-6">
-                            ¿Listo para invertir?
-                        </h2>
-                        <p className="text-foreground/50 text-lg leading-relaxed mb-8">
-                            Explora nuestro portafolio de propiedades verificadas con
-                            análisis financiero estructurado. O contacta a un asesor
-                            para una consultoría personalizada.
-                        </p>
-                        <div className="flex flex-wrap justify-center gap-4">
-                            <Link href="/inventario">
-                                <Button className="bg-gold-500 text-black hover:bg-gold-400 font-bold px-8 py-6 text-base">
-                                    Ver Inventario
-                                    <ArrowRight className="w-4 h-4 ml-2" />
-                                </Button>
-                            </Link>
-                            <Link href="/nosotros">
-                                <Button variant="outline" className="border-gold-500/30 text-gold-500 hover:bg-gold-500/10 font-bold px-8 py-6 text-base">
-                                    Conócenos
-                                </Button>
-                            </Link>
+            {/* Hero — mismo lenguaje que Home */}
+            <section
+                aria-label="Contacto"
+                className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 lg:pt-48 lg:pb-24 bg-background border-b border-white/[0.04] overflow-hidden"
+            >
+                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent" />
+                <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+                        <div className="lg:col-span-8">
+                            <Eyebrow label="Contacto directo" />
+                            <h1 className="text-display-1 font-light text-white leading-hero tracking-tight text-balance">
+                                Hablemos de{" "}
+                                <span className="metallic-gold-static gold-glow">inversión</span>.
+                            </h1>
+                            <p className="text-body-fluid text-white/70 leading-relaxed font-light max-w-2xl mt-6 sm:mt-10">
+                                Nuestro equipo está listo para atenderte. Ya sea que busques una propiedad
+                                específica, requieras un análisis financiero o desees explorar oportunidades
+                                de inversión en México.
+                            </p>
                         </div>
                     </div>
-                </FadeIn>
-            </div>
+                </div>
+            </section>
+
+            {/* Canales — 2×2 con vlines y hairline (sin glass cards) */}
+            <Section id="canales" label="Canales de atención" spacing="default" containerWidth="wide">
+                <div className="flex items-end justify-between gap-8 mb-14 sm:mb-20">
+                    <div className="max-w-2xl">
+                        <Eyebrow label="Canales" />
+                        <h2 className="text-display-2 font-light text-white leading-display tracking-headline">
+                            Cuatro formas de <span className="text-white/45">empezar.</span>
+                        </h2>
+                    </div>
+                </div>
+
+                <div className="relative grid grid-cols-1 md:grid-cols-2 gap-0 border-t border-white/[0.06]" role="list">
+                    {/* Horizontal hairline (mobile) */}
+                    <div
+                        className="md:hidden absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent pointer-events-none"
+                        aria-hidden="true"
+                    />
+                    {/* Vertical hairline (desktop) */}
+                    <div
+                        className="hidden md:block absolute top-0 bottom-0 left-1/2 w-px bg-gradient-to-b from-transparent via-[var(--color-accent)]/30 to-transparent pointer-events-none"
+                        aria-hidden="true"
+                    />
+
+                    {contactCards.map((card, i) => {
+                        const Icon = card.icon;
+                        const isTop = i < 2;
+                        return (
+                            <div
+                                key={card.title}
+                                role="listitem"
+                                className={
+                                    "relative p-8 sm:p-10 lg:p-14 flex flex-col items-start " +
+                                    (isTop ? "border-b md:border-b border-white/[0.06]" : "")
+                                }
+                            >
+                                <span className="text-[10px] tracking-[0.2em] uppercase text-white/40 font-semibold mb-6">
+                                    /{String(i + 1).padStart(2, "0")}
+                                </span>
+                                <div className="w-14 h-14 rounded-full border border-[var(--color-accent)]/40 flex items-center justify-center mb-8" aria-hidden="true">
+                                    <Icon className="w-6 h-6 text-[var(--color-accent)]" strokeWidth={1.5} />
+                                </div>
+                                <h3 className="text-display-4 font-semibold text-white tracking-snug mb-3">
+                                    {card.title}
+                                </h3>
+                                <div className="space-y-1 mb-6 flex-1">
+                                    {card.lines.map((line, idx) => (
+                                        <p key={idx} className="text-body-sm text-white/65 leading-relaxed font-light">
+                                            {line}
+                                        </p>
+                                    ))}
+                                </div>
+                                {card.action && (
+                                    <a
+                                        href={card.action.href}
+                                        target={card.action.external ? "_blank" : undefined}
+                                        rel={card.action.external ? "noopener noreferrer" : undefined}
+                                        className="btn-ghost-gold inline-flex items-center gap-2 px-5 py-2.5 border border-[var(--color-accent)]/30 text-white text-[11px] font-semibold uppercase tracking-[0.16em] rounded-full hover:border-[var(--color-accent)] transition-colors duration-300"
+                                    >
+                                        <span>{card.action.label}</span>
+                                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+                                    </a>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            </Section>
+
+            {/* CTA final — sin glass card, patrón Newsletter */}
+            <Section id="agendar" label="Agendar" spacing="tight" containerWidth="wide">
+                <div className="text-center max-w-2xl mx-auto">
+                    <Eyebrow label="Próximo paso" />
+                    <h2 className="text-display-2 font-light text-white leading-display tracking-headline mb-5">
+                        ¿Listo para invertir con{" "}
+                        <span className="metallic-gold-static">claridad</span>?
+                    </h2>
+                    <p className="text-body-fluid-sm text-white/65 leading-relaxed font-light mb-10">
+                        Explora nuestro portafolio verificado o agenda una consultoría personalizada.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
+                        <Link
+                            href="/inventario"
+                            className="brushed-gold inline-flex items-center gap-2 px-7 py-3.5 text-[13px] font-bold tracking-[0.06em] rounded-full hover:scale-[1.015] transition-all duration-300"
+                        >
+                            <span>Ver Inventario</span>
+                            <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                        </Link>
+                        <Link
+                            href="/nosotros"
+                            className="btn-ghost-gold inline-flex items-center gap-2 px-7 py-3.5 border border-white/35 text-white text-[13px] font-semibold tracking-[0.06em] rounded-full hover:border-accent transition-colors duration-300"
+                        >
+                            <span>Conócenos</span>
+                        </Link>
+                    </div>
+                </div>
+            </Section>
         </div>
     );
 }

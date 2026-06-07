@@ -192,7 +192,6 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         },
         cta: {
             brand: "luxury",
-            panel: "luxury",
             source: "landing_luxury",
             notesPrefix: "Luxury Landing",
             notesFormat: "optional",
@@ -329,7 +328,6 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         },
         cta: {
             brand: "business",
-            panel: "luxury",
             source: "landing_business",
             notesPrefix: "Business Landing",
             notesFormat: "optional",
@@ -468,18 +466,15 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         },
         cta: {
             brand: "industrial",
-            panel: "industrial",
             source: "landing_industrial",
             notesPrefix: "Industrial Landing",
             notesFormat: "always",
-            py: "py-24",
             eyebrowIcon: "download",
             eyebrow: "Portafolio Industrial",
             title: "Recibe Nuestro Portafolio",
             titleHighlight: "Industrial Actualizado",
             description:
                 "Análisis con cap rates, ocupación histórica y proyecciones de rendimiento para cada nave y bodega disponible en los parques industriales de Tijuana.",
-            tags: ["Cap Rates", "Conectividad", "Proyecciones"],
             companyLabel: "Empresa",
             companyPlaceholder: "Empresa *",
             companyRequired: true,

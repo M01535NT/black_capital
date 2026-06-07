@@ -5,8 +5,6 @@
  * Content is drawn from SUB_BRAND_CONFIGS (single source of truth).
  */
 
-"use client";
-
 import { SubBrandValue } from "@/components/shared/SubBrandValue";
 import { SUB_BRAND_CONFIGS } from "@/lib/sub-brand-config";
 

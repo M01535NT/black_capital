@@ -91,22 +91,11 @@ export function Footer() {
             aria-label="Pie de página"
             className="w-full bg-background mt-auto relative"
         >
-            {/* ═══════ CTA FINAL MASIVO ═══════ */}
-            <div className="relative border-t border-b border-white/[0.04] overflow-hidden">
-                {/* Subtle ambient */}
-                <div
-                    className="absolute inset-0 pointer-events-none"
-                    aria-hidden="true"
-                    style={{
-                        background:
-                            "radial-gradient(ellipse at center, rgba(197,160,89,0.06) 0%, transparent 60%)",
-                    }}
-                />
-                <div className="grain-overlay" aria-hidden="true" />
-
-                <div className="relative max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 py-24 sm:py-32 lg:py-48 text-center">
+            {/* ═══════ CTA FINAL COMPACTO (~280px) ═══════ */}
+            <div className="border-t border-b border-white/[0.04]">
+                <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 py-10 sm:py-12 lg:py-14 text-center">
                   {/* Eyebrow */}
-                  <div className="flex items-center justify-center gap-3 mb-10">
+                  <div className="flex items-center justify-center gap-3 mb-5">
                     <span className="h-px w-10 bg-[var(--color-accent)]/60" />
                     <span className="text-[11px] tracking-[0.22em] uppercase text-white/70 font-semibold">
                       Acceso Directo
@@ -114,33 +103,10 @@ export function Footer() {
                     <span className="h-px w-10 bg-[var(--color-accent)]/60" />
                   </div>
 
-                  {/* Massive headline */}
-                  <h2 className="text-[clamp(2.5rem,7.5vw,7rem)] font-light text-white leading-[1.0] tracking-[-0.04em] mb-10 max-w-5xl mx-auto">
-                    ¿Listo para invertir con alguien que te <span className="metallic-gold-static">habla claro</span>?
+                  {/* Compact headline */}
+                  <h2 className="text-display-3 font-light text-white leading-display tracking-headline mb-6 max-w-2xl mx-auto">
+                    ¿Listo para invertir con <span className="metallic-gold-static">claridad</span>?
                   </h2>
-
-                  {/* Sub */}
-                  <p className="text-[clamp(1rem,1.4vw,1.2rem)] text-white/65 leading-[1.7] font-light max-w-2xl mx-auto mb-12">
-                    Recibe el directorio completo con inventario curado y análisis financiero estructurado por activo. Sin compromiso, sin formularios eternos.
-                  </p>
-
-                  {/* CTAs */}
-                  <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mb-16">
-                    <Link
-                      href="/contacto"
-                      className="btn-ghost-gold group inline-flex items-center gap-3 px-10 py-4 border border-[var(--color-accent)] text-white text-sm font-semibold uppercase tracking-[0.18em] rounded-full transition-colors duration-500"
-                    >
-                      <span>Hablar con un Asesor</span>
-                      <span aria-hidden="true" className="text-[var(--color-accent)] transition-transform duration-300 group-hover:translate-x-1">→</span>
-                    </Link>
-                    <Link
-                      href="/inventario"
-                      className="inline-flex items-center gap-2 text-white/70 text-sm font-light tracking-wide hover:text-white transition-colors duration-300 group"
-                    >
-                      <span>Explorar inventario</span>
-                      <span aria-hidden="true" className="text-[var(--color-accent)] transition-transform duration-300 group-hover:translate-x-1">→</span>
-                    </Link>
-                  </div>
 
                   {/* Newsletter inline */}
                   <div className="max-w-md mx-auto">

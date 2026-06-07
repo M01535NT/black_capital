@@ -54,13 +54,13 @@ export async function TrackRecord() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-16 sm:mb-24">
           <div className="max-w-2xl">
             <Eyebrow label="Track Record" />
-            <h2 className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-light text-white leading-[1.05] tracking-[-0.03em]">
+            <h2 className="text-display-2 font-light text-white leading-display tracking-headline">
               Cifras auditadas.
               <br />
               <span className="text-white/45">No estimadas.</span>
             </h2>
           </div>
-          <p className="text-[clamp(0.875rem,1.1vw,1rem)] text-white/55 leading-[1.7] font-light max-w-md sm:text-right">
+          <p className="text-body-fluid-sm text-white/55 leading-relaxed font-light max-w-md sm:text-right">
             Datos consolidados al cierre del último trimestre fiscal. Sin inflar, sin aproximar.
           </p>
         </div>
@@ -101,7 +101,7 @@ export async function TrackRecord() {
               </span>
 
               {/* Giant number */}
-              <div className="text-[clamp(3.5rem,7vw,6.5rem)] font-light metallic-gold-static tabular-nums leading-[0.95] mb-5">
+              <div className="text-stat-mega font-light metallic-gold-static tabular-nums leading-stat mb-5">
                 <Counter
                   from={0}
                   to={stat.display}

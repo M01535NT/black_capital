@@ -10,9 +10,9 @@ interface SectionHeaderProps {
 }
 
 const TITLE_CLASS =
-  "text-[clamp(2rem,4.5vw,3.75rem)] sm:text-[clamp(2.25rem,4.5vw,3.75rem)] font-light text-white leading-[1.05] tracking-[-0.03em]";
+  "text-display-2 font-light text-white leading-display tracking-headline";
 const DESC_CLASS =
-  "text-[clamp(0.9375rem,1.2vw,1.0625rem)] text-white/65 leading-[1.7] font-light max-w-xl";
+  "text-body-fluid-sm text-white/65 leading-relaxed font-light max-w-xl";
 
 export function SectionHeader({
   eyebrow,

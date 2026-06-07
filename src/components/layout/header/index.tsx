@@ -93,10 +93,10 @@ export function Header() {
         <div className="flex items-center gap-2 flex-shrink-0">
           <Link
             href="/contacto"
-            className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 border border-[var(--color-accent)]/40 text-white text-[11px] font-semibold uppercase tracking-[0.16em] rounded-full hover:border-[var(--color-accent)] hover:text-[var(--color-accent-light)] transition-all duration-300"
+            className="brushed-gold hidden lg:inline-flex items-center gap-2 px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] rounded-full hover:scale-[1.015] transition-all duration-300"
           >
             <span>Asesoría</span>
-            <span aria-hidden="true" className="text-[var(--color-accent)]">→</span>
+            <span aria-hidden="true">→</span>
           </Link>
 
           <MobileDrawer pathname={pathname} />

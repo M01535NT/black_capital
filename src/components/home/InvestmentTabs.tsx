@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback, type KeyboardEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
@@ -40,9 +40,9 @@ const LINEAS: Linea[] = [
     image: "/brand-luxury.webp",
     badge: "Residencial",
     metric: [
-      { value: "24+", label: "Activos bajo curaduría" },
-      { value: "$180M", label: "Volumen operado" },
-      { value: "11.8%", label: "Yield promedio" },
+      { value: "24+", label: "Activos en curaduría" },
+      { value: "Desde 7%", label: "Yield modelado" },
+      { value: "$3M–$25M USD", label: "Ticket promedio" },
     ],
   },
   {
@@ -62,9 +62,9 @@ const LINEAS: Linea[] = [
     image: "/brand-business.webp",
     badge: "Comercial",
     metric: [
-      { value: "16+", label: "Activos bajo curaduría" },
-      { value: "$140M", label: "Volumen operado" },
-      { value: "9.2%", label: "Cap rate promedio" },
+      { value: "16+", label: "Activos en curaduría" },
+      { value: "Desde 8%", label: "Cap rate estabilizado" },
+      { value: "5–25 años", label: "Horizonte de TIR" },
     ],
   },
   {
@@ -84,9 +84,9 @@ const LINEAS: Linea[] = [
     image: "/brand-industrial.webp",
     badge: "Industrial",
     metric: [
-      { value: "12+", label: "Activos bajo curaduría" },
-      { value: "$220M", label: "Volumen operado" },
-      { value: "13.6%", label: "Yield promedio" },
+      { value: "12+", label: "Activos en curaduría" },
+      { value: "Desde 9%", label: "Yield neto" },
+      { value: "10K–80K m²", label: "Rango de naves" },
     ],
   },
 ];
@@ -95,6 +95,35 @@ export function InvestmentTabs() {
   const [activeId, setActiveId] = useState<string>(LINEAS[0].id);
   const shouldReduce = useReducedMotion();
   const active = LINEAS.find((l) => l.id === activeId) ?? LINEAS[0];
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLButtonElement>, idx: number) => {
+      let nextIdx: number | null = null;
+      switch (e.key) {
+        case "ArrowDown":
+        case "ArrowRight":
+          nextIdx = (idx + 1) % LINEAS.length;
+          break;
+        case "ArrowUp":
+        case "ArrowLeft":
+          nextIdx = (idx - 1 + LINEAS.length) % LINEAS.length;
+          break;
+        case "Home":
+          nextIdx = 0;
+          break;
+        case "End":
+          nextIdx = LINEAS.length - 1;
+          break;
+      }
+      if (nextIdx !== null) {
+        e.preventDefault();
+        setActiveId(LINEAS[nextIdx].id);
+        tabRefs.current[nextIdx]?.focus();
+      }
+    },
+    [],
+  );
 
   return (
     <Section id="lineas" label="Líneas de inversión" containerWidth="wide">
@@ -108,17 +137,20 @@ export function InvestmentTabs() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* LEFT: Tab list + giant numbers (cols 1-5) */}
           <div className="lg:col-span-5">
-            <div className="space-y-2" role="tablist" aria-label="Líneas de inversión">
-              {LINEAS.map((linea) => {
+            <div className="space-y-2" role="tablist" aria-orientation="vertical" aria-label="Líneas de inversión">
+              {LINEAS.map((linea, idx) => {
                 const isActive = activeId === linea.id;
                 return (
                   <button
                     key={linea.id}
+                    ref={(el) => { tabRefs.current[idx] = el; }}
                     role="tab"
                     aria-selected={isActive}
                     aria-controls={`panel-${linea.id}`}
                     id={`tab-${linea.id}`}
+                    tabIndex={isActive ? 0 : -1}
                     onClick={() => setActiveId(linea.id)}
+                    onKeyDown={(e) => handleKeyDown(e, idx)}
                     className={cn(
                       "group w-full text-left py-6 pl-6 pr-4 border-l transition-all duration-500",
                       "flex items-center gap-5 sm:gap-6",
@@ -130,7 +162,7 @@ export function InvestmentTabs() {
                     {/* Giant number */}
                     <span
                       className={cn(
-                        "text-[clamp(2.5rem,5vw,4rem)] font-light leading-none tabular-nums transition-all duration-500 shrink-0",
+                        "text-stat-lg font-light leading-none tabular-nums transition-all duration-500 shrink-0",
                         isActive ? "metallic-gold-static" : "text-white/20",
                       )}
                     >
@@ -146,7 +178,7 @@ export function InvestmentTabs() {
                       </div>
                       <h3
                         className={cn(
-                          "text-[clamp(1.125rem,1.8vw,1.5rem)] font-semibold tracking-[-0.01em] transition-colors duration-500",
+                          "text-display-4 font-semibold tracking-snug transition-colors duration-500",
                           isActive ? "text-white" : "text-white/70 group-hover:text-white/90",
                         )}
                       >
@@ -203,7 +235,7 @@ export function InvestmentTabs() {
 
                 {/* Content overlay */}
                 <div className="relative h-full flex flex-col justify-end p-6 sm:p-10 lg:p-12 min-h-[480px] lg:min-h-[560px]">
-                  <p className="text-white/85 leading-[1.75] text-[clamp(0.9375rem,1.15vw,1.0625rem)] font-light max-w-2xl mb-8">
+                  <p className="text-body-fluid-sm text-white/85 leading-relaxed font-light max-w-2xl mb-8">
                     {active.longDescription}
                   </p>
 
@@ -212,7 +244,7 @@ export function InvestmentTabs() {
                     {active.highlights.map((h) => (
                       <li
                         key={h}
-                        className="flex items-center gap-3 text-[13px] text-white/75 font-light"
+                        className="flex items-center gap-3 text-body-sm text-white/75 font-light"
                       >
                         <span className="w-3 h-px bg-[var(--color-accent)] shrink-0" />
                         <span>{h}</span>
@@ -225,7 +257,7 @@ export function InvestmentTabs() {
                     <div className="grid grid-cols-3 gap-6 sm:gap-8">
                       {active.metric.map((m) => (
                         <div key={m.label} className="min-w-0">
-                          <div className="text-[clamp(1.25rem,2vw,1.5rem)] font-light metallic-gold-static tabular-nums leading-none mb-1.5">
+                          <div className="text-stat-md font-light metallic-gold-static tabular-nums leading-none mb-1.5">
                             {m.value}
                           </div>
                           <div className="text-[10px] tracking-[0.18em] uppercase text-white/55 font-semibold leading-tight">
@@ -243,6 +275,11 @@ export function InvestmentTabs() {
                       <span aria-hidden="true" className="text-[var(--color-accent)]">→</span>
                     </Link>
                   </div>
+
+                  {/* Disclaimer */}
+                  <p className="mt-6 text-[10px] tracking-[0.16em] uppercase text-white/35 font-semibold leading-relaxed max-w-2xl">
+                    Rangos modelados; cifras finales por activo en el brochure ejecutivo de cada propiedad.
+                  </p>
                 </div>
               </motion.div>
             </AnimatePresence>

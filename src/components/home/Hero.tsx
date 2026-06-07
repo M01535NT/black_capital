@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 
-const ROTATING_WORDS = ["Patrimonio", "Disciplina", "Transparencia"] as const;
+const ROTATING_WORDS = ["Estrategia", "Disciplina", "Transparencia"] as const;
 
 const VALUES = [
   "Honestidad",
@@ -64,7 +64,7 @@ export function Hero() {
             </motion.div>
 
             {/* Massive title */}
-            <h1 className="text-[clamp(2.25rem,7vw,5rem)] font-light leading-[0.98] tracking-[-0.04em] text-white mb-4 sm:mb-12 text-balance">
+            <h1 className="text-display-1 font-light leading-hero tracking-tight text-white mb-4 sm:mb-12 text-balance">
               <motion.span
                 initial={shouldReduceMotion ? {} : { opacity: 0, y: 32, filter: "blur(8px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -111,7 +111,7 @@ export function Hero() {
               initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[clamp(1rem,1.4vw,1.25rem)] sm:text-[clamp(1.0625rem,1.4vw,1.25rem)] text-white/75 leading-[1.6] sm:leading-[1.95] max-w-xl mb-5 sm:mb-14 font-light tracking-[0.005em]"
+              className="text-body-fluid text-white/75 leading-relaxed max-w-xl mb-5 sm:mb-14 font-light"
             >
               Estructuramos, curamos y gestionamos activos residenciales, comerciales e industriales en Tijuana. Con análisis financiero claro, directo y sin rodeos.
             </motion.p>
@@ -162,7 +162,7 @@ export function Hero() {
                 muted
                 loop
                 playsInline
-                preload="metadata"
+                preload="none"
                 poster="/hero-poster.webp"
                 className="absolute inset-0 w-full h-full object-cover"
               >
@@ -207,7 +207,7 @@ export function Hero() {
       <div className="absolute bottom-0 inset-x-0 z-20">
         <div className="gold-divider-solid" />
         <div
-          className="flex overflow-hidden whitespace-nowrap py-3 sm:py-5 bg-background/85 backdrop-blur-md"
+          className="flex overflow-hidden whitespace-nowrap py-2 sm:py-5 bg-background/85 backdrop-blur-md"
           role="presentation"
           aria-hidden="true"
         >
@@ -215,10 +215,10 @@ export function Hero() {
           <div className="animate-marquee inline-flex shrink-0">
             {VALUES.map((v, i) => (
               <span key={`a-${v}-${i}`} className="inline-flex items-center shrink-0">
-                <span className="px-3 sm:px-10 text-[9px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
+                <span className="px-2.5 sm:px-10 text-[8px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
                   {v}
                 </span>
-                <span className="text-accent text-sm select-none" aria-hidden="true">
+                <span className="text-accent text-[10px] sm:text-sm select-none" aria-hidden="true">
                   •
                 </span>
               </span>
@@ -227,10 +227,10 @@ export function Hero() {
           <div className="animate-marquee inline-flex shrink-0">
             {VALUES.map((v, i) => (
               <span key={`b-${v}-${i}`} className="inline-flex items-center shrink-0">
-                <span className="px-3 sm:px-10 text-[9px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
+                <span className="px-2.5 sm:px-10 text-[8px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
                   {v}
                 </span>
-                <span className="text-accent text-sm select-none" aria-hidden="true">
+                <span className="text-accent text-[10px] sm:text-sm select-none" aria-hidden="true">
                   •
                 </span>
               </span>
