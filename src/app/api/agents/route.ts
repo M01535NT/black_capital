@@ -153,6 +153,48 @@ export async function PUT(req: NextRequest) {
     }
 }
 
+export async function PATCH(req: NextRequest) {
+    try {
+        const profile = await requireApiProfile();
+        if (!profile) {
+            return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+        }
+
+        const data = await req.json();
+        const { id, is_active } = data;
+
+        if (!id) {
+            return NextResponse.json({ error: "Se requiere el ID del agente" }, { status: 400 });
+        }
+        if (typeof is_active !== "boolean") {
+            return NextResponse.json({ error: "El estado del agente es inválido" }, { status: 400 });
+        }
+        if (!isAdmin(profile) && profile.agent_id !== id) {
+            return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+        }
+
+        const supabase = createAdminClient();
+        const { data: agent, error } = await supabase
+            .from("agents")
+            .update({ is_active })
+            .eq("id", id)
+            .select("id, is_active")
+            .single();
+
+        if (error) {
+            return NextResponse.json(
+                { error: translateError(error) },
+                { status: 400 }
+            );
+        }
+
+        return NextResponse.json({ agent }, { status: 200 });
+    } catch (err) {
+        const message = err instanceof Error ? err.message : "Error interno del servidor";
+        return NextResponse.json({ error: `Error al actualizar estado del agente: ${message}` }, { status: 500 });
+    }
+}
+
 export async function DELETE(req: NextRequest) {
     try {
         const profile = await requireApiProfile();

@@ -24,17 +24,44 @@ interface Agent {
   is_active: boolean | null;
 }
 
-export function UsersClient({ initialUsers, agents }: { initialUsers: AdminUser[]; agents: Agent[] }) {
+interface AccessRequest {
+  id: string;
+  full_name: string;
+  email: string;
+  phone: string | null;
+  age: number | null;
+  operating_city: string | null;
+  years_experience: number | null;
+  current_company: string | null;
+  status: "pending";
+  created_at: string | null;
+}
+
+export function UsersClient({ initialUsers, agents, initialAccessRequests }: {
+  initialUsers: AdminUser[];
+  agents: Agent[];
+  initialAccessRequests: AccessRequest[];
+}) {
   const [users, setUsers] = useState(initialUsers);
   const [form, setForm] = useState({ full_name: "", email: "", role: "agent", agent_id: "" });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [accessRequests, setAccessRequests] = useState(initialAccessRequests);
+  const [requestError, setRequestError] = useState("");
+  const [requestLoadingId, setRequestLoadingId] = useState<string | null>(null);
 
   async function refreshUsers() {
     const res = await fetch("/api/admin/users");
     if (!res.ok) return;
     const json = await res.json();
     setUsers(json.users || []);
+  }
+
+  async function refreshAccessRequests() {
+    const res = await fetch("/api/admin/access-requests");
+    if (!res.ok) return;
+    const json = await res.json();
+    setAccessRequests(json.requests || []);
   }
 
   async function invite(event: React.FormEvent) {
@@ -65,8 +92,66 @@ export function UsersClient({ initialUsers, agents }: { initialUsers: AdminUser[
     setUsers((current) => current.map((item) => item.id === user.id ? { ...item, is_active: !item.is_active } : item));
   }
 
+  async function processAccessRequest(id: string, action: "approve" | "reject") {
+    setRequestError("");
+    setRequestLoadingId(id);
+
+    const res = await fetch("/api/admin/access-requests", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, action }),
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({} as { error?: string }));
+      setRequestError(body.error || "No se pudo procesar la solicitud.");
+      setRequestLoadingId(null);
+      return;
+    }
+
+    setAccessRequests((current) => current.filter((item) => item.id !== id));
+    await refreshAccessRequests();
+    if (action === "approve") await refreshUsers();
+    setRequestLoadingId(null);
+  }
+
   return (
     <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,360px)_minmax(0,1fr)]">
+      <div className={`${adminCardClass} min-w-0 space-y-4 p-5`}>
+        <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-accent)]">Solicitudes de acceso</p>
+        <p className="text-sm text-white/50">Revisa y aprueba o rechaza solicitudes de agentes desde aquí.</p>
+        {accessRequests.length === 0 ? (
+          <p className="rounded-full border border-white/10 px-3 py-3 text-sm text-white/50">No hay solicitudes pendientes.</p>
+        ) : null}
+        {accessRequests.map((request) => (
+          <div key={request.id} className="space-y-2 border-b border-white/[0.06] pb-3">
+            <p className="text-sm font-semibold text-white">{request.full_name}</p>
+            <p className="text-xs text-white/55">{request.email}</p>
+            <p className="text-xs text-white/50">
+              Tel:{request.phone || "—"} · {request.age ? `${request.age} años` : "—"} · {request.operating_city || "—"}
+            </p>
+            <p className="text-xs text-white/50">Experiencia: {request.years_experience != null ? `${request.years_experience} años` : "—"}</p>
+            <p className="text-xs text-white/50">Broker: {request.current_company || "—"}</p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => processAccessRequest(request.id, "approve")}
+                disabled={requestLoadingId === request.id}
+                className="rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-300 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {requestLoadingId === request.id ? "Procesando..." : "Aprobar"}
+              </button>
+              <button
+                onClick={() => processAccessRequest(request.id, "reject")}
+                disabled={requestLoadingId === request.id}
+                className="rounded-full bg-rose-500/15 px-3 py-1 text-xs font-semibold text-rose-300 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {requestLoadingId === request.id ? "Procesando..." : "Rechazar"}
+              </button>
+            </div>
+          </div>
+        ))}
+        {requestError && <p className="bg-red-500/10 px-3 py-2 text-sm text-red-400">{requestError}</p>}
+      </div>
       <form onSubmit={invite} className={`${adminCardClass} min-w-0 space-y-4 p-5`}>
         <div>
           <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-accent)]">Invitar usuario</p>

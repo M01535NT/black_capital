@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     const expectedToken = process.env.ADMIN_SETUP_TOKEN || process.env.ADMIN_PASSWORD;
 
     if (!expectedToken) {
-      return NextResponse.json({ error: "Configura ADMIN_SETUP_TOKEN para crear el primer admin." }, { status: 500 });
+      return NextResponse.json({ error: "Configura ADMIN_SETUP_TOKEN para habilitar la invitación inicial de administrador." }, { status: 500 });
     }
     if (!setupToken || !safeEqual(String(setupToken), expectedToken)) {
       return NextResponse.json({ error: "Token de setup inválido." }, { status: 401 });
@@ -32,7 +32,10 @@ export async function POST(request: Request) {
       .eq("is_active", true);
 
     if ((count || 0) > 0) {
-      return NextResponse.json({ error: "Ya existe un administrador activo." }, { status: 409 });
+      return NextResponse.json(
+        { error: "Ya existe un administrador activo. Usa el acceso de admin para invitar nuevos usuarios." },
+        { status: 409 },
+      );
     }
 
     const normalizedEmail = String(email).trim().toLowerCase();

@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
@@ -14,9 +14,33 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [hasAdmin, setHasAdmin] = useState<boolean | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const from = searchParams.get("from") || "/admin";
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/setup-status", { cache: "no-store" });
+        if (!mounted) return;
+        if (!res.ok) {
+          setHasAdmin(true);
+          return;
+        }
+
+        const data = await res.json().catch(() => ({}));
+        setHasAdmin(Boolean(data?.hasAdmin));
+      } catch {
+        if (mounted) setHasAdmin(true);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -94,9 +118,22 @@ function LoginForm() {
         {loading ? "Verificando..." : "Acceder"}
       </Button>
 
-      <div className="flex items-center justify-between text-xs text-white/45">
-        <Link href="/admin/reset-password" className="hover:text-[var(--color-accent)]">Olvidé mi contraseña</Link>
-        <Link href="/admin/setup" className="hover:text-[var(--color-accent)]">Crear primer admin</Link>
+      <div className="space-y-2 text-xs text-white/45">
+        <div className="flex items-center justify-between">
+          <Link href="/admin/reset-password" className="hover:text-[var(--color-accent)]">Olvidé mi contraseña</Link>
+          {hasAdmin === null && <span className="text-white/40">Cargando opciones…</span>}
+          {hasAdmin === false && <Link href="/admin/setup" className="hover:text-[var(--color-accent)]">Crear primer admin</Link>}
+          {hasAdmin === true && (
+            <Link href="/admin/login" className="hover:text-[var(--color-accent)]">
+              Volver al login
+            </Link>
+          )}
+        </div>
+        {hasAdmin === true && (
+          <Link href="/admin/solicitar-invitacion" className="mx-auto block hover:text-[var(--color-accent)]">
+            Pedir invitación
+          </Link>
+        )}
       </div>
     </form>
   );

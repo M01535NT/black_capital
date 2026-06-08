@@ -7,6 +7,7 @@ import { ChevronLeft, Mail, Phone, Shield, Building2, ExternalLink, Edit } from 
 import Link from "next/link";
 import { AssignPropertiesButton } from "./assign-properties";
 import Image from "next/image";
+import { AgentStatusToggle } from "@/components/admin/agent-status-toggle";
 
 export const revalidate = 0;
 
@@ -70,11 +71,14 @@ export default async function AgentDetailPage({
                         </p>
                     </div>
                 </div>
-                <Link href={`/admin/agents/${id}/edit`}>
-                    <Button variant="outline" className="gap-2 border-foreground/20">
-                        <Edit className="w-4 h-4" /> Editar Datos
-                    </Button>
-                </Link>
+                <div className="flex flex-wrap items-center justify-end gap-2">
+                    <AgentStatusToggle agentId={id} initialActive={!!agent.is_active} compact />
+                    <Link href={`/admin/agents/${id}/edit`}>
+                        <Button variant="outline" className="gap-2 border-foreground/20">
+                            <Edit className="w-4 h-4" /> Editar Datos
+                        </Button>
+                    </Link>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -1,23 +1,56 @@
 import { AdminSidebar } from "@/components/admin/Sidebar";
 import { AdminTopbarActions } from "@/components/admin/topbar-actions";
+import { AdminBackButton } from "@/components/admin/admin-back-button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Menu } from "lucide-react";
 import {
     Drawer,
+    DrawerClose,
     DrawerContent,
     DrawerTrigger,
 } from "@/components/ui/drawer";
 import Link from "next/link";
+import { requireAdminSession } from "@/lib/auth";
 
-export default function AdminLayout({
+const ADMIN_NAV_ITEMS = [
+    { title: "Dashboard", href: "/admin" },
+    { title: "Inventario", href: "/admin/properties" },
+    { title: "Leads nuevos", href: "/admin/leads?status=new" },
+    { title: "Leads", href: "/admin/leads" },
+    { title: "Mi cuenta", href: "/admin/account" },
+];
+
+const ADMIN_ONLY_ITEMS = [
+    { title: "Agentes", href: "/admin/agents" },
+    { title: "Usuarios", href: "/admin/users" },
+    { title: "Configuración", href: "/admin/settings" },
+];
+
+export default async function AdminLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const profile = await requireAdminSession();
+
+    const mobileNavItems = profile.role === "admin"
+        ? [...ADMIN_NAV_ITEMS, ...ADMIN_ONLY_ITEMS]
+        : ADMIN_NAV_ITEMS.map((item) => ({
+            ...item,
+            title:
+                item.title === "Inventario"
+                    ? "Mis propiedades"
+                    : item.title === "Leads nuevos"
+                        ? "Leads por responder"
+                        : item.title === "Leads"
+                            ? "Mis leads"
+                            : item.title,
+        }));
+
     return (
         <div className="grid min-h-screen w-full max-w-full overflow-x-hidden bg-background text-white md:grid-cols-[256px_minmax(0,1fr)]">
-            <AdminSidebar />
+            <AdminSidebar userRole={profile.role} />
             <div className="flex min-w-0 max-w-full flex-col overflow-x-hidden">
                 <header className="flex h-16 min-w-0 items-center gap-2 overflow-x-clip border-b border-white/[0.08] bg-background/95 px-3 backdrop-blur-xl sm:gap-4 sm:px-4 lg:px-6">
                     <Drawer direction="left">
@@ -38,14 +71,21 @@ export default function AdminLayout({
                                 </Link>
                             </div>
                             <div className="p-4 flex flex-col gap-2">
-                                <Link href="/admin" className="border border-white/[0.08] px-3 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white/70 hover:text-[var(--color-accent)]">Dashboard</Link>
-                                <Link href="/admin/properties" className="border border-white/[0.08] px-3 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white/70 hover:text-[var(--color-accent)]">Inventario</Link>
-                                <Link href="/admin/leads" className="border border-white/[0.08] px-3 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white/70 hover:text-[var(--color-accent)]">Leads</Link>
-                                <Link href="/admin/account" className="border border-white/[0.08] px-3 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white/70 hover:text-[var(--color-accent)]">Mi cuenta</Link>
+                                {mobileNavItems.map((item) => (
+                                    <DrawerClose key={item.href} asChild>
+                                        <Link
+                                            href={item.href}
+                                            className="border border-white/[0.08] px-3 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white/70 hover:text-[var(--color-accent)]"
+                                        >
+                                            {item.title}
+                                        </Link>
+                                    </DrawerClose>
+                                ))}
                             </div>
                         </DrawerContent>
                     </Drawer>
 
+                    <AdminBackButton />
                     <div className="min-w-0 flex-1" />
                     <Link
                         href="/"

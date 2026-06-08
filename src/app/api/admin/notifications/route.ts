@@ -11,13 +11,14 @@ export async function GET() {
     .from("notifications")
     .select("id, type, title, body, href, read_at, created_at")
     .or(`recipient_profile_id.eq.${profile.id},recipient_profile_id.is.null`)
+    .is("read_at", null)
     .order("created_at", { ascending: false })
     .limit(20);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({
     notifications: data || [],
-    unreadCount: (data || []).filter((item) => !item.read_at).length,
+    unreadCount: data?.length || 0,
   });
 }
 

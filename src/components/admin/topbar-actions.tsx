@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Bell, LogOut, UserCircle } from "lucide-react";
@@ -11,6 +11,7 @@ interface NotificationItem {
   title: string;
   body: string | null;
   href: string | null;
+  type: string | null;
   read_at: string | null;
 }
 
@@ -19,20 +20,59 @@ export function AdminTopbarActions() {
   const [items, setItems] = useState<NotificationItem[]>([]);
   const [unread, setUnread] = useState(0);
   const router = useRouter();
+  const isMounted = useRef(true);
+  const inFlight = useRef(false);
+
+  async function loadNotifications() {
+    if (inFlight.current) return;
+    inFlight.current = true;
+    const res = await fetch("/api/admin/notifications");
+    try {
+      if (!res.ok) return;
+      const json = await res.json();
+      if (isMounted.current) {
+        setItems(json.notifications || []);
+        setUnread(json.unreadCount || 0);
+      }
+    } finally {
+      inFlight.current = false;
+    }
+  }
+
+  function parseAccessRequestId(href: string | null): string | null {
+    if (!href) return null;
+    try {
+      const url = new URL(href, window.location.origin);
+      return url.searchParams.get("access_request_id");
+    } catch {
+      return null;
+    }
+  }
+
+  async function processAccessRequest(id: string, action: "approve" | "reject") {
+    const requestRes = await fetch("/api/admin/access-requests", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, action }),
+    });
+
+    if (!requestRes.ok) return;
+    await fetch("/api/admin/notifications", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    });
+    await loadNotifications();
+  }
 
   useEffect(() => {
-    let active = true;
-    async function load() {
-      const res = await fetch("/api/admin/notifications");
-      if (!res.ok || !active) return;
-      const json = await res.json();
-      setItems(json.notifications || []);
-      setUnread(json.unreadCount || 0);
-    }
-    load();
-    const interval = setInterval(load, 30000);
+    isMounted.current = true;
+    loadNotifications();
+    const interval = setInterval(() => {
+      if (isMounted.current) loadNotifications();
+    }, 30000);
     return () => {
-      active = false;
+      isMounted.current = false;
       clearInterval(interval);
     };
   }, []);
@@ -50,7 +90,7 @@ export function AdminTopbarActions() {
       body: JSON.stringify({}),
     });
     setUnread(0);
-    setItems((current) => current.map((item) => ({ ...item, read_at: item.read_at || new Date().toISOString() })));
+    await loadNotifications();
   }
 
   return (
@@ -87,14 +127,54 @@ export function AdminTopbarActions() {
                   <p className="px-4 py-8 text-center text-sm text-white/45">Sin notificaciones.</p>
                 ) : (
                   items.map((item) => {
+                    const body = item.body;
+                    const accessRequestId = parseAccessRequestId(item.href);
+                    const isAccessRequest = item.type === "admin_access_request";
                     const content = (
                       <div className={`border-b border-white/[0.06] px-4 py-3 ${item.read_at ? "bg-transparent" : "bg-[var(--color-accent)]/5"}`}>
                         <p className="text-sm font-medium text-white">{item.title}</p>
-                        {item.body && <p className="mt-1 line-clamp-2 text-xs text-white/50">{item.body}</p>}
+                        {body && (
+                          body.includes("<")
+                            ? (
+                              <div
+                                className="mt-1 line-clamp-2 text-xs text-white/50"
+                                dangerouslySetInnerHTML={{ __html: body }}
+                              />
+                            )
+                            : (
+                              <p className="mt-1 line-clamp-2 text-xs text-white/50">
+                                {body}
+                              </p>
+                            )
+                        )}
+                        {isAccessRequest && accessRequestId ? (
+                          <div className="mt-2 flex gap-2">
+                            <button
+                              onClick={async (event) => {
+                                event.preventDefault();
+                                await processAccessRequest(accessRequestId, "approve");
+                              }}
+                              className="rounded-full bg-emerald-500/20 px-3 py-1 text-[11px] font-semibold text-emerald-300 transition hover:bg-emerald-500/30"
+                            >
+                              Aprobar
+                            </button>
+                            <button
+                              onClick={async (event) => {
+                                event.preventDefault();
+                                await processAccessRequest(accessRequestId, "reject");
+                              }}
+                              className="rounded-full bg-rose-500/15 px-3 py-1 text-[11px] font-semibold text-rose-300 transition hover:bg-rose-500/25"
+                            >
+                              Rechazar
+                            </button>
+                          </div>
+                        ) : null}
                       </div>
                     );
                     return item.href ? (
-                      <Link key={item.id} href={item.href} onClick={() => setOpen(false)}>{content}</Link>
+                      <Link key={item.id} href={item.href} onClick={() => setOpen(false)}>
+                        {content}
+                      </Link>
                     ) : (
                       <div key={item.id}>{content}</div>
                     );

@@ -4,6 +4,7 @@ import { UserPlus, Mail, Phone, Shield, Edit, Eye } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { AdminEmptyState, AdminPageHeader, adminCardClass } from "@/components/admin/admin-ui";
+import { AgentStatusToggle } from "@/components/admin/agent-status-toggle";
 import { Button } from "@/components/ui/button";
 
 export const revalidate = 0;
@@ -144,6 +145,7 @@ export default async function AgentsPage() {
                                         <span className="text-xs text-white/45">{agent.is_active ? "Activo" : "Inactivo"}</span>
                                     </div>
                                     <div className="flex items-center gap-1">
+                                        <AgentStatusToggle agentId={agent.id} initialActive={!!agent.is_active} compact />
                                         <Link href={`/admin/agents/${agent.id}`}>
                                             <Button variant="ghost" size="icon" className="h-7 w-7 text-white/45 hover:text-[var(--color-accent)]">
                                                 <Eye className="w-3.5 h-3.5" />
