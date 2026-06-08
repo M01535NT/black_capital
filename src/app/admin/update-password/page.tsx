@@ -20,33 +20,58 @@ export default function UpdatePasswordPage() {
   useEffect(() => {
     let mounted = true;
 
+    async function waitForSession(supabase: ReturnType<typeof createClient>) {
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        const { data } = await supabase.auth.getSession();
+        if (data.session) return data.session;
+        await new Promise((resolve) => setTimeout(resolve, 300));
+      }
+      return null;
+    }
+
     async function prepareRecoverySession() {
       const supabase = createClient();
       const url = new URL(window.location.href);
       const code = url.searchParams.get("code");
       const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+      const hashError = hashParams.get("error_code") || hashParams.get("error");
       const accessToken = hashParams.get("access_token");
       const refreshToken = hashParams.get("refresh_token");
 
+      if (hashError) {
+        if (mounted) {
+          setSessionReady(false);
+          setCheckingSession(false);
+          setError("El enlace expiró o ya fue utilizado. Solicita uno nuevo.");
+        }
+        return;
+      }
+
+      let authError: string | null = null;
       if (code) {
         const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-        if (exchangeError && mounted) setError("El enlace expiró o ya fue utilizado. Solicita uno nuevo.");
+        if (exchangeError) authError = exchangeError.message;
       } else if (accessToken && refreshToken) {
         const { error: sessionError } = await supabase.auth.setSession({
           access_token: accessToken,
           refresh_token: refreshToken,
         });
-        if (sessionError && mounted) setError("El enlace expiró o ya fue utilizado. Solicita uno nuevo.");
+        if (sessionError) authError = sessionError.message;
       }
 
-      const { data } = await supabase.auth.getSession();
+      const session = await waitForSession(supabase);
       if (mounted) {
-        setSessionReady(Boolean(data.session));
+        setSessionReady(Boolean(session));
         setCheckingSession(false);
-        if (data.session) {
+        if (session) {
+          setError("");
           window.history.replaceState({}, "", "/admin/update-password");
         } else {
-          setError("Abre el enlace más reciente desde tu correo o solicita uno nuevo.");
+          setError(
+            authError
+              ? "El enlace expiró o ya fue utilizado. Solicita uno nuevo."
+              : "Abre el enlace más reciente desde tu correo o solicita uno nuevo."
+          );
         }
       }
     }
