@@ -66,8 +66,8 @@ export function UsersClient({ initialUsers, agents }: { initialUsers: AdminUser[
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[360px_1fr]">
-      <form onSubmit={invite} className={`${adminCardClass} space-y-4 p-5`}>
+    <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,360px)_minmax(0,1fr)]">
+      <form onSubmit={invite} className={`${adminCardClass} min-w-0 space-y-4 p-5`}>
         <div>
           <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-accent)]">Invitar usuario</p>
           <p className="mt-2 text-sm text-white/50">El usuario recibirá un enlace para definir su contraseña.</p>
@@ -93,13 +93,13 @@ export function UsersClient({ initialUsers, agents }: { initialUsers: AdminUser[
       </form>
 
       <div className={`${adminCardClass} overflow-hidden`}>
-        <div className="grid grid-cols-[1fr_120px_120px] border-b border-white/[0.08] px-4 py-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/42">
+        <div className="hidden grid-cols-[1fr_120px_120px] border-b border-white/[0.08] px-4 py-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/42 sm:grid">
           <span>Usuario</span>
           <span>Rol</span>
           <span>Acceso</span>
         </div>
         {users.map((user) => (
-          <div key={user.id} className="grid grid-cols-[1fr_120px_120px] items-center border-b border-white/[0.06] px-4 py-4">
+          <div key={user.id} className="grid gap-3 border-b border-white/[0.06] px-4 py-4 sm:grid-cols-[1fr_120px_120px] sm:items-center">
             <div className="flex min-w-0 items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center border border-white/[0.08] bg-white/[0.025] text-white/60">
                 {user.role === "admin" ? <Shield className="h-4 w-4 text-[var(--color-accent)]" /> : <UserCircle className="h-4 w-4" />}
@@ -109,7 +109,10 @@ export function UsersClient({ initialUsers, agents }: { initialUsers: AdminUser[
                 <p className="truncate text-xs text-white/45">{user.email}</p>
               </div>
             </div>
-            <span className="text-sm capitalize text-white/65">{user.role}</span>
+            <span className="text-sm capitalize text-white/65 sm:block">
+              <span className="mr-2 text-xs uppercase tracking-[0.12em] text-white/35 sm:hidden">Rol</span>
+              {user.role}
+            </span>
             <button onClick={() => toggleActive(user)} className={`w-fit px-2 py-1 text-xs font-semibold ${user.is_active ? "bg-emerald-500/10 text-emerald-400" : "bg-white/[0.04] text-white/45"}`}>
               {user.is_active ? "Activo" : "Inactivo"}
             </button>

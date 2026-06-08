@@ -16,10 +16,10 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="grid min-h-screen w-full bg-background text-white md:grid-cols-[256px_1fr]">
+        <div className="grid min-h-screen w-full max-w-full overflow-x-hidden bg-background text-white md:grid-cols-[256px_minmax(0,1fr)]">
             <AdminSidebar />
-            <div className="flex min-w-0 flex-col">
-                <header className="flex h-16 items-center gap-4 border-b border-white/[0.08] bg-background/95 px-4 backdrop-blur-xl lg:px-6">
+            <div className="flex min-w-0 max-w-full flex-col overflow-x-hidden">
+                <header className="flex h-16 min-w-0 items-center gap-2 overflow-x-clip border-b border-white/[0.08] bg-background/95 px-3 backdrop-blur-xl sm:gap-4 sm:px-4 lg:px-6">
                     <Drawer direction="left">
                         <DrawerTrigger asChild>
                             <Button
@@ -31,7 +31,7 @@ export default function AdminLayout({
                                 <span className="sr-only">Abrir menú de navegación</span>
                             </Button>
                         </DrawerTrigger>
-                        <DrawerContent className="h-full w-72 rounded-none border-r border-white/[0.08] bg-[#070707] sm:max-w-xs">
+                        <DrawerContent className="h-full w-[min(18rem,85vw)] rounded-none border-r border-white/[0.08] bg-[#070707] sm:max-w-xs">
                             <div className="flex h-16 items-center border-b border-white/[0.08] px-5">
                                 <Link href="/" className="font-display text-xl font-bold uppercase leading-none tracking-wide text-white">
                                     Black <span className="block text-sm font-light tracking-[0.18em] text-[var(--color-accent)]">Capital</span>
@@ -46,7 +46,7 @@ export default function AdminLayout({
                         </DrawerContent>
                     </Drawer>
 
-                    <div className="w-full flex-1" />
+                    <div className="min-w-0 flex-1" />
                     <Link
                         href="/"
                         className="hidden items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white/45 transition-colors hover:text-[var(--color-accent)] sm:inline-flex"
@@ -58,7 +58,7 @@ export default function AdminLayout({
                     <AdminTopbarActions />
                 </header>
 
-                <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
+                <main className="flex min-w-0 max-w-full flex-1 flex-col gap-6 overflow-x-hidden p-3 sm:p-6 lg:p-8">
                     {children}
                 </main>
             </div>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, Eye, Edit, Copy, Trash2, Loader2 } from "lucide-react";
+import { MoreHorizontal, Edit, Copy, Trash2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -67,7 +67,7 @@ export const columns: ColumnDef<PropertyRow>[] = [
         header: "Propiedad",
         cell: ({ row }) => (
             <Link
-                href={`/admin/properties/${row.original.id}`}
+                href={`/admin/properties/${row.original.id}/edit`}
                 className="font-bold text-foreground hover:text-gold-500 transition-colors"
             >
                 {row.getValue("title")}
@@ -155,12 +155,6 @@ export const columns: ColumnDef<PropertyRow>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel className="uppercase text-caption tracking-wider font-display">Acciones</DropdownMenuLabel>
-                        <DropdownMenuItem asChild>
-                            <Link href={`/admin/properties/${property.id}`}>
-                                <Eye className="w-3.5 h-3.5 mr-2 text-gold-500" />
-                                Ver Detalle
-                            </Link>
-                        </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                             <Link href={`/admin/properties/${property.id}/edit`}>
                                 <Edit className="w-3.5 h-3.5 mr-2 text-gold-500" />

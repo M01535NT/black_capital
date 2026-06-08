@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const adminCardClass =
-    "border border-white/[0.08] bg-white/[0.025] shadow-[0_18px_70px_rgba(0,0,0,0.24)]";
+    "min-w-0 max-w-full border border-white/[0.08] bg-white/[0.025] shadow-[0_18px_70px_rgba(0,0,0,0.24)]";
 
 export function AdminPageHeader({
     eyebrow,
@@ -20,14 +20,14 @@ export function AdminPageHeader({
     const Icon = action?.icon;
 
     return (
-        <div className="flex flex-col gap-5 border-b border-white/[0.06] pb-6 lg:flex-row lg:items-end lg:justify-between">
-            <div>
+        <div className="flex min-w-0 flex-col gap-5 border-b border-white/[0.06] pb-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="min-w-0">
                 {eyebrow && (
                     <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
                         {eyebrow}
                     </p>
                 )}
-                <h1 className="text-4xl font-light leading-none tracking-normal text-white lg:text-5xl">
+                <h1 className="break-words text-3xl font-light leading-tight tracking-normal text-white sm:text-4xl lg:text-5xl">
                     {title}
                 </h1>
                 {description && (
@@ -102,8 +102,8 @@ export function AdminSectionCard({
 }) {
     return (
         <section className={cn(adminCardClass, "p-5", className)}>
-            <div className="mb-5 flex items-center justify-between gap-4">
-                <h2 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/48">{title}</h2>
+            <div className="mb-5 flex min-w-0 items-center justify-between gap-4">
+                <h2 className="min-w-0 text-[11px] font-bold uppercase tracking-[0.18em] text-white/48">{title}</h2>
                 {action && (
                     <Link href={action.href} className="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent)]">
                         {action.label}

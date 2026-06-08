@@ -54,7 +54,7 @@ export function AdminTopbarActions() {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex min-w-0 shrink-0 items-center gap-1.5 sm:gap-2">
       <div className="relative">
         <Button
           type="button"
@@ -73,7 +73,7 @@ export function AdminTopbarActions() {
         {open && (
           <>
             <button className="fixed inset-0 z-20 cursor-default" onClick={() => setOpen(false)} aria-label="Cerrar notificaciones" />
-            <div className="absolute right-0 z-30 mt-2 w-80 border border-white/[0.08] bg-[#0b0b0b] shadow-2xl">
+            <div className="fixed left-3 right-3 top-16 z-30 border border-white/[0.08] bg-[#0b0b0b] shadow-2xl sm:absolute sm:left-auto sm:right-0 sm:top-auto sm:mt-2 sm:w-80">
               <div className="flex items-center justify-between border-b border-white/[0.08] px-4 py-3">
                 <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-white">Notificaciones</p>
                 {unread > 0 && (

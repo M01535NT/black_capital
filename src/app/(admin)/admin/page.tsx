@@ -114,21 +114,21 @@ export default async function AdminDashboard() {
     ];
 
     return (
-        <div className="space-y-8">
+        <div className="min-w-0 space-y-8">
             <AdminPageHeader
                 eyebrow="Panel operativo"
                 title="Dashboard"
                 description="Resumen comercial para inventario, leads y equipo. Prioriza seguimiento y actualización de contenido."
             />
 
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 <AdminStatCard href="/admin/properties" icon={Building2} label="Propiedades" value={totalProperties || 0} note="Inventario registrado" />
                 <AdminStatCard href="/admin/agents" icon={UserCircle} label="Agentes activos" value={totalAgents || 0} note="Equipo disponible" accent="muted" />
                 <AdminStatCard href="/admin/leads" icon={Users} label="Leads totales" value={totalLeads || 0} note="Solicitudes capturadas" accent="blue" />
                 <AdminStatCard href="/admin/leads?status=new" icon={Mail} label="Sin revisar" value={newLeads || 0} note="Requieren primer contacto" accent="green" />
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 {quickActions.map((action) => (
                     <Link
                         key={action.href}
@@ -144,11 +144,11 @@ export default async function AdminDashboard() {
                 ))}
             </div>
 
-            <div className="grid gap-6 xl:grid-cols-12">
+            <div className="grid min-w-0 gap-6 xl:grid-cols-12">
                 <AdminSectionCard title="Embudo de leads" className="xl:col-span-4">
-                    <div className="mb-5 flex items-center gap-2 text-sm text-white/55">
+                    <div className="mb-5 flex min-w-0 items-center gap-2 text-sm text-white/55">
                         <CalendarDays className="h-4 w-4 text-[var(--color-accent)]" />
-                        <span className="capitalize">{todayStr}</span>
+                        <span className="min-w-0 truncate capitalize">{todayStr}</span>
                     </div>
                     <div className="space-y-4">
                         {funnelStages.map((stage) => {
@@ -197,7 +197,7 @@ export default async function AdminDashboard() {
                         <div className="space-y-2">
                             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {recentProperties.map((property: any) => (
-                                <Link key={property.id} href={`/admin/properties/${property.id}`} className="flex items-center gap-3 border border-white/[0.06] bg-white/[0.02] p-3 transition-colors hover:border-[var(--color-accent)]/25">
+                                <Link key={property.id} href={`/admin/properties/${property.id}/edit`} className="flex items-center gap-3 border border-white/[0.06] bg-white/[0.02] p-3 transition-colors hover:border-[var(--color-accent)]/25">
                                     <div className="relative h-11 w-11 shrink-0 overflow-hidden bg-white/[0.04]">
                                         {property.cover_image ? (
                                             <Image src={property.cover_image} alt={property.title} fill sizes="44px" className="object-cover" />
