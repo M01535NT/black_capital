@@ -23,7 +23,8 @@ interface AppSettings {
     whatsAppTemplate: string;
 }
 
-const STORAGE_KEY = "black-corporativo-settings";
+const STORAGE_KEY = "black-capital-settings";
+const LEGACY_STORAGE_KEY = "black-corporativo-settings";
 
 const DEFAULTS: AppSettings = {
     heroVideoUrl: "",
@@ -43,8 +44,12 @@ const DEFAULTS: AppSettings = {
 function loadFromStorage(): AppSettings {
     if (typeof window === "undefined") return DEFAULTS;
     try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) return { ...DEFAULTS, ...JSON.parse(raw) };
+        const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
+        if (raw) {
+            const settings = { ...DEFAULTS, ...JSON.parse(raw) };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+            return settings;
+        }
     } catch {}
     return DEFAULTS;
 }
