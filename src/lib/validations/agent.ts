@@ -3,7 +3,7 @@ import { z } from "zod";
 export const agentSchema = z.object({
     full_name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
     email: z.string().email("Correo inválido"),
-    role: z.enum(["agent", "admin"]).default("agent"),
+    role: z.enum(["agent", "admin"]),
     phone: z
         .string()
         .min(10, "El teléfono debe tener al menos 10 dígitos")
