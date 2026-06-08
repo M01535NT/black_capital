@@ -98,6 +98,24 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const { data: admins } = await supabase
+      .from("admin_profiles")
+      .select("id")
+      .eq("role", "admin")
+      .eq("is_active", true);
+
+    if (admins && admins.length > 0) {
+      await supabase.from("notifications").insert(
+        admins.map((admin) => ({
+          recipient_profile_id: admin.id,
+          type: "lead",
+          title: "Nuevo lead recibido",
+          body: `${data.full_name} envió una solicitud desde ${data.source}.`,
+          href: `/admin/leads/${lead?.id}`,
+        })),
+      );
+    }
+
     return NextResponse.json({ success: true, leadId: lead?.id }, { status: 201 });
   } catch (error) {
     logger.error("API/public-leads", "[Public lead unexpected error]", error);

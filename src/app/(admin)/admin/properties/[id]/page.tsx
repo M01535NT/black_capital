@@ -1,5 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdminSession } from "@/lib/auth";
+import { isAdmin, requireAdminSession } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,7 @@ export default async function AdminPropertyDetailPage({
 }: {
     params: Promise<{ id: string }>;
 }) {
-    await requireAdminSession();
+    const profile = await requireAdminSession();
     const { id } = await params;
     const supabase = createAdminClient();
 
@@ -33,6 +33,11 @@ export default async function AdminPropertyDetailPage({
         .from("property_agents")
         .select("agent_id")
         .eq("property_id", id);
+
+    const assignedAgentIds = ((assignments || []) as Array<{ agent_id: string }>).map((assignment) => assignment.agent_id);
+    if (!isAdmin(profile) && (!profile.agent_id || !assignedAgentIds.includes(profile.agent_id))) {
+        notFound();
+    }
 
     let agents: { id: string; full_name: string; email: string | null; phone: string | null }[] = [];
     if (assignments && assignments.length > 0) {

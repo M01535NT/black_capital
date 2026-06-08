@@ -1,11 +1,12 @@
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdminSession } from "@/lib/auth";
+import { canAccessAgentScopedResource, requireAdminSession } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, Mail, Phone, Calendar, Globe, Tag, FileText } from "lucide-react";
+import { ChevronLeft, Mail, Phone, Calendar, Globe, Tag, FileText, Clock, ListChecks } from "lucide-react";
 import Link from "next/link";
 import { LeadActions } from "./lead-actions";
+import { LeadTasks } from "./lead-tasks";
 
 export const revalidate = 0;
 
@@ -14,7 +15,7 @@ export default async function LeadDetailPage({
 }: {
     params: Promise<{ id: string }>;
 }) {
-    await requireAdminSession();
+    const profile = await requireAdminSession();
     const { id } = await params;
     const supabase = createAdminClient();
 
@@ -25,6 +26,9 @@ export default async function LeadDetailPage({
         .single();
 
     if (error || !lead) {
+        notFound();
+    }
+    if (!canAccessAgentScopedResource(profile, lead.assigned_agent_id)) {
         notFound();
     }
 
@@ -38,6 +42,20 @@ export default async function LeadDetailPage({
             .single();
         if (prop) propertyTitle = prop.title;
     }
+
+    const [{ data: activities }, { data: tasks }] = await Promise.all([
+        supabase
+            .from("lead_activities")
+            .select("id, type, title, body, metadata, created_at, actor_profile_id")
+            .eq("lead_id", id)
+            .order("created_at", { ascending: false })
+            .limit(20),
+        supabase
+            .from("lead_tasks")
+            .select("id, title, description, due_at, priority, status, completed_at, created_at")
+            .eq("lead_id", id)
+            .order("created_at", { ascending: false }),
+    ]);
 
     const statusMap: Record<string, { label: string; color: string }> = {
         new: { label: "Nuevo", color: "bg-blue-500/10 text-blue-500" },
@@ -170,6 +188,28 @@ export default async function LeadDetailPage({
                             <p className="text-sm text-foreground/50 italic">Sin notas registradas.</p>
                         )}
                     </div>
+
+                    <div className="bg-card border border-foreground/10 rounded-2xl p-6 space-y-4">
+                        <div className="flex items-center gap-2">
+                            <Clock className="h-4 w-4 text-gold-500" />
+                            <h3 className="text-sm tracking-widest text-foreground/50 font-bold uppercase">Timeline de actividad</h3>
+                        </div>
+                        {activities && activities.length > 0 ? (
+                            <div className="space-y-3">
+                                {activities.map((activity) => (
+                                    <div key={activity.id} className="border-l border-gold-500/30 pl-4">
+                                        <p className="text-sm font-medium text-foreground">{activity.title}</p>
+                                        {activity.body && <p className="mt-1 whitespace-pre-wrap text-sm text-foreground/60">{activity.body}</p>}
+                                        <p className="mt-1 text-xs text-foreground/40">
+                                            {new Date(activity.created_at).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" })}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-sm text-foreground/50 italic">Sin actividad registrada.</p>
+                        )}
+                    </div>
                 </div>
 
                 {/* Sidebar */}
@@ -194,6 +234,14 @@ export default async function LeadDetailPage({
                     <div className="bg-card border border-foreground/10 rounded-2xl p-5 space-y-3">
                         <h3 className="text-sm tracking-widest text-foreground/50 font-bold uppercase">Cambiar Estado</h3>
                         <LeadActions leadId={lead.id} currentStatus={lead.status} showInline />
+                    </div>
+
+                    <div className="bg-card border border-foreground/10 rounded-2xl p-5 space-y-3">
+                        <div className="flex items-center gap-2">
+                            <ListChecks className="h-4 w-4 text-gold-500" />
+                            <h3 className="text-sm tracking-widest text-foreground/50 font-bold uppercase">Seguimiento</h3>
+                        </div>
+                        <LeadTasks leadId={lead.id} initialTasks={tasks || []} />
                     </div>
                 </div>
             </div>

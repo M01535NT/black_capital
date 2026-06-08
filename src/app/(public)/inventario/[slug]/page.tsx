@@ -177,8 +177,8 @@ export default async function PropertyDetailPage({
             />
             
             <div className="min-h-screen w-full overflow-x-hidden bg-background">
-                <section className="w-full border-b border-white/[0.06] pt-20 lg:pt-28">
-                    <div className="mx-auto max-w-[90rem] px-4 pb-5 pt-4 sm:px-10 sm:pt-6 lg:px-16">
+                <section className="w-full overflow-x-clip border-b border-white/[0.06] pt-20 lg:pt-28">
+                    <div className="mx-auto max-w-[90rem] min-w-0 px-4 pb-5 pt-4 sm:px-10 sm:pt-6 lg:px-16">
                         <ImageGallery
                             images={property.images || []}
                             title={property.title}
@@ -293,7 +293,7 @@ export default async function PropertyDetailPage({
 
                         <div className="lg:col-span-4">
                             <div className="space-y-8 lg:sticky lg:top-24">
-                                <FadeIn direction="left" delay={0.4}>
+                                <FadeIn direction="up" delay={0.4}>
                                     <PropertySidebar
                                         agents={agents}
                                         property={{

@@ -12,50 +12,65 @@ import {
     Building2,
     Users,
     UserCircle,
-    TrendingUp,
-    ArrowRight,
     Mail,
     CalendarDays,
     Eye,
+    Plus,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { AdminPageHeader, AdminSectionCard, AdminStatCard } from "@/components/admin/admin-ui";
 
 export const revalidate = 0;
 
 export default async function AdminDashboard() {
-    await requireAdminSession();
+    const profile = await requireAdminSession();
 
-    // ── Stats (shared data layer — same as API routes) ──
-    const totalProperties = await getPropertiesCount();
-    const totalAgents = await getAgentsCount(true);
-    const totalLeads = await getLeadsCount();
-    const newLeads = await getLeadsCount("new");
+    let totalProperties = await getPropertiesCount();
+    let totalAgents = await getAgentsCount(true);
+    let totalLeads = await getLeadsCount();
+    let newLeads = await getLeadsCount("new");
+    let leadsByStatus = await getLeadsByStatus();
+    let recentLeads = await getRecentLeads(5);
+    let recentProperties = await getRecentProperties(5);
 
-    // ── Leads by status ──
-    const leadsByStatus = await getLeadsByStatus();
+    if (profile.role === "agent") {
+        const { createAdminClient } = await import("@/lib/supabase/admin");
+        const supabase = createAdminClient();
+        const agentId = profile.agent_id || "00000000-0000-0000-0000-000000000000";
+        const [{ data: assignedProperties }, { data: scopedLeads }, { data: scopedRecentLeads }] = await Promise.all([
+            supabase.from("property_agents").select("property_id").eq("agent_id", agentId),
+            supabase.from("leads").select("status").eq("assigned_agent_id", agentId),
+            supabase.from("leads").select("id, full_name, email, phone, source, status, created_at").eq("assigned_agent_id", agentId).order("created_at", { ascending: false }).limit(5),
+        ]);
+        const propertyIds = (assignedProperties || []).map((row) => row.property_id);
+        const { data: scopedRecentProperties } = propertyIds.length > 0
+            ? await supabase.from("properties").select("id, title, business_type, price, currency, cover_image, status, created_at").in("id", propertyIds).order("created_at", { ascending: false }).limit(5)
+            : { data: [] };
+        totalProperties = propertyIds.length;
+        totalAgents = 1;
+        totalLeads = scopedLeads?.length || 0;
+        newLeads = (scopedLeads || []).filter((lead) => lead.status === "new").length;
+        leadsByStatus = scopedLeads || [];
+        recentLeads = scopedRecentLeads || [];
+        recentProperties = scopedRecentProperties || [];
+    }
+
     const statusCounts: Record<string, number> = {};
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase leads status row
-    (leadsByStatus || []).forEach((l: any) => {
-        statusCounts[l.status] = (statusCounts[l.status] || 0) + 1;
+    (leadsByStatus || []).forEach((lead: any) => {
+        statusCounts[lead.status] = (statusCounts[lead.status] || 0) + 1;
     });
 
     const funnelStages = [
-        { key: "new", label: "Nuevo", color: "bg-blue-500", count: statusCounts["new"] || 0, total: totalLeads || 1 },
-        { key: "contacted", label: "Contactado", color: "bg-yellow-500", count: statusCounts["contacted"] || 0, total: totalLeads || 1 },
-        { key: "qualified", label: "Calificado", color: "bg-purple-500", count: statusCounts["qualified"] || 0, total: totalLeads || 1 },
-        { key: "won", label: "Ganado", color: "bg-emerald-500", count: statusCounts["won"] || 0, total: totalLeads || 1 },
-        { key: "lost", label: "Perdido", color: "bg-red-500", count: statusCounts["lost"] || 0, total: totalLeads || 1 },
+        { key: "new", label: "Nuevo", color: "bg-sky-400", count: statusCounts.new || 0 },
+        { key: "contacted", label: "Contactado", color: "bg-[var(--color-accent)]", count: statusCounts.contacted || 0 },
+        { key: "qualified", label: "Calificado", color: "bg-white/70", count: statusCounts.qualified || 0 },
+        { key: "won", label: "Ganado", color: "bg-emerald-400", count: statusCounts.won || 0 },
+        { key: "lost", label: "Perdido", color: "bg-red-400", count: statusCounts.lost || 0 },
     ];
 
-    // ── Recent leads ──
-    const recentLeads = await getRecentLeads(5);
-
-    // ── Recent properties ──
-    const recentProperties = await getRecentProperties(5);
-
-    const today = new Date();
-    const todayStr = today.toLocaleDateString("es-MX", {
+    const todayStr = new Date().toLocaleDateString("es-MX", {
         weekday: "long",
         year: "numeric",
         month: "long",
@@ -63,14 +78,7 @@ export default async function AdminDashboard() {
     });
 
     const formatPrice = (price: number, currency: string) => {
-        return new Intl.NumberFormat("es-MX", { style: "currency", currency }).format(price);
-    };
-
-    const statusColors: Record<string, string> = {
-        Available: "text-emerald-500 bg-emerald-500/10",
-        Under_Offer: "text-yellow-500 bg-yellow-500/10",
-        Sold: "text-red-500 bg-red-500/10",
-        Rented: "text-blue-500 bg-blue-500/10",
+        return new Intl.NumberFormat("es-MX", { style: "currency", currency, maximumFractionDigits: 0 }).format(price);
     };
 
     const statusLabels: Record<string, string> = {
@@ -88,257 +96,131 @@ export default async function AdminDashboard() {
         landing_luxury: "Luxury",
         landing_business: "Business",
         landing_industrial: "Industrial",
+        newsletter: "Newsletter",
+    };
+
+    const propertyStatusLabels: Record<string, string> = {
+        Available: "Disponible",
+        Under_Offer: "Bajo oferta",
+        Sold: "Vendido",
+        Rented: "Rentado",
     };
 
     const quickActions = [
-        {
-            label: "Nueva Propiedad",
-            href: "/admin/properties/new",
-            icon: Building2,
-            color: "text-gold-500",
-            bg: "bg-gold-500/10",
-        },
-        {
-            label: "Nuevo Lead",
-            href: "/admin/leads",
-            icon: Users,
-            color: "text-emerald-500",
-            bg: "bg-emerald-500/10",
-        },
-        {
-            label: "Nuevo Agente",
-            href: "/admin/agents/new",
-            icon: UserCircle,
-            color: "text-blue-500",
-            bg: "bg-blue-500/10",
-        },
-        {
-            label: "Ver Inventario",
-            href: "/admin/properties",
-            icon: Eye,
-            color: "text-purple-500",
-            bg: "bg-purple-500/10",
-        },
+        { label: "Nueva propiedad", href: "/admin/properties/new", icon: Plus },
+        { label: "Revisar leads", href: "/admin/leads", icon: Mail },
+        { label: "Nuevo agente", href: "/admin/agents/new", icon: UserCircle },
+        { label: "Ver sitio", href: "/", icon: Eye },
     ];
 
     return (
         <div className="space-y-8">
-            {/* Header + Date */}
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div>
-                    <h2 className="font-display uppercase tracking-wider text-3xl text-foreground">Dashboard</h2>
-                    <p className="text-foreground/50 text-sm mt-1">Panel de control de Black Capital.</p>
-                </div>
-                <div className="flex items-center gap-3 bg-card border border-foreground/10 rounded-xl px-4 py-2">
-                    <CalendarDays className="w-4 h-4 text-gold-500" />
-                    <span className="text-sm text-foreground/70 capitalize">{todayStr}</span>
-                </div>
+            <AdminPageHeader
+                eyebrow="Panel operativo"
+                title="Dashboard"
+                description="Resumen comercial para inventario, leads y equipo. Prioriza seguimiento y actualización de contenido."
+            />
+
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                <AdminStatCard href="/admin/properties" icon={Building2} label="Propiedades" value={totalProperties || 0} note="Inventario registrado" />
+                <AdminStatCard href="/admin/agents" icon={UserCircle} label="Agentes activos" value={totalAgents || 0} note="Equipo disponible" accent="muted" />
+                <AdminStatCard href="/admin/leads" icon={Users} label="Leads totales" value={totalLeads || 0} note="Solicitudes capturadas" accent="blue" />
+                <AdminStatCard href="/admin/leads?status=new" icon={Mail} label="Sin revisar" value={newLeads || 0} note="Requieren primer contacto" accent="green" />
             </div>
 
-            {/* Quick Actions */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 {quickActions.map((action) => (
                     <Link
                         key={action.href}
                         href={action.href}
-                        className="group bg-card border border-foreground/10 rounded-2xl p-5 hover:border-gold-500/30 hover:shadow-lg hover:shadow-gold-500/5 transition-all duration-300 flex items-center gap-4"
+                        className="group flex min-h-16 items-center justify-between border border-white/[0.08] bg-white/[0.025] px-4 transition-colors hover:border-[var(--color-accent)]/30"
                     >
-                        <div className={`w-10 h-10 rounded-xl ${action.bg} flex items-center justify-center shrink-0`}>
-                            <action.icon className={`w-5 h-5 ${action.color}`} />
-                        </div>
-                        <div>
-                            <p className="text-sm font-bold text-foreground group-hover:text-gold-500 transition-colors uppercase tracking-wider">
-                                {action.label}
-                            </p>
-                            <p className="text-caption text-foreground/50 mt-0.5">Ir ahora</p>
-                        </div>
-                        <ArrowRight className="w-4 h-4 text-foreground/20 ml-auto group-hover:text-gold-500 group-hover:translate-x-1 transition-all" />
+                        <span className="flex items-center gap-3 text-sm font-semibold text-white/78 group-hover:text-white">
+                            <action.icon className="h-4 w-4 text-[var(--color-accent)]" />
+                            {action.label}
+                        </span>
+                        <span className="text-[var(--color-accent)]">→</span>
                     </Link>
                 ))}
             </div>
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <Link href="/admin/properties" className="bg-card border border-foreground/10 rounded-2xl p-5 hover:border-gold-500/20 transition-all group">
-                    <div className="flex items-center justify-between mb-3">
-                        <Building2 className="w-5 h-5 text-gold-500" />
-                        <TrendingUp className="w-4 h-4 text-foreground/20 group-hover:text-gold-500/50 transition-colors" />
+            <div className="grid gap-6 xl:grid-cols-12">
+                <AdminSectionCard title="Embudo de leads" className="xl:col-span-4">
+                    <div className="mb-5 flex items-center gap-2 text-sm text-white/55">
+                        <CalendarDays className="h-4 w-4 text-[var(--color-accent)]" />
+                        <span className="capitalize">{todayStr}</span>
                     </div>
-                    <p className="text-3xl font-numerics font-bold text-foreground">{totalProperties || 0}</p>
-                    <p className="text-caption text-foreground/50 mt-1 uppercase tracking-wider font-display">Propiedades en inventario</p>
-                </Link>
-                <Link href="/admin/agents" className="bg-card border border-foreground/10 rounded-2xl p-5 hover:border-gold-500/20 transition-all group">
-                    <div className="flex items-center justify-between mb-3">
-                        <UserCircle className="w-5 h-5 text-gold-500" />
-                    </div>
-                    <p className="text-3xl font-numerics font-bold text-foreground">{totalAgents || 0}</p>
-                    <p className="text-caption text-foreground/50 mt-1 uppercase tracking-wider font-display">Agentes activos</p>
-                </Link>
-                <Link href="/admin/leads" className="bg-card border border-foreground/10 rounded-2xl p-5 hover:border-gold-500/20 transition-all group">
-                    <div className="flex items-center justify-between mb-3">
-                        <Users className="w-5 h-5 text-gold-500" />
-                    </div>
-                    <p className="text-3xl font-numerics font-bold text-foreground">{totalLeads || 0}</p>
-                    <p className="text-caption text-foreground/50 mt-1 uppercase tracking-wider font-display">Leads totales</p>
-                </Link>
-                <Link href="/admin/leads?status=new" className="bg-card border border-foreground/10 rounded-2xl p-5 hover:border-gold-500/20 transition-all group relative">
-                    <div className="flex items-center justify-between mb-3">
-                        <Mail className="w-5 h-5 text-gold-500" />
-                        {(newLeads ?? 0) > 0 && (
-                            <span className="bg-gold-500 text-black text-caption font-bold px-2 py-0.5 rounded-full">
-                                {newLeads} nuevo{(newLeads ?? 0) !== 1 ? "s" : ""}
-                            </span>
-                        )}
-                    </div>
-                    <p className="text-3xl font-numerics font-bold text-foreground">{newLeads || 0}</p>
-                    <p className="text-caption text-foreground/50 mt-1 uppercase tracking-wider font-display">Leads sin revisar</p>
-                </Link>
-            </div>
-
-            {/* Funnel + Recent Activity */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Lead Funnel */}
-                <div className="lg:col-span-1 bg-card border border-foreground/10 rounded-2xl p-6">
-                    <div className="flex items-center justify-between mb-5">
-                        <h3 className="font-display uppercase tracking-wider text-sm font-bold">Embudo de Leads</h3>
-                        <Link href="/admin/leads" className="text-xs text-gold-500 hover:underline font-display uppercase tracking-wider">Ver todos</Link>
-                    </div>
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                         {funnelStages.map((stage) => {
-                            const pct = stage.total > 0 ? Math.round((stage.count / stage.total) * 100) : 0;
+                            const pct = totalLeads > 0 ? Math.round((stage.count / totalLeads) * 100) : 0;
                             return (
-                                <div key={stage.key} className="space-y-1.5">
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-foreground/70 text-xs uppercase tracking-wider font-display">{stage.label}</span>
-                                        <span className="font-numerics font-bold text-sm">{stage.count}</span>
+                                <div key={stage.key} className="space-y-2">
+                                    <div className="flex justify-between text-xs">
+                                        <span className="font-semibold uppercase tracking-[0.14em] text-white/55">{stage.label}</span>
+                                        <span className="text-white">{stage.count}</span>
                                     </div>
-                                    <div className="w-full h-2 bg-muted/30 rounded-full overflow-hidden">
-                                        <div
-                                            className={`h-full rounded-full transition-all ${stage.color} opacity-70`}
-                                            style={{ width: `${pct}%` }}
-                                        />
+                                    <div className="h-2 w-full overflow-hidden bg-white/[0.045]">
+                                        <div className={`h-full ${stage.color}`} style={{ width: `${pct}%` }} />
                                     </div>
                                 </div>
                             );
                         })}
                     </div>
-                    {totalLeads === 0 && (
-                        <p className="text-sm text-foreground/50 text-center py-4">No hay leads registrados aún.</p>
-                    )}
-                </div>
+                </AdminSectionCard>
 
-                {/* Recent Leads */}
-                <div className="bg-card border border-foreground/10 rounded-2xl p-6">
-                    <div className="flex items-center justify-between mb-5">
-                        <h3 className="font-display uppercase tracking-wider text-sm font-bold">Leads Recientes</h3>
-                        <Link href="/admin/leads" className="text-xs text-gold-500 hover:underline font-display uppercase tracking-wider">Ver todos</Link>
-                    </div>
+                <AdminSectionCard title="Leads recientes" action={{ label: "Ver todos", href: "/admin/leads" }} className="xl:col-span-4">
                     {recentLeads && recentLeads.length > 0 ? (
                         <div className="space-y-2">
                             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {recentLeads.map((lead: any) => (
-                                <Link
-                                    key={lead.id}
-                                    href={`/admin/leads/${lead.id}`}
-                                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted/30 transition-colors group"
-                                >
-                                    <div className="w-9 h-9 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 text-sm font-bold shrink-0">
+                                <Link key={lead.id} href={`/admin/leads/${lead.id}`} className="flex items-center gap-3 border border-white/[0.06] bg-white/[0.02] p-3 transition-colors hover:border-[var(--color-accent)]/25">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center bg-[var(--color-accent)]/10 text-sm font-bold text-[var(--color-accent)]">
                                         {(lead.full_name || "?").charAt(0).toUpperCase()}
                                     </div>
-                                    <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-medium truncate group-hover:text-gold-500 transition-colors">
-                                            {lead.full_name}
-                                        </p>
-                                        <p className="text-xs text-foreground/50 truncate">
-                                            {sourceLabels[lead.source] || lead.source}
-                                            {lead.phone && ` · ${lead.phone}`}
-                                        </p>
+                                    <div className="min-w-0 flex-1">
+                                        <p className="truncate text-sm font-medium text-white">{lead.full_name}</p>
+                                        <p className="truncate text-xs text-white/45">{sourceLabels[lead.source] || lead.source}</p>
                                     </div>
-                                    <div className="text-right shrink-0">
-                                        <Badge variant="secondary"
-                                            className={`text-caption px-1.5 py-0 h-auto ${
-                                                lead.status === "new" ? "bg-blue-500/10 text-blue-500"
-                                                : lead.status === "contacted" ? "bg-yellow-500/10 text-yellow-500"
-                                                : lead.status === "qualified" ? "bg-purple-500/10 text-purple-500"
-                                                : lead.status === "won" ? "bg-emerald-500/10 text-emerald-500"
-                                                : lead.status === "lost" ? "bg-red-500/10 text-red-500"
-                                                : ""
-                                            }`}
-                                        >
-                                            {statusLabels[lead.status] || lead.status}
-                                        </Badge>
-                                        <p className="text-caption text-foreground/50 mt-0.5">
-                                            {new Date(lead.created_at).toLocaleDateString("es-MX", { day: "2-digit", month: "short" })}
-                                        </p>
-                                    </div>
+                                    <Badge className="border border-white/[0.08] bg-white/[0.03] text-[10px] text-white/60">
+                                        {statusLabels[lead.status] || lead.status}
+                                    </Badge>
                                 </Link>
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-8">
-                            <Users className="w-8 h-8 text-foreground/20 mx-auto mb-2" />
-                            <p className="text-sm text-foreground/50">No hay leads aún.</p>
-                        </div>
+                        <p className="py-8 text-center text-sm text-white/45">No hay leads recientes.</p>
                     )}
-                </div>
+                </AdminSectionCard>
 
-                {/* Recent Properties Activity */}
-                <div className="bg-card border border-foreground/10 rounded-2xl p-6">
-                    <div className="flex items-center justify-between mb-5">
-                        <h3 className="font-display uppercase tracking-wider text-sm font-bold">Actividad de Propiedades</h3>
-                        <Link href="/admin/properties" className="text-xs text-gold-500 hover:underline font-display uppercase tracking-wider">Ver inventario</Link>
-                    </div>
+                <AdminSectionCard title="Inventario reciente" action={{ label: "Ver inventario", href: "/admin/properties" }} className="xl:col-span-4">
                     {recentProperties && recentProperties.length > 0 ? (
-                        <div className="space-y-3">
+                        <div className="space-y-2">
                             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                            {recentProperties.map((prop: any) => (
-                                <Link
-                                    key={prop.id}
-                                    href={`/admin/properties/${prop.id}`}
-                                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted/30 transition-colors group"
-                                >
-                                    <div className="w-10 h-10 rounded-lg bg-muted overflow-hidden shrink-0 border border-foreground/5">
-                                        {prop.cover_image ? (
-                                            <Image
-                                                src={prop.cover_image}
-                                                alt={prop.title}
-                                                width={40}
-                                                height={40}
-                                                className="w-full h-full object-cover"
-                                            />
+                            {recentProperties.map((property: any) => (
+                                <Link key={property.id} href={`/admin/properties/${property.id}`} className="flex items-center gap-3 border border-white/[0.06] bg-white/[0.02] p-3 transition-colors hover:border-[var(--color-accent)]/25">
+                                    <div className="relative h-11 w-11 shrink-0 overflow-hidden bg-white/[0.04]">
+                                        {property.cover_image ? (
+                                            <Image src={property.cover_image} alt={property.title} fill sizes="44px" className="object-cover" />
                                         ) : (
-                                            <Building2 className="w-4 h-4 text-foreground/20 m-2.5" />
+                                            <Building2 className="m-3 h-5 w-5 text-white/25" />
                                         )}
                                     </div>
-                                    <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-medium truncate group-hover:text-gold-500 transition-colors">{prop.title}</p>
-                                        <div className="flex items-center gap-2 mt-0.5">
-                                            <span className={`text-caption font-medium px-1.5 py-0.5 rounded-full ${statusColors[prop.status] || ""}`}>
-                                                {prop.status === "Available" ? "Disponible"
-                                                    : prop.status === "Sold" ? "Vendido"
-                                                    : prop.status === "Rented" ? "Rentado"
-                                                    : prop.status === "Under_Offer" ? "Bajo Oferta"
-                                                    : prop.status}
-                                            </span>
-                                            <span className="text-caption text-foreground/50">{prop.business_type}</span>
-                                        </div>
-                                    </div>
-                                    <div className="text-right shrink-0">
-                                        <p className="text-xs font-numerics font-bold text-gold-500">{formatPrice(prop.price, prop.currency)}</p>
-                                        <p className="text-caption text-foreground/50 mt-0.5">
-                                            {new Date(prop.created_at).toLocaleDateString("es-MX", { day: "2-digit", month: "short" })}
+                                    <div className="min-w-0 flex-1">
+                                        <p className="truncate text-sm font-medium text-white">{property.title}</p>
+                                        <p className="truncate text-xs text-white/45">
+                                            {propertyStatusLabels[property.status] || property.status} · {property.business_type}
                                         </p>
                                     </div>
+                                    <p className="shrink-0 text-xs font-semibold text-[var(--color-accent)]">
+                                        {formatPrice(property.price, property.currency)}
+                                    </p>
                                 </Link>
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-8">
-                            <Building2 className="w-8 h-8 text-foreground/20 mx-auto mb-2" />
-                            <p className="text-sm text-foreground/50">No hay propiedades aún.</p>
-                        </div>
+                        <p className="py-8 text-center text-sm text-white/45">No hay propiedades recientes.</p>
                     )}
-                </div>
+                </AdminSectionCard>
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { validateSessionToken } from "@/lib/auth";
+import { isAdmin, requireApiProfile } from "@/lib/auth";
 
 const ALLOWED_COLUMNS = new Set([
   "title", "slug", "property_use", "property_type", "business_type",
@@ -81,16 +81,10 @@ async function syncPropertyAgents(
 }
 
 // ── Auth helper ──
-async function checkAuth(): Promise<boolean> {
-  const { cookies } = await import("next/headers");
-  const cookieStore = await cookies();
-  const session = cookieStore.get("bc_admin_session");
-  return !!(session?.value && (await validateSessionToken(session.value)));
-}
-
 export async function POST(req: NextRequest) {
   try {
-    if (!(await checkAuth())) {
+    const profile = await requireApiProfile();
+    if (!profile || !isAdmin(profile)) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
@@ -138,7 +132,8 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    if (!(await checkAuth())) {
+    const profile = await requireApiProfile();
+    if (!profile || !isAdmin(profile)) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
@@ -194,14 +189,28 @@ export async function PUT(req: NextRequest) {
 
 export async function GET() {
   try {
-    if (!(await checkAuth())) {
+    const profile = await requireApiProfile();
+    if (!profile) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
     const supabase = createAdminClient();
-    const { data: properties, error } = await supabase
+    let query = supabase
       .from("properties")
       .select("id, title, business_type, price, currency")
       .order("title", { ascending: true });
+
+    if (!isAdmin(profile)) {
+      if (!profile.agent_id) return NextResponse.json({ properties: [] });
+      const { data: assigned } = await supabase
+        .from("property_agents")
+        .select("property_id")
+        .eq("agent_id", profile.agent_id);
+      const ids = (assigned || []).map((row) => row.property_id);
+      if (ids.length === 0) return NextResponse.json({ properties: [] });
+      query = query.in("id", ids);
+    }
+
+    const { data: properties, error } = await query;
 
     if (error) {
       logger.error("API/properties", "[API /properties GET]", error);
@@ -218,7 +227,8 @@ export async function GET() {
 
 export async function DELETE(req: NextRequest) {
   try {
-    if (!(await checkAuth())) {
+    const profile = await requireApiProfile();
+    if (!profile || !isAdmin(profile)) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
     const { searchParams } = new URL(req.url);

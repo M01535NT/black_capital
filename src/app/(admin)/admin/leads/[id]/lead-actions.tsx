@@ -58,16 +58,10 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
         setSaving(true);
         setMessage("");
         try {
-            // Append note locally
-            const timestamp = new Date().toLocaleString("es-MX");
-            const newNote = `[${timestamp}] ${notes}`;
-
-            // The API uses PUT to update — we append locally and send the full notes
-            // For simplicity, we'll construct the appended notes from what we know
-            const res = await fetch("/api/leads", {
-                method: "PUT",
+            const res = await fetch("/api/lead-activities", {
+                method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id: leadId, notes: newNote }),
+                body: JSON.stringify({ lead_id: leadId, type: "note", body: notes }),
             });
 
             if (!res.ok) {

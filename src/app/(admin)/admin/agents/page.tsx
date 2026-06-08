@@ -1,14 +1,15 @@
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdminSession } from "@/lib/auth";
-import { Button } from "@/components/ui/button";
+import { requireAdminRole } from "@/lib/auth";
 import { UserPlus, Mail, Phone, Shield, Edit, Eye } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { AdminEmptyState, AdminPageHeader, adminCardClass } from "@/components/admin/admin-ui";
+import { Button } from "@/components/ui/button";
 
 export const revalidate = 0;
 
 export default async function AgentsPage() {
-    await requireAdminSession();
+    await requireAdminRole();
     const supabase = createAdminClient();
 
     const { data: agents, error } = await supabase
@@ -63,32 +64,20 @@ export default async function AgentsPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div>
-                    <h2 className="font-display uppercase tracking-wider text-3xl text-foreground">Agentes</h2>
-                    <p className="text-foreground/50 text-sm">
-                        {activeAgents.length} agente{activeAgents.length !== 1 ? "s" : ""} activo{activeAgents.length !== 1 ? "s" : ""}
-                        {inactiveAgents.length > 0 ? ` · ${inactiveAgents.length} inactivo${inactiveAgents.length !== 1 ? "s" : ""}` : ""}
-                    </p>
-                </div>
-                <Link href="/admin/agents/new">
-                    <Button className="bg-gold-500 text-black hover:bg-gold-600 gap-2">
-                        <UserPlus className="h-4 w-4" /> Nuevo Agente
-                    </Button>
-                </Link>
-            </div>
+            <AdminPageHeader
+                eyebrow="Equipo"
+                title="Agentes"
+                description={`${activeAgents.length} activo${activeAgents.length !== 1 ? "s" : ""}${inactiveAgents.length > 0 ? ` · ${inactiveAgents.length} inactivo${inactiveAgents.length !== 1 ? "s" : ""}` : ""}. Administra datos de contacto, licencias y asignaciones.`}
+                action={{ label: "Nuevo agente", href: "/admin/agents/new", icon: UserPlus }}
+            />
 
             {(!agents || agents.length === 0) ? (
-                <div className="bg-card border border-foreground/10 rounded-2xl p-12 text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gold-500/10 flex items-center justify-center">
-                        <UserPlus className="w-8 h-8 text-gold-500" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 font-display uppercase tracking-wider">No hay agentes registrados</h3>
-                    <p className="text-foreground/50 mb-6">Registra tu primer agente para empezar a asignar propiedades.</p>
-                    <Link href="/admin/agents/new">
-                        <Button className="bg-gold-500 text-black hover:bg-gold-600">Registrar Agente</Button>
-                    </Link>
-                </div>
+                <AdminEmptyState
+                    icon={UserPlus}
+                    title="No hay agentes registrados"
+                    description="Registra tu primer agente para empezar a asignar propiedades y leads."
+                    action={{ label: "Registrar agente", href: "/admin/agents/new" }}
+                />
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
@@ -98,10 +87,10 @@ export default async function AgentsPage() {
                         return (
                             <div
                                 key={agent.id}
-                                className="group bg-card border border-foreground/10 rounded-2xl p-5 hover:border-gold-500/30 hover:shadow-lg hover:shadow-gold-500/5 transition-all duration-300 flex flex-col"
+                                className={`group flex flex-col p-5 transition-colors hover:border-[var(--color-accent)]/30 ${adminCardClass}`}
                             >
                                 <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-14 h-14 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 text-xl font-bold shrink-0 border-2 border-gold-500/20 group-hover:border-gold-500/50 transition-colors overflow-hidden">
+                                    <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 text-xl font-bold text-[var(--color-accent)] transition-colors group-hover:border-[var(--color-accent)]/50">
                                         {agent.photo_url ? (
                                             <Image
                                                 src={agent.photo_url}
@@ -115,11 +104,11 @@ export default async function AgentsPage() {
                                         )}
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                        <Link href={`/admin/agents/${agent.id}`} className="font-bold text-foreground text-base truncate group-hover:text-gold-500 transition-colors block">
+                                        <Link href={`/admin/agents/${agent.id}`} className="block truncate text-base font-semibold text-white transition-colors group-hover:text-[var(--color-accent)]">
                                             {agent.full_name}
                                         </Link>
                                         {agent.license_number && (
-                                            <p className="text-xs text-foreground/50 flex items-center gap-1 mt-0.5">
+                                            <p className="mt-0.5 flex items-center gap-1 text-xs text-white/45">
                                                 <Shield className="w-3 h-3" /> Céd. {agent.license_number}
                                             </p>
                                         )}
@@ -127,41 +116,41 @@ export default async function AgentsPage() {
                                 </div>
                                 <div className="space-y-1.5 mb-4">
                                     {agent.email && (
-                                        <div className="flex items-center gap-2 text-xs text-foreground/60 truncate">
-                                            <Mail className="w-3 h-3 text-gold-500/60 shrink-0" />
+                                        <div className="flex items-center gap-2 truncate text-xs text-white/55">
+                                            <Mail className="w-3 h-3 text-[var(--color-accent)]/70 shrink-0" />
                                             <span className="truncate">{agent.email}</span>
                                         </div>
                                     )}
                                     {agent.phone && (
-                                        <div className="flex items-center gap-2 text-xs text-foreground/60">
-                                            <Phone className="w-3 h-3 text-gold-500/60 shrink-0" />
+                                        <div className="flex items-center gap-2 text-xs text-white/55">
+                                            <Phone className="w-3 h-3 text-[var(--color-accent)]/70 shrink-0" />
                                             <span>{agent.phone}</span>
                                         </div>
                                     )}
                                 </div>
                                 <div className="grid grid-cols-2 gap-2 mb-4">
-                                    <div className="bg-muted/20 rounded-lg p-2 text-center border border-foreground/5">
-                                        <p className="text-lg font-numerics font-bold text-gold-500">{propsCount}</p>
-                                        <p className="text-caption text-foreground/50 uppercase tracking-wider font-display">Propiedades</p>
+                                    <div className="border border-white/[0.06] bg-white/[0.025] p-2 text-center">
+                                        <p className="text-lg font-bold text-[var(--color-accent)]">{propsCount}</p>
+                                        <p className="text-caption font-display uppercase tracking-wider text-white/45">Propiedades</p>
                                     </div>
-                                    <div className="bg-muted/20 rounded-lg p-2 text-center border border-foreground/5">
-                                        <p className="text-lg font-numerics font-bold text-emerald-500">{wonCount}</p>
-                                        <p className="text-caption text-foreground/50 uppercase tracking-wider font-display">Cierres</p>
+                                    <div className="border border-white/[0.06] bg-white/[0.025] p-2 text-center">
+                                        <p className="text-lg font-bold text-emerald-400">{wonCount}</p>
+                                        <p className="text-caption font-display uppercase tracking-wider text-white/45">Cierres</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center justify-between pt-3 border-t border-foreground/5 mt-auto">
+                                <div className="mt-auto flex items-center justify-between border-t border-white/[0.06] pt-3">
                                     <div className="flex items-center gap-2">
-                                        <span className={`w-2 h-2 rounded-full ${agent.is_active ? "bg-emerald-500" : "bg-foreground/20"}`} />
-                                        <span className="text-xs text-foreground/50">{agent.is_active ? "Activo" : "Inactivo"}</span>
+                                        <span className={`h-2 w-2 ${agent.is_active ? "bg-emerald-400" : "bg-white/20"}`} />
+                                        <span className="text-xs text-white/45">{agent.is_active ? "Activo" : "Inactivo"}</span>
                                     </div>
                                     <div className="flex items-center gap-1">
                                         <Link href={`/admin/agents/${agent.id}`}>
-                                            <Button variant="ghost" size="icon" className="h-7 w-7 text-foreground/50 hover:text-gold-500">
+                                            <Button variant="ghost" size="icon" className="h-7 w-7 text-white/45 hover:text-[var(--color-accent)]">
                                                 <Eye className="w-3.5 h-3.5" />
                                             </Button>
                                         </Link>
                                         <Link href={`/admin/agents/${agent.id}/edit`}>
-                                            <Button variant="ghost" size="icon" className="h-7 w-7 text-foreground/50 hover:text-gold-500">
+                                            <Button variant="ghost" size="icon" className="h-7 w-7 text-white/45 hover:text-[var(--color-accent)]">
                                                 <Edit className="w-3.5 h-3.5" />
                                             </Button>
                                         </Link>

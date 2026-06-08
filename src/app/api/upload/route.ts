@@ -1,17 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { validateSessionToken } from "@/lib/auth";
+import { isAdmin, requireApiProfile } from "@/lib/auth";
 
 const ALLOWED_BUCKETS = new Set(["public"]);
 
 export async function POST(req: NextRequest) {
   try {
-    // Auth check (using await cookies() instead of req.cookies.get())
-    const { cookies } = await import("next/headers");
-    const cookieStore = await cookies();
-    const session = cookieStore.get("bc_admin_session");
-    if (!session?.value || !(await validateSessionToken(session.value))) {
+    const profile = await requireApiProfile();
+    if (!profile || !isAdmin(profile)) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 

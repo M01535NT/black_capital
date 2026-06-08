@@ -25,6 +25,10 @@ function createMockClient() {
   }
   return {
     from: () => fromReturn,
+    auth: {
+      getUser: () => Promise.resolve({ data: { user: null }, error: null }),
+      signOut: () => Promise.resolve({ error: null }),
+    },
     storage: { from: () => ({ upload: noop, getPublicUrl: () => ({ data: { publicUrl: '' } }) }) },
   } as never
 }

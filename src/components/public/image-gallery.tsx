@@ -60,9 +60,17 @@ export function ImageGallery({
   }, []);
 
   const scrollThumbIntoView = useCallback((index: number) => {
-    if (!thumbContainerRef.current) return;
-    const thumb = thumbContainerRef.current.children[index] as HTMLElement | undefined;
-    thumb?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    const container = thumbContainerRef.current;
+    if (!container) return;
+    const thumb = container.children[index] as HTMLElement | undefined;
+    if (!thumb) return;
+
+    const target =
+      thumb.offsetLeft - (container.clientWidth - thumb.clientWidth) / 2;
+    container.scrollTo({
+      left: Math.max(0, target),
+      behavior: "smooth",
+    });
   }, []);
 
   const goTo = useCallback(
@@ -146,7 +154,7 @@ export function ImageGallery({
   return (
     <>
       {/* ── Main Carousel ── */}
-      <div className="relative w-full overflow-hidden border border-white/[0.08] bg-black shadow-2xl shadow-black/40">
+      <div className="relative w-full max-w-full overflow-hidden border border-white/[0.08] bg-black shadow-2xl shadow-black/40">
         <div
           className={cn(
             "relative w-full overflow-hidden cursor-pointer group",
@@ -249,7 +257,7 @@ export function ImageGallery({
           <div className="w-full bg-black/80 backdrop-blur-sm border-t border-white/5 px-3 sm:px-4 py-2.5 sm:py-3">
             <div
               ref={thumbContainerRef}
-              className="scrollbar-none flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-px-3 sm:gap-3 sm:scroll-px-4"
+              className="scrollbar-none flex max-w-full snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain scroll-px-3 sm:gap-3 sm:scroll-px-4"
             >
               {allImages.map((src, idx) => (
                 <button
@@ -383,7 +391,7 @@ export function ImageGallery({
                     key={idx}
                     onClick={() => setLightboxIndex(idx)}
                     className={cn(
-                      "size-10 shrink-0 overflow-hidden border-2 transition-all duration-200",
+                      "relative size-10 shrink-0 overflow-hidden border-2 transition-all duration-200",
                       idx === lightboxIndex
                         ? "border-[var(--color-accent)]"
                         : "border-transparent opacity-40 hover:opacity-70",

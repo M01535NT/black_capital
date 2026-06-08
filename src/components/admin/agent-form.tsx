@@ -81,8 +81,17 @@ export function AgentForm({ initialData }: AgentFormProps) {
             <form onSubmit={form.handleSubmit(onSubmit, () => {
                 const firstError = document.querySelector('[aria-invalid="true"]');
                 if (firstError) firstError.scrollIntoView({ behavior: "smooth", block: "center" });
-            })} className="flex flex-col gap-8" noValidate>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            })} className="border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6" noValidate>
+                <div className="mb-6 border-b border-white/[0.06] pb-5">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+                        Datos del asesor
+                    </p>
+                    <p className="mt-2 text-sm text-white/55">
+                        Información visible para asignaciones internas y contacto comercial.
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <FormField
                         control={form.control}
                         name="full_name"
@@ -90,7 +99,7 @@ export function AgentForm({ initialData }: AgentFormProps) {
                             <FormItem className="md:col-span-2">
                                 <FormLabel>Nombre Completo *</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Ej. Juan Pérez López" {...field} />
+                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="Ej. Juan Pérez López" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -104,7 +113,7 @@ export function AgentForm({ initialData }: AgentFormProps) {
                             <FormItem>
                                 <FormLabel>Correo Electrónico</FormLabel>
                                 <FormControl>
-                                    <Input type="email" placeholder="correo@ejemplo.com" {...field} />
+                                    <Input className="border-white/[0.1] bg-background/70 text-white" type="email" placeholder="correo@ejemplo.com" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -118,7 +127,7 @@ export function AgentForm({ initialData }: AgentFormProps) {
                             <FormItem>
                                 <FormLabel>Teléfono</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="+52 555 123 4567" {...field} />
+                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="+52 555 123 4567" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -132,7 +141,7 @@ export function AgentForm({ initialData }: AgentFormProps) {
                             <FormItem>
                                 <FormLabel>Cédula Profesional</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Ej. 12345678" {...field} />
+                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="Ej. 12345678" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -146,7 +155,7 @@ export function AgentForm({ initialData }: AgentFormProps) {
                             <FormItem>
                                 <FormLabel>URL de Foto</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="https://..." {...field} />
+                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="https://..." {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -162,7 +171,7 @@ export function AgentForm({ initialData }: AgentFormProps) {
                                     <Checkbox
                                         checked={field.value}
                                         onCheckedChange={field.onChange}
-                                        className="data-[state=checked]:bg-gold-500 data-[state=checked]:text-black border-foreground/20"
+                                        className="border-white/20 data-[state=checked]:bg-[var(--color-accent)] data-[state=checked]:text-black"
                                     />
                                 </FormControl>
                                 <FormLabel className="cursor-pointer font-medium">Agente activo</FormLabel>
@@ -171,6 +180,7 @@ export function AgentForm({ initialData }: AgentFormProps) {
                     />
                 </div>
 
+                <div className="mt-6">
                 <FormField
                     control={form.control}
                     name="bio"
@@ -180,7 +190,7 @@ export function AgentForm({ initialData }: AgentFormProps) {
                             <FormControl>
                                 <Textarea
                                     placeholder="Breve descripción del agente..."
-                                    className="h-24"
+                                    className="h-24 border-white/[0.1] bg-background/70 text-white"
                                     {...field}
                                 />
                             </FormControl>
@@ -188,12 +198,13 @@ export function AgentForm({ initialData }: AgentFormProps) {
                         </FormItem>
                     )}
                 />
+                </div>
 
-                <div className="flex gap-4">
+                <div className="mt-6 flex gap-4 border-t border-white/[0.06] pt-5">
                     <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="bg-gold-500 text-black hover:bg-gold-600 font-bold"
+                        className="brushed-gold rounded-full px-6 font-bold"
                     >
                         {isSubmitting ? (
                             <>

@@ -24,6 +24,15 @@ function createMockClient() {
   }
   return {
     from: () => fromReturn,
+    auth: {
+      signInWithPassword: () => Promise.resolve({ data: { user: null, session: null }, error: new Error("No Supabase config") }),
+      resetPasswordForEmail: () => Promise.resolve({ data: {}, error: new Error("No Supabase config") }),
+      exchangeCodeForSession: () => Promise.resolve({ data: { user: null, session: null }, error: new Error("No Supabase config") }),
+      setSession: () => Promise.resolve({ data: { user: null, session: null }, error: new Error("No Supabase config") }),
+      getSession: () => Promise.resolve({ data: { session: null }, error: null }),
+      updateUser: () => Promise.resolve({ data: { user: null }, error: new Error("No Supabase config") }),
+      signOut: () => Promise.resolve({ error: null }),
+    },
     storage: { from: () => ({ upload: noop, getPublicUrl: () => ({ data: { publicUrl: '' } }) }) },
   } as never
 }

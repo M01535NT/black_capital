@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ChevronDown, X } from "lucide-react";
+import { Search, ChevronDown, X, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface FilterConfig {
@@ -101,10 +101,33 @@ export function DataTable<TData extends object>({
         setActiveFilters({});
     }
 
+    function exportCsv() {
+        const rows = filteredData.map((row) => {
+            const record = row as Record<string, unknown>;
+            return Object.fromEntries(
+                Object.entries(record).filter(([, value]) =>
+                    ["string", "number", "boolean"].includes(typeof value)
+                )
+            );
+        });
+        const keys = Array.from(new Set(rows.flatMap((row) => Object.keys(row))));
+        const csv = [
+            keys.join(","),
+            ...rows.map((row) => keys.map((key) => JSON.stringify(row[key] ?? "")).join(",")),
+        ].join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `export-${new Date().toISOString().slice(0, 10)}.csv`;
+        link.click();
+        URL.revokeObjectURL(url);
+    }
+
     return (
         <div>
             {/* Search + Filters Bar */}
-            <div className="flex flex-wrap items-center gap-3 p-4 border-b border-foreground/10">
+            <div className="flex flex-wrap items-center gap-3 border-b border-white/[0.08] p-4">
                 {/* Search */}
                 <div className="relative flex-1 min-w-[200px] max-w-sm">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/50" />
@@ -115,12 +138,12 @@ export function DataTable<TData extends object>({
                             setGlobalSearch(e.target.value);
                             setPagination(prev => ({ ...prev, pageIndex: 0 }));
                         }}
-                        className="pl-9 h-9 text-sm bg-muted/20 border-foreground/10"
+                        className="h-10 border-white/[0.08] bg-background/70 pl-9 text-sm text-white placeholder:text-white/35 focus-visible:border-[var(--color-accent)] focus-visible:ring-0"
                     />
                     {globalSearch && (
                         <button
                             onClick={() => setGlobalSearch("")}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/50 hover:text-foreground/60"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/45 hover:text-white"
                         >
                             <X className="w-3.5 h-3.5" />
                         </button>
@@ -150,11 +173,18 @@ export function DataTable<TData extends object>({
                 {hasActiveFilters && (
                     <button
                         onClick={clearFilters}
-                        className="text-xs text-foreground/50 hover:text-foreground/70 transition-colors ml-auto"
+                        className="ml-auto text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent)] transition-colors hover:text-white"
                     >
                         Limpiar filtros
                     </button>
                 )}
+                <button
+                    onClick={exportCsv}
+                    className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white/45 transition-colors hover:text-[var(--color-accent)]"
+                >
+                    <Download className="h-3.5 w-3.5" />
+                    Exportar
+                </button>
             </div>
 
             {/* Table */}
@@ -162,9 +192,9 @@ export function DataTable<TData extends object>({
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id} className="border-foreground/10 hover:bg-transparent">
+                            <TableRow key={headerGroup.id} className="border-white/[0.08] hover:bg-transparent">
                                 {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id} className="text-foreground/70 font-bold text-xs uppercase tracking-wider">
+                                    <TableHead key={header.id} className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/42">
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(header.column.columnDef.header, header.getContext())}
@@ -179,7 +209,7 @@ export function DataTable<TData extends object>({
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className="border-foreground/10 hover:bg-muted/50"
+                                    className="border-white/[0.06] hover:bg-white/[0.025]"
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -191,7 +221,7 @@ export function DataTable<TData extends object>({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-32 text-center">
-                                    <div className="text-foreground/50 text-sm">
+                                    <div className="text-sm text-white/50">
                                         {hasActiveFilters
                                             ? "Sin resultados para los filtros actuales."
                                             : "No hay datos disponibles."}
@@ -204,8 +234,8 @@ export function DataTable<TData extends object>({
             </div>
 
             {/* Footer: Count + Pagination */}
-            <div className="flex items-center justify-between px-4 py-3 border-t border-foreground/10">
-                <span className="text-xs text-foreground/50">
+            <div className="flex items-center justify-between border-t border-white/[0.08] px-4 py-3">
+                <span className="text-xs text-white/45">
                     {filteredData.length} registro{filteredData.length !== 1 ? "s" : ""}
                     {filteredData.length !== data.length && (
                         <> de {data.length} totales</>
@@ -217,11 +247,11 @@ export function DataTable<TData extends object>({
                         size="sm"
                         onClick={() => table.previousPage()}
                         disabled={!table.getCanPreviousPage()}
-                        className="h-8 px-3 text-xs border-foreground/10"
+                        className="h-8 border-white/[0.1] bg-white/[0.02] px-3 text-xs text-white/65"
                     >
                         Anterior
                     </Button>
-                    <span className="text-xs text-foreground/50 px-1">
+                    <span className="px-1 text-xs text-white/45">
                         {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
                     </span>
                     <Button
@@ -229,7 +259,7 @@ export function DataTable<TData extends object>({
                         size="sm"
                         onClick={() => table.nextPage()}
                         disabled={!table.getCanNextPage()}
-                        className="h-8 px-3 text-xs border-foreground/10"
+                        className="h-8 border-white/[0.1] bg-white/[0.02] px-3 text-xs text-white/65"
                     >
                         Siguiente
                     </Button>
@@ -259,10 +289,10 @@ function FilterDropdown({
             <button
                 onClick={onToggle}
                 className={cn(
-                    "flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all",
+                    "flex items-center gap-1.5 border px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] transition-all",
                     current
-                        ? "bg-gold-500/10 border-gold-500/30 text-gold-500"
-                        : "bg-muted/20 border-foreground/10 text-foreground/60 hover:border-foreground/30"
+                        ? "border-[var(--color-accent)]/35 bg-[var(--color-accent)]/10 text-[var(--color-accent)]"
+                        : "border-white/[0.08] bg-white/[0.025] text-white/55 hover:border-white/[0.16] hover:text-white"
                 )}
             >
                 {filter.label}
@@ -272,17 +302,17 @@ function FilterDropdown({
             {isOpen && (
                 <>
                     <div className="fixed inset-0 z-10" onClick={onToggle} />
-                    <div className="absolute top-full mt-1 left-0 z-20 min-w-[160px] bg-card border border-foreground/10 rounded-xl shadow-2xl shadow-black/40 py-1 overflow-hidden">
+                    <div className="absolute left-0 top-full z-20 mt-1 min-w-[170px] overflow-hidden border border-white/[0.08] bg-[#0b0b0b] py-1 shadow-2xl shadow-black/40">
                         <button
                             onClick={() => onSelect(null)}
                             className={cn(
                                 "w-full text-left px-3 py-2 text-xs transition-colors",
-                                !current ? "text-gold-500 font-medium" : "text-foreground/60 hover:text-foreground"
+                                !current ? "font-medium text-[var(--color-accent)]" : "text-white/60 hover:text-white"
                             )}
                         >
                             Tod{filter.label.toLowerCase().endsWith("s") ? "os" : "as"}
                         </button>
-                        <div className="border-t border-foreground/5" />
+                        <div className="border-t border-white/[0.06]" />
                         {filter.options.map((opt) => (
                             <button
                                 key={opt}
@@ -290,8 +320,8 @@ function FilterDropdown({
                                 className={cn(
                                     "w-full text-left px-3 py-2 text-xs transition-colors",
                                     current === opt
-                                        ? "text-gold-500 font-medium bg-gold-500/5"
-                                        : "text-foreground/70 hover:bg-muted/50"
+                                        ? "bg-[var(--color-accent)]/10 font-medium text-[var(--color-accent)]"
+                                        : "text-white/70 hover:bg-white/[0.04]"
                                 )}
                             >
                                 {opt}

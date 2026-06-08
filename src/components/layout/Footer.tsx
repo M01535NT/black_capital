@@ -36,6 +36,7 @@ const brandLinks = [
 const corpLinks = [
     { name: "Nosotros", href: "/nosotros" },
     { name: "Herramientas", href: "/herramientas" },
+    { name: "Panel Admin", href: "/admin" },
     { name: "Aviso de Privacidad", href: "/legal/aviso-privacidad" },
     { name: "Términos de Uso", href: "/legal/terminos-condiciones" },
 ];

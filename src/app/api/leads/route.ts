@@ -1,19 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { validateSessionToken } from "@/lib/auth";
+import { canAccessAgentScopedResource, isAdmin, requireApiProfile } from "@/lib/auth";
 import { getLeadsCount } from "@/lib/data";
-
-async function checkAuth(): Promise<boolean> {
-  const { cookies } = await import("next/headers");
-  const cookieStore = await cookies();
-  const session = cookieStore.get("bc_admin_session");
-  return !!(session?.value && (await validateSessionToken(session.value)));
-}
+import { sendOperationalEmail } from "@/lib/email";
 
 export async function GET() {
   try {
-    if (!(await checkAuth())) {
+    const profile = await requireApiProfile();
+    if (!profile) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
     const newCount = await getLeadsCount("new");
@@ -27,7 +22,8 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    if (!(await checkAuth())) {
+    const profile = await requireApiProfile();
+    if (!profile) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
@@ -50,6 +46,9 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = createAdminClient();
+    const finalAssignedAgentId = isAdmin(profile)
+      ? (assigned_agent_id || null)
+      : (profile.agent_id || null);
     const { data, error } = await supabase
       .from("leads")
       .insert({
@@ -59,7 +58,7 @@ export async function POST(req: NextRequest) {
         source: source || "organic",
         status: status || "new",
         notes: notes?.trim() || null,
-        assigned_agent_id: assigned_agent_id || null,
+        assigned_agent_id: finalAssignedAgentId,
         property_id: property_id || null,
         privacy_accepted: privacy_accepted ?? true,
       })
@@ -71,6 +70,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
+    await supabase.from("lead_activities").insert({
+      lead_id: data.id,
+      actor_profile_id: profile.id,
+      type: "system",
+      title: "Lead creado",
+      body: notes?.trim() || null,
+      metadata: { source: source || "organic", assigned_agent_id: finalAssignedAgentId },
+    });
+
     return NextResponse.json({ lead: data }, { status: 201 });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Error interno del servidor";
@@ -81,7 +89,8 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    if (!(await checkAuth())) {
+    const profile = await requireApiProfile();
+    if (!profile) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
@@ -93,11 +102,24 @@ export async function PUT(req: NextRequest) {
     }
 
     const supabase = createAdminClient();
+    const { data: existingLead, error: existingError } = await supabase
+      .from("leads")
+      .select("assigned_agent_id, status")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (existingError || !existingLead) {
+      return NextResponse.json({ error: "Lead no encontrado" }, { status: 404 });
+    }
+    if (!canAccessAgentScopedResource(profile, existingLead.assigned_agent_id)) {
+      return NextResponse.json({ error: "No autorizado para este lead" }, { status: 403 });
+    }
+
     const updateData: Record<string, unknown> = {};
 
     if (status) updateData.status = status;
     if (notes !== undefined) updateData.notes = notes;
-    if (assigned_agent_id !== undefined) updateData.assigned_agent_id = assigned_agent_id;
+    if (assigned_agent_id !== undefined && isAdmin(profile)) updateData.assigned_agent_id = assigned_agent_id;
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json({ error: "No hay campos para actualizar" }, { status: 400 });
@@ -114,6 +136,59 @@ export async function PUT(req: NextRequest) {
       logger.error("API/leads", "[API /leads PUT]", error);
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
+
+    const activityRows = [];
+    if (status && status !== existingLead.status) {
+      activityRows.push({
+        lead_id: id,
+        actor_profile_id: profile.id,
+        type: "status_change",
+        title: "Estado actualizado",
+        metadata: { from: existingLead.status, to: status },
+      });
+    }
+    if (assigned_agent_id !== undefined && isAdmin(profile) && assigned_agent_id !== existingLead.assigned_agent_id) {
+      activityRows.push({
+        lead_id: id,
+        actor_profile_id: profile.id,
+        type: "assignment",
+        title: "Asignación actualizada",
+        metadata: { from: existingLead.assigned_agent_id, to: assigned_agent_id },
+      });
+      if (assigned_agent_id) {
+        const { data: recipient } = await supabase
+          .from("admin_profiles")
+          .select("id, email")
+          .eq("agent_id", assigned_agent_id)
+          .eq("is_active", true)
+          .maybeSingle();
+        if (recipient) {
+          await supabase.from("notifications").insert({
+            recipient_profile_id: recipient.id,
+            type: "assignment",
+            title: "Lead asignado",
+            body: "Se te asignó un lead para seguimiento.",
+            href: `/admin/leads/${id}`,
+          });
+          const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000";
+          await sendOperationalEmail({
+            to: recipient.email,
+            subject: "Nuevo lead asignado",
+            html: `<p>Se te asignó un lead para seguimiento.</p><p><a href="${siteUrl.replace(/\/$/, "")}/admin/leads/${id}">Abrir lead</a></p>`,
+          });
+        }
+      }
+    }
+    if (notes !== undefined) {
+      activityRows.push({
+        lead_id: id,
+        actor_profile_id: profile.id,
+        type: "note",
+        title: "Nota actualizada",
+        body: notes,
+      });
+    }
+    if (activityRows.length > 0) await supabase.from("lead_activities").insert(activityRows);
 
     return NextResponse.json({ lead: data });
   } catch (err) {

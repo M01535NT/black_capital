@@ -1,58 +1,62 @@
-/**
- * Admin authentication module.
- * Works in both Edge (middleware) and Node.js (API routes) runtimes.
- */
+import { redirect } from "next/navigation";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 
-export const AUTH_COOKIE = "bc_admin_session";
+export type AdminRole = "admin" | "agent";
 
-/** Derive a session token from the admin password using SHA-256. Works in Edge. */
-export async function deriveToken(password: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(`bc:${password}:v2`);
-  const hash = await crypto.subtle.digest("SHA-256", data);
-  return Array.from(new Uint8Array(hash), (b) =>
-    b.toString(16).padStart(2, "0")
-  ).join("");
+export interface AdminProfile {
+  id: string;
+  email: string;
+  full_name: string;
+  role: AdminRole;
+  agent_id: string | null;
+  is_active: boolean;
 }
 
-/**
- * Constant-time string comparison to mitigate timing attacks.
- * Returns true if both strings are byte-identical.
- */
-export function timingSafeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let result = 0;
-  for (let i = 0; i < a.length; i++) {
-    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return result === 0;
+export const ADMIN_LOGIN_PATH = "/admin/login";
+
+export async function getCurrentAdminProfile(): Promise<AdminProfile | null> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user?.id) return null;
+
+  const admin = createAdminClient();
+  const { data } = await admin
+    .from("admin_profiles")
+    .select("id, email, full_name, role, agent_id, is_active")
+    .eq("id", user.id)
+    .eq("is_active", true)
+    .maybeSingle();
+
+  return (data as AdminProfile | null) ?? null;
 }
 
-/** Validate a session token format (64 hex chars). Fast check for middleware. */
-export function isValidTokenFormat(token: string): boolean {
-  return /^[a-f0-9]{64}$/.test(token);
+export async function requireAdminSession(): Promise<AdminProfile> {
+  const profile = await getCurrentAdminProfile();
+  if (!profile) redirect(ADMIN_LOGIN_PATH);
+  return profile;
 }
 
-/** Full validation: derive expected token from ADMIN_PASSWORD and compare. */
-export async function validateSessionToken(token: string): Promise<boolean> {
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  if (!adminPassword) return false;
-  const expected = await deriveToken(adminPassword);
-  return timingSafeEqual(token, expected);
+export async function requireAdminRole(): Promise<AdminProfile> {
+  const profile = await requireAdminSession();
+  if (profile.role !== "admin") redirect("/admin");
+  return profile;
 }
 
-/**
- * Server-component auth guard. Call at the top of admin pages.
- * Redirects to /admin/login if the session is invalid.
- * Only works in Node.js runtime (NOT Edge middleware).
- */
-export async function requireAdminSession(): Promise<void> {
-  const { cookies } = await import("next/headers");
-  const { redirect } = await import("next/navigation");
-  const cookieStore = await cookies();
-  const session = cookieStore.get(AUTH_COOKIE);
+export async function requireApiProfile(): Promise<AdminProfile | null> {
+  return getCurrentAdminProfile();
+}
 
-  if (!session?.value || !(await validateSessionToken(session.value))) {
-    redirect("/admin/login");
-  }
+export function isAdmin(profile: AdminProfile | null): boolean {
+  return profile?.role === "admin";
+}
+
+export function canAccessAgentScopedResource(
+  profile: AdminProfile,
+  assignedAgentId?: string | null,
+): boolean {
+  return profile.role === "admin" || (!!profile.agent_id && assignedAgentId === profile.agent_id);
 }

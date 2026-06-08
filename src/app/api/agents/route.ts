@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { validateSessionToken } from "@/lib/auth";
+import { isAdmin, requireApiProfile } from "@/lib/auth";
 
 /**
  * Normaliza email: convierte string vacío a null para evitar
@@ -38,16 +38,10 @@ function translateError(error: { code?: string; message?: string; details?: stri
 }
 
 // ── Auth helper ──
-async function checkAuth(): Promise<boolean> {
-  const { cookies } = await import("next/headers");
-  const cookieStore = await cookies();
-  const session = cookieStore.get("bc_admin_session");
-  return !!(session?.value && (await validateSessionToken(session.value)));
-}
-
 export async function GET() {
   try {
-    if (!(await checkAuth())) {
+    const profile = await requireApiProfile();
+    if (!profile) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
     const supabase = createAdminClient();
@@ -71,7 +65,8 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
     try {
-        if (!(await checkAuth())) {
+        const profile = await requireApiProfile();
+        if (!profile || !isAdmin(profile)) {
             return NextResponse.json({ error: "No autorizado" }, { status: 401 });
         }
         const data = await req.json();
@@ -115,7 +110,8 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
     try {
-        if (!(await checkAuth())) {
+        const profile = await requireApiProfile();
+        if (!profile || !isAdmin(profile)) {
             return NextResponse.json({ error: "No autorizado" }, { status: 401 });
         }
         const data = await req.json();
@@ -159,7 +155,8 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     try {
-        if (!(await checkAuth())) {
+        const profile = await requireApiProfile();
+        if (!profile || !isAdmin(profile)) {
             return NextResponse.json({ error: "No autorizado" }, { status: 401 });
         }
         const { searchParams } = new URL(req.url);

@@ -275,8 +275,17 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit, () => {
                 scrollToFirstError();
-            })} className="flex flex-col gap-8" noValidate>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            })} className="flex flex-col gap-6 border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6" noValidate>
+                <div className="border-b border-white/[0.06] pb-5">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+                        Contenido de propiedad
+                    </p>
+                    <p className="mt-2 text-sm text-white/55">
+                        Completa la información pública, operación, multimedia y asignación comercial.
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <FormField
                         control={form.control}
                         name="title"
@@ -284,7 +293,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                             <FormItem className="col-span-1 md:col-span-2">
                                 <FormLabel>Título de la Propiedad</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Ej. Lujoso Penthouse en Polanco" {...field} />
+                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="Ej. Casa en Zona Río" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -298,7 +307,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                             <FormItem className="col-span-1 md:col-span-2">
                                 <FormLabel>Slug (URL amigable para SEO)</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="ej-lujoso-penthouse-polanco" value={field.value ?? ""} onChange={field.onChange} />
+                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="casa-en-zona-rio" value={field.value ?? ""} onChange={field.onChange} />
                                 </FormControl>
                                 <FormDescription>
                                     Deja en blanco para generar automáticamente desde el título. Solo letras, números y guiones.
@@ -417,6 +426,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                                 <FormLabel>Precio</FormLabel>
                                 <FormControl>
                                     <Input
+                                        className="border-white/[0.1] bg-background/70 text-white"
                                         type="text"
                                         inputMode="numeric"
                                         placeholder="Ej. 5000000"
@@ -463,6 +473,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                                 <FormLabel>Terreno (m²)</FormLabel>
                                 <FormControl>
                                     <Input
+                                        className="border-white/[0.1] bg-background/70 text-white"
                                         type="text"
                                         inputMode="numeric"
                                         placeholder="Ej. 250"
@@ -488,6 +499,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                                 <FormLabel>Construcción (m²)</FormLabel>
                                 <FormControl>
                                     <Input
+                                        className="border-white/[0.1] bg-background/70 text-white"
                                         type="text"
                                         inputMode="numeric"
                                         placeholder="Ej. 180"
@@ -513,14 +525,14 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         <FormItem>
                             <FormLabel>Descripción</FormLabel>
                             <FormControl>
-                                <Textarea placeholder="Descripción detallada de la propiedad..." className="h-32" {...field} />
+                                <Textarea placeholder="Descripción detallada de la propiedad..." className="h-32 border-white/[0.1] bg-background/70 text-white" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 border-t border-white/[0.06] pt-6 md:grid-cols-2">
                     <FormField
                         control={form.control}
                         name="address"
@@ -528,7 +540,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                             <FormItem>
                                 <FormLabel>Dirección</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Ej. Av. Paseo de la Reforma 222, Ciudad de México" value={field.value ?? ""} onChange={field.onChange} />
+                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="Ej. Zona Río, Tijuana" value={field.value ?? ""} onChange={field.onChange} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -541,7 +553,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                             <FormItem>
                                 <FormLabel>Imagen de Portada (URL)</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="https://..." value={field.value ?? ""} onChange={field.onChange} />
+                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="https://..." value={field.value ?? ""} onChange={field.onChange} />
                                 </FormControl>
                                 <FormDescription>URL externa o deja en blanco para usar la primera imagen subida.</FormDescription>
                                 <FormMessage />
@@ -550,7 +562,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <FormField
                         control={form.control}
                         name="video_url"
@@ -558,7 +570,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                             <FormItem>
                                 <FormLabel>Video Promocional (Link Youtube/Vimeo)</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="https://youtube.com/..." value={field.value ?? ""} onChange={field.onChange} />
+                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="https://youtube.com/..." value={field.value ?? ""} onChange={field.onChange} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -571,7 +583,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                             <FormItem>
                                 <FormLabel>Virtual Tour 360 (Kuula / Matterport)</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="https://kuula.co/..." value={field.value ?? ""} onChange={field.onChange} />
+                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="https://kuula.co/..." value={field.value ?? ""} onChange={field.onChange} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -580,9 +592,9 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 </div>
 
                 {/* ── Agent Assignment (Multi-select from registered agents) ── */}
-                <div className="border border-foreground/10 rounded-lg p-6 flex flex-col gap-4">
-                    <h3 className="text-lg font-bold">Asignación de Asesores</h3>
-                    <p className="text-sm text-foreground/50">
+                <div className="flex flex-col gap-4 border border-white/[0.08] bg-white/[0.025] p-5">
+                    <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/48">Asignación de asesores</h3>
+                    <p className="text-sm text-white/50">
                         Selecciona uno o varios agentes del equipo. Solo aparecen agentes activos.
                     </p>
                     <FormField
@@ -606,7 +618,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     />
                 </div>
 
-                <div className="flex flex-wrap gap-6 p-4 border border-foreground/10 flex-col md:flex-row rounded-lg items-center">
+                <div className="flex flex-col flex-wrap gap-6 border border-white/[0.08] bg-white/[0.025] p-4 md:flex-row md:items-center">
                     <FormField
                         control={form.control}
                         name="is_featured"
@@ -652,21 +664,21 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 </div>
 
                 {/* ── Imágenes ── */}
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 border border-white/[0.08] bg-white/[0.025] p-5">
                     <FormLabel>Imágenes (JPG, PNG, WEBP)</FormLabel>
-                    <Input type="file" multiple accept="image/*" onChange={handleImageChange} className="cursor-pointer file:bg-gold-500 file:text-black file:border-none file:mr-4 file:-ml-3 file:py-1 file:px-4 file:rounded-md hover:file:bg-gold-600" />
+                    <Input type="file" multiple accept="image/*" onChange={handleImageChange} className="cursor-pointer border-white/[0.1] bg-background/70 text-white file:mr-4 file:border-none file:bg-[var(--color-accent)] file:px-4 file:py-1 file:text-black hover:file:brightness-105" />
                     <FormDescription>Se comprimirán automáticamente a WebP antes de subir.</FormDescription>
                 </div>
 
                 {/* ── Documentos PDF (múltiples) ── */}
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 border border-white/[0.08] bg-white/[0.025] p-5">
                     <FormLabel>Documentos (PDF) — Ficha técnica, escrituras, avalúos, etc.</FormLabel>
                     <Input
                         type="file"
                         multiple
                         accept="application/pdf"
                         onChange={handlePdfChange}
-                        className="cursor-pointer file:bg-steel-500 file:text-black file:border-none file:mr-4 file:-ml-3 file:py-1 file:px-4 file:rounded-md hover:file:bg-steel-600"
+                        className="cursor-pointer border-white/[0.1] bg-background/70 text-white file:mr-4 file:border-none file:bg-white file:px-4 file:py-1 file:text-black hover:file:brightness-95"
                     />
                     <FormDescription>
                         Puedes subir varios archivos. Asígnales una etiqueta para identificarlos.
@@ -676,20 +688,20 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     {pdfEntries.length > 0 && (
                         <div className="space-y-2 mt-3">
                             {pdfEntries.map((entry, i) => (
-                                <div key={i} className="flex items-center gap-2 bg-muted/30 rounded-lg p-2 pl-3 border border-foreground/10">
-                                    <span className="text-xs text-muted-foreground truncate flex-1 min-w-0">
+                                <div key={i} className="flex items-center gap-2 border border-white/[0.08] bg-white/[0.025] p-2 pl-3">
+                                    <span className="min-w-0 flex-1 truncate text-xs text-white/50">
                                         {entry.file.name}
                                     </span>
                                     <Input
                                         value={entry.label}
                                         onChange={e => updatePdfLabel(i, e.target.value)}
                                         placeholder="Ej. Ficha Técnica"
-                                        className="w-40 h-8 text-xs"
+                                        className="h-8 w-40 border-white/[0.1] bg-background/70 text-xs text-white"
                                     />
                                     <button
                                         type="button"
                                         onClick={() => removePdfEntry(i)}
-                                        className="p-1 min-w-[32px] min-h-[32px] text-muted-foreground hover:text-red-400 flex items-center justify-center"
+                                        className="flex min-h-[32px] min-w-[32px] items-center justify-center p-1 text-white/45 hover:text-red-400"
                                     >
                                         <X className="w-4 h-4" />
                                     </button>
@@ -699,11 +711,11 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     )}
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
-                    <Button type="button" variant="outline" onClick={() => router.push('/admin/properties')} className="w-full sm:w-auto order-last sm:order-first">
+                <div className="flex flex-col gap-4 border-t border-white/[0.06] pt-5 sm:flex-row">
+                    <Button type="button" variant="outline" onClick={() => router.push('/admin/properties')} className="order-last w-full rounded-full border-white/[0.12] bg-white/[0.025] text-white sm:order-first sm:w-auto">
                         Cancelar
                     </Button>
-                    <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto flex-1 bg-gold-500 text-black hover:bg-gold-600 font-bold">
+                    <Button type="submit" disabled={isSubmitting} className="brushed-gold w-full flex-1 rounded-full font-bold sm:w-auto">
                         {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <UploadCloud className="mr-2 h-4 w-4" />}
                         {isSubmitting ? "Guardando y subiendo archivos..." : "Guardar Propiedad"}
                     </Button>

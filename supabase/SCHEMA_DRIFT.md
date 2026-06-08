@@ -30,6 +30,26 @@ al de producción.
 | 2026-06-05 | `20260605_fix_leads_policies.sql` | aplicada (limpia duplicados) |
 | 2026-06-05 | `20260605_add_updated_at_triggers.sql` | aplicada (triggers que faltaban) |
 | 2026-06-05 | `20260605_drop_system_logs.sql` | aplicada (tabla huérfana) |
+| 2026-06-07 | `20260607223117_harden_public_rls_and_storage.sql` | aplicada (cierra policies directas y listing de bucket público) |
+| 2026-06-07 | `20260607223152_explicit_leads_denial_and_property_agent_index.sql` | aplicada (denegación explícita de leads e índice de `property_agents.agent_id`) |
+
+## Estado auditado 2026-06-07
+
+Supabase Advisors queda sin avisos de seguridad después de las migraciones
+`20260607223117_*` y `20260607223152_*`.
+
+Modelo actual:
+
+- Lectura pública permitida:
+  - `properties`: solo `status = 'Available'`.
+  - `agents`: solo `is_active = true`.
+  - `property_agents`: solo relaciones de propiedades disponibles.
+- `leads`: sin acceso directo desde `anon`/`authenticated`; se insertan y
+  administran mediante API routes con `SUPABASE_SERVICE_ROLE_KEY`.
+- Storage:
+  - El bucket `public` sirve URLs públicas por configuración de bucket, pero
+    ya no expone policies amplias de listado sobre `storage.objects`.
+  - `secure-brochures` permanece privado.
 
 ## Drift original (pre 2026-06-05)
 

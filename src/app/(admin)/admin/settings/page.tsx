@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Save, Image as ImageIcon, Type, Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+import { AdminPageHeader } from "@/components/admin/admin-ui";
 
 interface AppSettings {
     heroVideoUrl: string;
@@ -119,14 +120,15 @@ export default function SettingsPage() {
     }
 
     return (
-        <div className="space-y-6 max-w-4xl mx-auto">
-            <div>
-                <h2 className="font-display uppercase tracking-wider text-3xl text-foreground">Configuración</h2>
-                <p className="text-foreground/50 text-sm mt-1">Personaliza contenido, contacto y mensajes del sitio.</p>
-            </div>
+        <div className="mx-auto max-w-4xl space-y-6">
+            <AdminPageHeader
+                eyebrow="Sistema"
+                title="Configuración"
+                description="Personaliza contenido, contacto y mensajes operativos del sitio."
+            />
 
             {/* Hero */}
-            <Card>
+            <Card className="rounded-none border-white/[0.08] bg-white/[0.025]">
                 <CardHeader className="flex flex-row items-center gap-3">
                     <ImageIcon className="w-5 h-5 text-gold-500" />
                     <CardTitle>Hero Homepage</CardTitle>
@@ -152,7 +154,7 @@ export default function SettingsPage() {
             </Card>
 
             {/* Brand Pages */}
-            <Card>
+            <Card className="rounded-none border-white/[0.08] bg-white/[0.025]">
                 <CardHeader className="flex flex-row items-center gap-3">
                     <Type className="w-5 h-5 text-gold-500" />
                     <CardTitle>Títulos de Marcas</CardTitle>
@@ -163,7 +165,7 @@ export default function SettingsPage() {
                         { keyTitle: "businessHeroTitle", keySubtitle: "businessHeroSubtitle", label: "Black Business" },
                         { keyTitle: "industrialHeroTitle", keySubtitle: "industrialHeroSubtitle", label: "Black Industrial" },
                     ] satisfies Array<{ keyTitle: keyof AppSettings; keySubtitle: keyof AppSettings; label: string }>).map((brand) => (
-                        <div key={brand.label} className="space-y-3 p-4 bg-muted/20 rounded-xl border border-foreground/5">
+                        <div key={brand.label} className="space-y-3 border border-white/[0.08] bg-background/70 p-4">
                             <p className="text-xs font-bold uppercase tracking-wider text-gold-500 font-display">{brand.label}</p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -187,7 +189,7 @@ export default function SettingsPage() {
             </Card>
 
             {/* Contact */}
-            <Card>
+            <Card className="rounded-none border-white/[0.08] bg-white/[0.025]">
                 <CardHeader className="flex flex-row items-center gap-3">
                     <Phone className="w-5 h-5 text-gold-500" />
                     <CardTitle>Información de Contacto</CardTitle>
@@ -227,7 +229,7 @@ export default function SettingsPage() {
             </Card>
 
             {/* WhatsApp */}
-            <Card>
+            <Card className="rounded-none border-white/[0.08] bg-white/[0.025]">
                 <CardHeader className="flex flex-row items-center gap-3">
                     <MessageCircle className="w-5 h-5 text-gold-500" />
                     <CardTitle>Plantilla WhatsApp</CardTitle>
@@ -249,7 +251,7 @@ export default function SettingsPage() {
                 <Button
                     onClick={handleSave}
                     disabled={saving}
-                    className="bg-gold-500 text-black hover:bg-gold-600 font-bold"
+                    className="brushed-gold rounded-full font-bold"
                 >
                     {saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                     Guardar Configuración

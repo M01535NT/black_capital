@@ -1,7 +1,8 @@
 import { AdminSidebar } from "@/components/admin/Sidebar";
+import { AdminTopbarActions } from "@/components/admin/topbar-actions";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { ExternalLink, Menu } from "lucide-react";
 import {
     Drawer,
     DrawerContent,
@@ -15,40 +16,48 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+        <div className="grid min-h-screen w-full bg-background text-white md:grid-cols-[256px_1fr]">
             <AdminSidebar />
-            <div className="flex flex-col">
-                <header className="flex h-14 items-center gap-4 border-b border-foreground/10 bg-card px-4 lg:h-[60px] lg:px-6">
+            <div className="flex min-w-0 flex-col">
+                <header className="flex h-16 items-center gap-4 border-b border-white/[0.08] bg-background/95 px-4 backdrop-blur-xl lg:px-6">
                     <Drawer direction="left">
                         <DrawerTrigger asChild>
                             <Button
                                 variant="outline"
                                 size="icon"
-                                className="shrink-0 md:hidden"
+                                className="shrink-0 rounded-full border-white/[0.12] bg-white/[0.025] text-white md:hidden"
                             >
                                 <Menu className="h-5 w-5" />
                                 <span className="sr-only">Abrir menú de navegación</span>
                             </Button>
                         </DrawerTrigger>
-                        <DrawerContent className="w-64 sm:max-w-xs h-full rounded-none bg-card border-r border-foreground/10">
-                            <div className="flex h-14 items-center border-b px-4 lg:h-[60px]">
-                                <Link href="/" className="font-display font-bold text-xl tracking-tight text-foreground">
-                                    BLACK <span className="text-gold-500">CORP</span>
+                        <DrawerContent className="h-full w-72 rounded-none border-r border-white/[0.08] bg-[#070707] sm:max-w-xs">
+                            <div className="flex h-16 items-center border-b border-white/[0.08] px-5">
+                                <Link href="/" className="font-display text-xl font-bold uppercase leading-none tracking-wide text-white">
+                                    Black <span className="block text-sm font-light tracking-[0.18em] text-[var(--color-accent)]">Capital</span>
                                 </Link>
                             </div>
                             <div className="p-4 flex flex-col gap-2">
-                                <Link href="/admin" className="rounded-lg px-3 py-2 text-foreground/70 hover:text-foreground hover:bg-muted font-bold">Dashboard</Link>
-                                <Link href="/admin/properties" className="rounded-lg px-3 py-2 text-foreground/70 hover:text-foreground hover:bg-muted font-bold">Inventario</Link>
-                                <Link href="/admin/leads" className="rounded-lg px-3 py-2 text-foreground/70 hover:text-foreground hover:bg-muted font-bold">Leads</Link>
+                                <Link href="/admin" className="border border-white/[0.08] px-3 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white/70 hover:text-[var(--color-accent)]">Dashboard</Link>
+                                <Link href="/admin/properties" className="border border-white/[0.08] px-3 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white/70 hover:text-[var(--color-accent)]">Inventario</Link>
+                                <Link href="/admin/leads" className="border border-white/[0.08] px-3 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white/70 hover:text-[var(--color-accent)]">Leads</Link>
                             </div>
                         </DrawerContent>
                     </Drawer>
 
                     <div className="w-full flex-1" />
+                    <Link
+                        href="/"
+                        className="hidden items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white/45 transition-colors hover:text-[var(--color-accent)] sm:inline-flex"
+                    >
+                        Sitio público
+                        <ExternalLink className="h-3.5 w-3.5" />
+                    </Link>
                     <ModeToggle />
+                    <AdminTopbarActions />
                 </header>
 
-                <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-background">
+                <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
                     {children}
                 </main>
             </div>

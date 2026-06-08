@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Building2, Users, UserCircle, Settings } from "lucide-react";
+import { LayoutDashboard, Building2, Users, UserCircle, Settings, UserCog } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -11,6 +11,7 @@ const navItems = [
     { title: "Inventario", href: "/admin/properties", icon: Building2 },
     { title: "Agentes", href: "/admin/agents", icon: UserCircle },
     { title: "Leads B2B/B2C", href: "/admin/leads", icon: Users },
+    { title: "Usuarios", href: "/admin/users", icon: UserCog },
     { title: "Configuración", href: "/admin/settings", icon: Settings },
 ];
 
@@ -43,14 +44,14 @@ export function AdminSidebar() {
     };
 
     return (
-        <nav className="hidden border-r border-foreground/10 bg-card md:block w-64 h-full">
-            <div className="flex h-14 items-center border-b border-foreground/10 px-4 lg:h-[60px] lg:px-6">
-                <Link href="/" className="font-display font-bold text-xl tracking-wider text-foreground uppercase">
-                    Black <span className="text-gold-500">Corp</span>
+        <nav className="hidden h-full w-64 border-r border-white/[0.08] bg-[#070707] md:block">
+            <div className="flex h-16 items-center border-b border-white/[0.08] px-5">
+                <Link href="/" className="font-display text-xl font-bold uppercase leading-none tracking-wide text-white">
+                    Black <span className="block text-sm font-light tracking-[0.18em] text-[var(--color-accent)]">Capital</span>
                 </Link>
             </div>
-            <div className="flex-1 overflow-auto py-4">
-                <div className="grid items-start px-2 text-sm font-medium lg:px-4">
+            <div className="flex-1 overflow-auto py-5">
+                <div className="grid items-start px-3 text-sm font-medium">
                     {navItems.map((item) => {
                         const active = isActive(item.href);
                         const showBadge = item.href === "/admin/leads" && newLeadsCount !== null && newLeadsCount > 0;
@@ -59,16 +60,16 @@ export function AdminSidebar() {
                                 key={item.href}
                                 href={item.href}
                                 className={cn(
-                                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-foreground/70 transition-all hover:text-foreground mb-1 uppercase text-xs tracking-wider font-display",
+                                    "mb-1 flex items-center gap-3 border border-transparent px-3 py-3 font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-white/55 transition-colors",
                                     active
-                                        ? "bg-gold-500/10 text-gold-500 font-bold border-l-2 border-gold-500"
-                                        : "hover:bg-muted/30"
+                                        ? "border-[var(--color-accent)]/30 bg-[var(--color-accent)]/10 text-[var(--color-accent)]"
+                                        : "hover:border-white/[0.08] hover:bg-white/[0.025] hover:text-white"
                                 )}
                             >
-                                <item.icon className={cn("h-4 w-4", active ? "text-gold-500" : "text-foreground/50")} />
+                                <item.icon className={cn("h-4 w-4", active ? "text-[var(--color-accent)]" : "text-white/38")} />
                                 <span className="flex-1">{item.title}</span>
                                 {showBadge && (
-                                    <span className="bg-gold-500 text-black text-caption font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                                    <span className="min-w-[18px] bg-[var(--color-accent)] px-1.5 py-0.5 text-center text-caption font-bold text-black">
                                         {newLeadsCount}
                                     </span>
                                 )}

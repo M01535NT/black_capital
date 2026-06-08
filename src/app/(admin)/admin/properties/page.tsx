@@ -1,19 +1,33 @@
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdminSession } from "@/lib/auth";
+import { isAdmin, requireAdminSession } from "@/lib/auth";
 import { DataTable } from "@/components/admin/data-table";
 import { columns, PropertyRow } from "./columns";
-import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import Link from "next/link";
+import { AdminPageHeader, adminCardClass } from "@/components/admin/admin-ui";
 
 export default async function PropertiesPage() {
-    await requireAdminSession();
+    const profile = await requireAdminSession();
     const supabase = createAdminClient();
 
-    const { data: properties, error } = await supabase
+    let query = supabase
         .from("properties")
-        .select("id, title, property_use, business_type, status, price, currency")
+        .select("id, title, property_use, business_type, status, price, currency, updated_at, cover_image")
         .order("created_at", { ascending: false });
+
+    if (!isAdmin(profile)) {
+        if (!profile.agent_id) {
+            query = query.eq("id", "00000000-0000-0000-0000-000000000000");
+        } else {
+            const { data: assigned } = await supabase
+                .from("property_agents")
+                .select("property_id")
+                .eq("agent_id", profile.agent_id);
+            const ids = (assigned || []).map((row) => row.property_id);
+            query = ids.length > 0 ? query.in("id", ids) : query.eq("id", "00000000-0000-0000-0000-000000000000");
+        }
+    }
+
+    const { data: properties, error } = await query;
 
     if (error) {
         console.error("Error fetching properties:", error);
@@ -23,19 +37,14 @@ export default async function PropertiesPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div>
-                    <h2 className="font-display uppercase tracking-wider text-3xl text-foreground">Inventario</h2>
-                    <p className="text-foreground/50 text-sm">Gestiona las propiedades activas e inactivas.</p>
-                </div>
-                <Link href="/admin/properties/new">
-                    <Button className="bg-gold-500 text-black hover:bg-gold-600 gap-2">
-                        <Plus className="h-4 w-4" /> Nueva Propiedad
-                    </Button>
-                </Link>
-            </div>
+            <AdminPageHeader
+                eyebrow="Inventario"
+                title="Propiedades"
+                description="Gestiona disponibilidad, operación, precio y contenido público de cada activo."
+                action={{ label: "Nueva propiedad", href: "/admin/properties/new", icon: Plus }}
+            />
 
-            <div className="bg-card border border-foreground/10 rounded-xl overflow-hidden shadow-sm">
+            <div className={`${adminCardClass} overflow-hidden`}>
                 <DataTable
                     columns={columns}
                     data={data}

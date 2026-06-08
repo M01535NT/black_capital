@@ -24,6 +24,8 @@ export type PropertyRow = {
     status: string;
     price: number;
     currency: string;
+    updated_at?: string | null;
+    cover_image?: string | null;
 };
 
 function DeleteButton({ propertyId }: { propertyId: string }) {
@@ -125,6 +127,18 @@ export const columns: ColumnDef<PropertyRow>[] = [
                 </Badge>
             );
         }
+    },
+    {
+        accessorKey: "updated_at",
+        header: "Actualizado",
+        cell: ({ row }) => {
+            const value = row.original.updated_at;
+            return (
+                <span className="text-sm text-foreground/50">
+                    {value ? new Intl.DateTimeFormat("es-MX", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(value)) : "—"}
+                </span>
+            );
+        },
     },
     {
         id: "actions",

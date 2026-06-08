@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { validateSessionToken } from "@/lib/auth";
+import { isAdmin, requireApiProfile } from "@/lib/auth";
 import type { Database } from "@/types/database.types";
 
 type PropertyRow = Database["public"]["Tables"]["properties"]["Row"];
@@ -23,11 +23,8 @@ const seedProperties = [
 
 // Changed from GET to POST — must be called intentionally, not accidental GET
 export async function POST() {
-  // Auth check
-  const { cookies } = await import("next/headers");
-  const cookieStore = await cookies();
-  const session = cookieStore.get("bc_admin_session");
-  if (!session?.value || !(await validateSessionToken(session.value))) {
+  const profile = await requireApiProfile();
+  if (!profile || !isAdmin(profile)) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 

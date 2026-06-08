@@ -1,14 +1,15 @@
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdminSession } from "@/lib/auth";
+import { requireAdminRole } from "@/lib/auth";
 import { PropertyForm } from "@/components/admin/property-form";
 import { notFound } from "next/navigation";
+import { AdminPageHeader } from "@/components/admin/admin-ui";
 
 export default async function EditPropertyPage({
     params,
 }: {
     params: Promise<{ id: string }>;
 }) {
-    await requireAdminSession();
+    await requireAdminRole();
     const { id } = await params;
     const supabase = createAdminClient();
 
@@ -32,22 +33,14 @@ export default async function EditPropertyPage({
     const agentIds = (assignments || []).map((a: any) => a.agent_id);
 
     return (
-        <div className="space-y-6">
-            <div>
-                <h2 className="text-2xl font-bold tracking-tight text-foreground">Editar Propiedad</h2>
-                <p className="text-muted-foreground">
-                    Modifica los detalles del inventario.
-                </p>
-            </div>
-
-            <div className="bg-background border border-foreground/10 rounded-xl p-6 relative">
-                <PropertyForm
-                    initialData={{
-                        ...property,
-                        agent_ids: agentIds,
-                    }}
-                />
-            </div>
+        <div className="mx-auto w-full max-w-5xl space-y-6">
+            <AdminPageHeader eyebrow="Inventario" title="Editar propiedad" description="Actualiza contenido, precio, multimedia y asignaciones." />
+            <PropertyForm
+                initialData={{
+                    ...property,
+                    agent_ids: agentIds,
+                }}
+            />
         </div>
     );
 }

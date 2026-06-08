@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
-import { promises as fs } from "fs";
-import path from "path";
-import { validateSessionToken } from "@/lib/auth";
-
-const SETTINGS_FILE = path.join(process.cwd(), "src", "lib", "settings.json");
+import { createAdminClient } from "@/lib/supabase/admin";
+import { isAdmin, requireApiProfile } from "@/lib/auth";
 
 export interface AppSettings {
   heroVideoUrl?: string;
@@ -46,29 +43,23 @@ const DEFAULTS: AppSettings = {
 };
 
 async function readSettings(): Promise<AppSettings> {
-  try {
-    const raw = await fs.readFile(SETTINGS_FILE, "utf-8");
-    const parsed = JSON.parse(raw) as AppSettings;
-    return { ...DEFAULTS, ...parsed };
-  } catch (err) {
-    logger.error("API/settings", "[Settings] Error reading settings file:", err instanceof Error ? err.message : err);
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("app_settings")
+    .select("value")
+    .eq("key", "site")
+    .maybeSingle();
+  if (error) {
+    logger.error("API/settings", "[Settings] Error reading settings:", error);
     return { ...DEFAULTS };
   }
-}
-
-async function writeSettings(settings: AppSettings) {
-  const dir = path.dirname(SETTINGS_FILE);
-  await fs.mkdir(dir, { recursive: true });
-  await fs.writeFile(SETTINGS_FILE, JSON.stringify(settings, null, 2), "utf-8");
+  return { ...DEFAULTS, ...((data?.value as AppSettings | null) || {}) };
 }
 
 export async function GET() {
   try {
-    // Auth check
-    const { cookies } = await import("next/headers");
-    const cookieStore = await cookies();
-    const session = cookieStore.get("bc_admin_session");
-    if (!session?.value || !(await validateSessionToken(session.value))) {
+    const profile = await requireApiProfile();
+    if (!profile) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
@@ -83,11 +74,8 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    // Auth check
-    const { cookies } = await import("next/headers");
-    const cookieStore = await cookies();
-    const session = cookieStore.get("bc_admin_session");
-    if (!session?.value || !(await validateSessionToken(session.value))) {
+    const profile = await requireApiProfile();
+    if (!profile || !isAdmin(profile)) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
@@ -103,7 +91,24 @@ export async function POST(req: NextRequest) {
 
     const existing = await readSettings();
     const merged = { ...existing, ...sanitized };
-    await writeSettings(merged);
+    const supabase = createAdminClient();
+    const { error } = await supabase
+      .from("app_settings")
+      .upsert({ key: "site", value: merged, updated_by: profile.id, updated_at: new Date().toISOString() });
+
+    if (error) {
+      logger.error("API/settings", "[Settings POST] Supabase error", error);
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    await supabase.from("audit_logs").insert({
+      actor_profile_id: profile.id,
+      action: "settings.update",
+      entity_type: "app_settings",
+      entity_id: "site",
+      metadata: { keys: Object.keys(sanitized) },
+    });
+
     return NextResponse.json(merged);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Error interno del servidor";

@@ -5,11 +5,12 @@ import { DataTable } from "@/components/admin/data-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { PlusCircle, Loader2, X, Check, ChevronDown, Users } from "lucide-react";
+import { AlertTriangle, BellRing, Clock, PlusCircle, Loader2, X, Check, ChevronDown, Users, Columns3, Table2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
+import { AdminEmptyState, AdminPageHeader, adminCardClass } from "@/components/admin/admin-ui";
 
 interface Lead {
     id: string;
@@ -20,6 +21,10 @@ interface Lead {
     status: string;
     assigned_agent_id?: string | null;
     created_at: string;
+    pending_tasks?: number;
+    overdue_tasks?: number;
+    due_today_tasks?: number;
+    last_activity_at?: string | null;
 }
 
 interface Agent {
@@ -34,11 +39,11 @@ interface LeadsPageClientProps {
 }
 
 const STATUS_OPTIONS = [
-    { value: "new", label: "Nuevo", color: "bg-blue-500/10 text-blue-500 border-blue-500/20" },
-    { value: "contacted", label: "Contactado", color: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20" },
-    { value: "qualified", label: "Calificado", color: "bg-purple-500/10 text-purple-500 border-purple-500/20" },
-    { value: "lost", label: "Perdido", color: "bg-red-500/10 text-red-500 border-red-500/20" },
-    { value: "won", label: "Ganado", color: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" },
+    { value: "new", label: "Nuevo", color: "bg-sky-500/10 text-sky-400 border-sky-500/20" },
+    { value: "contacted", label: "Contactado", color: "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/20" },
+    { value: "qualified", label: "Calificado", color: "bg-white/[0.06] text-white/75 border-white/[0.12]" },
+    { value: "lost", label: "Perdido", color: "bg-red-500/10 text-red-400 border-red-500/20" },
+    { value: "won", label: "Ganado", color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
 ];
 
 const sourceLabels: Record<string, string> = {
@@ -50,6 +55,19 @@ const sourceLabels: Record<string, string> = {
     landing_business: "Business",
     landing_industrial: "Industrial",
 };
+
+function getLeadAttention(lead: Lead) {
+    const lastActivity = lead.last_activity_at ? new Date(lead.last_activity_at) : null;
+    const createdAt = new Date(lead.created_at);
+    const reference = lastActivity || createdAt;
+    const daysWithoutFollowUp = Math.floor((Date.now() - reference.getTime()) / 86_400_000);
+    return {
+        isOverdue: (lead.overdue_tasks || 0) > 0,
+        dueToday: (lead.due_today_tasks || 0) > 0,
+        stale: lead.status !== "won" && lead.status !== "lost" && daysWithoutFollowUp >= 3,
+        daysWithoutFollowUp,
+    };
+}
 
 function StatusCell({ lead, onChange }: { lead: Lead; onChange: (id: string, status: string) => void }) {
     const [open, setOpen] = useState(false);
@@ -70,7 +88,7 @@ function StatusCell({ lead, onChange }: { lead: Lead; onChange: (id: string, sta
             {open && (
                 <>
                     <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-                    <div className="absolute top-full mt-1 left-0 z-20 min-w-[140px] bg-card border border-foreground/10 rounded-xl shadow-2xl py-1 overflow-hidden">
+                    <div className="absolute left-0 top-full z-20 mt-1 min-w-[150px] overflow-hidden border border-white/[0.08] bg-[#0b0b0b] py-1 shadow-2xl">
                         {STATUS_OPTIONS.map((opt) => (
                             <button
                                 key={opt.value}
@@ -81,8 +99,8 @@ function StatusCell({ lead, onChange }: { lead: Lead; onChange: (id: string, sta
                                 className={cn(
                                     "w-full text-left px-3 py-2 text-xs transition-colors flex items-center gap-2",
                                     opt.value === lead.status
-                                        ? "text-gold-500 font-medium bg-gold-500/5"
-                                        : "text-foreground/70 hover:bg-muted/50"
+                                        ? "bg-[var(--color-accent)]/10 font-medium text-[var(--color-accent)]"
+                                        : "text-white/70 hover:bg-white/[0.04]"
                                 )}
                             >
                                 <span className={cn("w-2 h-2 rounded-full", opt.color.split(" ")[0])} />
@@ -108,8 +126,8 @@ function AgentCell({ lead, agents, onChange }: { lead: Lead; agents: Agent[]; on
                 className={cn(
                     "flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-medium border transition-all",
                     assigned
-                        ? "bg-gold-500/10 text-gold-500 border-gold-500/20"
-                        : "bg-muted/30 text-foreground/50 border-foreground/10"
+                        ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/20"
+                        : "bg-white/[0.03] text-white/50 border-white/[0.08]"
                 )}
             >
                 {assigned ? assigned.full_name.split(" ")[0] : "Sin asignar"}
@@ -118,7 +136,7 @@ function AgentCell({ lead, agents, onChange }: { lead: Lead; agents: Agent[]; on
             {open && (
                 <>
                     <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-                    <div className="absolute top-full mt-1 left-0 z-20 min-w-[160px] bg-card border border-foreground/10 rounded-xl shadow-2xl py-1 overflow-hidden">
+                    <div className="absolute left-0 top-full z-20 mt-1 min-w-[170px] overflow-hidden border border-white/[0.08] bg-[#0b0b0b] py-1 shadow-2xl">
                         <button
                             onClick={() => {
                                 onChange(lead.id, null);
@@ -126,12 +144,12 @@ function AgentCell({ lead, agents, onChange }: { lead: Lead; agents: Agent[]; on
                             }}
                             className={cn(
                                 "w-full text-left px-3 py-2 text-xs transition-colors",
-                                !assigned ? "text-gold-500 font-medium" : "text-foreground/70 hover:bg-muted/50"
+                                !assigned ? "font-medium text-[var(--color-accent)]" : "text-white/70 hover:bg-white/[0.04]"
                             )}
                         >
                             Sin asignar
                         </button>
-                        <div className="border-t border-foreground/5" />
+                        <div className="border-t border-white/[0.06]" />
                         {agents.map((agent) => (
                             <button
                                 key={agent.id}
@@ -142,11 +160,11 @@ function AgentCell({ lead, agents, onChange }: { lead: Lead; agents: Agent[]; on
                                 className={cn(
                                     "w-full text-left px-3 py-2 text-xs transition-colors flex items-center gap-2",
                                     agent.id === lead.assigned_agent_id
-                                        ? "text-gold-500 font-medium bg-gold-500/5"
-                                        : "text-foreground/70 hover:bg-muted/50"
+                                        ? "bg-[var(--color-accent)]/10 font-medium text-[var(--color-accent)]"
+                                        : "text-white/70 hover:bg-white/[0.04]"
                                 )}
                             >
-                                <span className="w-2 h-2 rounded-full bg-gold-500" />
+                                <span className="h-2 w-2 bg-[var(--color-accent)]" />
                                 {agent.full_name}
                                 {agent.id === lead.assigned_agent_id && <Check className="w-3 h-3 ml-auto" />}
                             </button>
@@ -160,6 +178,7 @@ function AgentCell({ lead, agents, onChange }: { lead: Lead; agents: Agent[]; on
 
 export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClientProps) {
     const [data, setData] = useState<Lead[]>(leads);
+    const [viewMode, setViewMode] = useState<"kanban" | "table">("kanban");
     const [open, setOpen] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [form, setForm] = useState({
@@ -214,7 +233,7 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
             accessorKey: "full_name",
             header: "Nombre",
             cell: ({ row }) => (
-                <Link href={`/admin/leads/${row.original.id}`} className="font-bold text-foreground hover:text-gold-500 transition-colors">
+                <Link href={`/admin/leads/${row.original.id}`} className="font-bold text-white hover:text-[var(--color-accent)] transition-colors">
                     {row.getValue("full_name")}
                 </Link>
             ),
@@ -222,12 +241,12 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
         {
             accessorKey: "email",
             header: "Correo",
-            cell: ({ row }) => <span className="text-foreground/70 text-sm">{row.getValue("email")}</span>,
+            cell: ({ row }) => <span className="text-sm text-white/62">{row.getValue("email")}</span>,
         },
         {
             accessorKey: "phone",
             header: "Teléfono",
-            cell: ({ row }) => <span className="text-foreground/70 text-sm">{row.getValue("phone")}</span>,
+            cell: ({ row }) => <span className="text-sm text-white/62">{row.getValue("phone")}</span>,
         },
         {
             accessorKey: "source",
@@ -248,6 +267,17 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
             cell: ({ row }) => <AgentCell lead={row.original} agents={agents} onChange={updateAgent} />,
         },
         {
+            id: "attention",
+            header: "Atención",
+            cell: ({ row }) => {
+                const attention = getLeadAttention(row.original);
+                if (attention.isOverdue) return <span className="text-xs font-semibold text-red-400">Tarea vencida</span>;
+                if (attention.dueToday) return <span className="text-xs font-semibold text-[var(--color-accent)]">Vence hoy</span>;
+                if (attention.stale) return <span className="text-xs font-semibold text-white/55">Sin seguimiento {attention.daysWithoutFollowUp}d</span>;
+                return <span className="text-xs text-white/30">Al día</span>;
+            },
+        },
+        {
             accessorKey: "created_at",
             header: () => <div className="text-right">Fecha</div>,
             cell: ({ row }) => {
@@ -258,10 +288,17 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                     month: "short",
                     year: "numeric"
                 }).format(date);
-                return <div className="text-right text-muted-foreground text-sm">{formatted}</div>;
+                return <div className="text-right text-sm text-white/45">{formatted}</div>;
             },
         },
     ], [agents, updateStatus, updateAgent]);
+
+    const attentionLeads = useMemo(() => {
+        return data.filter((lead) => {
+            const attention = getLeadAttention(lead);
+            return attention.isOverdue || attention.dueToday || attention.stale || !lead.assigned_agent_id;
+        });
+    }, [data]);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -315,71 +352,106 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
     return (
         <>
             <div className="space-y-6">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <div>
-                        <h2 className="font-display uppercase tracking-wider text-2xl font-bold text-foreground">Gestión de Leads</h2>
-                        <p className="text-muted-foreground text-sm">
-                            Administra contactos, estados y asignaciones.
-                        </p>
+                <AdminPageHeader
+                    eyebrow="Comercial"
+                    title="Leads"
+                    description="Administra contactos, estado de seguimiento y asignación de asesores."
+                />
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex border border-white/[0.08] bg-white/[0.025] p-1">
+                        <button
+                            type="button"
+                            onClick={() => setViewMode("kanban")}
+                            className={cn("flex items-center gap-2 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em]", viewMode === "kanban" ? "bg-[var(--color-accent)] text-black" : "text-white/55 hover:text-white")}
+                        >
+                            <Columns3 className="h-4 w-4" />
+                            Pipeline
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setViewMode("table")}
+                            className={cn("flex items-center gap-2 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em]", viewMode === "table" ? "bg-[var(--color-accent)] text-black" : "text-white/55 hover:text-white")}
+                        >
+                            <Table2 className="h-4 w-4" />
+                            Tabla
+                        </button>
                     </div>
-                    <Button
-                        onClick={() => setOpen(true)}
-                        className="bg-gold-500 text-black hover:bg-gold-600 font-bold shrink-0"
-                    >
+                    <Button onClick={() => setOpen(true)} className="brushed-gold shrink-0 rounded-full px-6 font-bold">
                         <PlusCircle className="mr-2 h-4 w-4" />
-                        Registrar Lead
+                        Registrar lead
                     </Button>
                 </div>
 
+                {attentionLeads.length > 0 && (
+                    <div className="grid gap-3 lg:grid-cols-3">
+                        <AttentionSummary
+                            icon={AlertTriangle}
+                            label="Tareas vencidas"
+                            value={data.filter((lead) => (lead.overdue_tasks || 0) > 0).length}
+                            tone="red"
+                        />
+                        <AttentionSummary
+                            icon={Clock}
+                            label="Vencen hoy"
+                            value={data.filter((lead) => (lead.due_today_tasks || 0) > 0).length}
+                            tone="gold"
+                        />
+                        <AttentionSummary
+                            icon={BellRing}
+                            label="Sin seguimiento"
+                            value={data.filter((lead) => getLeadAttention(lead).stale).length}
+                            tone="muted"
+                        />
+                    </div>
+                )}
+
                 {data.length === 0 ? (
-                    <div className="bg-card border border-foreground/10 rounded-2xl p-12 text-center">
-                        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gold-500/10 flex items-center justify-center">
-                            <Users className="w-8 h-8 text-gold-500" />
-                        </div>
-                        <h3 className="text-xl font-bold mb-2 font-display uppercase tracking-wider">No hay leads registrados</h3>
-                        <p className="text-foreground/50 mb-6">Registra tu primer lead para empezar a gestionar el embudo de ventas.</p>
+                    <>
+                        <AdminEmptyState
+                            icon={Users}
+                            title="No hay leads registrados"
+                            description="Registra tu primer lead para empezar a gestionar el embudo comercial."
+                        />
                         {supabaseError && (
-                            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400">
+                            <div className="border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-400">
                                 Error de conexión: {supabaseError}
                             </div>
                         )}
-                        <Button
-                            onClick={() => setOpen(true)}
-                            className="bg-gold-500 text-black hover:bg-gold-600 font-bold"
-                        >
-                            Registrar Lead
-                        </Button>
-                    </div>
+                    </>
                 ) : (
-                    <div className="bg-card border border-foreground/10 rounded-xl overflow-hidden shadow-sm">
-                        <DataTable
-                            columns={columns}
-                            data={data}
-                            searchPlaceholder="Buscar por nombre o correo..."
-                            searchFields={["full_name", "email"]}
-                            filters={[
-                                { id: "source", label: "Origen", options: ["organic", "campaign", "referral", "other", "landing_luxury", "landing_business", "landing_industrial"] },
-                                { id: "status", label: "Estado", options: ["new", "contacted", "qualified", "lost", "won"] },
-                            ]}
-                        />
-                    </div>
+                    viewMode === "kanban" ? (
+                        <LeadKanban leads={data} agents={agents} onStatusChange={updateStatus} />
+                    ) : (
+                        <div className={`${adminCardClass} overflow-hidden`}>
+                            <DataTable
+                                columns={columns}
+                                data={data}
+                                searchPlaceholder="Buscar por nombre o correo..."
+                                searchFields={["full_name", "email"]}
+                                filters={[
+                                    { id: "source", label: "Origen", options: ["organic", "campaign", "referral", "other", "landing_luxury", "landing_business", "landing_industrial"] },
+                                    { id: "status", label: "Estado", options: ["new", "contacted", "qualified", "lost", "won"] },
+                                ]}
+                            />
+                        </div>
+                    )
                 )}
             </div>
 
             {/* Modal */}
             {open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-                    <div className="bg-card border border-foreground/10 rounded-2xl shadow-2xl w-full max-w-md">
-                        <div className="flex items-center justify-between p-4 border-b border-foreground/10">
-                            <h3 className="font-bold text-lg font-display uppercase tracking-wider">Registrar Lead Manual</h3>
-                            <button onClick={() => setOpen(false)} className="p-1 hover:text-foreground/50">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+                    <div className="w-full max-w-md border border-white/[0.08] bg-[#0b0b0b] shadow-2xl">
+                        <div className="flex items-center justify-between border-b border-white/[0.08] p-4">
+                            <h3 className="font-display text-sm font-bold uppercase tracking-[0.18em] text-white">Registrar lead</h3>
+                            <button onClick={() => setOpen(false)} className="p-1 text-white/50 hover:text-white">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
 
                         <form onSubmit={handleSubmit} className="p-4 space-y-4">
                             <div>
-                                <label className="text-sm font-medium mb-1 block">Nombre Completo *</label>
+                                <label className="mb-1 block text-sm font-medium text-white/70">Nombre completo *</label>
                                 <Input
                                     placeholder="Ej. Juan Pérez"
                                     value={form.full_name}
@@ -387,7 +459,7 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                                 />
                             </div>
                             <div>
-                                <label className="text-sm font-medium mb-1 block">Correo Electrónico *</label>
+                                <label className="mb-1 block text-sm font-medium text-white/70">Correo electrónico *</label>
                                 <Input
                                     type="email"
                                     placeholder="correo@ejemplo.com"
@@ -396,7 +468,7 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                                 />
                             </div>
                             <div>
-                                <label className="text-sm font-medium mb-1 block">Teléfono *</label>
+                                <label className="mb-1 block text-sm font-medium text-white/70">Teléfono *</label>
                                 <Input
                                     placeholder="+52 555 123 4567"
                                     value={form.phone}
@@ -404,11 +476,11 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                                 />
                             </div>
                             <div>
-                                <label className="text-sm font-medium mb-1 block">Origen</label>
+                                <label className="mb-1 block text-sm font-medium text-white/70">Origen</label>
                                 <select
                                     value={form.source}
                                     onChange={e => setForm(prev => ({ ...prev, source: e.target.value }))}
-                                    className="flex h-10 w-full rounded-md border border-foreground/20 bg-transparent px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-gold-500/40"
+                                    className="flex h-10 w-full border border-white/[0.12] bg-transparent px-3 py-2 text-sm text-white ring-offset-background focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                                 >
                                     <option value="organic">Orgánico</option>
                                     <option value="campaign">Campaña</option>
@@ -420,11 +492,11 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                                 </select>
                             </div>
                             <div>
-                                <label className="text-sm font-medium mb-1 block">Estado</label>
+                                <label className="mb-1 block text-sm font-medium text-white/70">Estado</label>
                                 <select
                                     value={form.status}
                                     onChange={e => setForm(prev => ({ ...prev, status: e.target.value }))}
-                                    className="flex h-10 w-full rounded-md border border-foreground/20 bg-transparent px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-gold-500/40"
+                                    className="flex h-10 w-full border border-white/[0.12] bg-transparent px-3 py-2 text-sm text-white ring-offset-background focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                                 >
                                     <option value="new">Nuevo</option>
                                     <option value="contacted">Contactado</option>
@@ -434,11 +506,11 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                                 </select>
                             </div>
                             <div>
-                                <label className="text-sm font-medium mb-1 block">Asesor Asignado</label>
+                                <label className="mb-1 block text-sm font-medium text-white/70">Asesor asignado</label>
                                 <select
                                     value={form.assigned_agent_id || ""}
                                     onChange={e => setForm(prev => ({ ...prev, assigned_agent_id: e.target.value || undefined }))}
-                                    className="flex h-10 w-full rounded-md border border-foreground/20 bg-transparent px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-gold-500/40"
+                                    className="flex h-10 w-full border border-white/[0.12] bg-transparent px-3 py-2 text-sm text-white ring-offset-background focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                                 >
                                     <option value="">Sin asignar</option>
                                     {agents.map(agent => (
@@ -447,7 +519,7 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                                 </select>
                             </div>
                             <div>
-                                <label className="text-sm font-medium mb-1 block">Notas</label>
+                                <label className="mb-1 block text-sm font-medium text-white/70">Notas</label>
                                 <Textarea
                                     placeholder="Comentarios adicionales..."
                                     value={form.notes}
@@ -461,10 +533,10 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                             )}
 
                             <div className="flex gap-2 pt-2">
-                                <Button type="button" variant="outline" onClick={() => setOpen(false)} className="flex-1">
+                                <Button type="button" variant="outline" onClick={() => setOpen(false)} className="flex-1 border-white/[0.12] bg-white/[0.025] text-white">
                                     Cancelar
                                 </Button>
-                                <Button type="submit" disabled={submitting} className="flex-1 bg-gold-500 text-black hover:bg-gold-600">
+                                <Button type="submit" disabled={submitting} className="brushed-gold flex-1 font-bold">
                                     {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Guardar Lead"}
                                 </Button>
                             </div>
@@ -473,5 +545,107 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                 </div>
             )}
         </>
+    );
+}
+
+function AttentionSummary({
+    icon: Icon,
+    label,
+    value,
+    tone,
+}: {
+    icon: typeof AlertTriangle;
+    label: string;
+    value: number;
+    tone: "red" | "gold" | "muted";
+}) {
+    return (
+        <div className={cn(
+            "flex items-center justify-between border p-4",
+            tone === "red" && "border-red-500/20 bg-red-500/10 text-red-400",
+            tone === "gold" && "border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 text-[var(--color-accent)]",
+            tone === "muted" && "border-white/[0.08] bg-white/[0.025] text-white/55",
+        )}>
+            <div className="flex items-center gap-3">
+                <Icon className="h-4 w-4" />
+                <span className="text-xs font-bold uppercase tracking-[0.14em]">{label}</span>
+            </div>
+            <span className="text-2xl font-light text-white">{value}</span>
+        </div>
+    );
+}
+
+function LeadKanban({
+    leads,
+    agents,
+    onStatusChange,
+}: {
+    leads: Lead[];
+    agents: Agent[];
+    onStatusChange: (id: string, status: string) => void;
+}) {
+    return (
+        <div className="grid gap-4 xl:grid-cols-5">
+            {STATUS_OPTIONS.map((status) => {
+                const items = leads.filter((lead) => lead.status === status.value);
+                return (
+                    <section key={status.value} className={`${adminCardClass} min-h-[360px] overflow-hidden`}>
+                        <div className="flex items-center justify-between border-b border-white/[0.08] px-4 py-3">
+                            <div className="flex items-center gap-2">
+                                <span className={cn("h-2.5 w-2.5", status.color.split(" ")[0])} />
+                                <h2 className="font-display text-xs font-bold uppercase tracking-[0.14em] text-white/70">{status.label}</h2>
+                            </div>
+                            <span className="text-xs text-white/45">{items.length}</span>
+                        </div>
+                        <div className="space-y-3 p-3">
+                            {items.map((lead) => {
+                                const assigned = agents.find((agent) => agent.id === lead.assigned_agent_id);
+                                return (
+                                    <article key={lead.id} className="border border-white/[0.08] bg-white/[0.025] p-3 transition-colors hover:border-[var(--color-accent)]/30">
+                                        <Link href={`/admin/leads/${lead.id}`} className="block font-semibold text-white hover:text-[var(--color-accent)]">
+                                            {lead.full_name}
+                                        </Link>
+                                        <p className="mt-1 truncate text-xs text-white/45">{lead.email}</p>
+                                        <LeadAttentionBadges lead={lead} />
+                                        <div className="mt-3 flex items-center justify-between gap-2">
+                                            <span className="truncate text-xs text-white/45">{assigned?.full_name || "Sin asignar"}</span>
+                                            <select
+                                                value={lead.status}
+                                                onChange={(event) => onStatusChange(lead.id, event.target.value)}
+                                                className="max-w-28 border border-white/[0.08] bg-[#0b0b0b] px-2 py-1 text-xs text-white"
+                                            >
+                                                {STATUS_OPTIONS.map((option) => (
+                                                    <option key={option.value} value={option.value}>{option.label}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </article>
+                                );
+                            })}
+                            {items.length === 0 && <p className="py-8 text-center text-sm text-white/35">Sin leads.</p>}
+                        </div>
+                    </section>
+                );
+            })}
+        </div>
+    );
+}
+
+function LeadAttentionBadges({ lead }: { lead: Lead }) {
+    const attention = getLeadAttention(lead);
+    const badges: Array<{ label: string; className: string }> = [];
+    if (attention.isOverdue) badges.push({ label: "Vencido", className: "border-red-500/20 bg-red-500/10 text-red-400" });
+    if (attention.dueToday) badges.push({ label: "Hoy", className: "border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 text-[var(--color-accent)]" });
+    if (!lead.assigned_agent_id) badges.push({ label: "Sin asignar", className: "border-white/[0.08] bg-white/[0.04] text-white/55" });
+    if (attention.stale) badges.push({ label: `${attention.daysWithoutFollowUp}d sin seguimiento`, className: "border-white/[0.08] bg-white/[0.04] text-white/55" });
+    if (badges.length === 0) return null;
+    return (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+            {badges.map((badge) => (
+                <span key={badge.label} className={cn("border px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.1em]", badge.className)}>
+                    {badge.label}
+                </span>
+            ))}
+        </div>
     );
 }
