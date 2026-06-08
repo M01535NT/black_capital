@@ -41,6 +41,7 @@ export default function AdminLayout({
                                 <Link href="/admin" className="border border-white/[0.08] px-3 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white/70 hover:text-[var(--color-accent)]">Dashboard</Link>
                                 <Link href="/admin/properties" className="border border-white/[0.08] px-3 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white/70 hover:text-[var(--color-accent)]">Inventario</Link>
                                 <Link href="/admin/leads" className="border border-white/[0.08] px-3 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white/70 hover:text-[var(--color-accent)]">Leads</Link>
+                                <Link href="/admin/account" className="border border-white/[0.08] px-3 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white/70 hover:text-[var(--color-accent)]">Mi cuenta</Link>
                             </div>
                         </DrawerContent>
                     </Drawer>

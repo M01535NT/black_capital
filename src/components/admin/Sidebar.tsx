@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Building2, Users, UserCircle, Settings, UserCog } from "lucide-react";
+import { LayoutDashboard, Building2, Users, UserCircle, Settings, UserCog, LockKeyhole } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -12,6 +12,7 @@ const navItems = [
     { title: "Agentes", href: "/admin/agents", icon: UserCircle },
     { title: "Leads B2B/B2C", href: "/admin/leads", icon: Users },
     { title: "Usuarios", href: "/admin/users", icon: UserCog },
+    { title: "Mi cuenta", href: "/admin/account", icon: LockKeyhole },
     { title: "Configuración", href: "/admin/settings", icon: Settings },
 ];
 

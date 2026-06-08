@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Bell, LogOut } from "lucide-react";
+import { Bell, LogOut, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface NotificationItem {
@@ -105,6 +105,12 @@ export function AdminTopbarActions() {
           </>
         )}
       </div>
+      <Button asChild type="button" variant="outline" size="icon" className="h-9 w-9 rounded-full border-white/[0.12] bg-white/[0.025] text-white">
+        <Link href="/admin/account">
+          <UserCircle className="h-4 w-4" />
+          <span className="sr-only">Mi cuenta</span>
+        </Link>
+      </Button>
       <Button type="button" variant="outline" size="icon" onClick={logout} className="h-9 w-9 rounded-full border-white/[0.12] bg-white/[0.025] text-white">
         <LogOut className="h-4 w-4" />
         <span className="sr-only">Cerrar sesión</span>
