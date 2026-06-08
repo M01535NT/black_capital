@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     description:
         "Conoce al equipo de Black Capital. Asesores inmobiliarios especializados en Tijuana con experiencia en los mercados residencial, comercial e industrial.",
     alternates: {
-        canonical: "https://blackcorporativo.vercel.app/nosotros/equipo",
+        canonical: "https://blackmx.vercel.app/nosotros/equipo",
     },
 };
 

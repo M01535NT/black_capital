@@ -36,7 +36,7 @@ const DEFAULTS: AppSettings = {
     industrialHeroTitle: "Black Industrial",
     industrialHeroSubtitle: "Naves y bodegas",
     contactPhone: "+52 (664) 000 0000",
-    contactEmail: "contacto@blackcorporativo.vercel.app",
+    contactEmail: "contacto@blackmx.vercel.app",
     contactAddress: "Tijuana, Baja California, México",
     whatsAppTemplate: "Hola, estoy interesado en sus servicios.",
 };

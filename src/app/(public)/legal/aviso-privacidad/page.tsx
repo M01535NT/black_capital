@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     description:
         "Aviso de privacidad y política de protección de datos personales de Black Capital. Conoce cómo protegemos tu información.",
     alternates: {
-        canonical: "https://blackcorporativo.vercel.app/legal/aviso-privacidad",
+        canonical: "https://blackmx.vercel.app/legal/aviso-privacidad",
     },
 };
 
@@ -75,8 +75,8 @@ export default function PrivacidadPage() {
                             <p>
                                 Usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento
                                 de sus datos personales. Para ejercer estos derechos, puede contactarnos en:{" "}
-                                <a href="mailto:privacidad@blackcorporativo.vercel.app" className="text-gold-500 hover:underline">
-                                    privacidad@blackcorporativo.vercel.app
+                                <a href="mailto:privacidad@blackmx.vercel.app" className="text-gold-500 hover:underline">
+                                    privacidad@blackmx.vercel.app
                                 </a>
                             </p>
                         </section>
@@ -100,8 +100,8 @@ export default function PrivacidadPage() {
                             </h2>
                             <p>
                                 Para cualquier consulta sobre este aviso de privacidad, puede escribirnos a{" "}
-                                <a href="mailto:contacto@blackcorporativo.vercel.app" className="text-gold-500 hover:underline">
-                                    contacto@blackcorporativo.vercel.app
+                                <a href="mailto:contacto@blackmx.vercel.app" className="text-gold-500 hover:underline">
+                                    contacto@blackmx.vercel.app
                                 </a>{" "}
                                 o llamar al {CONTACT_CONFIG.phone}.
                             </p>

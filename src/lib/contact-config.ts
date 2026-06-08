@@ -9,14 +9,14 @@ export const CONTACT_CONFIG = {
     phone: "+52 (664) 104 9491",
     /** Raw phone number for WhatsApp links (no +, spaces, or parentheses) */
     phoneRaw: "526641049491",
-    email: "contacto@blackcorporativo.vercel.app",
+    email: "contacto@blackmx.vercel.app",
     address: "Tijuana, Baja California, México",
     /** Multi-line address for card/detail displays */
     addressLines: ["Tijuana, Baja California"],
     social: {
-        linkedin: "https://linkedin.com/company/blackcorporativo",
-        instagram: "https://instagram.com/blackcorporativo",
-        x: "https://x.com/blackcorporativo",
+        linkedin: "https://linkedin.com/company/blackcapital",
+        instagram: "https://instagram.com/blackcapital",
+        x: "https://x.com/blackcapital",
     },
     /** Business hours (display lines) */
     hours: [

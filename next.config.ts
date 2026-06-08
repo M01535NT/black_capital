@@ -65,7 +65,7 @@ const nextConfig: NextConfig = {
       {
         source: "/:path*",
         has: [{ type: "host", value: "black-corporativo.com" }],
-        destination: "https://blackcorporativo.com/:path*",
+        destination: "https://blackmx.vercel.app/:path*",
         permanent: true,
       },
     ];

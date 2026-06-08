@@ -101,7 +101,7 @@ const baseJsonLd = {
     provider: {
         "@type": "RealEstateAgent",
         name: "Black Capital",
-        url: "https://blackcorporativo.vercel.app",
+        url: "https://blackmx.vercel.app",
     },
 } as const;
 
@@ -231,7 +231,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             ],
             robots: "index, follow",
             alternates: {
-                canonical: "https://blackcorporativo.vercel.app/black-luxury",
+                canonical: "https://blackmx.vercel.app/black-luxury",
             },
             openGraph: {
                 title: "Casas Residenciales Premium en Tijuana | Fraccionamientos Privados",
@@ -240,10 +240,10 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Capital",
-                url: "https://blackcorporativo.vercel.app/black-luxury",
+                url: "https://blackmx.vercel.app/black-luxury",
                 images: [
                     {
-                        url: "https://blackcorporativo.vercel.app/luxury-hero.png",
+                        url: "https://blackmx.vercel.app/luxury-hero.png",
                         width: 1200,
                         height: 630,
                         alt: "Casa residencial premium en Tijuana",
@@ -255,7 +255,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 title: "Casas Residenciales Premium en Tijuana | Fraccionamientos Privados",
                 description:
                     "Casas en los mejores fraccionamientos de Tijuana. Residencial Plus con seguridad 24/7, amenidades premium y ubicación estratégica.",
-                images: ["https://blackcorporativo.vercel.app/luxury-hero.png"],
+                images: ["https://blackmx.vercel.app/luxury-hero.png"],
             },
         },
     },
@@ -364,7 +364,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             ],
             robots: "index, follow",
             alternates: {
-                canonical: "https://blackcorporativo.vercel.app/black-business",
+                canonical: "https://blackmx.vercel.app/black-business",
             },
             openGraph: {
                 title: "Centros Comerciales y Locales en Tijuana | Inversión Comercial",
@@ -373,10 +373,10 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Capital",
-                url: "https://blackcorporativo.vercel.app/black-business",
+                url: "https://blackmx.vercel.app/black-business",
                 images: [
                     {
-                        url: "https://blackcorporativo.vercel.app/business-hero.png",
+                        url: "https://blackmx.vercel.app/business-hero.png",
                         width: 1200,
                         height: 630,
                         alt: "Local comercial en Tijuana",
@@ -388,7 +388,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 title: "Centros Comerciales y Locales en Tijuana | Inversión Comercial",
                 description:
                     "Locales comerciales, oficinas y plazas en zonas de alto tráfico en Tijuana. Análisis de cap rate y flujo operativo incluido.",
-                images: ["https://blackcorporativo.vercel.app/business-hero.png"],
+                images: ["https://blackmx.vercel.app/business-hero.png"],
             },
         },
     },
@@ -497,7 +497,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             ],
             robots: "index, follow",
             alternates: {
-                canonical: "https://blackcorporativo.vercel.app/black-industrial",
+                canonical: "https://blackmx.vercel.app/black-industrial",
             },
             openGraph: {
                 title: "Naves Industriales y Parques Logísticos en Tijuana | Black Capital",
@@ -506,10 +506,10 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Capital",
-                url: "https://blackcorporativo.vercel.app/black-industrial",
+                url: "https://blackmx.vercel.app/black-industrial",
                 images: [
                     {
-                        url: "https://blackcorporativo.vercel.app/industrial-hero.png",
+                        url: "https://blackmx.vercel.app/industrial-hero.png",
                         width: 1200,
                         height: 630,
                         alt: "Nave industrial en Tijuana",
@@ -521,7 +521,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 title: "Naves Industriales y Parques Logísticos en Tijuana | Black Capital",
                 description:
                     "Naves industriales, bodegas y parques logísticos en Tijuana. Conectividad estratégica cerca de garitas y corredores de exportación T-MEC.",
-                images: ["https://blackcorporativo.vercel.app/industrial-hero.png"],
+                images: ["https://blackmx.vercel.app/industrial-hero.png"],
             },
         },
     },

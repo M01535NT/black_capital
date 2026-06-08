@@ -127,6 +127,6 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_entity ON public.audit_logs(entity_typ
 INSERT INTO public.app_settings(key, value)
 VALUES (
   'site',
-  '{"heroVideoUrl":"","heroImageUrl":"","luxuryHeroTitle":"Black Luxury","luxuryHeroSubtitle":"Propiedades de lujo","businessHeroTitle":"Black Business","businessHeroSubtitle":"Espacios comerciales","industrialHeroTitle":"Black Industrial","industrialHeroSubtitle":"Naves y bodegas","contactPhone":"+52 (664) 104 9491","contactEmail":"contacto@blackcorporativo.vercel.app","contactAddress":"Tijuana, Baja California, México","whatsAppTemplate":"Hola, estoy interesado en sus servicios."}'::jsonb
+  '{"heroVideoUrl":"","heroImageUrl":"","luxuryHeroTitle":"Black Luxury","luxuryHeroSubtitle":"Propiedades de lujo","businessHeroTitle":"Black Business","businessHeroSubtitle":"Espacios comerciales","industrialHeroTitle":"Black Industrial","industrialHeroSubtitle":"Naves y bodegas","contactPhone":"+52 (664) 104 9491","contactEmail":"contacto@blackmx.vercel.app","contactAddress":"Tijuana, Baja California, México","whatsAppTemplate":"Hola, estoy interesado en sus servicios."}'::jsonb
 )
 ON CONFLICT (key) DO NOTHING;

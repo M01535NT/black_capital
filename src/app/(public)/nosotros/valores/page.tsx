@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     description:
         "Los valores que guían a Black Capital: transparencia, compromiso, disciplina y resultados. Conoce los principios que aplicamos en cada operación inmobiliaria en Tijuana.",
     alternates: {
-        canonical: "https://blackcorporativo.vercel.app/nosotros/valores",
+        canonical: "https://blackmx.vercel.app/nosotros/valores",
     },
 };
 

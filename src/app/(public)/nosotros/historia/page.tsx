@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     description:
         "La historia de Black Capital: de operar en el mercado inmobiliario de Tijuana a construir una plataforma premium de inversión con presencia en Baja California.",
     alternates: {
-        canonical: "https://blackcorporativo.vercel.app/nosotros/historia",
+        canonical: "https://blackmx.vercel.app/nosotros/historia",
     },
 };
 

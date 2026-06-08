@@ -472,7 +472,7 @@ This pass (executed in one session) shipped:
 
 - **Grain texture** on the Inventario hero (matches the home sections).
 - **Footer social links** now have `title` attributes and `aria-label`
-  that include the handle (e.g. "Instagram (@blackcorporativo)").
+  that include the handle (e.g. "Instagram (@blackcapital)").
 
 ### Net
 

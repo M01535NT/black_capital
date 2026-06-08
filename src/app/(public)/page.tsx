@@ -31,7 +31,7 @@ const ORGANIZATION_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "RealEstateAgent",
   name: "Black Capital",
-  url: "https://blackcorporativo.com",
+  url: "https://blackmx.vercel.app",
   areaServed: {
     "@type": "City",
     name: "Tijuana",

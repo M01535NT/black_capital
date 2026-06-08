@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     description:
         "Inmobiliaria premium en Tijuana especializada en casas residenciales, centros comerciales y naves industriales. Transparencia, análisis y resultados en cada operación.",
     alternates: {
-        canonical: "https://blackcorporativo.vercel.app/nosotros",
+        canonical: "https://blackmx.vercel.app/nosotros",
     },
 };
 

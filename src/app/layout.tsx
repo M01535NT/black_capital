@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_MX",
-    url: "https://blackcorporativo.vercel.app",
+    url: SITE_URL,
     siteName: "Black Capital",
     title: "Inmobiliaria Premium en Tijuana | Black Capital",
     description:
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: { canonical: "https://blackcorporativo.vercel.app" },
+  alternates: { canonical: SITE_URL },
 };
 
 import { PostHogProvider } from "@/providers/posthog-provider";

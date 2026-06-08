@@ -1,3 +1,5 @@
+import { SITE_URL } from "@/lib/site-url";
+
 interface AgentInfo {
     id: string;
     full_name: string;
@@ -52,8 +54,8 @@ export function PropertyJsonLd({
     const ld: Record<string, unknown> = {
         '@context': 'https://schema.org',
         '@type': mappedType,
-        '@id': `https://blackcorporativo.vercel.app${url}`,
-        url: `https://blackcorporativo.vercel.app${url}`,
+        '@id': `${SITE_URL}${url}`,
+        url: `${SITE_URL}${url}`,
         name: title,
         description: description || `${propertyType} en ${address}`,
         image: coverImage || undefined,
@@ -108,7 +110,7 @@ export function PropertyJsonLd({
             worksFor: {
                 '@type': 'Organization',
                 name: 'Black Capital',
-                url: 'https://blackcorporativo.vercel.app',
+                url: SITE_URL,
             },
         };
     }

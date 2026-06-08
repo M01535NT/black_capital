@@ -23,7 +23,7 @@ test('Flujo de Captura de Leads (Gated Content)', async ({ page }) => {
 
     // 6. Fill the Lead Form
     await page.fill('input[name="name"]', 'QA Test User');
-    await page.fill('input[name="email"]', 'qatest@blackcorporativo.com');
+    await page.fill('input[name="email"]', 'qatest@blackcapital.mx');
     await page.fill('input[name="phone"]', '1234567890');
 
     // 7. Submit form
