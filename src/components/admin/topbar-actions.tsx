@@ -39,32 +39,6 @@ export function AdminTopbarActions() {
     }
   }
 
-  function parseAccessRequestId(href: string | null): string | null {
-    if (!href) return null;
-    try {
-      const url = new URL(href, window.location.origin);
-      return url.searchParams.get("access_request_id");
-    } catch {
-      return null;
-    }
-  }
-
-  async function processAccessRequest(id: string, action: "approve" | "reject") {
-    const requestRes = await fetch("/api/admin/access-requests", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, action }),
-    });
-
-    if (!requestRes.ok) return;
-    await fetch("/api/admin/notifications", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
-    });
-    await loadNotifications();
-  }
-
   useEffect(() => {
     isMounted.current = true;
     loadNotifications();
@@ -128,8 +102,6 @@ export function AdminTopbarActions() {
                 ) : (
                   items.map((item) => {
                     const body = item.body;
-                    const accessRequestId = parseAccessRequestId(item.href);
-                    const isAccessRequest = item.type === "admin_access_request";
                     const content = (
                       <div className={`border-b border-white/[0.06] px-4 py-3 ${item.read_at ? "bg-transparent" : "bg-[var(--color-accent)]/5"}`}>
                         <p className="text-sm font-medium text-white">{item.title}</p>
@@ -147,28 +119,6 @@ export function AdminTopbarActions() {
                               </p>
                             )
                         )}
-                        {isAccessRequest && accessRequestId ? (
-                          <div className="mt-2 flex gap-2">
-                            <button
-                              onClick={async (event) => {
-                                event.preventDefault();
-                                await processAccessRequest(accessRequestId, "approve");
-                              }}
-                              className="rounded-full bg-emerald-500/20 px-3 py-1 text-[11px] font-semibold text-emerald-300 transition hover:bg-emerald-500/30"
-                            >
-                              Aprobar
-                            </button>
-                            <button
-                              onClick={async (event) => {
-                                event.preventDefault();
-                                await processAccessRequest(accessRequestId, "reject");
-                              }}
-                              className="rounded-full bg-rose-500/15 px-3 py-1 text-[11px] font-semibold text-rose-300 transition hover:bg-rose-500/25"
-                            >
-                              Rechazar
-                            </button>
-                          </div>
-                        ) : null}
                       </div>
                     );
                     return item.href ? (

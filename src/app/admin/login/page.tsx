@@ -119,21 +119,11 @@ function LoginForm() {
       </Button>
 
       <div className="space-y-2 text-xs text-white/45">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center">
           <Link href="/admin/reset-password" className="hover:text-[var(--color-accent)]">Olvidé mi contraseña</Link>
-          {hasAdmin === null && <span className="text-white/40">Cargando opciones…</span>}
+          {hasAdmin === null && <span className="ml-4 text-white/40">Cargando opciones...</span>}
           {hasAdmin === false && <Link href="/admin/setup" className="hover:text-[var(--color-accent)]">Crear primer admin</Link>}
-          {hasAdmin === true && (
-            <Link href="/admin/login" className="hover:text-[var(--color-accent)]">
-              Volver al login
-            </Link>
-          )}
         </div>
-        {hasAdmin === true && (
-          <Link href="/admin/solicitar-invitacion" className="mx-auto block hover:text-[var(--color-accent)]">
-            Pedir invitación
-          </Link>
-        )}
       </div>
     </form>
   );

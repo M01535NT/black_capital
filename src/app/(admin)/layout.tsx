@@ -22,8 +22,7 @@ const ADMIN_NAV_ITEMS = [
 ];
 
 const ADMIN_ONLY_ITEMS = [
-    { title: "Agentes", href: "/admin/agents" },
-    { title: "Usuarios", href: "/admin/users" },
+    { title: "Equipo", href: "/admin/agents" },
     { title: "Configuración", href: "/admin/settings" },
 ];
 

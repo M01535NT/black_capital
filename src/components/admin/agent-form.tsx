@@ -39,6 +39,7 @@ export function AgentForm({ initialData }: AgentFormProps) {
                 photo_url: "",
                 license_number: "",
                 bio: "",
+                role: "agent",
                 is_active: true,
             };
             const { id: _id, ...rest } = initialData;
@@ -87,7 +88,7 @@ export function AgentForm({ initialData }: AgentFormProps) {
                         Datos del asesor
                     </p>
                     <p className="mt-2 text-sm text-white/55">
-                        Información visible para asignaciones internas y contacto comercial.
+                        Al registrar al integrante se enviará una invitación para configurar su contraseña y entrar al panel.
                     </p>
                 </div>
 
@@ -111,7 +112,7 @@ export function AgentForm({ initialData }: AgentFormProps) {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Correo Electrónico</FormLabel>
+                                <FormLabel>Correo Electrónico *</FormLabel>
                                 <FormControl>
                                     <Input className="border-white/[0.1] bg-background/70 text-white" type="email" placeholder="correo@ejemplo.com" {...field} />
                                 </FormControl>
@@ -119,6 +120,29 @@ export function AgentForm({ initialData }: AgentFormProps) {
                             </FormItem>
                         )}
                     />
+
+                    {!initialData?.id && (
+                        <FormField
+                            control={form.control}
+                            name="role"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Rol interno *</FormLabel>
+                                    <FormControl>
+                                        <select
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            className="h-10 w-full border border-white/[0.12] bg-background/70 px-3 text-sm text-white"
+                                        >
+                                            <option value="agent">Agente</option>
+                                            <option value="admin">Administrador</option>
+                                        </select>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    )}
 
                     <FormField
                         control={form.control}

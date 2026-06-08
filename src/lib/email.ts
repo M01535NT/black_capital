@@ -19,7 +19,7 @@ export async function sendOperationalEmail({
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "Black Capital <notificaciones@blackmx.vercel.app>",
+      from: process.env.RESEND_FROM_EMAIL || "Black Capital <notificaciones@blackmx.vercel.app>",
       to: [to],
       subject,
       html,

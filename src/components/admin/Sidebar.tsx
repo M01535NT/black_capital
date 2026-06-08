@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Building2, LayoutDashboard, LockKeyhole, Mail, Settings, UserCircle, UserCog } from "lucide-react";
+import { Building2, LayoutDashboard, LockKeyhole, Mail, Settings, UserCircle } from "lucide-react";
 import { type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -22,8 +22,7 @@ const NAV_ITEMS: NavItem[] = [
     { title: "Inventario", href: "/admin/properties", icon: Building2, roles: ["admin", "agent"] },
     { title: "Leads nuevos", href: "/admin/leads?status=new", icon: Mail, roles: ["admin", "agent"] },
     { title: "Leads", href: "/admin/leads", icon: Mail, roles: ["admin", "agent"], showBadge: true },
-    { title: "Agentes", href: "/admin/agents", icon: UserCircle, roles: ["admin"] },
-    { title: "Usuarios", href: "/admin/users", icon: UserCog, roles: ["admin"] },
+    { title: "Equipo", href: "/admin/agents", icon: UserCircle, roles: ["admin"] },
     { title: "Configuración", href: "/admin/settings", icon: Settings, roles: ["admin"] },
     { title: "Mi cuenta", href: "/admin/account", icon: LockKeyhole, roles: ["admin", "agent"] },
 ];

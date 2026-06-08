@@ -35,6 +35,7 @@ export default async function EditAgentPage({
                     photo_url: agent.photo_url || "",
                     license_number: agent.license_number || "",
                     bio: agent.bio || "",
+                    role: "agent",
                     is_active: agent.is_active,
                 }}
             />

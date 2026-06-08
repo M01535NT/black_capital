@@ -67,9 +67,9 @@ export default async function AgentsPage() {
         <div className="space-y-6">
             <AdminPageHeader
                 eyebrow="Equipo"
-                title="Agentes"
+                title="Equipo"
                 description={`${activeAgents.length} activo${activeAgents.length !== 1 ? "s" : ""}${inactiveAgents.length > 0 ? ` · ${inactiveAgents.length} inactivo${inactiveAgents.length !== 1 ? "s" : ""}` : ""}. Administra datos de contacto, licencias y asignaciones.`}
-                action={{ label: "Nuevo agente", href: "/admin/agents/new", icon: UserPlus }}
+                action={{ label: "Nuevo integrante", href: "/admin/agents/new", icon: UserPlus }}
             />
 
             {(!agents || agents.length === 0) ? (

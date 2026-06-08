@@ -13,6 +13,7 @@ export async function GET() {
   const { data, error } = await supabase
     .from("admin_profiles")
     .select("id, email, full_name, role, agent_id, is_active, invited_at, last_seen_at, created_at")
+    .eq("role", "admin")
     .order("created_at", { ascending: false });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
@@ -29,8 +30,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const email = String(body.email || "").trim().toLowerCase();
     const fullName = String(body.full_name || "").trim();
-    const role = body.role === "agent" ? "agent" : "admin";
-    const agentId = role === "agent" ? body.agent_id || null : null;
+    const role = "admin";
 
     if (!email || !fullName) {
       return NextResponse.json({ error: "Nombre y correo son obligatorios." }, { status: 400 });
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
       email,
       full_name: fullName,
       role,
-      agent_id: agentId,
+      agent_id: null,
       is_active: true,
       invited_at: new Date().toISOString(),
     });
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
       action: "user.invite",
       entity_type: "admin_profile",
       entity_id: invite.user.id,
-      metadata: { email, role, agent_id: agentId },
+      metadata: { email, role },
     });
 
     return NextResponse.json({ success: true });

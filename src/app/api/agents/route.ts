@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isAdmin, requireApiProfile } from "@/lib/auth";
+import { sendTeamInviteEmail } from "@/lib/email/team-invite";
+import type { AdminRole } from "@/lib/auth";
 
 /**
  * Normaliza email: convierte string vacío a null para evitar
@@ -35,6 +37,29 @@ function translateError(error: { code?: string; message?: string; details?: stri
         return "Error de conexión con la base de datos. Verifica las credenciales de Supabase.";
     }
     return msg || "Error desconocido al procesar la solicitud";
+}
+
+async function parseUserByEmail(supabase: ReturnType<typeof createAdminClient>, email: string) {
+    const { data } = await supabase.auth.admin.listUsers();
+    return (data?.users || []).find((user) => user.email?.toLowerCase() === email.toLowerCase()) || null;
+}
+
+async function countAgentAssignments(supabase: ReturnType<typeof createAdminClient>, agentId: string) {
+    const [{ count: propertyCount }, { count: leadCount }] = await Promise.all([
+        supabase
+            .from("property_agents")
+            .select("agent_id", { count: "exact", head: true })
+            .eq("agent_id", agentId),
+        supabase
+            .from("leads")
+            .select("id", { count: "exact", head: true })
+            .eq("assigned_agent_id", agentId),
+    ]);
+
+    return {
+        propertyCount: propertyCount || 0,
+        leadCount: leadCount || 0,
+    };
 }
 
 // ── Auth helper ──
@@ -71,7 +96,6 @@ export async function POST(req: NextRequest) {
         }
         const data = await req.json();
 
-        // Validate required fields
         if (!data.full_name || typeof data.full_name !== "string" || !data.full_name.trim()) {
             return NextResponse.json({ error: "El nombre completo es requerido" }, { status: 400 });
         }
@@ -79,6 +103,9 @@ export async function POST(req: NextRequest) {
         const supabase = createAdminClient();
 
         const email = normalizeEmail(data.email);
+        if (!email) {
+            return NextResponse.json({ error: "El correo es obligatorio para crear el acceso del agente." }, { status: 400 });
+        }
 
         const { data: agent, error } = await supabase
             .from("agents")
@@ -99,6 +126,61 @@ export async function POST(req: NextRequest) {
                 { error: translateError(error) },
                 { status: 400 }
             );
+        }
+
+        const origin = req.headers.get("origin") || process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+        let userId = "";
+        const role: AdminRole = data.role === "admin" ? "admin" : "agent";
+        const { data: inviteData, error: inviteError } = await supabase.auth.admin.generateLink({
+            type: "invite",
+            email,
+            options: {
+                redirectTo: `${origin}/admin/update-password`,
+                data: { full_name: agent.full_name },
+            },
+        });
+
+        if (inviteError || !inviteData.user?.id) {
+            const existingUser = await parseUserByEmail(supabase, email);
+            if (!existingUser?.id) {
+                await supabase.from("agents").delete().eq("id", agent.id);
+                return NextResponse.json(
+                    { error: inviteError?.message || "No se pudo crear el acceso del integrante." },
+                    { status: 400 }
+                );
+            }
+            userId = existingUser.id;
+        } else {
+            userId = inviteData.user.id;
+        }
+
+        await supabase.auth.admin.updateUserById(userId, {
+            app_metadata: { role },
+            user_metadata: { full_name: agent.full_name },
+        });
+
+        const { error: profileError } = await supabase.from("admin_profiles").upsert({
+            id: userId,
+            email,
+            full_name: agent.full_name,
+            role,
+            agent_id: agent.id,
+            is_active: data.is_active ?? true,
+            invited_at: new Date().toISOString(),
+        });
+
+        if (profileError) {
+            await supabase.from("agents").delete().eq("id", agent.id);
+            return NextResponse.json({ error: profileError.message }, { status: 400 });
+        }
+
+        if (inviteData?.properties?.action_link) {
+            await sendTeamInviteEmail({
+                to: email,
+                fullName: agent.full_name,
+                role,
+                actionLink: inviteData.properties.action_link,
+            });
         }
 
         return NextResponse.json({ agent }, { status: 201 });
@@ -174,6 +256,18 @@ export async function PATCH(req: NextRequest) {
         }
 
         const supabase = createAdminClient();
+        if (!is_active) {
+            const { propertyCount, leadCount } = await countAgentAssignments(supabase, id);
+            if (propertyCount > 0 || leadCount > 0) {
+                return NextResponse.json(
+                    {
+                        error: `No se puede dar de baja: el agente tiene ${propertyCount} propiedades y ${leadCount} leads asignados. Reasígnalos primero.`,
+                    },
+                    { status: 409 }
+                );
+            }
+        }
+
         const { data: agent, error } = await supabase
             .from("agents")
             .update({ is_active })
@@ -187,6 +281,11 @@ export async function PATCH(req: NextRequest) {
                 { status: 400 }
             );
         }
+
+        await supabase
+            .from("admin_profiles")
+            .update({ is_active })
+            .eq("agent_id", id);
 
         return NextResponse.json({ agent }, { status: 200 });
     } catch (err) {
@@ -209,15 +308,10 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({ error: "Se requiere el ID del agente" }, { status: 400 });
         }
 
-        // Verificar si el agente tiene propiedades asignadas
-        const { data: assignments } = await supabase
-            .from("property_agents")
-            .select("id")
-            .eq("agent_id", id);
-
-        if (assignments && assignments.length > 0) {
+        const { propertyCount, leadCount } = await countAgentAssignments(supabase, id);
+        if (propertyCount > 0 || leadCount > 0) {
             return NextResponse.json(
-                { error: "No se puede eliminar: el agente tiene propiedades asignadas. Desasígnalas primero." },
+                { error: `No se puede eliminar: el agente tiene ${propertyCount} propiedades y ${leadCount} leads asignados. Reasígnalos primero.` },
                 { status: 409 }
             );
         }

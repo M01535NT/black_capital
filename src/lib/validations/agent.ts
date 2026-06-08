@@ -2,11 +2,8 @@ import { z } from "zod";
 
 export const agentSchema = z.object({
     full_name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
-    email: z
-        .string()
-        .email("Correo inválido")
-        .or(z.literal(""))
-        .optional(),
+    email: z.string().email("Correo inválido"),
+    role: z.enum(["agent", "admin"]).default("agent"),
     phone: z
         .string()
         .min(10, "El teléfono debe tener al menos 10 dígitos")
@@ -29,6 +26,7 @@ export type AgentRow = {
     license_number: string | null;
     bio: string | null;
     is_active: boolean;
+    role?: "agent" | "admin";
     created_at: string;
     updated_at: string;
 };
