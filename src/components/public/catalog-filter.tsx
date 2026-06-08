@@ -12,7 +12,19 @@ const SORT_OPTIONS = [
     { label: "Más recientes", value: "newest" },
     { label: "Menor precio", value: "price_asc" },
     { label: "Mayor precio", value: "price_desc" },
+    { label: "Mayor terreno", value: "terrain_desc" },
+    { label: "Mayor construcción", value: "construction_desc" },
+    { label: "Destacadas primero", value: "featured" },
 ];
+
+const STATUS_OPTIONS = [
+    { label: "Disponible", value: "Available" },
+    { label: "Bajo oferta", value: "Under_Offer" },
+    { label: "Vendido", value: "Sold" },
+    { label: "Rentado", value: "Rented" },
+];
+
+const CURRENCY_OPTIONS = ["MXN", "USD"];
 
 type Property = PropertyCardData;
 
@@ -26,6 +38,11 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
     const [activeBusiness, setActiveBusiness] = useState<string | null>(searchParams.get("tipo") || null);
     const [activeUse, setActiveUse] = useState<string | null>(searchParams.get("uso") || brandUse || null);
     const [sort, setSort] = useState(searchParams.get("orden") || "newest");
+    const [activeStatus, setActiveStatus] = useState<string | null>(searchParams.get("estatus") || null);
+    const [activeCurrency, setActiveCurrency] = useState<string | null>(searchParams.get("moneda") || null);
+    const [minPrice, setMinPrice] = useState(searchParams.get("precio_min") || "");
+    const [maxPrice, setMaxPrice] = useState(searchParams.get("precio_max") || "");
+    const [minArea, setMinArea] = useState(searchParams.get("m2_min") || "");
 
     const searchInputRef = useRef<HTMLInputElement>(null);
     const brandProcessed = useRef(false);
@@ -51,15 +68,25 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
         const currentBusiness = params.tipo !== undefined ? params.tipo : activeBusiness;
         const currentUse = params.uso !== undefined ? params.uso : activeUse;
         const currentSort = params.orden !== undefined ? params.orden : sort;
+        const currentStatus = params.estatus !== undefined ? params.estatus : activeStatus;
+        const currentCurrency = params.moneda !== undefined ? params.moneda : activeCurrency;
+        const currentMinPrice = params.precio_min !== undefined ? params.precio_min : minPrice;
+        const currentMaxPrice = params.precio_max !== undefined ? params.precio_max : maxPrice;
+        const currentMinArea = params.m2_min !== undefined ? params.m2_min : minArea;
 
         if (currentSearch) sp.set("q", currentSearch);
         if (currentBusiness) sp.set("tipo", currentBusiness);
         if (currentUse) sp.set("uso", currentUse);
+        if (currentStatus) sp.set("estatus", currentStatus);
+        if (currentCurrency) sp.set("moneda", currentCurrency);
+        if (currentMinPrice) sp.set("precio_min", currentMinPrice);
+        if (currentMaxPrice) sp.set("precio_max", currentMaxPrice);
+        if (currentMinArea) sp.set("m2_min", currentMinArea);
         if (currentSort && currentSort !== "newest") sp.set("orden", currentSort);
 
         const qs = sp.toString();
         router.replace(`${pathname}${qs ? `?${qs}` : ""}`, { scroll: false });
-    }, [searchTerm, activeBusiness, activeUse, sort, router, pathname]);
+    }, [searchTerm, activeBusiness, activeUse, activeStatus, activeCurrency, minPrice, maxPrice, minArea, sort, router, pathname]);
 
     const filtered = useMemo(() => {
         const result = properties.filter((p) => {
@@ -67,25 +94,39 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
             const matchSearch = searchable.includes(searchTerm.toLowerCase());
             const matchBusiness = activeBusiness ? p.business_type.toLowerCase() === activeBusiness.toLowerCase() : true;
             const matchUse = activeUse ? p.property_use === activeUse : true;
-            return matchSearch && matchBusiness && matchUse;
+            const matchStatus = activeStatus ? p.status === activeStatus : true;
+            const matchCurrency = activeCurrency ? p.currency === activeCurrency : true;
+            const matchMinPrice = minPrice ? p.price >= Number(minPrice) : true;
+            const matchMaxPrice = maxPrice ? p.price <= Number(maxPrice) : true;
+            const area = Math.max(p.m2_terrain || 0, p.m2_construction || 0);
+            const matchMinArea = minArea ? area >= Number(minArea) : true;
+            return matchSearch && matchBusiness && matchUse && matchStatus && matchCurrency && matchMinPrice && matchMaxPrice && matchMinArea;
         });
 
         if (sort === "price_asc") result.sort((a, b) => a.price - b.price);
         else if (sort === "price_desc") result.sort((a, b) => b.price - a.price);
+        else if (sort === "terrain_desc") result.sort((a, b) => (b.m2_terrain || 0) - (a.m2_terrain || 0));
+        else if (sort === "construction_desc") result.sort((a, b) => (b.m2_construction || 0) - (a.m2_construction || 0));
+        else if (sort === "featured") result.sort((a, b) => Number(Boolean(b.is_featured)) - Number(Boolean(a.is_featured)));
 
         return result;
-    }, [properties, searchTerm, activeBusiness, activeUse, sort]);
+    }, [properties, searchTerm, activeBusiness, activeUse, activeStatus, activeCurrency, minPrice, maxPrice, minArea, sort]);
 
     const clearAll = () => {
         setSearchTerm("");
         setActiveBusiness(null);
         setActiveUse(null);
+        setActiveStatus(null);
+        setActiveCurrency(null);
+        setMinPrice("");
+        setMaxPrice("");
+        setMinArea("");
         setSort("newest");
         router.replace(pathname, { scroll: false });
         searchInputRef.current?.focus();
     };
 
-    const hasFilters = activeBusiness || activeUse || searchTerm || sort !== "newest";
+    const hasFilters = activeBusiness || activeUse || activeStatus || activeCurrency || searchTerm || minPrice || maxPrice || minArea || sort !== "newest";
     const pillBase = "flex min-h-10 w-full items-center justify-center px-2 text-center text-[10px] font-bold uppercase tracking-[0.12em] transition-colors sm:px-4 sm:text-[11px] sm:tracking-[0.14em]";
     const pillActive = "bg-[var(--color-accent)] text-black";
     const pillInactive = "border border-white/[0.08] bg-white/[0.025] text-white/62 hover:border-[var(--color-accent)]/35 hover:text-white";
@@ -210,6 +251,91 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                         ))}
                     </div>
                 </div>
+
+                <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-12">
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-5 lg:col-span-5">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setActiveStatus(null);
+                                updateURL({ estatus: null });
+                            }}
+                            className={`${pillBase} ${!activeStatus ? pillActive : pillInactive}`}
+                        >
+                            Estatus
+                        </button>
+                        {STATUS_OPTIONS.map((status) => (
+                            <button
+                                key={status.value}
+                                type="button"
+                                onClick={() => {
+                                    const next = activeStatus === status.value ? null : status.value;
+                                    setActiveStatus(next);
+                                    updateURL({ estatus: next });
+                                }}
+                                className={`${pillBase} ${activeStatus === status.value ? pillActive : pillInactive}`}
+                            >
+                                {status.label}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 lg:col-span-2">
+                        {CURRENCY_OPTIONS.map((currency) => (
+                            <button
+                                key={currency}
+                                type="button"
+                                onClick={() => {
+                                    const next = activeCurrency === currency ? null : currency;
+                                    setActiveCurrency(next);
+                                    updateURL({ moneda: next });
+                                }}
+                                className={`${pillBase} ${activeCurrency === currency ? pillActive : pillInactive}`}
+                            >
+                                {currency}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:col-span-5">
+                        <input
+                            type="number"
+                            min="0"
+                            inputMode="numeric"
+                            placeholder="Precio mínimo"
+                            value={minPrice}
+                            onChange={(e) => {
+                                setMinPrice(e.target.value);
+                                updateURL({ precio_min: e.target.value || null });
+                            }}
+                            className="h-11 w-full border border-white/[0.08] bg-background/70 px-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)]"
+                        />
+                        <input
+                            type="number"
+                            min="0"
+                            inputMode="numeric"
+                            placeholder="Precio máximo"
+                            value={maxPrice}
+                            onChange={(e) => {
+                                setMaxPrice(e.target.value);
+                                updateURL({ precio_max: e.target.value || null });
+                            }}
+                            className="h-11 w-full border border-white/[0.08] bg-background/70 px-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)]"
+                        />
+                        <input
+                            type="number"
+                            min="0"
+                            inputMode="numeric"
+                            placeholder="m² mínimo"
+                            value={minArea}
+                            onChange={(e) => {
+                                setMinArea(e.target.value);
+                                updateURL({ m2_min: e.target.value || null });
+                            }}
+                            className="h-11 w-full border border-white/[0.08] bg-background/70 px-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)]"
+                        />
+                    </div>
+                </div>
             </div>
 
             {filtered.length === 0 ? (
@@ -236,7 +362,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             Limpiar filtros
                         </button>
                         <Link
-                            href="/contacto?interes=inventario"
+                            href={`/contacto?interes=inventario${searchTerm ? `&busqueda=${encodeURIComponent(searchTerm)}` : ""}`}
                             className="brushed-gold inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-bold"
                         >
                             Hablar con asesor

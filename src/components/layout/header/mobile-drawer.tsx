@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { X, Phone } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -100,7 +100,7 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
             </button>
           </DrawerHeader>
 
-          <div className="flex flex-1 flex-col justify-between gap-4 border-t border-white/[0.06] pt-4">
+          <div className="flex flex-1 flex-col gap-4 overflow-y-auto border-t border-white/[0.06] pt-4">
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-2">
                   {baseLinks.map((link) => (
@@ -170,18 +170,6 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
                 ))}
               </div>
             </NavGroup>
-            </div>
-
-            {/* Contacto CTA */}
-            <div className="shrink-0">
-              <Link
-                href="/contacto"
-                className="flex min-h-10 items-center justify-center gap-2 w-full px-5 border border-gold-solid/60 rounded-full text-gold-solid font-semibold text-sm hover:bg-gold-solid hover:text-black transition-all"
-                onClick={handleClose}
-              >
-                <Phone className="w-4 h-4" aria-hidden="true" />
-                Contactar
-              </Link>
             </div>
           </div>
         </div>

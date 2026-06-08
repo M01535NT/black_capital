@@ -7,7 +7,7 @@ import type { PropertyCardData } from "@/components/property/PropertyCard";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-    title: "Inventario de Propiedades en Tijuana | Casas, Comercial e Industrial | Black Capital",
+    title: "Inventario de Propiedades en Tijuana | Casas, Comercial e Industrial",
     description: "Explora nuestro catálogo de propiedades en Tijuana: casas residenciales, centros comerciales y naves industriales. Análisis financiero incluido. Venta y renta.",
 };
 
@@ -26,6 +26,7 @@ const PLACEHOLDER_PROPERTIES: PropertyCardData[] = [
         cover_image: "/brand-luxury.webp",
         status: "Available",
         address: "Zona Río, Tijuana",
+        is_featured: true,
         isPlaceholder: true,
     },
     {
@@ -42,6 +43,7 @@ const PLACEHOLDER_PROPERTIES: PropertyCardData[] = [
         cover_image: "/brand-business.webp",
         status: "Available",
         address: "Otay, Tijuana",
+        is_featured: false,
         isPlaceholder: true,
     },
     {
@@ -58,6 +60,7 @@ const PLACEHOLDER_PROPERTIES: PropertyCardData[] = [
         cover_image: "/brand-industrial.webp",
         status: "Available",
         address: "Parque Industrial, Tijuana",
+        is_featured: false,
         isPlaceholder: true,
     },
 ];
@@ -87,8 +90,7 @@ async function InventoryContent() {
 
     const { data: properties } = await supabase
         .from("properties")
-        .select("id, slug, title, property_use, property_type, business_type, price, currency, m2_terrain, m2_construction, cover_image, status")
-        .eq("status", "Available")
+        .select("id, slug, title, property_use, property_type, business_type, price, currency, m2_terrain, m2_construction, cover_image, status, address, created_at, is_featured")
         .order("created_at", { ascending: false });
 
     return <CatalogFilter properties={(properties && properties.length > 0 ? properties : PLACEHOLDER_PROPERTIES) as PropertyCardData[]} />;

@@ -27,12 +27,40 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, UploadCloud, X } from "lucide-react";
+import { FileText, ImageIcon, Loader2, MapPin, Settings2, Star, UploadCloud, UserRoundCheck, X } from "lucide-react";
 import { AgentSelect } from "./agent-select";
+import { adminCardClass } from "./admin-ui";
 
 interface PdfEntry {
     file: File;
     label: string;
+}
+
+function FormSection({
+    icon: Icon,
+    title,
+    description,
+    children,
+}: {
+    icon: React.ComponentType<{ className?: string }>;
+    title: string;
+    description?: string;
+    children: React.ReactNode;
+}) {
+    return (
+        <section className={`${adminCardClass} p-5 sm:p-6`}>
+            <div className="mb-5 flex min-w-0 items-start gap-3 border-b border-white/[0.06] pb-5">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+                    <Icon className="h-4 w-4" />
+                </span>
+                <div className="min-w-0">
+                    <h2 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">{title}</h2>
+                    {description && <p className="mt-2 text-sm leading-6 text-white/50">{description}</p>}
+                </div>
+            </div>
+            {children}
+        </section>
+    );
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- initialData is partially-typed DB row; zod validates at runtime
@@ -54,13 +82,13 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             is_project: false,
             is_assignment: false,
             is_featured: false,
-            m2_terrain: 0,
-            m2_construction: 0,
-            price: 0,
+            m2_terrain: null,
+            m2_construction: null,
+            price: undefined,
             currency: "MXN",
             description: "",
             address: "",
-            cover_image: "",
+            cover_image: initialData?.cover_image ?? null,
             slug: "",
             status: "Available",
             agent_name: "",
@@ -85,8 +113,13 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
     // ── Image handlers ──
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            setImageFiles(Array.from(e.target.files));
+            setImageFiles(prev => [...prev, ...Array.from(e.target.files || [])]);
+            e.target.value = "";
         }
+    };
+
+    const removeImageFile = (index: number) => {
+        setImageFiles(prev => prev.filter((_, i) => i !== index));
     };
 
     // ── PDF handlers ──
@@ -97,6 +130,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 label: f.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
             }));
             setPdfEntries(prev => [...prev, ...newEntries]);
+            e.target.value = "";
         }
     };
 
@@ -259,6 +293,11 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
 
             if (uploadWarnings.length > 0) {
                 alert(`Propiedad guardada, pero con advertencias:\n${uploadWarnings.join('\n')}`);
+                if (propertyData?.id) {
+                    router.push(`/admin/properties/${propertyData.id}/edit`);
+                } else {
+                    router.push("/admin/properties");
+                }
             } else {
                 router.push("/admin/properties");
             }
@@ -275,16 +314,12 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit, () => {
                 scrollToFirstError();
-            })} className="flex flex-col gap-6 border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6" noValidate>
-                <div className="border-b border-white/[0.06] pb-5">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
-                        Contenido de propiedad
-                    </p>
-                    <p className="mt-2 text-sm text-white/55">
-                        Completa la información pública, operación, multimedia y asignación comercial.
-                    </p>
-                </div>
-
+            })} className="flex min-w-0 flex-col gap-6" noValidate>
+                <FormSection
+                    icon={Settings2}
+                    title="Datos principales"
+                    description="Información pública básica para identificar la propiedad en inventario y buscadores."
+                >
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <FormField
                         control={form.control}
@@ -295,22 +330,8 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                                 <FormControl>
                                     <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="Ej. Casa en Zona Río" {...field} />
                                 </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    <FormField
-                        control={form.control}
-                        name="slug"
-                        render={({ field }) => (
-                            <FormItem className="col-span-1 md:col-span-2">
-                                <FormLabel>Slug (URL amigable para SEO)</FormLabel>
-                                <FormControl>
-                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="casa-en-zona-rio" value={field.value ?? ""} onChange={field.onChange} />
-                                </FormControl>
                                 <FormDescription>
-                                    Deja en blanco para generar automáticamente desde el título. Solo letras, números y guiones.
+                                    La URL pública se generará automáticamente desde este título.
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -517,7 +538,13 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         )}
                     />
                 </div>
+                </FormSection>
 
+                <FormSection
+                    icon={FileText}
+                    title="Descripción comercial"
+                    description="Redacta el texto que aparecerá en la ficha pública de la propiedad."
+                >
                 <FormField
                     control={form.control}
                     name="description"
@@ -531,8 +558,14 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         </FormItem>
                     )}
                 />
+                </FormSection>
 
-                <div className="grid grid-cols-1 gap-6 border-t border-white/[0.06] pt-6 md:grid-cols-2">
+                <FormSection
+                    icon={MapPin}
+                    title="Ubicación y enlaces"
+                    description="Datos complementarios para ubicación, video y recorridos externos."
+                >
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <FormField
                         control={form.control}
                         name="address"
@@ -542,20 +575,6 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                                 <FormControl>
                                     <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="Ej. Zona Río, Tijuana" value={field.value ?? ""} onChange={field.onChange} />
                                 </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="cover_image"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Imagen de Portada (URL)</FormLabel>
-                                <FormControl>
-                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="https://..." value={field.value ?? ""} onChange={field.onChange} />
-                                </FormControl>
-                                <FormDescription>URL externa o deja en blanco para usar la primera imagen subida.</FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -590,13 +609,14 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         )}
                     />
                 </div>
+                </FormSection>
 
                 {/* ── Agent Assignment (Multi-select from registered agents) ── */}
-                <div className="flex flex-col gap-4 border border-white/[0.08] bg-white/[0.025] p-5">
-                    <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/48">Asignación de asesores</h3>
-                    <p className="text-sm text-white/50">
-                        Selecciona uno o varios agentes del equipo. Solo aparecen agentes activos.
-                    </p>
+                <FormSection
+                    icon={UserRoundCheck}
+                    title="Asignación de asesores"
+                    description="Selecciona uno o varios agentes del equipo. Solo aparecen agentes activos."
+                >
                     <FormField
                         control={form.control}
                         name="agent_ids"
@@ -616,9 +636,10 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                             </FormItem>
                         )}
                     />
-                </div>
+                </FormSection>
 
-                <div className="flex flex-col flex-wrap gap-6 border border-white/[0.08] bg-white/[0.025] p-4 md:flex-row md:items-center">
+                <FormSection icon={Star} title="Publicación" description="Define etiquetas comerciales y visibilidad destacada.">
+                <div className="flex flex-col flex-wrap gap-6 md:flex-row md:items-center">
                     <FormField
                         control={form.control}
                         name="is_featured"
@@ -662,16 +683,51 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         )}
                     />
                 </div>
+                </FormSection>
 
                 {/* ── Imágenes ── */}
-                <div className="flex flex-col gap-4 border border-white/[0.08] bg-white/[0.025] p-5">
+                <FormSection
+                    icon={ImageIcon}
+                    title="Imágenes"
+                    description="La primera imagen subida será la imagen principal en listados; las demás forman la galería pública."
+                >
+                <div className="flex flex-col gap-4">
                     <FormLabel>Imágenes (JPG, PNG, WEBP)</FormLabel>
                     <Input type="file" multiple accept="image/*" onChange={handleImageChange} className="cursor-pointer border-white/[0.1] bg-background/70 text-white file:mr-4 file:border-none file:bg-[var(--color-accent)] file:px-4 file:py-1 file:text-black hover:file:brightness-105" />
                     <FormDescription>Se comprimirán automáticamente a WebP antes de subir.</FormDescription>
+                    {imageFiles.length > 0 && (
+                        <div className="grid gap-2 sm:grid-cols-2">
+                            {imageFiles.map((file, i) => (
+                                <div key={`${file.name}-${i}`} className="flex min-w-0 items-center gap-3 border border-white/[0.08] bg-white/[0.025] p-3">
+                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+                                        <ImageIcon className="h-4 w-4" />
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                        <p className="truncate text-sm text-white">{file.name}</p>
+                                        <p className="text-xs text-white/40">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => removeImageFile(i)}
+                                        className="flex h-8 w-8 shrink-0 items-center justify-center text-white/45 hover:text-red-400"
+                                        aria-label={`Quitar ${file.name}`}
+                                    >
+                                        <X className="h-4 w-4" />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
+                </FormSection>
 
                 {/* ── Documentos PDF (múltiples) ── */}
-                <div className="flex flex-col gap-4 border border-white/[0.08] bg-white/[0.025] p-5">
+                <FormSection
+                    icon={FileText}
+                    title="Documentos"
+                    description="Agrega PDFs internos o públicos con una etiqueta clara antes de guardarlos."
+                >
+                <div className="flex flex-col gap-4">
                     <FormLabel>Documentos (PDF) — Ficha técnica, escrituras, avalúos, etc.</FormLabel>
                     <Input
                         type="file"
@@ -688,7 +744,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     {pdfEntries.length > 0 && (
                         <div className="space-y-2 mt-3">
                             {pdfEntries.map((entry, i) => (
-                                <div key={i} className="flex items-center gap-2 border border-white/[0.08] bg-white/[0.025] p-2 pl-3">
+                                <div key={i} className="grid gap-2 border border-white/[0.08] bg-white/[0.025] p-3 sm:grid-cols-[minmax(0,1fr)_180px_32px] sm:items-center">
                                     <span className="min-w-0 flex-1 truncate text-xs text-white/50">
                                         {entry.file.name}
                                     </span>
@@ -696,7 +752,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                                         value={entry.label}
                                         onChange={e => updatePdfLabel(i, e.target.value)}
                                         placeholder="Ej. Ficha Técnica"
-                                        className="h-8 w-40 border-white/[0.1] bg-background/70 text-xs text-white"
+                                        className="h-8 w-full border-white/[0.1] bg-background/70 text-xs text-white"
                                     />
                                     <button
                                         type="button"
@@ -710,8 +766,9 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         </div>
                     )}
                 </div>
+                </FormSection>
 
-                <div className="flex flex-col gap-4 border-t border-white/[0.06] pt-5 sm:flex-row">
+                <div className={`${adminCardClass} sticky bottom-3 z-10 flex flex-col gap-4 p-3 shadow-2xl shadow-black/30 sm:flex-row`}>
                     <Button type="button" variant="outline" onClick={() => router.push('/admin/properties')} className="order-last w-full rounded-full border-white/[0.12] bg-white/[0.025] text-white sm:order-first sm:w-auto">
                         Cancelar
                     </Button>
