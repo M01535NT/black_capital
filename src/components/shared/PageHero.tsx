@@ -58,12 +58,12 @@ export function PageHero({
 
     return (
         <div
-            className={`bg-background ${isCompact ? "py-16" : "py-24"} border-b border-gold-500/20 relative overflow-hidden`}
+            className={`bg-background ${isCompact ? "py-16" : "py-24"} border-b border-[var(--color-accent)]/20 relative overflow-hidden`}
         >
             {/* Subtle gold radial — only on default variant */}
             {!isCompact && (
                 <div
-                    className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.05,_transparent_50%)]"
+                    className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-accent)/0.05,_transparent_50%)]"
                     aria-hidden="true"
                 />
             )}
@@ -95,7 +95,7 @@ export function PageHero({
                     )}
 
                     {meta && (
-                        <p className="text-gold-500/80 text-body-lg mt-4">{meta}</p>
+                        <p className="text-[var(--color-accent)]/80 text-body-lg mt-4">{meta}</p>
                     )}
 
                     {children && <div className="mt-8">{children}</div>}

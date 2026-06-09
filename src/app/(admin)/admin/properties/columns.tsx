@@ -68,7 +68,7 @@ export const columns: ColumnDef<PropertyRow>[] = [
         cell: ({ row }) => (
             <Link
                 href={`/admin/properties/${row.original.id}/edit`}
-                className="text-body-sm font-medium text-foreground hover:text-gold-500 transition-colors"
+                className="text-body-sm font-medium text-foreground hover:text-[var(--color-accent)] transition-colors"
             >
                 {row.getValue("title")}
             </Link>
@@ -81,7 +81,7 @@ export const columns: ColumnDef<PropertyRow>[] = [
             const use = row.getValue("property_use") as string;
             const colorMap: Record<string, string> = {
                 Residencial: "bg-blue-500/10 text-blue-500 border-blue-500/20",
-                Comercial: "bg-gold-500/10 text-gold-500 border-gold-500/20",
+                Comercial: "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/20",
                 Industrial: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
                 Habitacional: "bg-purple-500/10 text-purple-500 border-purple-500/20",
             };
@@ -103,7 +103,7 @@ export const columns: ColumnDef<PropertyRow>[] = [
                 currency,
             }).format(amount);
 
-            return <div className="text-right font-numerics font-bold text-gold-500">{formatted}</div>;
+            return <div className="text-right font-numerics font-bold text-[var(--color-accent)]">{formatted}</div>;
         },
     },
     {
@@ -157,7 +157,7 @@ export const columns: ColumnDef<PropertyRow>[] = [
                         <DropdownMenuLabel className="text-caption">Acciones</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
                             <Link href={`/admin/properties/${property.id}/edit`}>
-                                <Edit className="w-3.5 h-3.5 mr-2 text-gold-500" />
+                                <Edit className="w-3.5 h-3.5 mr-2 text-[var(--color-accent)]" />
                                 Editar Propiedad
                             </Link>
                         </DropdownMenuItem>

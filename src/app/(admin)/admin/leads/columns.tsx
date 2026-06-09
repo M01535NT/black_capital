@@ -30,7 +30,7 @@ export const columns: ColumnDef<LeadRow>[] = [
         accessorKey: "name",
         header: "Nombre",
         cell: ({ row }) => (
-            <Link href={`/admin/leads/${row.original.id}`} className="font-bold text-foreground hover:text-gold-500 transition-colors">
+            <Link href={`/admin/leads/${row.original.id}`} className="font-bold text-foreground hover:text-[var(--color-accent)] transition-colors">
                 {row.getValue("name")}
             </Link>
         ),

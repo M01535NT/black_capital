@@ -57,7 +57,7 @@ export default function ValoresPage() {
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent" />
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <FadeIn>
-                        <span className="property-tag-type text-gold-500/80 mb-4 inline-block">
+                        <span className="property-tag-type text-[var(--color-accent)]/80 mb-4 inline-block">
                             Nuestros Principios
                         </span>
                         <h1 className="text-display-1 uppercase text-foreground mb-4 text-balance">
@@ -78,8 +78,8 @@ export default function ValoresPage() {
                         return (
                             <StaggerItem key={v.titulo}>
                                 <div className="group p-8 border-b md:border-r border-white/[0.06] bg-white/[0.01] transition-colors duration-500 hover:bg-white/[0.025] h-full">
-                                    <div className="w-12 h-12 rounded-md bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-6 group-hover:bg-gold-500/20 group-hover:border-gold-500/40 transition-all duration-500">
-                                        <Icon className="w-5 h-5 text-gold-500" aria-hidden="true" />
+                                    <div className="w-12 h-12 rounded-md bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 flex items-center justify-center mb-6 group-hover:bg-[var(--color-accent)]/20 group-hover:border-[var(--color-accent)]/40 transition-all duration-500">
+                                        <Icon className="w-5 h-5 text-[var(--color-accent)]" aria-hidden="true" />
                                     </div>
                                 <h3 className="text-display-3 font-semibold text-foreground mb-3">
                                     {v.titulo}

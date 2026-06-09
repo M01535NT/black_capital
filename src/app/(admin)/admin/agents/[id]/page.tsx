@@ -91,7 +91,7 @@ export default async function AgentDetailPage({
                     <div className="bg-card border border-foreground/10 rounded-2xl p-6 shadow-sm space-y-5">
                         {/* Avatar */}
                         <div className="flex flex-col items-center text-center">
-                            <div className="w-24 h-24 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 text-3xl font-bold border-2 border-gold-500/20 overflow-hidden mb-4">
+                            <div className="w-24 h-24 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center text-[var(--color-accent)] text-3xl font-bold border-2 border-[var(--color-accent)]/20 overflow-hidden mb-4">
                                 {agent.photo_url ? (
                                     <Image
                                         src={agent.photo_url}
@@ -117,24 +117,24 @@ export default async function AgentDetailPage({
                         <div className="space-y-3 pt-3 border-t border-foreground/5">
                             {agent.email && (
                                 <a href={`mailto:${agent.email}`}
-                                    className="flex items-center gap-3 text-sm text-foreground/70 hover:text-gold-500 transition-colors"
+                                    className="flex items-center gap-3 text-sm text-foreground/70 hover:text-[var(--color-accent)] transition-colors"
                                 >
-                                    <Mail className="w-4 h-4 text-gold-500" />
+                                    <Mail className="w-4 h-4 text-[var(--color-accent)]" />
                                     {agent.email}
                                 </a>
                             )}
                             {agent.phone && (
                                 <a href={`https://wa.me/${agent.phone.replace(/[^0-9]/g, "")}`}
                                     target="_blank" rel="noopener noreferrer"
-                                    className="flex items-center gap-3 text-sm text-foreground/70 hover:text-gold-500 transition-colors"
+                                    className="flex items-center gap-3 text-sm text-foreground/70 hover:text-[var(--color-accent)] transition-colors"
                                 >
-                                    <Phone className="w-4 h-4 text-gold-500" />
+                                    <Phone className="w-4 h-4 text-[var(--color-accent)]" />
                                     {agent.phone}
                                 </a>
                             )}
                             {agent.license_number && (
                                 <div className="flex items-center gap-3 text-sm text-foreground/70">
-                                    <Shield className="w-4 h-4 text-gold-500" />
+                                    <Shield className="w-4 h-4 text-[var(--color-accent)]" />
                                     Cédula: {agent.license_number}
                                 </div>
                             )}
@@ -153,7 +153,7 @@ export default async function AgentDetailPage({
                 <div className="lg:col-span-2 space-y-4">
                     <div className="flex items-center justify-between">
                         <h3 className="text-lg font-bold flex items-center gap-2">
-                            <Building2 className="w-5 h-5 text-gold-500" />
+                            <Building2 className="w-5 h-5 text-[var(--color-accent)]" />
                             Inventario Asignado ({properties.length})
                         </h3>
                         <AssignPropertiesButton agentId={id} assignedIds={propertyIds} />
@@ -161,8 +161,8 @@ export default async function AgentDetailPage({
 
                     {properties.length === 0 ? (
                         <div className="bg-card border border-foreground/10 rounded-2xl p-8 text-center">
-                            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gold-500/5 flex items-center justify-center">
-                                <Building2 className="w-6 h-6 text-gold-500/50" />
+                            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-[var(--color-accent)]/5 flex items-center justify-center">
+                                <Building2 className="w-6 h-6 text-[var(--color-accent)]/50" />
                             </div>
                             <p className="text-foreground/50 text-sm mb-4">
                                 Este agente no tiene propiedades asignadas aún.
@@ -176,7 +176,7 @@ export default async function AgentDetailPage({
                                     key={prop.id}
                                     href={`/inventario/${prop.slug || prop.id}`}
                                     target="_blank"
-                                    className="group flex items-center gap-4 bg-card border border-foreground/10 rounded-xl p-4 hover:border-gold-500/20 hover:bg-gold-500/[0.02] transition-all"
+                                    className="group flex items-center gap-4 bg-card border border-foreground/10 rounded-xl p-4 hover:border-[var(--color-accent)]/20 hover:bg-[var(--color-accent)]/[0.02] transition-all"
                                 >
                                     {/* Thumbnail */}
                                     <div className="w-16 h-16 rounded-xl bg-muted overflow-hidden shrink-0 border border-foreground/5">
@@ -197,7 +197,7 @@ export default async function AgentDetailPage({
 
                                     {/* Info */}
                                     <div className="flex-1 min-w-0">
-                                        <p className="font-bold text-foreground truncate group-hover:text-gold-500 transition-colors">
+                                        <p className="font-bold text-foreground truncate group-hover:text-[var(--color-accent)] transition-colors">
                                             {prop.title}
                                         </p>
                                         <div className="flex items-center gap-2 text-xs text-foreground/50 mt-1">
@@ -207,13 +207,13 @@ export default async function AgentDetailPage({
                                             <Badge variant="outline" className="text-caption px-1.5 py-0 h-auto border-foreground/10">
                                                 {prop.property_use}
                                             </Badge>
-                                            <span className="text-gold-500 font-numerics font-bold">
+                                            <span className="text-[var(--color-accent)] font-numerics font-bold">
                                                 {formatPrice(prop.price, prop.currency)}
                                             </span>
                                         </div>
                                     </div>
 
-                                    <ExternalLink className="w-4 h-4 text-foreground/50 group-hover:text-gold-500 transition-colors shrink-0" />
+                                    <ExternalLink className="w-4 h-4 text-foreground/50 group-hover:text-[var(--color-accent)] transition-colors shrink-0" />
                                 </Link>
                             ))}
                         </div>

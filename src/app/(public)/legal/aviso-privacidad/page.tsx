@@ -14,13 +14,13 @@ export const metadata: Metadata = {
 export default function PrivacidadPage() {
     return (
         <div className="w-full flex-1 bg-background">
-            <div className="bg-zinc-950 py-16 border-b border-gold-500/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.05,_transparent_50%)]" />
+            <div className="bg-zinc-950 py-16 border-b border-[var(--color-accent)]/20 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-accent)/0.05,_transparent_50%)]" />
                 <div className="container mx-auto px-4 relative z-10">
                     <h1 className="text-display-2 uppercase text-foreground mb-4">
                         Aviso de Privacidad
                     </h1>
-                    <p className="footer-legal-type text-gold-500/80 max-w-2xl">
+                    <p className="footer-legal-type text-[var(--color-accent)]/80 max-w-2xl">
                         Última actualización: Junio 2026
                     </p>
                 </div>
@@ -75,7 +75,7 @@ export default function PrivacidadPage() {
                             <p>
                                 Usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento
                                 de sus datos personales. Para ejercer estos derechos, puede contactarnos en:{" "}
-                                <a href="mailto:privacidad@blackmx.vercel.app" className="text-gold-500 hover:underline">
+                                <a href="mailto:privacidad@blackmx.vercel.app" className="text-[var(--color-accent)] hover:underline">
                                     privacidad@blackmx.vercel.app
                                 </a>
                             </p>
@@ -100,7 +100,7 @@ export default function PrivacidadPage() {
                             </h2>
                             <p>
                                 Para cualquier consulta sobre este aviso de privacidad, puede escribirnos a{" "}
-                                <a href="mailto:contacto@blackmx.vercel.app" className="text-gold-500 hover:underline">
+                                <a href="mailto:contacto@blackmx.vercel.app" className="text-[var(--color-accent)] hover:underline">
                                     contacto@blackmx.vercel.app
                                 </a>{" "}
                                 o llamar al {CONTACT_CONFIG.phone}.

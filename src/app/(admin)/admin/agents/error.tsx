@@ -27,7 +27,7 @@ export default function AgentsError({
                 <Button
                     onClick={reset}
                     variant="outline"
-                    className="border-gold-500/30 text-gold-500 hover:bg-gold-500/10 gap-2"
+                    className="border-[var(--color-accent)]/30 text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 gap-2"
                 >
                     <RefreshCw className="h-4 w-4" />
                     Reintentar

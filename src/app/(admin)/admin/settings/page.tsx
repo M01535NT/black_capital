@@ -119,7 +119,7 @@ export default function SettingsPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <Loader2 className="w-6 h-6 animate-spin text-gold-500" />
+                <Loader2 className="w-6 h-6 animate-spin text-[var(--color-accent)]" />
             </div>
         );
     }
@@ -135,7 +135,7 @@ export default function SettingsPage() {
             {/* Hero */}
             <Card className="rounded-none border-white/[0.08] bg-white/[0.025]">
                 <CardHeader className="flex flex-row items-center gap-3">
-                    <ImageIcon className="w-5 h-5 text-gold-500" />
+                    <ImageIcon className="w-5 h-5 text-[var(--color-accent)]" />
                     <CardTitle>Hero Homepage</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -161,7 +161,7 @@ export default function SettingsPage() {
             {/* Brand Pages */}
             <Card className="rounded-none border-white/[0.08] bg-white/[0.025]">
                 <CardHeader className="flex flex-row items-center gap-3">
-                    <Type className="w-5 h-5 text-gold-500" />
+                    <Type className="w-5 h-5 text-[var(--color-accent)]" />
                     <CardTitle>Títulos de Marcas</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -171,7 +171,7 @@ export default function SettingsPage() {
                         { keyTitle: "industrialHeroTitle", keySubtitle: "industrialHeroSubtitle", label: "Black Industrial" },
                     ] satisfies Array<{ keyTitle: keyof AppSettings; keySubtitle: keyof AppSettings; label: string }>).map((brand) => (
                         <div key={brand.label} className="space-y-3 border border-white/[0.08] bg-background/70 p-4">
-                            <p className="text-caption text-gold-500">{brand.label}</p>
+                            <p className="text-caption text-[var(--color-accent)]">{brand.label}</p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="text-body-sm font-medium mb-1 block">Título</label>
@@ -196,14 +196,14 @@ export default function SettingsPage() {
             {/* Contact */}
             <Card className="rounded-none border-white/[0.08] bg-white/[0.025]">
                 <CardHeader className="flex flex-row items-center gap-3">
-                    <Phone className="w-5 h-5 text-gold-500" />
+                    <Phone className="w-5 h-5 text-[var(--color-accent)]" />
                     <CardTitle>Información de Contacto</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="text-body-sm font-medium mb-1 block flex items-center gap-2">
-                                <Phone className="w-3 h-3 text-gold-500" /> Teléfono
+                                <Phone className="w-3 h-3 text-[var(--color-accent)]" /> Teléfono
                             </label>
                             <Input
                                 value={settings.contactPhone}
@@ -212,7 +212,7 @@ export default function SettingsPage() {
                         </div>
                         <div>
                             <label className="text-body-sm font-medium mb-1 block flex items-center gap-2">
-                                <Mail className="w-3 h-3 text-gold-500" /> Correo
+                                <Mail className="w-3 h-3 text-[var(--color-accent)]" /> Correo
                             </label>
                             <Input
                                 value={settings.contactEmail}
@@ -222,7 +222,7 @@ export default function SettingsPage() {
                     </div>
                     <div>
                         <label className="text-body-sm font-medium mb-1 block flex items-center gap-2">
-                            <MapPin className="w-3 h-3 text-gold-500" /> Dirección
+                            <MapPin className="w-3 h-3 text-[var(--color-accent)]" /> Dirección
                         </label>
                         <Textarea
                             value={settings.contactAddress}
@@ -236,7 +236,7 @@ export default function SettingsPage() {
             {/* WhatsApp */}
             <Card className="rounded-none border-white/[0.08] bg-white/[0.025]">
                 <CardHeader className="flex flex-row items-center gap-3">
-                    <MessageCircle className="w-5 h-5 text-gold-500" />
+                    <MessageCircle className="w-5 h-5 text-[var(--color-accent)]" />
                     <CardTitle>Plantilla WhatsApp</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">

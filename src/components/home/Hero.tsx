@@ -215,7 +215,7 @@ export function Hero() {
                 <span className="property-tag-type px-2.5 sm:px-10 whitespace-nowrap">
                   {v}
                 </span>
-                <span className="text-accent text-sm select-none" aria-hidden="true">
+                <span className="text-[var(--color-gold-light)] text-sm select-none" aria-hidden="true">
                   •
                 </span>
               </span>
@@ -227,7 +227,7 @@ export function Hero() {
                 <span className="property-tag-type px-2.5 sm:px-10 whitespace-nowrap">
                   {v}
                 </span>
-                <span className="text-accent text-sm select-none" aria-hidden="true">
+                <span className="text-[var(--color-gold-light)] text-sm select-none" aria-hidden="true">
                   •
                 </span>
               </span>

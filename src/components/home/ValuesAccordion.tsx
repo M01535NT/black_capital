@@ -119,7 +119,7 @@ export function ValuesAccordion() {
                     className={cn(
                       "shrink-0 mt-2 w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-500",
                       isFocused
-                        ? "border-accent text-accent rotate-45"
+                        ? "border-[var(--color-gold-light)] text-[var(--color-gold-light)] rotate-45"
                         : "border-white/30 text-white/70",
                     )}
                     aria-hidden="true"

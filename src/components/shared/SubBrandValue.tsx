@@ -67,7 +67,7 @@ export function SubBrandValue({
                             key={item.title}
                             className="group overflow-hidden border border-white/[0.08] bg-white/[0.025]"
                         >
-                            <div className="relative aspect-[16/10] overflow-hidden bg-[linear-gradient(135deg,rgba(255,255,255,0.04),rgba(212,175,55,0.08),rgba(255,255,255,0.02))]">
+                            <div className="gold-premium-overlay relative aspect-[16/10] overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
                                 <div className="absolute left-4 top-4 property-tag-type text-white/42">
                                     /{String(index + 1).padStart(2, "0")}

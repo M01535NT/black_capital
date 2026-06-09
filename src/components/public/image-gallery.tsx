@@ -204,7 +204,7 @@ export function ImageGallery({
               {/* Loading shimmer */}
               {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-foreground/[0.03] z-10">
-                  <div className="w-8 h-8 border-2 border-gold-500/30 border-t-gold-500 rounded-full animate-spin" />
+                  <div className="w-8 h-8 border-2 border-[var(--color-accent)]/30 border-t-[var(--color-accent)] rounded-full animate-spin" />
                 </div>
               )}
 
@@ -270,7 +270,7 @@ export function ImageGallery({
                     "md:h-[60px] md:w-[60px]",
                     "lg:h-[72px] lg:w-[72px]",
                     idx === activeIndex
-                      ? "border-[var(--color-accent)] shadow-[0_0_12px_rgba(212,175,55,0.35)]"
+                      ? "border-[var(--color-accent)] shadow-[0_0_12px_rgba(210,167,60,0.35)]"
                       : "border-transparent opacity-50 hover:opacity-80 hover:border-white/20",
                   )}
                   aria-label={`Ver imagen ${idx + 1}`}

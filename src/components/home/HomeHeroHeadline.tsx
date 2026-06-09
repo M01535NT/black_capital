@@ -22,7 +22,7 @@ export function HomeHeroHeadline() {
   return (
     <h1 className="text-display-1 text-white text-balance">
       Invierte con{" "}
-      <span className="relative inline-block min-w-[8.5ch] text-[var(--color-accent)]">
+      <span className="relative inline-block min-w-[8.5ch] metallic-gold-static gold-glow">
         <AnimatePresence mode="wait" initial={false}>
           <motion.span
             key={words[index]}

@@ -86,7 +86,7 @@ export function NavDropdown({ def, isOpen, onOpen, onClose }: NavDropdownProps) 
           <Link
             href={def.href}
             role="menuitem"
-            className="font-display property-tag-type flex items-center justify-between px-4 py-2.5 mb-1 text-gold-solid rounded-none border-b border-white/5 pb-3 hover:text-gold-400 focus-visible:outline-none focus-visible:text-gold-400"
+            className="font-display property-tag-type flex items-center justify-between px-4 py-2.5 mb-1 text-[var(--color-accent)] rounded-none border-b border-white/5 pb-3 hover:text-[var(--color-gold-soft)] focus-visible:outline-none focus-visible:text-[var(--color-gold-soft)]"
             onClick={onClose}
           >
             Ver todo de {def.label}
@@ -99,10 +99,10 @@ export function NavDropdown({ def, isOpen, onOpen, onClose }: NavDropdownProps) 
                 key={item.name}
                 href={item.href}
                 role="menuitem"
-                className="font-display text-body-sm flex items-center gap-3 px-4 py-3 text-foreground rounded-none transition-all duration-300 hover:bg-gold-500/10 hover:text-gold-solid hover:pl-5 focus-visible:bg-gold-500/10 focus-visible:text-gold-solid focus-visible:outline-none"
+                className="font-display text-body-sm flex items-center gap-3 px-4 py-3 text-foreground rounded-none transition-all duration-300 hover:bg-[var(--color-accent)]/10 hover:text-[var(--color-accent)] hover:pl-5 focus-visible:bg-[var(--color-accent)]/10 focus-visible:text-[var(--color-accent)] focus-visible:outline-none"
                 onClick={onClose}
               >
-                <Icon className="w-4 h-4 text-gold-solid" aria-hidden="true" />
+                <Icon className="w-4 h-4 text-[var(--color-accent)]" aria-hidden="true" />
                 {item.name}
               </Link>
             );

@@ -152,7 +152,7 @@ export function Logo({
       <Link
         href={href}
         aria-label={`${ariaLabel} — Inicio`}
-        className="inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-solid focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
+        className="inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
       >
         {content}
       </Link>

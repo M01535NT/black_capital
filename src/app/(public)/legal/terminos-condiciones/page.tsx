@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 export default function TermsPage() {
     return (
         <div className="w-full flex-1 bg-background">
-            <div className="bg-zinc-950 py-16 border-b border-gold-500/20">
+            <div className="bg-zinc-950 py-16 border-b border-[var(--color-accent)]/20">
                 <div className="container mx-auto px-4 text-center">
                     <FadeIn>
                         <h1 className="text-display-2 uppercase text-foreground mb-3">
-                            Términos y <span className="text-gold-500">Condiciones</span>
+                            Términos y <span className="text-[var(--color-accent)]">Condiciones</span>
                         </h1>
                         <p className="text-body text-foreground/60">
                             Última actualización: junio 2026
@@ -85,7 +85,7 @@ export default function TermsPage() {
                                 6. Registro y Datos Personales
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Para acceder a ciertos servicios, puede ser necesario proporcionar información personal. El tratamiento de sus datos se rige por nuestro <a href="/legal/aviso-privacidad" className="text-gold-500 hover:underline">Aviso de Privacidad</a>. Usted es responsable de mantener la confidencialidad de sus credenciales de acceso.
+                                Para acceder a ciertos servicios, puede ser necesario proporcionar información personal. El tratamiento de sus datos se rige por nuestro <a href="/legal/aviso-privacidad" className="text-[var(--color-accent)] hover:underline">Aviso de Privacidad</a>. Usted es responsable de mantener la confidencialidad de sus credenciales de acceso.
                             </p>
                         </section>
 

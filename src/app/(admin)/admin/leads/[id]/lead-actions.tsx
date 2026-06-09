@@ -112,7 +112,7 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
                             size="sm"
                             onClick={saveNotes}
                             disabled={saving || !notes.trim()}
-                            className="bg-gold-500 text-black hover:bg-gold-600 text-xs ml-auto"
+                            className="bg-[var(--color-accent)] text-black hover:bg-[var(--color-gold-dark)] text-xs ml-auto"
                         >
                             {saving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
                             Guardar Nota
@@ -127,7 +127,7 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
         <div className="relative">
             <Button
                 onClick={() => setOpen(!open)}
-                className="bg-gold-500 text-black hover:bg-gold-600 gap-2"
+                className="bg-[var(--color-accent)] text-black hover:bg-[var(--color-gold-dark)] gap-2"
             >
                 Cambiar Estado <ChevronDown className="w-4 h-4" />
             </Button>
@@ -143,7 +143,7 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
                                 className={cn(
                                     "w-full text-left px-3 py-2 text-sm transition-colors flex items-center gap-2",
                                     opt.value === status
-                                        ? "text-gold-500 font-medium bg-gold-500/5"
+                                        ? "text-[var(--color-accent)] font-medium bg-[var(--color-accent)]/5"
                                         : "text-foreground/70 hover:bg-muted/50"
                                 )}
                             >

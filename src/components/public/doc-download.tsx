@@ -40,7 +40,7 @@ function getDocColor(label: string): string {
         escrituras: "text-blue-400 bg-blue-500/10 border-blue-500/20",
         avaluo: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
         planos: "text-purple-400 bg-purple-500/10 border-purple-500/20",
-        brochure: "text-gold-500 bg-gold-500/10 border-gold-500/20",
+        brochure: "text-[var(--color-accent)] bg-[var(--color-accent)]/10 border-[var(--color-accent)]/20",
     };
     return colors[type] || colors.brochure;
 }
@@ -64,7 +64,7 @@ export function DocDownload({ documents, propertyId, propertyName }: DocDownload
                     return (
                         <div
                             key={i}
-                            className="group flex items-center gap-4 p-4 rounded-2xl border border-foreground/5 bg-card hover:border-gold-500/30 hover:shadow-[0_0_32px_-8px_rgba(212,175,55,0.12)] transition-all duration-300"
+                            className="group flex items-center gap-4 p-4 rounded-2xl border border-foreground/5 bg-card hover:border-[var(--color-accent)]/30 hover:shadow-[0_0_32px_-8px_rgba(210,167,60,0.12)] transition-all duration-300"
                         >
                             <div className={`size-11 rounded-xl flex items-center justify-center shrink-0 border transition-colors duration-300 ${colorClasses}`}>
                                 <Icon className="size-5" />

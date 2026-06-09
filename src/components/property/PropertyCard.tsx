@@ -94,7 +94,7 @@ export function PropertyCard({
                             className="object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                     ) : (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[linear-gradient(135deg,rgba(255,255,255,0.04),rgba(212,175,55,0.08),rgba(255,255,255,0.02))]">
+                        <div className="gold-premium-overlay absolute inset-0 flex flex-col items-center justify-center">
                             <ImageIcon className="mb-3 h-5 w-5 text-[var(--color-accent)]/70" aria-hidden="true" />
                             <span className="property-tag-type text-white/44">
                                 {property.isPlaceholder ? "Imagen de ejemplo" : "Sin imagen"}

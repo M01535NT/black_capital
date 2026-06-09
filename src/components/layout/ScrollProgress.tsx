@@ -30,7 +30,7 @@ export function ScrollProgress() {
     return (
         <motion.div
             aria-hidden="true"
-            className="fixed top-0 left-0 right-0 h-[2px] origin-left z-[60] bg-gradient-to-r from-gold-700 via-gold-solid to-gold-300 shadow-[0_0_8px_rgba(212,175,55,0.5)]"
+            className="fixed top-0 left-0 right-0 h-[2px] origin-left z-[60] bg-gradient-to-r from-gold-700 via-gold-solid to-gold-300 shadow-[0_0_8px_rgba(210,167,60,0.5)]"
             style={{ scaleX, transformOrigin: "0% 50%" }}
         />
     );

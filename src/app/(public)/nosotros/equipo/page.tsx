@@ -32,7 +32,7 @@ export default function EquipoPage() {
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent" />
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <FadeIn>
-                        <span className="property-tag-type text-gold-500/80 mb-4 inline-block">
+                            <span className="property-tag-type text-[var(--color-accent)]/80 mb-4 inline-block">
                             Nuestro Equipo
                         </span>
                         <h1 className="text-display-1 uppercase text-foreground mb-4 text-balance">
@@ -53,8 +53,8 @@ export default function EquipoPage() {
                     {miembros.map((m) => (
                         <StaggerItem key={m.nombre}>
                             <div className="group h-full p-8 border-b md:border-b-0 md:border-r last:border-r-0 border-white/[0.06] bg-white/[0.01] transition-colors duration-500 hover:bg-white/[0.025]">
-                                <div className="w-16 h-16 rounded-md bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-6">
-                                    <span className="text-gold-500 text-xl font-bold">
+                                <div className="w-16 h-16 rounded-md bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 flex items-center justify-center mb-6">
+                                    <span className="text-[var(--color-accent)] text-xl font-bold">
                                         {m.nombre.split(" ").map((n) => n[0]).join("")}
                                     </span>
                                 </div>

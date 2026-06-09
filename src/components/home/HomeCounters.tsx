@@ -95,9 +95,9 @@ function CounterCard({
       <p className="mb-4 property-tag-type text-white/42">
         {label}
       </p>
-      <p className="text-display-1 leading-none text-[var(--color-accent)]">
+      <p className="text-display-1 leading-none metallic-gold-static gold-glow">
         {formatCount(count)}
-        <span className="text-display-4 align-baseline text-[var(--color-accent)]">{suffix}</span>
+        <span className="text-display-4 align-baseline metallic-gold-static gold-glow">{suffix}</span>
       </p>
       <p className="mt-5 max-w-[14rem] text-body text-white/58 leading-relaxed">{copy}</p>
     </div>
@@ -108,7 +108,7 @@ export function HomeCounters() {
   return (
     <section className="mx-auto max-w-[90rem] px-6 pb-16 sm:px-10 lg:px-16 lg:pb-24">
       <div className="mx-auto mb-10 max-w-3xl text-center">
-        <p className="mb-3 text-caption text-[var(--color-accent)]">
+        <p className="mb-3 text-caption text-[var(--color-gold-light)]">
           Indicadores comerciales
         </p>
         <h2 className="text-display-2 leading-display tracking-headline text-white">

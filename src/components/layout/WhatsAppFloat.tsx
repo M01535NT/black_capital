@@ -27,7 +27,7 @@ export function WhatsAppFloat() {
       aria-label={`WhatsApp · ${CONTACT_CONFIG.phone}`}
       title={`WhatsApp · ${CONTACT_CONFIG.phone}`}
       data-testid="whatsapp-float"
-      className={`fixed bottom-[calc(5.75rem+env(safe-area-inset-bottom,0px))] right-5 z-[90] h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(135deg,#D4AF37_0%,#C5A059_100%)] text-black shadow-[0_10px_34px_rgba(212,175,55,0.28)] transition-transform duration-300 hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-400 sm:bottom-6 sm:right-6 lg:flex lg:h-16 lg:w-16 ${isPropertyDetail ? "hidden" : "flex"}`}
+      className={`gold-gradient fixed bottom-[calc(5.75rem+env(safe-area-inset-bottom,0px))] right-5 z-[90] h-14 w-14 items-center justify-center rounded-full text-black shadow-[0_10px_34px_rgba(210,167,60,0.28)] transition-transform duration-300 hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-gold-light)] sm:bottom-6 sm:right-6 lg:flex lg:h-16 lg:w-16 ${isPropertyDetail ? "hidden" : "flex"}`}
     >
       <MessageCircle className="h-6 w-6 lg:h-7 lg:w-7" strokeWidth={2} aria-hidden="true" />
     </a>

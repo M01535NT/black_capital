@@ -51,7 +51,7 @@ export function InventoryClient({ items, isLive }: InventoryClientProps) {
             type="button"
             aria-label="Anterior"
             onClick={() => scrollBy(-1)}
-            className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center text-white/70 hover:border-[var(--color-accent)]/60 hover:text-white transition-colors duration-300"
+            className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center text-white/70 hover:border-[var(--color-gold-light)]/60 hover:text-white transition-colors duration-300"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -59,13 +59,13 @@ export function InventoryClient({ items, isLive }: InventoryClientProps) {
             type="button"
             aria-label="Siguiente"
             onClick={() => scrollBy(1)}
-            className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center text-white/70 hover:border-[var(--color-accent)]/60 hover:text-white transition-colors duration-300"
+            className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center text-white/70 hover:border-[var(--color-gold-light)]/60 hover:text-white transition-colors duration-300"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
           <Link
             href="/inventario"
-            className="hidden sm:inline-flex premium-cta items-center gap-2 ml-3 px-5 py-2.5 border border-[var(--color-accent)]/30 transition-all duration-300"
+            className="hidden sm:inline-flex premium-cta items-center gap-2 ml-3 px-5 py-2.5 border border-[var(--color-gold-light)]/30 transition-all duration-300"
           >
             <span>Ver todo</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -121,7 +121,7 @@ export function InventoryClient({ items, isLive }: InventoryClientProps) {
       <div className="sm:hidden mt-10 text-center">
         <Link
           href="/inventario"
-          className="inline-flex premium-cta items-center gap-2 px-5 py-2.5 border border-[var(--color-accent)]/30"
+        className="inline-flex premium-cta items-center gap-2 px-5 py-2.5 border border-[var(--color-gold-light)]/30"
         >
           <span>Ver todo</span>
           <ArrowRight className="w-3.5 h-3.5" />

@@ -20,7 +20,7 @@ export function ContactCTA({
                 <div className="flex items-center gap-3">
                     {priceLabel && (
                         <div className="flex-1 min-w-0">
-                        <p className="property-price-type text-gold-500">
+                        <p className="property-price-type text-[var(--color-accent)]">
                             {priceLabel}
                         </p>
                         </div>
@@ -29,7 +29,7 @@ export function ContactCTA({
                         href={whatsappHref}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-5 py-3 rounded-full bg-gold-500 text-black font-semibold premium-cta shrink-0 shadow-lg shadow-gold-500/25 active:scale-[0.98]"
+                        className="flex items-center gap-2 px-5 py-3 rounded-full bg-[var(--color-accent)] text-black font-semibold premium-cta shrink-0 shadow-lg shadow-[0_10px_24px_rgba(210,167,60,0.25)] active:scale-[0.98]"
                     >
                         <MessageCircle className="size-4" />
                         Contactar

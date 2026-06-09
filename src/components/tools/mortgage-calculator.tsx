@@ -63,7 +63,7 @@ export function MortgageCalculator({
       <div className="flex items-start justify-between">
         <div>
           <h3 className="font-display text-lg font-semibold text-foreground flex items-center gap-2 mb-1">
-            <Calculator className="w-5 h-5 text-gold-500" />
+            <Calculator className="w-5 h-5 text-[var(--color-accent)]" />
             Calculadora Hipotecaria
           </h3>
           <p className="text-sm text-muted-foreground">
@@ -76,10 +76,10 @@ export function MortgageCalculator({
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium text-foreground flex items-center gap-2">
-            <DollarSign className="w-4 h-4 text-gold-500" />
+            <DollarSign className="w-4 h-4 text-[var(--color-accent)]" />
             Enganche
           </label>
-          <span className="text-sm font-numerics font-semibold text-gold-400">
+          <span className="text-sm font-numerics font-semibold text-[var(--color-gold-light)]">
             {downPayment}% ({formatCompact(price * downPayment / 100)})
           </span>
         </div>
@@ -110,7 +110,7 @@ export function MortgageCalculator({
               onClick={() => setYears(term)}
               className={`py-2 rounded-lg border transition-all ${
                 years === term
-                  ? "bg-gold-500 text-background border-gold-500 font-semibold"
+                  ? "bg-[var(--color-accent)] text-background border-[var(--color-accent)] font-semibold"
                   : "bg-transparent text-foreground/70 border-foreground/10 hover:border-foreground/30"
               }`}
             >
@@ -123,7 +123,7 @@ export function MortgageCalculator({
       {/* Interest Rate */}
       <div className="space-y-3">
         <label className="text-sm font-medium text-foreground flex items-center gap-2">
-          <Percent className="w-4 h-4 text-gold-500" />
+          <Percent className="w-4 h-4 text-[var(--color-accent)]" />
           Tasa de interés anual
         </label>
         <div className="grid grid-cols-3 gap-2">
@@ -133,7 +133,7 @@ export function MortgageCalculator({
               onClick={() => setInterestRate(value)}
               className={`py-2 px-3 rounded-lg border transition-all text-sm ${
                 Math.abs(interestRate - value) < 0.1
-                  ? "bg-gold-500 text-background border-gold-500 font-semibold"
+                  ? "bg-[var(--color-accent)] text-background border-[var(--color-accent)] font-semibold"
                   : "bg-transparent text-foreground/70 border-foreground/10 hover:border-foreground/30"
               }`}
             >
@@ -158,7 +158,7 @@ export function MortgageCalculator({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="font-numerics text-4xl font-bold text-gold-400"
+              className="font-numerics text-4xl font-bold text-[var(--color-gold-light)]"
             >
               {formatCurrency(monthlyPayment)}
             </motion.div>

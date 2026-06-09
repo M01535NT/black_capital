@@ -41,7 +41,7 @@ export class ErrorBoundary extends Component<Props, State> {
             if (this.props.fallback) return this.props.fallback;
             return (
                 <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center">
-                    <AlertTriangle className="w-16 h-16 text-gold-500 mb-6" aria-hidden="true" />
+                    <AlertTriangle className="w-16 h-16 text-[var(--color-accent)] mb-6" aria-hidden="true" />
                     <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-3">
                         Algo salió mal
                     </h2>
@@ -50,7 +50,7 @@ export class ErrorBoundary extends Component<Props, State> {
                     </p>
                     <button
                         onClick={this.handleReset}
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gold-500 text-black font-semibold hover:bg-gold-400 transition-colors"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--color-accent)] text-black font-semibold hover:bg-[var(--color-gold-soft)] transition-colors"
                     >
                         <RefreshCw className="w-4 h-4" />
                         Reintentar

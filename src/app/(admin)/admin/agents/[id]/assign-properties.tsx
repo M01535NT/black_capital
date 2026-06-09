@@ -77,7 +77,7 @@ export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertie
         <>
             <Button
                 onClick={() => setOpen(true)}
-                className="bg-gold-500 text-black hover:bg-gold-600 gap-2 text-sm"
+                className="bg-[var(--color-accent)] text-black hover:bg-[var(--color-gold-dark)] gap-2 text-sm"
             >
                 <Building2 className="w-4 h-4" /> Asignar Inventario
             </Button>
@@ -102,7 +102,7 @@ export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertie
                                     placeholder="Buscar propiedad..."
                                     value={search}
                                     onChange={e => setSearch(e.target.value)}
-                                    className="w-full pl-9 pr-3 py-2 bg-muted/30 border border-foreground/10 rounded-lg text-sm focus:outline-none focus:border-gold-500/50 text-foreground placeholder:text-foreground/50"
+                                    className="w-full pl-9 pr-3 py-2 bg-muted/30 border border-foreground/10 rounded-lg text-sm focus:outline-none focus:border-[var(--color-accent)]/50 text-foreground placeholder:text-foreground/50"
                                 />
                             </div>
                         </div>
@@ -130,14 +130,14 @@ export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertie
                                             className={cn(
                                                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm transition-colors",
                                                 isSelected
-                                                    ? "bg-gold-500/5 text-foreground"
+                                                    ? "bg-[var(--color-accent)]/5 text-foreground"
                                                     : "hover:bg-muted/50 text-foreground/80"
                                             )}
                                         >
                                             <div className={cn(
                                                 "w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors",
                                                 isSelected
-                                                    ? "bg-gold-500 border-gold-500"
+                                                    ? "bg-[var(--color-accent)] border-[var(--color-accent)]"
                                                     : "border-foreground/20"
                                             )}>
                                                 {isSelected && <Check className="w-3 h-3 text-black" />}
@@ -148,7 +148,7 @@ export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertie
                                                     {prop.business_type}
                                                 </div>
                                             </div>
-                                            <span className="text-xs font-numerics text-gold-500 truncate">
+                                            <span className="text-xs font-numerics text-[var(--color-accent)] truncate">
                                                 {new Intl.NumberFormat("es-MX", {
                                                     style: "currency",
                                                     currency: prop.currency,
@@ -174,7 +174,7 @@ export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertie
                                     size="sm"
                                     onClick={save}
                                     disabled={loading}
-                                    className="bg-gold-500 text-black hover:bg-gold-600"
+                                    className="bg-[var(--color-accent)] text-black hover:bg-[var(--color-gold-dark)]"
                                 >
                                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Guardar"}
                                 </Button>

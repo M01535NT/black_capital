@@ -21,7 +21,7 @@ export const columns: ColumnDef<AgentRow>[] = [
         header: "Nombre",
         cell: ({ row }) => (
             <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-500 text-caption">
+                <div className="w-8 h-8 rounded-full bg-[var(--color-accent)]/20 flex items-center justify-center text-[var(--color-accent)] text-caption">
                     {row.getValue<string>("full_name").charAt(0)}
                 </div>
                 <span className="text-body-sm font-medium text-foreground">{row.getValue("full_name")}</span>

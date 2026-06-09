@@ -50,7 +50,7 @@ export default function HistoriaPage() {
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent" />
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <FadeIn>
-                        <span className="property-tag-type text-gold-500/80 mb-4 inline-block">
+                        <span className="property-tag-type text-[var(--color-accent)]/80 mb-4 inline-block">
                             Nuestra Trayectoria
                         </span>
                         <h1 className="text-display-1 uppercase text-foreground mb-4 text-balance">
@@ -71,7 +71,7 @@ export default function HistoriaPage() {
                     <div className="relative">
                         {/* Línea vertical dorada */}
                         <div
-                            className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-gold-500/40 via-gold-500/20 to-transparent -translate-x-1/2"
+                            className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[var(--color-accent)]/40 via-[var(--color-accent)]/20 to-transparent -translate-x-1/2"
                             aria-hidden="true"
                         />
 
@@ -85,12 +85,12 @@ export default function HistoriaPage() {
                                 >
                                     {/* Nodo dorado */}
                                     <div className="absolute left-4 md:left-1/2 top-6 -translate-x-1/2">
-                                        <div className="w-3 h-3 rounded-full bg-gold-500 border-2 border-gold-500/30" />
+                                        <div className="w-3 h-3 rounded-full bg-[var(--color-accent)] border-2 border-[var(--color-accent)]/30" />
                                     </div>
 
                                     {/* Año */}
                                     <div className="md:w-1/2 pt-1 pl-10 md:pl-0 md:text-right">
-                                        <span className="text-gold-500 text-2xl tabular-nums">
+                                        <span className="text-[var(--color-accent)] text-2xl tabular-nums">
                                             {h.anio}
                                         </span>
                                     </div>

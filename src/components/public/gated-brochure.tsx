@@ -129,7 +129,7 @@ export function GatedBrochure({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="w-full bg-gold-500 text-black hover:bg-gold-400 font-semibold py-7 text-base rounded-xl shadow-lg shadow-gold-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/30 hover:-translate-y-0.5">
+                <Button className="brushed-gold w-full font-semibold py-7 text-base rounded-xl shadow-lg shadow-[0_10px_30px_rgba(210,167,60,0.22)] transition-all duration-300 hover:shadow-xl hover:shadow-[0_14px_34px_rgba(210,167,60,0.3)] hover:-translate-y-0.5">
                     <Download className="mr-2 h-5 w-5" />
                     {label}
                     <ArrowRight className="ml-2 h-4 w-4 opacity-60" />
@@ -137,15 +137,15 @@ export function GatedBrochure({
             </DialogTrigger>
 
             <DialogContent
-                className="sm:max-w-[440px] !bg-card border-gold-500/10 shadow-2xl"
+                className="sm:max-w-[440px] !bg-card border-[var(--color-accent)]/10 shadow-2xl"
                 showCloseButton={!isSuccess}
             >
                 {!isSuccess ? (
                     <>
                         <DialogHeader className="text-left">
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="size-10 rounded-xl bg-gold-500/10 flex items-center justify-center border border-gold-500/20">
-                                    <Lock className="size-5 text-gold-500" />
+                                <div className="size-10 rounded-xl bg-[var(--color-accent)]/10 flex items-center justify-center border border-[var(--color-accent)]/20">
+                                    <Lock className="size-5 text-[var(--color-accent)]" />
                                 </div>
                                 <div>
                                     <DialogTitle className="font-display text-lg font-semibold uppercase tracking-wider">
@@ -171,7 +171,7 @@ export function GatedBrochure({
                                                 <Input
                                                     placeholder="Tu nombre completo"
                                                     {...field}
-                                                    className="bg-foreground/[0.04] border-foreground/10 h-12 rounded-xl focus:border-gold-500/50 focus:ring-gold-500/10 transition-all"
+                                                    className="bg-foreground/[0.04] border-foreground/10 h-12 rounded-xl focus:border-[var(--color-accent)]/50 focus:ring-[var(--color-accent)]/10 transition-all"
                                                     autoComplete="name"
                                                 />
                                             </FormControl>
@@ -193,7 +193,7 @@ export function GatedBrochure({
                                                     type="email"
                                                     placeholder="tu@correo.com"
                                                     {...field}
-                                                    className="bg-foreground/[0.04] border-foreground/10 h-12 rounded-xl focus:border-gold-500/50 focus:ring-gold-500/10 transition-all"
+                                                    className="bg-foreground/[0.04] border-foreground/10 h-12 rounded-xl focus:border-[var(--color-accent)]/50 focus:ring-[var(--color-accent)]/10 transition-all"
                                                     autoComplete="email"
                                                 />
                                             </FormControl>
@@ -215,7 +215,7 @@ export function GatedBrochure({
                                                     type="tel"
                                                     placeholder={CONTACT_CONFIG.phone}
                                                     {...field}
-                                                    className="bg-foreground/[0.04] border-foreground/10 h-12 rounded-xl focus:border-gold-500/50 focus:ring-gold-500/10 transition-all"
+                                                    className="bg-foreground/[0.04] border-foreground/10 h-12 rounded-xl focus:border-[var(--color-accent)]/50 focus:ring-[var(--color-accent)]/10 transition-all"
                                                     autoComplete="tel"
                                                 />
                                             </FormControl>
@@ -233,13 +233,13 @@ export function GatedBrochure({
                                                     id="brochure-privacy"
                                                     checked={field.value}
                                                     onCheckedChange={field.onChange}
-                                                    className="border-gold-500/30 data-[state=checked]:bg-gold-500 data-[state=checked]:text-black mt-0.5 rounded"
+                                                    className="border-[var(--color-accent)]/30 data-[state=checked]:bg-[var(--color-accent)] data-[state=checked]:text-black mt-0.5 rounded"
                                                 />
                                             </FormControl>
                                             <div className="space-y-1 leading-tight">
                                                 <label htmlFor="brochure-privacy" className="text-xs text-foreground/50 cursor-pointer leading-relaxed">
                                                     Acepto el{" "}
-                                                    <a href="/legal/aviso-privacidad" className="text-gold-500 hover:underline font-medium" target="_blank" rel="noopener noreferrer">
+                                                    <a href="/legal/aviso-privacidad" className="text-[var(--color-accent)] hover:underline font-medium" target="_blank" rel="noopener noreferrer">
                                                         Aviso de Privacidad
                                                     </a>
                                                     {" "}y autorizo que me contacten para prospección comercial.
@@ -252,7 +252,7 @@ export function GatedBrochure({
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full bg-gold-500 text-black hover:bg-gold-400 font-semibold py-6 rounded-xl mt-2 transition-all duration-300"
+                                    className="brushed-gold w-full font-semibold py-6 rounded-xl mt-2 transition-all duration-300"
                                 >
                                     {isSubmitting ? (
                                         <>
@@ -287,7 +287,7 @@ export function GatedBrochure({
                         </p>
                         <Button
                             variant="outline"
-                            className="border-gold-500/30 text-gold-500 hover:bg-gold-500/10 rounded-xl px-8"
+                            className="border-[var(--color-accent)]/30 text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 rounded-xl px-8"
                             onClick={() => setOpen(false)}
                         >
                             Cerrar

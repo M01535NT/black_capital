@@ -78,7 +78,7 @@ export function LeadTasks({ leadId, initialTasks }: { leadId: string; initialTas
           </select>
         <Input type="datetime-local" value={dueAt} onChange={(event) => setDueAt(event.target.value)} className="border-foreground/10 bg-muted/20 text-body-sm" />
         </div>
-        <Button size="sm" disabled={saving || !title.trim()} className="w-full bg-gold-500 text-black hover:bg-gold-600">
+        <Button size="sm" disabled={saving || !title.trim()} className="w-full bg-[var(--color-accent)] text-black hover:bg-[var(--color-gold-dark)]">
           {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Plus className="h-3 w-3" />}
           Crear tarea
         </Button>
@@ -99,10 +99,10 @@ function TaskCard({ task, onComplete }: { task: Task; onComplete: (taskId: strin
   endOfToday.setHours(23, 59, 59, 999);
   const isOverdue = task.status === "pending" && !!dueDate && dueDate < now;
   const isDueToday = task.status === "pending" && !!dueDate && dueDate >= now && dueDate <= endOfToday;
-  const priorityClass = task.priority === "high" ? "text-red-400" : task.priority === "low" ? "text-white/40" : "text-gold-500";
+  const priorityClass = task.priority === "high" ? "text-red-400" : task.priority === "low" ? "text-white/40" : "text-[var(--color-accent)]";
 
   return (
-    <div className={`border p-3 ${isOverdue ? "border-red-500/25 bg-red-500/10" : isDueToday ? "border-gold-500/25 bg-gold-500/10" : "border-foreground/10 bg-muted/20"}`}>
+    <div className={`border p-3 ${isOverdue ? "border-red-500/25 bg-red-500/10" : isDueToday ? "border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10" : "border-foreground/10 bg-muted/20"}`}>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -111,7 +111,7 @@ function TaskCard({ task, onComplete }: { task: Task; onComplete: (taskId: strin
           </div>
           {task.description && <p className="mt-1 text-body-sm leading-5 text-foreground/55">{task.description}</p>}
           {dueDate && (
-            <p className={`mt-2 flex items-center gap-1 text-body-sm ${isOverdue ? "text-red-400" : isDueToday ? "text-gold-500" : "text-foreground/45"}`}>
+            <p className={`mt-2 flex items-center gap-1 text-body-sm ${isOverdue ? "text-red-400" : isDueToday ? "text-[var(--color-accent)]" : "text-foreground/45"}`}>
               {isOverdue ? <AlertTriangle className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
               {dueDate.toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" })}
             </p>

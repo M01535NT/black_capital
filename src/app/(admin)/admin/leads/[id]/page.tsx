@@ -103,22 +103,22 @@ export default async function LeadDetailPage({
                         <h3 className="text-caption text-foreground/50">Información de Contacto</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <a href={`mailto:${lead.email}`}
-                                className="flex items-center gap-3 p-3 bg-muted/20 rounded-xl hover:bg-gold-500/5 transition-colors group"
+                                className="flex items-center gap-3 p-3 bg-muted/20 rounded-xl hover:bg-[var(--color-accent)]/5 transition-colors group"
                             >
-                                <Mail className="w-5 h-5 text-gold-500 shrink-0" />
+                                <Mail className="w-5 h-5 text-[var(--color-accent)] shrink-0" />
                                 <div>
                                 <p className="text-caption text-foreground/50">Correo</p>
-                                    <p className="text-body-sm font-medium group-hover:text-gold-500 transition-colors">{lead.email}</p>
+                                    <p className="text-body-sm font-medium group-hover:text-[var(--color-accent)] transition-colors">{lead.email}</p>
                                 </div>
                             </a>
                             <a href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, "")}`}
                                 target="_blank" rel="noopener noreferrer"
-                                className="flex items-center gap-3 p-3 bg-muted/20 rounded-xl hover:bg-gold-500/5 transition-colors group"
+                                className="flex items-center gap-3 p-3 bg-muted/20 rounded-xl hover:bg-[var(--color-accent)]/5 transition-colors group"
                             >
-                                <Phone className="w-5 h-5 text-gold-500 shrink-0" />
+                                <Phone className="w-5 h-5 text-[var(--color-accent)] shrink-0" />
                                 <div>
                                 <p className="text-caption text-foreground/50">Teléfono / WhatsApp</p>
-                                <p className="text-body-sm font-medium group-hover:text-gold-500 transition-colors">{lead.phone}</p>
+                                <p className="text-body-sm font-medium group-hover:text-[var(--color-accent)] transition-colors">{lead.phone}</p>
                                 </div>
                             </a>
                         </div>
@@ -169,10 +169,10 @@ export default async function LeadDetailPage({
                         <div className="bg-card border border-foreground/10 rounded-2xl p-6 space-y-3">
                             <h3 className="text-caption text-foreground/50">Propiedad de Interés</h3>
                             <Link href={`/admin/properties/${lead.property_id}`}
-                                className="flex items-center gap-3 p-3 bg-muted/20 rounded-xl hover:bg-gold-500/5 transition-colors group"
+                                className="flex items-center gap-3 p-3 bg-muted/20 rounded-xl hover:bg-[var(--color-accent)]/5 transition-colors group"
                             >
-                                <FileText className="w-5 h-5 text-gold-500 shrink-0" />
-                                <span className="text-body-sm font-medium group-hover:text-gold-500 transition-colors">{propertyTitle}</span>
+                                <FileText className="w-5 h-5 text-[var(--color-accent)] shrink-0" />
+                                <span className="text-body-sm font-medium group-hover:text-[var(--color-accent)] transition-colors">{propertyTitle}</span>
                             </Link>
                         </div>
                     )}
@@ -191,13 +191,13 @@ export default async function LeadDetailPage({
 
                     <div className="bg-card border border-foreground/10 rounded-2xl p-6 space-y-4">
                         <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4 text-gold-500" />
+                            <Clock className="h-4 w-4 text-[var(--color-accent)]" />
                             <h3 className="text-caption text-foreground/50">Timeline de actividad</h3>
                         </div>
                         {activities && activities.length > 0 ? (
                             <div className="space-y-3">
                                 {activities.map((activity) => (
-                                    <div key={activity.id} className="border-l border-gold-500/30 pl-4">
+                                    <div key={activity.id} className="border-l border-[var(--color-accent)]/30 pl-4">
                                         <p className="text-body-sm font-medium text-foreground">{activity.title}</p>
                                         {activity.body && <p className="mt-1 whitespace-pre-wrap text-body text-foreground/60">{activity.body}</p>}
                                         <p className="mt-1 text-body-sm text-foreground/40">
@@ -224,7 +224,7 @@ export default async function LeadDetailPage({
                         </a>
                         <a href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, "")}`}
                             target="_blank" rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-gold-500 text-black rounded-xl text-sm font-bold hover:bg-gold-600 transition-colors"
+                            className="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-[var(--color-accent)] text-black rounded-xl text-sm font-bold hover:bg-[var(--color-gold-dark)] transition-colors"
                         >
                             <Phone className="w-4 h-4" /> Abrir WhatsApp
                         </a>
@@ -238,7 +238,7 @@ export default async function LeadDetailPage({
 
                     <div className="bg-card border border-foreground/10 rounded-2xl p-5 space-y-3">
                         <div className="flex items-center gap-2">
-                            <ListChecks className="h-4 w-4 text-gold-500" />
+                            <ListChecks className="h-4 w-4 text-[var(--color-accent)]" />
                         <h3 className="text-caption text-foreground/50">Seguimiento</h3>
                         </div>
                         <LeadTasks leadId={lead.id} initialTasks={tasks || []} />

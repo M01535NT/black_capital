@@ -131,7 +131,7 @@ export default function HomePage() {
         <div className="relative z-10 mx-auto grid min-h-[calc(100svh-6rem)] max-w-[90rem] grid-cols-1 items-center px-6 pb-28 pt-10 sm:px-10 sm:pb-32 lg:grid-cols-12 lg:px-16">
           <div className="lg:col-span-8">
             <div className="mb-6 inline-flex items-center gap-2 border border-white/10 bg-black/35 px-3 py-2 text-caption text-white/70">
-              <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" />
+              <MapPin className="h-3.5 w-3.5 text-[var(--color-gold-light)]" />
               Tijuana, Baja California
             </div>
             <HomeHeroHeadline />
@@ -158,16 +158,16 @@ export default function HomePage() {
         </div>
 
         <div className="absolute inset-x-0 top-[calc(100svh-3.5rem)] z-20 sm:top-[calc(100svh-4rem)]">
-          <div className="h-px bg-[var(--color-accent)]/25" />
+          <div className="h-px bg-[var(--color-gold-light)]/25" />
           <div className="flex overflow-hidden whitespace-nowrap bg-background/88 py-4 backdrop-blur-md sm:py-5">
             {[0, 1].map((track) => (
               <div key={track} className="animate-marquee inline-flex shrink-0">
                 {values.map((value, index) => (
                   <span key={`${track}-${value}-${index}`} className="inline-flex shrink-0 items-center">
-                    <span className="px-5 property-tag-type text-white/78 transition-colors duration-300 hover:text-[var(--color-accent)] sm:px-10">
+                    <span className="px-5 property-tag-type text-white/78 transition-colors duration-300 hover:text-[var(--color-gold-light)] sm:px-10">
                       {value}
                     </span>
-                    <span className="select-none text-[var(--color-accent)]" aria-hidden="true">
+                    <span className="select-none text-[var(--color-gold-light)]" aria-hidden="true">
                       •
                     </span>
                   </span>
@@ -181,7 +181,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="mb-3 text-caption text-[var(--color-accent)]">
+            <p className="mb-3 text-caption text-[var(--color-gold-light)]">
               Tres líneas de negocio
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
@@ -208,7 +208,7 @@ export default function HomePage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
                   <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-accent)] text-black">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-gold-light)] text-black">
                       <Icon className="h-4 w-4" />
                     </span>
                   <h3 className="text-display-3 font-semibold text-white">{segment.title}</h3>
@@ -216,7 +216,7 @@ export default function HomePage() {
                 </div>
                 <div className="space-y-5 p-5">
                   <p className="text-body text-white/64">{segment.copy}</p>
-                  <p className="property-tag-type text-white/42">{segment.zones}</p>
+                  <p className="property-tag-type text-[var(--color-gold-light)]/75">{segment.zones}</p>
                   <div className="flex flex-col gap-2 sm:flex-row">
                     <Link href={segment.inventoryHref} className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type text-[var(--color-accent)]">
                       Inventario
@@ -235,7 +235,7 @@ export default function HomePage() {
       <section className="border-y border-white/[0.06] bg-white/[0.02]">
         <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-24">
           <div className="lg:col-span-5">
-            <p className="mb-3 property-tag-type text-[var(--color-accent)]">
+            <p className="mb-3 property-tag-type text-[var(--color-gold-light)]">
               Asesoría inmobiliaria
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
@@ -250,7 +250,7 @@ export default function HomePage() {
               <article key={path.audience} className="border border-white/[0.08] bg-background/70 p-5">
                 <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                                <p className="mb-2 property-tag-type text-[var(--color-accent)]">
+                                <p className="mb-2 property-tag-type text-[var(--color-gold-light)]">
                                     {path.audience}
                                 </p>
                                 <h3 className="text-display-3 text-white">{path.title}</h3>
@@ -260,7 +260,7 @@ export default function HomePage() {
                             <div className="grid gap-2 sm:grid-cols-3">
                               {path.steps.map((step, index) => (
                                 <div key={step} className="flex items-center gap-2 border border-white/[0.08] bg-white/[0.025] px-3 py-3">
-                                  <span className="property-tag-type text-[var(--color-accent)]">0{index + 1}</span>
+                                  <span className="property-tag-type text-[var(--color-gold-light)]">0{index + 1}</span>
                                   <span className="text-body text-white/68">{step}</span>
                                 </div>
                               ))}
@@ -276,7 +276,7 @@ export default function HomePage() {
       <section className="border-y border-white/[0.06] bg-white/[0.02]">
         <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-24">
           <div className="lg:col-span-5">
-            <p className="mb-3 property-tag-type text-[var(--color-accent)]">
+            <p className="mb-3 property-tag-type text-[var(--color-gold-light)]">
               Flujo comercial
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
@@ -286,9 +286,9 @@ export default function HomePage() {
           <div className="grid gap-4 lg:col-span-7">
             {process.map((item, index) => (
               <div key={item} className="flex gap-4 border border-white/[0.08] bg-background/70 p-5">
-                    <span className="property-tag-type text-[var(--color-accent)]">0{index + 1}</span>
+                    <span className="property-tag-type text-[var(--color-gold-light)]">0{index + 1}</span>
                     <div className="flex items-start gap-3">
-                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-accent)]" />
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-gold-light)]" />
                       <p className="text-body text-white/70">{item}</p>
                     </div>
                   </div>
