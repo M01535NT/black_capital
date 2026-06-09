@@ -91,7 +91,7 @@ export default function ContactoPage() {
                         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                             <Link
                                 href="#solicitud"
-                                className="brushed-gold inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full premium-cta"
+                                className="brushed-gold inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none premium-cta"
                             >
                                 Enviar solicitud
                                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -100,7 +100,7 @@ export default function ContactoPage() {
                                 href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, me gustaría recibir información sobre propiedades de inversión.")}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full border border-white/18 bg-white/[0.04] premium-cta text-white transition-colors hover:border-[var(--color-accent)]"
+                                className="inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none border border-white/18 bg-white/[0.04] premium-cta text-white transition-colors hover:border-[var(--color-accent)]"
                             >
                                 WhatsApp directo
                             </a>
@@ -228,7 +228,7 @@ export default function ContactoPage() {
                     <div className="flex flex-col justify-center gap-3 sm:flex-row">
                         <Link
                             href="/inventario"
-                            className="brushed-gold inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full premium-cta"
+                            className="brushed-gold inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none premium-cta"
                         >
                             <span>Ver Inventario</span>
                             <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -237,7 +237,7 @@ export default function ContactoPage() {
                             href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, me gustaría recibir información sobre propiedades de inversión.")}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full border border-white/18 bg-white/[0.04] premium-cta text-white transition-colors hover:border-[var(--color-accent)]"
+                            className="inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none border border-white/18 bg-white/[0.04] premium-cta text-white transition-colors hover:border-[var(--color-accent)]"
                         >
                             <span>WhatsApp directo</span>
                         </a>

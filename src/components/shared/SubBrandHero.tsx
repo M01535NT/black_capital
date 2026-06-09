@@ -90,7 +90,7 @@ export function SubBrandHero({
 
                     <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                         <Link href={primaryCta.href} className="w-full sm:w-auto">
-                            <Button className="brushed-gold premium-cta inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-full sm:w-auto">
+                            <Button className="brushed-gold premium-cta inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-none sm:w-auto">
                                 {primaryCta.label}
                                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
                             </Button>
@@ -98,7 +98,7 @@ export function SubBrandHero({
                         {secondaryCta && (
                             <Link
                                 href={secondaryCta.href}
-                                className="premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full border border-white/18 bg-white/[0.04] px-7 text-white transition-colors hover:border-[var(--color-accent)]"
+                                className="premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none border border-white/18 bg-white/[0.04] px-7 text-white transition-colors hover:border-[var(--color-accent)]"
                             >
                                 {secondaryCta.label}
                             </Link>
