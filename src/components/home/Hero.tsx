@@ -85,7 +85,7 @@ export function Hero() {
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                       exit={shouldReduceMotion ? undefined : { opacity: 0, y: -16, filter: "blur(4px)" }}
                       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                      className="metallic-gold-static gold-glow inline-block"
+                      className="inline-block text-[var(--color-gold-light)] gold-glow"
                       aria-live="off"
                     >
                       {ROTATING_WORDS[wordIndex]}
