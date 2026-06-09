@@ -108,7 +108,7 @@ export function HomeCounters() {
   return (
     <section className="mx-auto max-w-[90rem] px-6 pb-16 sm:px-10 lg:px-16 lg:pb-24">
       <div className="mx-auto mb-10 max-w-3xl text-center">
-        <p className="mb-3 text-caption text-[var(--color-gold-light)]">
+        <p className="mb-3 text-caption text-[var(--color-accent)]">
           Indicadores comerciales
         </p>
         <h2 className="text-display-2 leading-display tracking-headline text-white">

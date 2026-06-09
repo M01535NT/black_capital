@@ -56,11 +56,11 @@ export const DESKTOP_DROPDOWNS: DropdownDef[] = [
  * El underline se construye con un pseudo-elemento `after:` que
  * crece de 0→100% al hacer hover (scaleX con transform-origin: left).
  * Para el estado activo, el underline está siempre al 100%.
- * Gold champagne = var(--color-gold-light).
+ * Gold champagne = var(--color-accent).
  */
 export const navLinkBase =
   "font-display nav-link-type text-foreground/80 hover:text-foreground transition-colors duration-300 relative py-1 inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:text-foreground " +
-  "after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-[var(--color-gold-light)] after:transition-transform after:duration-500 after:ease-out " +
+  "after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-[var(--color-accent)] after:transition-transform after:duration-500 after:ease-out " +
   "hover:after:scale-x-100";
 
 export const navLinkActive = "text-foreground after:scale-x-100";

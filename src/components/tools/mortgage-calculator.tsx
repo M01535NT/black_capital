@@ -79,7 +79,7 @@ export function MortgageCalculator({
             <DollarSign className="w-4 h-4 text-[var(--color-accent)]" />
             Enganche
           </label>
-          <span className="text-sm font-numerics font-semibold text-[var(--color-gold-light)]">
+          <span className="text-sm font-numerics font-semibold text-[var(--color-accent)]">
             {downPayment}% ({formatCompact(price * downPayment / 100)})
           </span>
         </div>
@@ -158,7 +158,7 @@ export function MortgageCalculator({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="font-numerics text-4xl font-bold text-[var(--color-gold-light)]"
+              className="font-numerics text-4xl font-bold text-[var(--color-accent)]"
             >
               {formatCurrency(monthlyPayment)}
             </motion.div>

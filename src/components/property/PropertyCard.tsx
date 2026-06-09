@@ -79,14 +79,15 @@ export function PropertyCard({
     const contactHref = `/contacto?propiedad=${encodeURIComponent(property.title)}&interes=${encodeURIComponent(property.property_use.toLowerCase())}`;
     const isCompact = variant === "similar";
     const statusLabel = STATUS_LABELS[property.status || ""] || property.status || "Disponible";
+    const hasCoverImage = Boolean(property.cover_image);
 
     const card = (
         <article className="group relative overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-colors duration-300 hover:border-[var(--color-accent)]/35">
             <Link href={href} aria-label={`Ver detalles de ${property.title}`} className="block">
                 <div className={cn("relative overflow-hidden bg-white/[0.02]", ASPECT[variant])}>
-                    {property.cover_image ? (
+                    {hasCoverImage ? (
                         <Image
-                            src={property.cover_image}
+                            src={property.cover_image as string}
                             alt={`Fotografía de ${property.title}`}
                             fill
                             sizes={SIZES[variant]}
@@ -95,14 +96,16 @@ export function PropertyCard({
                         />
                     ) : (
                         <div className="gold-premium-overlay absolute inset-0 flex flex-col items-center justify-center">
-                            <ImageIcon className="mb-3 h-5 w-5 text-[var(--color-accent)]/70" aria-hidden="true" />
-                            <span className="property-tag-type text-white/44">
+                            <ImageIcon className="mb-3 h-6 w-6 text-[var(--color-accent)]" aria-hidden="true" />
+                            <span className="property-tag-type text-white/68">
                                 {property.isPlaceholder ? "Imagen de ejemplo" : "Sin imagen"}
                             </span>
                         </div>
                     )}
 
+                    {hasCoverImage && (
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    )}
 
                     <div className="absolute left-4 top-4 flex flex-wrap gap-2">
                         <span className="border border-white/10 bg-black/60 px-3 py-1 property-tag-type text-white backdrop-blur-md">

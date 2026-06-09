@@ -85,7 +85,7 @@ export function Hero() {
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                       exit={shouldReduceMotion ? undefined : { opacity: 0, y: -16, filter: "blur(4px)" }}
                       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                      className="inline-block text-[var(--color-gold-light)] gold-glow"
+                      className="inline-block text-[var(--color-accent)] gold-glow"
                       aria-live="off"
                     >
                       {ROTATING_WORDS[wordIndex]}
@@ -215,7 +215,7 @@ export function Hero() {
                 <span className="property-tag-type px-2.5 sm:px-10 whitespace-nowrap">
                   {v}
                 </span>
-                <span className="text-[var(--color-gold-light)] text-sm select-none" aria-hidden="true">
+                <span className="text-[var(--color-accent)] text-sm select-none" aria-hidden="true">
                   •
                 </span>
               </span>
@@ -227,7 +227,7 @@ export function Hero() {
                 <span className="property-tag-type px-2.5 sm:px-10 whitespace-nowrap">
                   {v}
                 </span>
-                <span className="text-[var(--color-gold-light)] text-sm select-none" aria-hidden="true">
+                <span className="text-[var(--color-accent)] text-sm select-none" aria-hidden="true">
                   •
                 </span>
               </span>

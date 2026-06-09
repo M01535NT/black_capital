@@ -85,14 +85,14 @@ export function MethodologyTimeline() {
                     {/* Node circle */}
                     <div className="relative shrink-0 lg:mb-10">
                       <div
-                        className="w-14 h-14 rounded-full border border-[var(--color-gold-light)]/40 bg-background flex items-center justify-center group-hover:border-[var(--color-gold-light)] transition-colors duration-500"
+                        className="w-14 h-14 rounded-full border border-[var(--color-accent)]/40 bg-background flex items-center justify-center group-hover:border-[var(--color-accent)] transition-colors duration-500"
                         aria-hidden="true"
                       >
-                        <Icon className="w-6 h-6 text-[var(--color-gold-light)]" strokeWidth={1.5} />
+                        <Icon className="w-6 h-6 text-[var(--color-accent)]" strokeWidth={1.5} />
                       </div>
                       {/* Inner dot, animates in */}
                       <motion.div
-                        className="absolute inset-0 m-auto w-2 h-2 rounded-full bg-[var(--color-gold-light)]"
+                        className="absolute inset-0 m-auto w-2 h-2 rounded-full bg-[var(--color-accent)]"
                         initial={{ scale: 0, opacity: 0 }}
                         animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
                         transition={{ duration: 0.4, delay: 0.6 + i * 0.15, ease: "easeOut" }}
@@ -102,7 +102,7 @@ export function MethodologyTimeline() {
                     {/* Content */}
                     <div className="flex-1 min-w-0 lg:pt-2">
                       <div className="flex items-baseline gap-3 mb-3">
-                        <span className="property-tag-type text-[var(--color-gold-light)]">
+                        <span className="property-tag-type text-[var(--color-accent)]">
                           {step.number}
                         </span>
                         <span className="h-px flex-1 bg-white/[0.08] lg:hidden" />

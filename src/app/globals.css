@@ -8,10 +8,7 @@
   --color-background: #050505;
   --color-foreground: #FFFFFF;
 
-  /* ── Premium gold system ──
-   * Central palette for all brand gold surfaces, accents, and text.
-   * Base token stays warm and elegant; lighter/darker aliases fan out
-   * from the same approved system to avoid visual drift. */
+  /* Single brand gold system. Change this token set once; every page follows. */
   --color-gold-dark: #c89625;
   --color-gold-base: #d2a73c;
   --color-gold-soft: #e4c363;
@@ -19,21 +16,21 @@
   --color-gold-pale: #f3e899;
   --color-gold-bottom: #d0a539;
 
-  --color-accent: var(--color-gold-base);
+  --color-accent: #f1e292;
   --color-accent-end: var(--color-gold-dark);
-  --color-accent-light: var(--color-gold-soft);
+  --color-accent-light: var(--color-accent);
   --color-accent-dark: var(--color-gold-dark);
   --color-accent-deep: var(--color-gold-dark);
-  --color-accent-mid: var(--color-gold-light);
-  --color-gold-solid: var(--color-gold-base);
+  --color-accent-mid: var(--color-accent);
+  --color-gold-solid: var(--color-accent);
   --color-gold-300: var(--color-gold-pale);
-  --color-gold-400: var(--color-gold-light);
-  --color-gold-500: var(--color-gold-base);
+  --color-gold-400: var(--color-accent);
+  --color-gold-500: var(--color-accent);
   --color-gold-600: var(--color-gold-dark);
   --color-gold-700: var(--color-gold-dark);
-  --color-gold: var(--color-gold-base);
-  --color-gold-rich: var(--color-gold-base);
-  --color-gold-mid: var(--color-gold-soft);
+  --color-gold: var(--color-accent);
+  --color-gold-rich: var(--color-accent);
+  --color-gold-mid: var(--color-accent);
 
   --color-steel-400: oklch(0.55 0.03 250);
   --color-steel-500: oklch(0.45 0.02 250);
@@ -96,14 +93,13 @@
 
 :root {
   color-scheme: dark;
-  --gradient-gold-premium:
+  --gradient-gold:
     radial-gradient(circle at 72% 48%, #f3e899 0%, #f1e292 18%, transparent 42%),
     radial-gradient(circle at 35% 52%, #e4c76a 0%, transparent 38%),
     linear-gradient(165deg, #c89625 0%, #d2a73c 24%, #e4c363 44%, #f1e292 58%, #e4c76a 72%, #d0a539 100%);
-  --gradient-gold-premium-text:
-    linear-gradient(165deg, #c89625 0%, #d2a73c 24%, #e4c363 44%, #f1e292 58%, #e4c76a 72%, #d0a539 100%);
-  --gradient-gold-premium-overlay:
-    linear-gradient(135deg, rgba(255,255,255,0.04), rgba(228,195,99,0.08), rgba(255,255,255,0.02));
+  --gradient-gold-premium: var(--gradient-gold);
+  --gradient-gold-premium-text: var(--gradient-gold);
+  --gradient-gold-premium-overlay: var(--gradient-gold);
 }
 
 html {
@@ -329,9 +325,7 @@ body {
     animation: marquee 20s linear infinite;
   }
 
-  /* ── Single Gold gradient — text & bg ──
-   * UN solo gradiente (135deg, D4AF37 → C5A059) para TODO:
-   * texto, botones, líneas, iconos. Sin variaciones. */
+  /* ── Premium gold treatment — all brand accents come from the same token set. */
   .metallic-gold,
   .metallic-gold-static,
   .gold-text {
@@ -351,8 +345,7 @@ body {
     to { background-position: -200% center; }
   }
 
-  /* ── Brushed Champagne Gold CTA (filled button) ──
-   * Mismo gradiente 135deg, sin multi-stops. */
+  /* ── Brushed Champagne Gold CTA (filled button) ── */
   .brushed-gold,
   .gold-gradient {
     background: var(--gradient-gold-premium);
@@ -405,7 +398,7 @@ body {
     left: 0;
     z-index: 100;
     height: 1px;
-    background: linear-gradient(90deg, var(--color-accent-dark), var(--color-accent));
+    background: var(--gradient-gold);
     transition: width 0.1s linear;
   }
 
@@ -439,12 +432,7 @@ body {
     100% { background-position: 200% 0; }
   }
   .animate-gold-shimmer {
-    background: linear-gradient(110deg,
-        transparent 0%,
-        rgba(228, 195, 99, 0.08) 40%,
-        rgba(241, 226, 146, 0.12) 50%,
-        rgba(228, 195, 99, 0.08) 60%,
-        transparent 100%);
+    background: var(--gradient-gold);
     background-size: 200% 100%;
     animation: gold-shimmer 3.5s ease-in-out infinite;
   }
@@ -462,27 +450,21 @@ body {
   /* ── Hairline gold divider (1px) — single color, varying opacity ── */
   .gold-divider {
     height: 1px;
-    background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(210, 167, 60, 0.5) 50%,
-        transparent 100%);
+    background: var(--gradient-gold);
   }
   .gold-divider-solid {
     height: 1px;
-    background-color: var(--color-gold-base);
+    background: var(--gradient-gold);
     opacity: 0.25;
   }
   .gold-vline {
     width: 1px;
     align-self: stretch;
-    background: linear-gradient(180deg,
-        transparent 0%,
-        rgba(210, 167, 60, 0.4) 50%,
-        transparent 100%);
+    background: var(--gradient-gold);
   }
 
   .gold-premium-overlay {
-    background: var(--gradient-gold-premium-overlay);
+    background: var(--gradient-gold);
   }
 
   /* ── Champagne shimmer button (hover fill) ── */

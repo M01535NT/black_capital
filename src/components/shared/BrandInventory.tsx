@@ -205,7 +205,7 @@ export async function BrandInventory({
         >
             <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div className="max-w-3xl">
-                    <p className="mb-3 text-caption text-[var(--color-gold-light)]">
+                    <p className="mb-3 text-caption text-[var(--color-accent)]">
                         {eyebrow}
                     </p>
                     <h2 className="text-display-2 leading-display tracking-headline text-white">
@@ -240,14 +240,14 @@ export async function BrandInventory({
                                     />
                                 ) : (
                                 <div className="gold-premium-overlay absolute inset-0 flex flex-col items-center justify-center">
-                                    <ImageIcon className="mb-3 h-5 w-5 text-[var(--color-gold-light)]/70" aria-hidden="true" />
+                                    <ImageIcon className="mb-3 h-5 w-5 text-[var(--color-accent)]/70" aria-hidden="true" />
                                     <span className="property-tag-type text-white/44">
                                         Imagen de ejemplo
                                     </span>
                                 </div>
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
-                                <div className="absolute left-4 top-4 rounded-full border border-[var(--color-gold-light)]/30 bg-background/85 px-3 py-1 property-tag-type text-[var(--color-gold-light)]">
+                                <div className="absolute left-4 top-4 rounded-full border border-[var(--color-accent)]/30 bg-background/85 px-3 py-1 property-tag-type text-[var(--color-accent)]">
                                     {prop.isPlaceholder ? "Ejemplo" : prop.property_type}
                                 </div>
                                 <div className="absolute bottom-4 left-4 right-4">
@@ -258,12 +258,12 @@ export async function BrandInventory({
                             <div className="space-y-5 p-5">
                                 <div className="flex flex-wrap gap-4 text-body-sm text-white/55">
                                     <span className="inline-flex items-center gap-1.5">
-                                        <MapPin className="h-3.5 w-3.5 text-[var(--color-gold-light)]" aria-hidden="true" />
+                                        <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
                                         {prop.business_type}
                                     </span>
                                 {prop.m2_construction && (
                                     <span className="inline-flex items-center gap-1.5">
-                                        <Maximize2 className="h-3.5 w-3.5 text-[var(--color-gold-light)]" aria-hidden="true" />
+                                        <Maximize2 className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
                                         {prop.m2_construction.toLocaleString()} m²
                                     </span>
                                 )}
@@ -274,7 +274,7 @@ export async function BrandInventory({
                                 <div className="flex flex-col gap-2 sm:flex-row">
                                     <Link
                                         href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
-                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-gold-light)]/45 px-4 py-2.5 property-tag-type text-[var(--color-gold-light)] transition-colors hover:bg-[var(--color-gold-light)] hover:text-black"
+                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
                                     >
                                         Inventario
                                     </Link>
@@ -294,7 +294,7 @@ export async function BrandInventory({
             <div className="mt-10 text-center">
                 <Link
                     href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
-                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--color-gold-light)]/35 px-6 property-tag-type text-white transition-colors hover:border-[var(--color-gold-light)]"
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-6 property-tag-type text-white transition-colors hover:border-[var(--color-accent)]"
                 >
                     {ctaText}
                     <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
