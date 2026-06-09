@@ -11,8 +11,8 @@ import {
 import { JsonLd } from "@/components/seo/JsonLd";
 import { HomeCounters } from "@/components/home/HomeCounters";
 import { HomeHeroHeadline } from "@/components/home/HomeHeroHeadline";
+import { MethodologySection } from "@/components/home/MethodologySection";
 import { Testimonials } from "@/components/home/Testimonials";
-import { WhyBlackCapitalTimeline } from "@/components/home/WhyBlackCapitalTimeline";
 
 export const metadata: Metadata = {
   title: "Inmobiliaria Premium en Tijuana",
@@ -79,85 +79,11 @@ const segments = [
   },
 ];
 
-const whyBlackCapital = [
-  {
-    step: "01",
-    title: "Conocimiento local",
-    text: "Zonas, usos y demanda real.",
-    signal: "Ventaja local",
-  },
-  {
-    step: "02",
-    title: "Diagnóstico de activo",
-    text: "Tipología, ocupación y contexto legal.",
-    signal: "Ruta clara",
-  },
-  {
-    step: "03",
-    title: "Estrategia de ruta",
-    text: "Marketing, negociación y cierre.",
-    signal: "Sin ruido",
-  },
-  {
-    step: "04",
-    title: "Cierre con respaldo",
-    text: "Documentación y criterio comercial.",
-    signal: "Criterio",
-  },
-];
-
-const serviceProcess = [
-  "Diagnóstico",
-  "Revisión",
-  "Valor",
-  "Estrategia",
-  "Cierre",
-];
-
 const intentCtas = [
   { label: "Quiero vender una propiedad", href: "/contacto?objetivo=vender" },
   { label: "Busco comprar", href: "/contacto?objetivo=comprar" },
   { label: "Necesito opinión de valor", href: "/contacto?objetivo=opinion-de-valor" },
   { label: "Quiero evaluar una propiedad", href: "/contacto?objetivo=evaluar" },
-];
-
-const videoInsights = [
-  {
-    title: "Ruta de Compraventa",
-    tag: "Ruta de Compraventa",
-    video: "/hero.webm",
-    poster: "/hero-luxury.webp",
-    copy: "Definimos objetivo, comparables y estrategia inicial para comprar o vender.",
-    href: "/inventario",
-    label: "Ver rutas",
-  },
-  {
-    title: "Ruta Residencial",
-    tag: "Ruta Residencial",
-    video: "/hero.webm",
-    poster: "/hero-business.webp",
-    copy: "Selección por ubicación, plusvalía y condición para propiedades residenciales.",
-    href: "/black-luxury",
-    label: "Ver ruta",
-  },
-  {
-    title: "Ruta Comercial",
-    tag: "Ruta Comercial",
-    video: "/hero.webm",
-    poster: "/industrial-hero.webp",
-    copy: "Análisis de flujo, demanda y estrategia de posicionamiento comercial.",
-    href: "/black-business",
-    label: "Ver ruta de renta",
-  },
-  {
-    title: "Ruta Industrial",
-    tag: "Ruta Industrial",
-    video: "/hero.webm",
-    poster: "/hero-industrial.webp",
-    copy: "Conectamos operación logística, rentabilidad y viabilidad de activo industrial.",
-    href: "/black-industrial",
-    label: "Ver ruta documental",
-  },
 ];
 
 type Segment = (typeof segments)[number];
@@ -379,115 +305,7 @@ export default function HomePage() {
 
       <Testimonials />
 
-      <section className="border-y border-white/[0.06] bg-white/[0.02]">
-        <div className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
-          <div className="mb-10">
-            <p className="mb-3 property-tag-type gold-ink">
-              Carrusel de video
-            </p>
-            <h2 className="text-display-2 leading-display tracking-headline text-white">
-              Entiende nuestras rutas en 60 segundos.
-            </h2>
-            <p className="mt-6 max-w-2xl text-body text-white/58">
-              Selecciona una ruta y revisa el enfoque visual de cada etapa clave.
-            </p>
-          </div>
-
-          <div className="md:-mx-10 md:px-10">
-            <div className="scrollbar-none -mx-6 flex gap-4 overflow-x-auto px-6 pb-3 sm:gap-5 sm:px-10 md:mx-0 md:grid md:grid-cols-2 md:px-0 md:pb-0 lg:grid-cols-4">
-              {videoInsights.map((item) => (
-                <article
-                  key={item.title}
-                  className="group min-w-[82vw] snap-center rounded-none border border-white/[0.12] bg-white/[0.03] md:min-w-0"
-                >
-                  <div className="relative aspect-[16/9] overflow-hidden">
-                    <video
-                      controls
-                      preload="metadata"
-                      playsInline
-                      poster={item.poster}
-                      className="h-full w-full object-cover"
-                    >
-                      <source src={item.video} type="video/webm" />
-                    </video>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    <span className="absolute left-4 top-4 inline-flex rounded-none border border-white/20 bg-black/30 px-3 py-1 text-caption property-tag-type gold-ink">
-                      {item.tag}
-                    </span>
-                  </div>
-
-                  <div className="space-y-3 border-t border-white/[0.08] p-5">
-                    <h3 className="text-display-4 leading-tight text-white">{item.title}</h3>
-                    <p className="text-body text-white/70">{item.copy}</p>
-                    <Link
-                      href={item.href}
-                      className="inline-flex items-center gap-2 text-caption gold-ink transition-opacity duration-300 hover:opacity-85"
-                    >
-                      {item.label}
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/35 to-transparent" />
-        <div className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
-          <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-7">
-            <p className="mb-3 property-tag-type gold-ink">
-              Por qué Black Capital
-            </p>
-            <h2 className="text-display-2 leading-display tracking-headline text-white">
-              Así convertimos información en decisiones.
-            </h2>
-            </div>
-            <div className="lg:col-span-5 lg:flex lg:justify-end">
-            <p className="mt-6 max-w-md text-body text-white/58">
-              Cada ruta empieza con contexto real y termina con claridad operativa para decidir con precisión.
-            </p>
-            </div>
-          </div>
-
-          <WhyBlackCapitalTimeline items={whyBlackCapital} />
-        </div>
-        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-      </section>
-
-      <section className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
-        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="mb-3 property-tag-type gold-ink">
-              Nuestro proceso
-            </p>
-            <h2 className="text-display-2 leading-display tracking-headline text-white">
-              De la intención al cierre.
-            </h2>
-          </div>
-          <p className="max-w-xl text-body text-white/58">
-            Evaluación, estrategia, negociación y cierre.
-          </p>
-        </div>
-
-        <div data-section="home-process-rail" className="scrollbar-none -mx-6 flex snap-x snap-mandatory items-stretch overflow-x-auto border-y border-white/[0.08] px-6 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-5">
-          {serviceProcess.map((item, index) => (
-            <article
-              key={item}
-              className="group relative flex min-h-[190px] min-w-[58vw] snap-center flex-col border-r border-white/[0.08] p-6 transition-colors duration-300 last:border-r-0 sm:min-w-0 sm:border-b sm:last:border-r-0 lg:min-h-[200px] lg:border-b-0 lg:p-7 lg:last:border-r-0"
-            >
-              <span className="property-tag-type gold-ink">0{index + 1}</span>
-              <span className="mt-14 block h-px w-10 bg-[var(--color-accent)]/45 transition-all duration-300 group-hover:w-16" />
-              <p className="mt-5 text-display-4 max-w-[12rem] leading-tight text-white transition-colors duration-300 group-hover:text-[var(--color-accent)]">
-                {item}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <MethodologySection />
 
       <section className="border-t border-white/[0.06] bg-white/[0.02]">
         <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-8 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-20">
