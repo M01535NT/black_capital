@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -12,8 +13,7 @@ const steps = [
     text:
       "Leemos zonas, usos y demanda real antes de proponer una ruta. La opinión empieza con datos del terreno.",
     signal: "Ventaja local",
-    poster: "/hero-luxury.webp",
-    video: "/hero.webm",
+    image: "/hero-luxury.webp",
   },
   {
     step: "02",
@@ -21,8 +21,7 @@ const steps = [
     text:
       "Tipología, ocupación, contexto legal y comparables. Lo que el activo es, y lo que el mercado pagará por él.",
     signal: "Ruta clara",
-    poster: "/hero-business.webp",
-    video: "/hero.webm",
+    image: "/hero-business.webp",
   },
   {
     step: "03",
@@ -30,8 +29,7 @@ const steps = [
     text:
       "Marketing dirigido, contraparte calibrada y mapa de decisiones. Cierre por criterio, no por desgaste.",
     signal: "Sin ruido",
-    poster: "/industrial-hero.webp",
-    video: "/hero.webm",
+    image: "/industrial-hero.webp",
   },
   {
     step: "04",
@@ -39,8 +37,7 @@ const steps = [
     text:
       "Documentación, asesoría notarial y criterio comercial hasta la firma. La operación termina cuando todo está limpio.",
     signal: "Criterio",
-    poster: "/hero-industrial.webp",
-    video: "/hero.webm",
+    image: "/hero-industrial.webp",
   },
 ];
 
@@ -117,25 +114,19 @@ export function MethodologySection() {
                     }`}
                   />
 
-                  {/* Mobile: poster card per step */}
+                  {/* Mobile: distinct poster image per step */}
                   <div className="relative mb-5 aspect-[16/10] overflow-hidden border border-white/[0.08] lg:hidden">
-                    <video
-                      src={item.video}
-                      poster={item.poster}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      aria-hidden="true"
-                      className="absolute inset-0 h-full w-full object-cover opacity-85 motion-reduce:hidden"
-                    />
-                    <div
-                      aria-hidden="true"
-                      className="motion-reduce:visible absolute inset-0 hidden bg-cover bg-center"
-                      style={{ backgroundImage: `url(${item.poster})` }}
+                    <Image
+                      src={item.image}
+                      alt={`${item.title} — Black Capital`}
+                      fill
+                      sizes="100vw"
+                      className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent" />
+                    <span className="absolute left-4 top-4 inline-flex border border-white/20 bg-black/40 px-2.5 py-1 property-tag-type gold-ink backdrop-blur-sm">
+                      Paso {item.step}
+                    </span>
                   </div>
 
                   <div className="flex items-baseline justify-between gap-4 border-b border-[var(--color-accent)]/25 pb-3">
@@ -169,29 +160,37 @@ export function MethodologySection() {
             })}
           </ol>
 
-          {/* Right: sticky video synced with active step (desktop only) */}
+          {/* Right: sticky image synced with active step (desktop only) */}
           <div className="hidden lg:col-span-7 lg:block">
             <div className="sticky top-28">
               <div className="relative aspect-[4/5] overflow-hidden border border-white/[0.08]">
                 <AnimatePresence mode="wait" initial={false}>
-                  <motion.video
-                    key={activeStep.poster}
-                    src={activeStep.video}
-                    poster={activeStep.poster}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-hidden="true"
-                    initial={shouldReduceMotion ? false : { opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={shouldReduceMotion ? undefined : { opacity: 0 }}
-                    transition={{ duration: 0.55, ease: EASE }}
-                    className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
-                  />
+                  <motion.div
+                    key={activeStep.image}
+                    initial={
+                      shouldReduceMotion
+                        ? false
+                        : { opacity: 0, scale: 1.08 }
+                    }
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={
+                      shouldReduceMotion
+                        ? undefined
+                        : { opacity: 0, scale: 1.02 }
+                    }
+                    transition={{ duration: 0.7, ease: EASE }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={activeStep.image}
+                      alt={`${activeStep.title} — Black Capital`}
+                      fill
+                      sizes="(max-width: 1024px) 0vw, 50vw"
+                      className="object-cover"
+                      priority={activeIndex === 0}
+                    />
+                  </motion.div>
                 </AnimatePresence>
-                <Image2Fallback poster={activeStep.poster} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
 
                 <div className="absolute inset-x-6 bottom-6 flex items-end justify-between gap-4">
@@ -227,17 +226,5 @@ export function MethodologySection() {
         className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent"
       />
     </section>
-  );
-}
-
-// Background image fallback for prefers-reduced-motion — uses bg-image to avoid
-// next/image client-component constraints inside the sticky/animated wrapper.
-function Image2Fallback({ poster }: { poster: string }) {
-  return (
-    <div
-      aria-hidden="true"
-      className="motion-reduce:block absolute inset-0 hidden bg-cover bg-center"
-      style={{ backgroundImage: `url(${poster})` }}
-    />
   );
 }

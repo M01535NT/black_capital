@@ -102,7 +102,7 @@ function SegmentCard({
   const imageAspect = isHero
     ? "aspect-[4/3] lg:aspect-[16/11]"
     : isMobile
-      ? "aspect-[4/5]"
+      ? "aspect-[16/11]"
       : "aspect-[16/9] lg:aspect-[16/10]";
 
   return (
@@ -139,7 +139,9 @@ function SegmentCard({
         </div>
       </div>
 
-      <div className={`flex flex-1 flex-col gap-5 p-5 ${isHero ? "lg:p-7" : ""}`}>
+      <div
+        className={`flex flex-1 flex-col gap-4 p-4 sm:p-5 ${isHero ? "lg:p-7" : ""}`}
+      >
         <p className={`text-body text-white/68 ${isHero ? "lg:text-body-lg" : ""}`}>
           {segment.copy}
         </p>
@@ -155,7 +157,7 @@ function SegmentCard({
           ))}
         </ul>
 
-        <p className="text-body-sm leading-relaxed text-white/55 transition-all duration-500 md:max-h-0 md:translate-y-1 md:overflow-hidden md:opacity-0 md:group-hover:max-h-32 md:group-hover:translate-y-0 md:group-hover:opacity-100">
+        <p className="hidden text-body-sm leading-relaxed text-white/55 transition-all duration-500 md:block md:max-h-0 md:translate-y-1 md:overflow-hidden md:opacity-0 md:group-hover:max-h-32 md:group-hover:translate-y-0 md:group-hover:opacity-100">
           {segment.metric}
         </p>
 

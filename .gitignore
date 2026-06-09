@@ -5,7 +5,7 @@ node_modules/
 dist/
 build/
 .next/
-.next-redesign/
+.next-*/
 out/
 
 # Environment variables
