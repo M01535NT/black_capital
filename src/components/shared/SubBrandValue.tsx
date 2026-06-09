@@ -47,7 +47,7 @@ export function SubBrandValue({
         >
             <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div className="max-w-3xl">
-                    <p className="mb-3 text-caption text-[var(--color-accent)]">
+                    <p className="mb-3 text-caption gold-ink">
                         {eyebrow}
                     </p>
                     <h2 className="text-display-2 text-white">
@@ -73,7 +73,7 @@ export function SubBrandValue({
                                     /{String(index + 1).padStart(2, "0")}
                                 </div>
                                 <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-accent)] text-black">
+                                    <span className="gold-gradient flex h-9 w-9 items-center justify-center rounded-full text-black">
                                         <Icon className="h-4 w-4" aria-hidden="true" />
                                     </span>
                                     <h3 className="text-display-3 text-white">{item.title}</h3>
@@ -86,7 +86,7 @@ export function SubBrandValue({
                                 </p>
                                 <Link
                                     href={BRAND_HREF[brand]}
-                                    className="inline-flex w-full items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 premium-cta hover:bg-[var(--color-accent)] hover:text-black"
+                                    className="inline-flex w-full items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 premium-cta gold-ink hover:border-[var(--color-accent)]"
                                 >
                                     Inventario
                                     <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

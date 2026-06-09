@@ -78,7 +78,7 @@ export function SubBrandHero({
                         <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
                         Tijuana, Baja California
                     </div>
-                    <p className="mb-3 text-caption text-[var(--color-accent)]">
+                    <p className="mb-3 text-caption gold-ink">
                         {brand}
                     </p>
                     <h1 className="max-w-4xl text-display-1 text-white text-balance">
@@ -109,7 +109,7 @@ export function SubBrandHero({
                 <div className="lg:col-span-5">
                     <div className="border border-white/10 bg-background/82 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl">
                         <div className="flex items-center gap-3 border-b border-white/[0.08] pb-4">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-accent)] text-black">
+                            <div className="gold-gradient flex h-10 w-10 items-center justify-center rounded-full text-black">
                                 <Search className="h-5 w-5" aria-hidden="true" />
                             </div>
                             <div>
@@ -124,7 +124,7 @@ export function SubBrandHero({
                                     className="flex items-center justify-between border border-white/[0.08] bg-white/[0.03] px-4 py-3"
                                 >
                                     <span className="text-body-sm text-white/65">{label}</span>
-                                    <span className="property-tag-type text-[var(--color-accent)]">
+                                    <span className="property-tag-type gold-ink">
                                         Seleccionar
                                     </span>
                                 </div>
@@ -132,7 +132,7 @@ export function SubBrandHero({
                         </div>
                         <Link
                             href={primaryCta.href}
-                            className="premium-cta inline-flex w-full items-center justify-center gap-2 bg-[var(--color-accent)] px-5 py-3 text-black"
+                            className="gold-gradient premium-cta inline-flex w-full items-center justify-center gap-2 px-5 py-3 text-black"
                         >
                             Buscar opciones
                             <ArrowRight className="h-4 w-4" aria-hidden="true" />

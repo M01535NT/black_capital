@@ -128,7 +128,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
 
     const hasFilters = activeBusiness || activeUse || activeStatus || activeCurrency || searchTerm || minPrice || maxPrice || minArea || sort !== "newest";
     const pillBase = "flex min-h-10 w-full items-center justify-center px-2 property-tag-type transition-colors sm:px-4";
-    const pillActive = "bg-[var(--color-accent)] text-black";
+    const pillActive = "gold-gradient text-black";
     const pillInactive = "border border-white/[0.08] bg-white/[0.025] text-white/62 hover:border-[var(--color-accent)]/35 hover:text-white";
 
     return (
@@ -198,7 +198,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             <button
                                 type="button"
                                 onClick={clearAll}
-                                className="min-h-11 rounded-full border border-[var(--color-accent)]/35 px-5 property-tag-type text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                                className="min-h-11 rounded-full border border-[var(--color-accent)]/35 px-5 property-tag-type gold-ink transition-colors hover:border-[var(--color-accent)]"
                             >
                                 Limpiar
                             </button>
@@ -344,7 +344,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                     animate={{ opacity: 1 }}
                     className="border border-white/[0.08] bg-white/[0.025] px-6 py-16 text-center"
                 >
-                    <div className="mx-auto mb-5 flex size-16 items-center justify-center rounded-full bg-[var(--color-accent)] text-black">
+                    <div className="gold-gradient mx-auto mb-5 flex size-16 items-center justify-center rounded-full text-black">
                         <Search className="size-6" aria-hidden="true" />
                     </div>
                     <h2 className="mb-3 text-display-4 text-white">
@@ -357,7 +357,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                         <button
                             type="button"
                             onClick={clearAll}
-                            className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-accent)]/35 px-6 premium-cta text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                            className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-accent)]/35 px-6 premium-cta gold-ink transition-colors hover:border-[var(--color-accent)]"
                         >
                             Limpiar filtros
                         </button>

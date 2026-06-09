@@ -16,7 +16,7 @@
   --color-gold-pale: #f3e899;
   --color-gold-bottom: #d0a539;
 
-  --color-accent: #f1e292;
+  --color-accent: #d2a73c;
   --color-accent-end: var(--color-gold-dark);
   --color-accent-light: var(--color-accent);
   --color-accent-dark: var(--color-gold-dark);
@@ -328,7 +328,8 @@ body {
   /* ── Premium gold treatment — all brand accents come from the same token set. */
   .metallic-gold,
   .metallic-gold-static,
-  .gold-text {
+  .gold-text,
+  .gold-ink {
     background: var(--gradient-gold-premium-text);
     -webkit-background-clip: text;
     background-clip: text;

@@ -205,7 +205,7 @@ export async function BrandInventory({
         >
             <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div className="max-w-3xl">
-                    <p className="mb-3 text-caption text-[var(--color-accent)]">
+                    <p className="mb-3 text-caption gold-ink">
                         {eyebrow}
                     </p>
                     <h2 className="text-display-2 leading-display tracking-headline text-white">
@@ -247,7 +247,7 @@ export async function BrandInventory({
                                 </div>
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
-                                <div className="absolute left-4 top-4 rounded-full border border-[var(--color-accent)]/30 bg-background/85 px-3 py-1 property-tag-type text-[var(--color-accent)]">
+                                <div className="absolute left-4 top-4 rounded-full border border-[var(--color-accent)]/30 bg-background/85 px-3 py-1 property-tag-type gold-ink">
                                     {prop.isPlaceholder ? "Ejemplo" : prop.property_type}
                                 </div>
                                 <div className="absolute bottom-4 left-4 right-4">
@@ -274,7 +274,7 @@ export async function BrandInventory({
                                 <div className="flex flex-col gap-2 sm:flex-row">
                                     <Link
                                         href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
-                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type gold-ink transition-colors hover:border-[var(--color-accent)]"
                                     >
                                         Inventario
                                     </Link>

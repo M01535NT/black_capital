@@ -112,20 +112,20 @@ export function PropertyCard({
                             {property.property_use}
                         </span>
                         {property.isPlaceholder && (
-                            <span className="border border-[var(--color-accent)]/35 bg-background/75 px-3 py-1 property-tag-type text-[var(--color-accent)] backdrop-blur-md">
+                            <span className="border border-[var(--color-accent)]/35 bg-background/75 px-3 py-1 property-tag-type gold-ink backdrop-blur-md">
                                 Ejemplo
                             </span>
                         )}
                         {property.created_at && <PublishedBadge createdAt={property.created_at} />}
                         {property.is_featured && (
-                            <span className="border border-[var(--color-accent)]/35 bg-background/75 px-3 py-1 property-tag-type text-[var(--color-accent)] backdrop-blur-md">
+                            <span className="border border-[var(--color-accent)]/35 bg-background/75 px-3 py-1 property-tag-type gold-ink backdrop-blur-md">
                                 Destacada
                             </span>
                         )}
                     </div>
 
                     <div className="absolute bottom-4 left-4 right-4">
-                        <p className="mb-2 property-tag-type text-[var(--color-accent)]">
+                        <p className="mb-2 property-tag-type gold-ink">
                             {property.business_type}
                             {property.property_type ? ` · ${property.property_type}` : ""}
                         </p>
@@ -172,7 +172,7 @@ export function PropertyCard({
                     </div>
 
                     <div className="flex items-end justify-between gap-4 border-t border-white/[0.06] pt-4">
-                        <p className="property-price-type text-[var(--color-accent)]">
+                        <p className="property-price-type gold-ink">
                             {property.isPlaceholder
                                 ? "Precio de ejemplo"
                                 : formatShortPrice(property.price, property.currency, property.business_type)}

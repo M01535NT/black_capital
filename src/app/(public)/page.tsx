@@ -181,7 +181,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="mb-3 text-caption text-[var(--color-accent)]">
+            <p className="mb-3 text-caption gold-ink">
               Tres líneas de negocio
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
@@ -208,7 +208,7 @@ export default function HomePage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
                   <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-accent)] text-black">
+                    <span className="gold-gradient flex h-9 w-9 items-center justify-center rounded-full text-black">
                       <Icon className="h-4 w-4" />
                     </span>
                   <h3 className="text-display-3 font-semibold text-white">{segment.title}</h3>
@@ -216,9 +216,9 @@ export default function HomePage() {
                 </div>
                 <div className="space-y-5 p-5">
                   <p className="text-body text-white/64">{segment.copy}</p>
-                  <p className="property-tag-type text-[var(--color-accent)]/75">{segment.zones}</p>
+                  <p className="property-tag-type gold-ink opacity-75">{segment.zones}</p>
                   <div className="flex flex-col gap-2 sm:flex-row">
-                    <Link href={segment.inventoryHref} className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type text-[var(--color-accent)]">
+                    <Link href={segment.inventoryHref} className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type gold-ink">
                       Inventario
                     </Link>
                     <Link href={segment.href} className="inline-flex flex-1 items-center justify-center gap-2 border border-white/10 px-4 py-2.5 property-tag-type text-white/75">
@@ -235,7 +235,7 @@ export default function HomePage() {
       <section className="border-y border-white/[0.06] bg-white/[0.02]">
         <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-24">
           <div className="lg:col-span-5">
-            <p className="mb-3 property-tag-type text-[var(--color-accent)]">
+            <p className="mb-3 property-tag-type gold-ink">
               Asesoría inmobiliaria
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
@@ -250,7 +250,7 @@ export default function HomePage() {
               <article key={path.audience} className="border border-white/[0.08] bg-background/70 p-5">
                 <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                                <p className="mb-2 property-tag-type text-[var(--color-accent)]">
+                                <p className="mb-2 property-tag-type gold-ink">
                                     {path.audience}
                                 </p>
                                 <h3 className="text-display-3 text-white">{path.title}</h3>
@@ -260,7 +260,7 @@ export default function HomePage() {
                             <div className="grid gap-2 sm:grid-cols-3">
                               {path.steps.map((step, index) => (
                                 <div key={step} className="flex items-center gap-2 border border-white/[0.08] bg-white/[0.025] px-3 py-3">
-                                  <span className="property-tag-type text-[var(--color-accent)]">0{index + 1}</span>
+                                  <span className="property-tag-type gold-ink">0{index + 1}</span>
                                   <span className="text-body text-white/68">{step}</span>
                                 </div>
                               ))}
@@ -276,7 +276,7 @@ export default function HomePage() {
       <section className="border-y border-white/[0.06] bg-white/[0.02]">
         <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-24">
           <div className="lg:col-span-5">
-            <p className="mb-3 property-tag-type text-[var(--color-accent)]">
+            <p className="mb-3 property-tag-type gold-ink">
               Flujo comercial
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
@@ -286,7 +286,7 @@ export default function HomePage() {
           <div className="grid gap-4 lg:col-span-7">
             {process.map((item, index) => (
               <div key={item} className="flex gap-4 border border-white/[0.08] bg-background/70 p-5">
-                    <span className="property-tag-type text-[var(--color-accent)]">0{index + 1}</span>
+                    <span className="property-tag-type gold-ink">0{index + 1}</span>
                     <div className="flex items-start gap-3">
                       <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-accent)]" />
                       <p className="text-body text-white/70">{item}</p>

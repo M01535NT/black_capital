@@ -41,7 +41,7 @@ export function SubBrandStats({
         >
             <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 sm:px-10 lg:grid-cols-12 lg:px-16">
                 <div className="lg:col-span-5">
-                    <p className="mb-3 text-caption text-[var(--color-accent)]">
+                    <p className="mb-3 text-caption gold-ink">
                         {eyebrow}
                     </p>
                     <h2 className="text-display-2 text-white">
@@ -58,7 +58,7 @@ export function SubBrandStats({
                             key={stat.label}
                             className="flex gap-4 border border-white/[0.08] bg-background/70 p-5"
                         >
-                            <span className="min-w-8 text-display-3 text-[var(--color-accent)]">
+                            <span className="min-w-8 text-display-3 gold-ink">
                                 0{index + 1}
                             </span>
                             <div className="flex flex-1 items-start justify-between gap-4">
