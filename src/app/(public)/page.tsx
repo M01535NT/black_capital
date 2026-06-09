@@ -307,27 +307,45 @@ export default function HomePage() {
 
       <MethodologySection />
 
-      <section className="border-t border-white/[0.06] bg-white/[0.02]">
-        <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-8 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-20">
-          <div className="lg:col-span-4">
-            <p className="mb-3 property-tag-type gold-ink">
-              Siguiente paso
+      <section className="relative border-t border-white/[0.06] bg-white/[0.02]">
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/35 to-transparent"
+        />
+        <div className="mx-auto max-w-[90rem] px-6 py-20 sm:px-10 lg:px-16 lg:py-28">
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="mb-4 property-tag-type gold-ink">Manifiesto</p>
+            <p className="text-display-2 leading-display tracking-headline text-white/90">
+              No vendemos metros cuadrados.{" "}
+              <span className="gold-ink">Acompañamos decisiones</span> que
+              sostienen el tiempo.
             </p>
-            <h2 className="text-display-3 leading-tight text-white">
-              Elige cómo quieres iniciar.
-            </h2>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:col-span-8">
-            {intentCtas.map((cta) => (
+
+          <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden border border-white/[0.08] bg-white/[0.04] sm:grid-cols-2 lg:grid-cols-4">
+            {intentCtas.map((cta, index) => (
               <Link
                 key={cta.label}
                 href={cta.href}
-                className="group flex min-h-[64px] items-center justify-between gap-4 border border-white/[0.08] bg-background/70 px-5 py-4 text-left transition-colors duration-300 hover:border-[var(--color-accent)]"
+                className="group relative flex min-h-[170px] flex-col justify-between gap-6 bg-background/85 p-6 transition-colors duration-500 hover:bg-background/55 lg:p-7"
               >
-                <span className="property-tag-type text-white/78 transition-colors duration-300 group-hover:text-[var(--color-accent)]">
-                  {cta.label}
-                </span>
-                <ArrowRight className="h-4 w-4 shrink-0 text-[var(--color-accent)]" />
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                  style={{
+                    background:
+                      "linear-gradient(160deg, transparent 30%, rgba(210, 167, 60, 0.12) 100%)",
+                  }}
+                />
+                <p className="relative property-tag-type gold-ink">
+                  0{index + 1}
+                </p>
+                <div className="relative flex items-end justify-between gap-4">
+                  <p className="max-w-[16ch] text-display-4 leading-tight text-white transition-colors duration-500 group-hover:text-[var(--color-accent)]">
+                    {cta.label}
+                  </p>
+                  <ArrowRight className="h-5 w-5 shrink-0 text-[var(--color-accent)] transition-transform duration-500 group-hover:translate-x-1" />
+                </div>
               </Link>
             ))}
           </div>
