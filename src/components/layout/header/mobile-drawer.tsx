@@ -32,7 +32,7 @@ interface MobileDrawerProps {
 function NavGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="space-y-2.5">
-      <h3 className="footer-heading-type text-[var(--color-accent)]/90">
+      <h3 className="footer-heading-type text-[var(--color-gold-light)]/90">
         {title}
       </h3>
       {children}
@@ -55,13 +55,13 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
           size="icon"
           className={cn(
             "group relative h-11 w-11 overflow-hidden rounded-full border transition-all duration-300",
-            "border-white/12 bg-black/20 text-foreground hover:border-[var(--color-accent)]/55 hover:bg-white/[0.06]",
-            "focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-            open && "border-[var(--color-accent)]/55 bg-[var(--color-accent)]/10",
+            "border-white/12 bg-black/20 text-foreground hover:border-[var(--color-gold-light)]/55 hover:bg-white/[0.06]",
+            "focus-visible:ring-2 focus-visible:ring-[var(--color-gold-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            open && "border-[var(--color-gold-light)]/55 bg-[var(--color-gold-light)]/10",
           )}
           aria-label="Abrir navegación"
         >
-          <span className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--color-accent)_0%,transparent_62%)] opacity-0 transition-opacity duration-300 group-hover:opacity-10" />
+          <span className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--color-gold-light)_0%,transparent_62%)] opacity-0 transition-opacity duration-300 group-hover:opacity-10" />
           <span className="relative flex h-4 w-5 flex-col justify-between" aria-hidden="true">
             <span
               className={cn(
@@ -85,12 +85,12 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
           <span className="sr-only">Abrir navegación</span>
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-80 sm:w-96 lg:w-[420px] rounded-none bg-[#0a0a0a]/95 backdrop-blur-2xl border-l border-[var(--color-accent)]/15">
+      <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-80 sm:w-96 lg:w-[420px] rounded-none bg-[#0a0a0a]/95 backdrop-blur-2xl border-l border-[var(--color-gold-light)]/15">
         <div className="mx-auto flex h-full w-full max-w-sm flex-col overflow-hidden p-4 sm:p-5">
           <DrawerHeader className="shrink-0 px-0 pb-2 pt-0 text-left flex flex-row items-center justify-end">
             <button
               onClick={handleClose}
-              className="text-foreground/60 hover:text-[var(--color-accent)] transition-colors p-1"
+              className="text-foreground/60 hover:text-[var(--color-gold-light)] transition-colors p-1"
               aria-label="Cerrar navegación"
             >
               <X className="w-5 h-5" />
@@ -106,7 +106,7 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
                       href={link.href}
                       className={cn(
                       "font-display flex items-center justify-center border border-white/[0.08] px-3 py-3 text-center hero-mobile-main-link transition-colors",
-                      isActive(link.href) ? "border-[var(--color-accent)]/45 text-[var(--color-accent)]" : "text-foreground hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)]",
+                      isActive(link.href) ? "border-[var(--color-gold-light)]/45 text-[var(--color-gold-light)]" : "text-foreground hover:border-[var(--color-gold-light)]/40 hover:text-[var(--color-gold-light)]",
                     )}
                     onClick={handleClose}
                     style={{ lineHeight: "normal" }}
@@ -122,7 +122,7 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
                   <Link key={link.name} href={link.href} onClick={handleClose} className="group border border-white/[0.06] bg-white/[0.02] px-3 py-2 focus-visible:outline-none">
                       <span className={cn(
                         "font-display hero-mobile-secondary-link transition-colors",
-                        isActive(link.href) ? "text-[var(--color-accent)]" : "text-foreground group-hover:text-[var(--color-accent)]",
+                        isActive(link.href) ? "text-[var(--color-gold-light)]" : "text-foreground group-hover:text-[var(--color-gold-light)]",
                       )}>
                         {link.name}
                       </span>
@@ -143,7 +143,7 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
                         className="font-display flex min-h-8 items-center gap-2 hero-mobile-secondary-link transition-colors"
                         onClick={handleClose}
                       >
-                        <Icon className="w-3.5 h-3.5 text-[var(--color-accent)]/80" aria-hidden="true" />
+                        <Icon className="w-3.5 h-3.5 text-[var(--color-gold-light)]/80" aria-hidden="true" />
                         {item.name}
                       </Link>
                     );
@@ -159,7 +159,7 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
                       href={link.href}
                       className={cn(
                         "font-display hero-mobile-secondary-link transition-colors",
-                        isActive(link.href) ? "text-[var(--color-accent)]" : "text-foreground/80 hover:text-[var(--color-accent)]",
+                        isActive(link.href) ? "text-[var(--color-gold-light)]" : "text-foreground/80 hover:text-[var(--color-gold-light)]",
                       )}
                       onClick={handleClose}
                     >

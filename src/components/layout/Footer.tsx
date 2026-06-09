@@ -104,15 +104,15 @@ function FooterNewsletter() {
                 placeholder="Tu correo corporativo"
                 autoComplete="email"
                 aria-label="Correo para suscribirse al directorio"
-                className="flex-1 bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-2 text-sm"
+                className="flex-1 bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-gold-light)] px-0 py-2 text-sm"
             />
             <Button
                 type="submit"
                 disabled={status === "submitting"}
-                className="btn-ghost-gold premium-cta border border-[var(--color-accent)]/40 text-white hover:border-[var(--color-accent)]"
+                className="btn-ghost-gold premium-cta border border-[var(--color-gold-light)]/40 text-white hover:border-[var(--color-gold-light)]"
             >
                 <span>{status === "submitting" ? "Enviando" : "Suscribir"}</span>
-                <span aria-hidden="true" className="ml-1.5 text-[var(--color-accent)]">→</span>
+                <span aria-hidden="true" className="ml-1.5 text-[var(--color-gold-light)]">→</span>
             </Button>
             <p className="sr-only" aria-live="polite">
                 {status === "success"
@@ -142,11 +142,11 @@ export function Footer() {
                 <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 py-10 sm:py-12 lg:py-14 text-center">
                   {/* Eyebrow */}
                   <div className="flex items-center justify-center gap-3 mb-5">
-                    <span className="h-px w-10 bg-[var(--color-accent)]/60" />
+                    <span className="h-px w-10 bg-[var(--color-gold-light)]/70" />
                     <span className="text-caption text-white/70">
                         Acceso Directo
                     </span>
-                    <span className="h-px w-10 bg-[var(--color-accent)]/60" />
+                    <span className="h-px w-10 bg-[var(--color-gold-light)]/70" />
                   </div>
 
                   {/* Compact headline */}
@@ -189,7 +189,7 @@ export function Footer() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         title={`${social.name} · ${handle}`}
-                                        className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 transition-all duration-300 focus-visible:text-[var(--color-accent)] focus-visible:border-[var(--color-accent)]/40 focus-visible:outline-none"
+                                        className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-[var(--color-gold-light)] hover:border-[var(--color-gold-light)]/40 transition-all duration-300 focus-visible:text-[var(--color-gold-light)] focus-visible:border-[var(--color-gold-light)]/40 focus-visible:outline-none"
                                         aria-label={`${social.name} (${handle})`}
                                     >
                                         <social.icon className="w-4 h-4" aria-hidden="true" />
@@ -201,7 +201,7 @@ export function Footer() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title={`WhatsApp · ${CONTACT_CONFIG.phone}`}
-                                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 transition-all duration-300 focus-visible:text-[var(--color-accent)] focus-visible:border-[var(--color-accent)]/40 focus-visible:outline-none"
+                                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-[var(--color-gold-light)] hover:border-[var(--color-gold-light)]/40 transition-all duration-300 focus-visible:text-[var(--color-gold-light)] focus-visible:border-[var(--color-gold-light)]/40 focus-visible:outline-none"
                                 aria-label="WhatsApp"
                             >
                                 <MessageCircle className="w-4 h-4" aria-hidden="true" />
@@ -218,7 +218,7 @@ export function Footer() {
                             {brandLinks.map((link) => (
                                 <li key={link.name}>
                                     <Link href={link.href} className="group flex flex-col">
-                                        <span className="footer-link-type group-hover:text-[var(--color-accent)] transition-colors">
+                                        <span className="footer-link-type group-hover:text-[var(--color-gold-light)] transition-colors">
                                             {link.name}
                                         </span>
                                         <span className="footer-legal-type mt-0.5">
@@ -240,7 +240,7 @@ export function Footer() {
                                 <li key={link.name}>
                                     <Link
                                         href={link.href}
-                                        className="footer-link-type hover:text-[var(--color-accent)] transition-colors"
+                                        className="footer-link-type hover:text-[var(--color-gold-light)] transition-colors"
                                     >
                                         {link.name}
                                     </Link>
@@ -260,27 +260,27 @@ export function Footer() {
                                     href={mapsHref}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group inline-flex items-start gap-2 hover:text-[var(--color-accent)] transition-colors"
+                                    className="group inline-flex items-start gap-2 hover:text-[var(--color-gold-light)] transition-colors"
                                 >
-                                    <MapPin className="w-3.5 h-3.5 mt-1 text-[var(--color-accent)] flex-shrink-0" aria-hidden="true" />
+                                    <MapPin className="w-3.5 h-3.5 mt-1 text-[var(--color-gold-light)] flex-shrink-0" aria-hidden="true" />
                                     <span className="group-hover:underline">{CONTACT_CONFIG.address}</span>
                                 </a>
                             </li>
                             <li>
                                 <a
                                     href={`tel:${phoneRaw}`}
-                                    className="group inline-flex items-center gap-2 hover:text-[var(--color-accent)] transition-colors"
+                                    className="group inline-flex items-center gap-2 hover:text-[var(--color-gold-light)] transition-colors"
                                 >
-                                    <Phone className="w-3.5 h-3.5 text-[var(--color-accent)]" aria-hidden="true" />
+                                    <Phone className="w-3.5 h-3.5 text-[var(--color-gold-light)]" aria-hidden="true" />
                                     <span className="group-hover:underline">{CONTACT_CONFIG.phone}</span>
                                 </a>
                             </li>
                             <li>
                                 <a
                                     href={`mailto:${CONTACT_CONFIG.email}`}
-                                    className="group inline-flex items-center gap-2 hover:text-[var(--color-accent)] transition-colors break-all"
+                                    className="group inline-flex items-center gap-2 hover:text-[var(--color-gold-light)] transition-colors break-all"
                                 >
-                                    <Mail className="w-3.5 h-3.5 text-[var(--color-accent)] flex-shrink-0" aria-hidden="true" />
+                                    <Mail className="w-3.5 h-3.5 text-[var(--color-gold-light)] flex-shrink-0" aria-hidden="true" />
                                     <span className="group-hover:underline">{CONTACT_CONFIG.email}</span>
                                 </a>
                             </li>

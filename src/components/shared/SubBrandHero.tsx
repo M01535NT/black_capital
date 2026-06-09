@@ -75,10 +75,10 @@ export function SubBrandHero({
             <div className="relative z-10 mx-auto grid min-h-[calc(92svh-6rem)] max-w-[90rem] grid-cols-1 items-center gap-10 px-6 py-12 sm:px-10 lg:grid-cols-12 lg:px-16">
                 <div className="lg:col-span-7">
                     <div className="mb-6 inline-flex items-center gap-2 border border-white/10 bg-black/35 px-3 py-2 text-caption text-white/70">
-                        <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
+                        <MapPin className="h-3.5 w-3.5 text-[var(--color-gold-light)]" aria-hidden="true" />
                         Tijuana, Baja California
                     </div>
-                    <p className="mb-3 text-caption text-[var(--color-accent)]">
+                    <p className="mb-3 text-caption text-[var(--color-gold-light)]">
                         {brand}
                     </p>
                     <h1 className="max-w-4xl text-display-1 text-white text-balance">
@@ -98,7 +98,7 @@ export function SubBrandHero({
                         {secondaryCta && (
                             <Link
                                 href={secondaryCta.href}
-                                className="premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full border border-white/18 bg-white/[0.04] px-7 text-white transition-colors hover:border-[var(--color-accent)]"
+                                className="premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full border border-white/18 bg-white/[0.04] px-7 text-white transition-colors hover:border-[var(--color-gold-light)]"
                             >
                                 {secondaryCta.label}
                             </Link>
@@ -109,7 +109,7 @@ export function SubBrandHero({
                 <div className="lg:col-span-5">
                     <div className="border border-white/10 bg-background/82 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl">
                         <div className="flex items-center gap-3 border-b border-white/[0.08] pb-4">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-accent)] text-black">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-gold-light)] text-black">
                                 <Search className="h-5 w-5" aria-hidden="true" />
                             </div>
                             <div>
@@ -124,7 +124,7 @@ export function SubBrandHero({
                                     className="flex items-center justify-between border border-white/[0.08] bg-white/[0.03] px-4 py-3"
                                 >
                                     <span className="text-body-sm text-white/65">{label}</span>
-                                    <span className="property-tag-type text-[var(--color-accent)]">
+                                    <span className="property-tag-type text-[var(--color-gold-light)]">
                                         Seleccionar
                                     </span>
                                 </div>
@@ -132,7 +132,7 @@ export function SubBrandHero({
                         </div>
                         <Link
                             href={primaryCta.href}
-                            className="premium-cta inline-flex w-full items-center justify-center gap-2 bg-white px-5 py-3 text-black"
+                            className="premium-cta inline-flex w-full items-center justify-center gap-2 bg-[var(--color-gold-light)] px-5 py-3 text-black"
                         >
                             Buscar opciones
                             <ArrowRight className="h-4 w-4" aria-hidden="true" />

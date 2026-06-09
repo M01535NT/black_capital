@@ -149,7 +149,7 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/contacto"
-                className="premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full border border-white/18 bg-white/[0.04] text-white hover:border-[var(--color-accent)]"
+                className="premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full border border-white/18 bg-white/[0.04] text-white hover:border-[var(--color-gold-light)]"
               >
                 Solicitar asesoría
               </Link>
@@ -218,7 +218,7 @@ export default function HomePage() {
                   <p className="text-body text-white/64">{segment.copy}</p>
                   <p className="property-tag-type text-[var(--color-gold-light)]/75">{segment.zones}</p>
                   <div className="flex flex-col gap-2 sm:flex-row">
-                    <Link href={segment.inventoryHref} className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type text-[var(--color-accent)]">
+                    <Link href={segment.inventoryHref} className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-gold-light)]/45 px-4 py-2.5 property-tag-type text-[var(--color-gold-light)]">
                       Inventario
                     </Link>
                     <Link href={segment.href} className="inline-flex flex-1 items-center justify-center gap-2 border border-white/10 px-4 py-2.5 property-tag-type text-white/75">

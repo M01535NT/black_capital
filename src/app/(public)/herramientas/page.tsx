@@ -65,7 +65,7 @@ export default function HerramientasPage() {
                 <div className="grid min-h-[calc(100svh-9rem)] grid-cols-1 border border-white/[0.08] lg:grid-cols-[18rem_1fr]">
                     <aside className="border-b border-white/[0.08] bg-black/35 lg:border-b-0 lg:border-r">
                         <div className="border-b border-white/[0.08] p-5">
-                            <p className="text-body-sm property-tag-type text-[var(--color-accent)]">
+                            <p className="text-body-sm property-tag-type text-[var(--color-gold-light)]">
                                 Black tools
                             </p>
                             <h1 className="mt-4 text-display-1 text-white">
@@ -85,20 +85,20 @@ export default function HerramientasPage() {
                         </div>
 
                         <div className="hidden p-5 lg:block">
-                            <p className="property-tag-type text-white/35">
-                                Próxima construcción
-                            </p>
+                                    <p className="property-tag-type text-[var(--color-gold-light)]/75">
+                                        Próxima construcción
+                                    </p>
                             <ol className="mt-5 space-y-4 text-body text-white/58">
                                 <li className="flex gap-3">
-                                    <span className="text-[var(--color-accent)]">01</span>
+                                    <span className="text-[var(--color-gold-light)]">01</span>
                                     Hipoteca funcional
                                 </li>
                                 <li className="flex gap-3">
-                                    <span className="text-[var(--color-accent)]">02</span>
+                                    <span className="text-[var(--color-gold-light)]">02</span>
                                     Impuestos de compraventa
                                 </li>
                                 <li className="flex gap-3">
-                                    <span className="text-[var(--color-accent)]">03</span>
+                                    <span className="text-[var(--color-gold-light)]">03</span>
                                     Gastos de cierre
                                 </li>
                             </ol>
@@ -110,7 +110,7 @@ export default function HerramientasPage() {
                         <div className="relative grid min-h-full grid-cols-1 lg:grid-rows-[auto_1fr_auto]">
                             <header className="border-b border-white/[0.08] p-6 sm:p-8 lg:p-10">
                                 <div className="max-w-4xl">
-                            <p className="text-body-sm property-tag-type text-white/40">
+                            <p className="text-body-sm property-tag-type text-[var(--color-gold-light)]/80">
                                 Herramientas inmobiliarias para clientes
                             </p>
                             <h2 className="mt-6 text-display-2 text-white">
@@ -130,14 +130,14 @@ export default function HerramientasPage() {
                                             return (
                                                 <article key={tool.title} className="grid grid-cols-1 gap-0 bg-black/10 transition-colors hover:bg-white/[0.025] md:grid-cols-[5rem_1fr]">
                                                     <div className="flex items-center justify-between border-b border-white/[0.08] p-5 md:block md:border-b-0 md:border-r">
-                                                        <span className="block property-tag-type text-[var(--color-accent)]">
+                                                        <span className="block property-tag-type text-[var(--color-gold-light)]">
                                                             0{index + 1}
                                                         </span>
-                                                        <Icon className="h-6 w-6 text-white/42 md:mt-8" strokeWidth={1.45} />
+                                                        <Icon className="h-6 w-6 text-[var(--color-gold-light)]/75 md:mt-8" strokeWidth={1.45} />
                                                     </div>
                                                     <div className="grid grid-cols-1 gap-6 p-6 sm:p-8 lg:grid-cols-[1fr_16rem] lg:items-end">
                                                         <div>
-                                                            <p className="property-tag-type text-[var(--color-accent)]">
+                                                            <p className="property-tag-type text-[var(--color-gold-light)]">
                                                                 {tool.category}
                                                             </p>
                                                             <h3 className="mt-3 text-display-3 text-white">
@@ -174,7 +174,7 @@ export default function HerramientasPage() {
                                             return (
                                                 <div key={tool.title} className="grid grid-cols-[2.75rem_1fr] border border-white/[0.08] bg-black/25">
                                                     <div className="flex items-center justify-center border-r border-white/[0.08]">
-                                                        <Icon className="h-4 w-4 text-[var(--color-accent)]" strokeWidth={1.5} />
+                                                        <Icon className="h-4 w-4 text-[var(--color-gold-light)]" strokeWidth={1.5} />
                                                     </div>
                                                     <div className="p-3">
                                                         <h3 className="text-body-lg font-semibold text-white">{tool.title}</h3>
@@ -198,7 +198,7 @@ export default function HerramientasPage() {
                                 <div className="flex border-t border-white/[0.08] lg:border-l lg:border-t-0">
                                     <Link
                                         href="/contacto?interes=herramientas"
-                                        className="inline-flex min-h-16 w-full items-center justify-center gap-3 px-6 property-tag-type text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black lg:w-auto"
+                                        className="inline-flex min-h-16 w-full items-center justify-center gap-3 px-6 property-tag-type text-[var(--color-gold-light)] transition-colors hover:bg-[var(--color-gold-light)] hover:text-black lg:w-auto"
                                     >
                                         Solicitar cálculo
                                         <ArrowRight className="h-4 w-4" />

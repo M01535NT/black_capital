@@ -73,15 +73,15 @@ export function Logo({
     switch (tone) {
       case "gold":
         return {
-          bar: "#CFB155",
+          bar: "#c89625",
           black: "#F5F5F5",
-          capital: "#CFB155",
+          capital: "#f1e292",
         };
       case "light":
         return {
-          bar: "#CFB155",
+          bar: "#d2a73c",
           black: "#FFFFFF",
-          capital: "#CFB155",
+          capital: "#f1e292",
         };
       case "mono":
       default:
@@ -152,7 +152,7 @@ export function Logo({
       <Link
         href={href}
         aria-label={`${ariaLabel} — Inicio`}
-        className="inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
+        className="inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
       >
         {content}
       </Link>
