@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Building2, Maximize2, MessageCircle, MapPin } from "lucide-react";
 import { formatShortPrice, formatArea } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -61,10 +61,10 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const STATUS_STYLES: Record<string, string> = {
-    Available: "border-emerald-400/30 bg-emerald-400/12 text-emerald-300",
-    Under_Offer: "border-amber-300/35 bg-amber-300/12 text-amber-200",
-    Sold: "border-red-400/30 bg-red-400/12 text-red-300",
-    Rented: "border-sky-400/30 bg-sky-400/12 text-sky-300",
+    Available: "border-[var(--color-accent)]/30 bg-[var(--color-accent)]/10 gold-ink",
+    Under_Offer: "border-white/[0.12] bg-white/[0.035] text-white/68",
+    Sold: "border-white/[0.12] bg-white/[0.035] text-white/58",
+    Rented: "border-white/[0.12] bg-white/[0.035] text-white/58",
 };
 
 export function PropertyCard({
@@ -74,6 +74,7 @@ export function PropertyCard({
     disableMotion = false,
     priority = false,
 }: PropertyCardProps) {
+    const shouldReduceMotion = useReducedMotion();
     const href = property.isPlaceholder
         ? `/contacto?interes=${encodeURIComponent(property.property_use.toLowerCase())}`
         : `/inventario/${property.slug || property.id}`;
@@ -104,11 +105,6 @@ export function PropertyCard({
                         <span className="border border-white/10 bg-black/60 px-3 py-1 property-tag-type text-white backdrop-blur-md">
                             {property.property_use}
                         </span>
-                        {property.isPlaceholder && (
-                            <span className="border border-[var(--color-accent)]/35 bg-background/75 px-3 py-1 property-tag-type gold-ink backdrop-blur-md">
-                                Ejemplo
-                            </span>
-                        )}
                         {property.created_at && <PublishedBadge createdAt={property.created_at} />}
                         {property.is_featured && (
                             <span className="border border-[var(--color-accent)]/35 bg-background/75 px-3 py-1 property-tag-type gold-ink backdrop-blur-md">
@@ -167,7 +163,7 @@ export function PropertyCard({
                     <div className="flex items-end justify-between gap-4 border-t border-white/[0.06] pt-4">
                         <p className="property-price-type gold-ink">
                             {property.isPlaceholder
-                                ? "Precio de ejemplo"
+                                ? "Precio bajo consulta"
                                 : formatShortPrice(property.price, property.currency, property.business_type)}
                         </p>
                         <span className="inline-flex items-center gap-2 property-tag-type text-white/70 transition-colors group-hover:text-[var(--color-accent)]">
@@ -181,10 +177,13 @@ export function PropertyCard({
                 <div className="border-t border-white/[0.06] p-4 pt-0">
                     <Link
                         href={contactHref}
-                        className="premium-cta flex min-h-10 items-center justify-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-4 text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                        className="group/cta flex min-h-10 items-center justify-center gap-2 px-4 text-white/78 transition-colors hover:text-[var(--color-accent)]"
                     >
                         <MessageCircle className="h-4 w-4" aria-hidden="true" />
-                        Solicitar información
+                        <span className="property-tag-type relative pb-1">
+                            Solicitar información
+                            <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover/cta:opacity-100" />
+                        </span>
                     </Link>
                 </div>
             )}
@@ -200,7 +199,7 @@ export function PropertyCard({
         </article>
     );
 
-    if (disableMotion) return card;
+    if (disableMotion || shouldReduceMotion) return card;
 
     return (
         <motion.div

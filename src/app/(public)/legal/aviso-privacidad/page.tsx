@@ -75,8 +75,8 @@ export default function PrivacidadPage() {
                             <p>
                                 Usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento
                                 de sus datos personales. Para ejercer estos derechos, puede contactarnos en:{" "}
-                                <a href="mailto:privacidad@blackmx.vercel.app" className="text-[var(--color-accent)] hover:underline">
-                                    privacidad@blackmx.vercel.app
+                                <a href={`mailto:${CONTACT_CONFIG.email}`} className="text-[var(--color-accent)] hover:underline">
+                                    {CONTACT_CONFIG.email}
                                 </a>
                             </p>
                         </section>
@@ -100,8 +100,8 @@ export default function PrivacidadPage() {
                             </h2>
                             <p>
                                 Para cualquier consulta sobre este aviso de privacidad, puede escribirnos a{" "}
-                                <a href="mailto:contacto@blackmx.vercel.app" className="text-[var(--color-accent)] hover:underline">
-                                    contacto@blackmx.vercel.app
+                                <a href={`mailto:${CONTACT_CONFIG.email}`} className="text-[var(--color-accent)] hover:underline">
+                                    {CONTACT_CONFIG.email}
                                 </a>{" "}
                                 o llamar al {CONTACT_CONFIG.phone}.
                             </p>

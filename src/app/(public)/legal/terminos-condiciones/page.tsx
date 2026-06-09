@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/ui/motion";
+import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 export const metadata: Metadata = {
     title: "Términos y Condiciones | Black Capital",
@@ -133,8 +134,8 @@ export default function TermsPage() {
                                 Si tiene preguntas sobre estos Términos y Condiciones, puede contactarnos a través de:
                             </p>
                             <ul className="list-none space-y-2 text-foreground/70">
-                                <li><strong>Correo:</strong> contacto@blackmx.vercel.app</li>
-                                <li><strong>WhatsApp:</strong> +52 (664) 104 9491</li>
+                                <li><strong>Correo:</strong> {CONTACT_CONFIG.email}</li>
+                                <li><strong>WhatsApp:</strong> {CONTACT_CONFIG.phone}</li>
                             </ul>
                         </section>
                     </div>

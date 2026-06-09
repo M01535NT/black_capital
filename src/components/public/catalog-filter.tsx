@@ -4,7 +4,7 @@ import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { ArrowRight, ArrowUpDown, Search, X } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { PropertyCard, type PropertyCardData } from "@/components/property/PropertyCard";
 import { USES, BUSINESS_TYPES, BRAND_TO_USE } from "@/lib/property-constants";
 
@@ -32,6 +32,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
+    const shouldReduceMotion = useReducedMotion();
 
     const brandUse = searchParams.get("brand") ? BRAND_TO_USE[searchParams.get("brand") as string] : null;
     const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
@@ -139,7 +140,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
     const hasFilters = activeBusiness || activeUse || activeStatus || activeCurrency || activePropertyType || activeZone || searchTerm || minPrice || maxPrice || minArea || sort !== "newest";
     const pillBase = "flex min-h-10 w-full items-center justify-center px-2 property-tag-type transition-colors sm:px-4";
     const pillActive = "gold-gradient text-black";
-    const pillInactive = "border border-white/[0.08] bg-white/[0.025] text-white/62 hover:border-[var(--color-accent)]/35 hover:text-white";
+    const pillInactive = "border border-white/[0.08] bg-white/[0.025] text-white/62 hover:border-white/20 hover:text-white";
 
     return (
         <div className="w-full">
@@ -208,9 +209,12 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             <button
                                 type="button"
                                 onClick={clearAll}
-                                className="min-h-11 rounded-full border border-[var(--color-accent)]/35 px-5 property-tag-type gold-ink transition-colors hover:border-[var(--color-accent)]"
+                                className="group inline-flex min-h-11 items-center gap-2 px-1 property-tag-type text-white/70 transition-colors hover:text-[var(--color-accent)]"
                             >
-                                Limpiar
+                                <span className="relative pb-1">
+                                    Limpiar
+                                    <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
+                                </span>
                             </button>
                         )}
                     </div>
@@ -350,7 +354,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
 
             {filtered.length === 0 ? (
                 <motion.div
-                    initial={{ opacity: 0 }}
+                    initial={shouldReduceMotion ? false : { opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="border border-white/[0.08] bg-white/[0.025] px-6 py-16 text-center"
                 >
@@ -367,9 +371,12 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                         <button
                             type="button"
                             onClick={clearAll}
-                            className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-accent)]/35 px-6 premium-cta gold-ink transition-colors hover:border-[var(--color-accent)]"
+                            className="group inline-flex min-h-11 items-center justify-center gap-2 px-2 text-white/80 transition-colors hover:text-[var(--color-accent)]"
                         >
-                            Limpiar filtros
+                            <span className="property-tag-type relative pb-1">
+                                Limpiar filtros
+                                <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
+                            </span>
                         </button>
                         <Link
                             href={`/contacto?interes=inventario${searchTerm ? `&busqueda=${encodeURIComponent(searchTerm)}` : ""}`}

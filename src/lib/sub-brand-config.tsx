@@ -113,17 +113,17 @@ const LUXURY_STATS: StatItem[] = [
 ];
 
 const BUSINESS_STATS: StatItem[] = [
-    { value: 3, label: "Formatos comerciales", suffix: "", prefix: "" },
-    { value: 24, label: "Horas para responder", suffix: "h", prefix: "" },
-    { value: 4, label: "Variables de análisis", suffix: "", prefix: "" },
-    { value: 1, label: "Catálogo editable", suffix: "", prefix: "" },
+    { value: "Zona Río", label: "Corredor corporativo con servicios, oficinas y alta exposición." },
+    { value: "Otay", label: "Conectividad binacional para operación, comercio y logística ligera." },
+    { value: "Díaz Ordaz", label: "Eje comercial denso para atención local, retail y servicios." },
+    { value: "Renta", label: "Lectura de flujo, visibilidad y permanencia del giro antes de ofertar." },
 ];
 
 const INDUSTRIAL_STATS: StatItem[] = [
-    { value: 3, label: "Tipos industriales", suffix: "", prefix: "" },
-    { value: 24, label: "Horas para responder", suffix: "h", prefix: "" },
-    { value: 4, label: "Criterios logísticos", suffix: "", prefix: "" },
-    { value: 1, label: "Portafolio editable", suffix: "", prefix: "" },
+    { value: "m²", label: "Superficie útil, expansión posible y relación entre nave, patio y oficinas." },
+    { value: "Andenes", label: "Altura, carga, rampas y accesos para el flujo diario de operación." },
+    { value: "Patio", label: "Maniobra, radios de giro y capacidad para unidades de carga." },
+    { value: "Garitas", label: "Conexión con corredores industriales y rutas de exportación." },
 ];
 
 export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
@@ -275,37 +275,37 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 </>
             ),
             subtitle:
-                "Locales, oficinas y plazas con lectura comercial.",
-            primaryCta: { label: "Explorar Propiedades", href: "/inventario?brand=business" },
-            secondaryCta: { label: "Asesoría Comercial", href: "#business-cta" },
+                "Locales, oficinas y plazas evaluadas por flujo, visibilidad y retorno.",
+            primaryCta: { label: "Ver activos comerciales", href: "/inventario?brand=business" },
+            secondaryCta: { label: "Solicitar análisis", href: "#business-cta" },
         },
         value: {
-            eyebrow: "Oportunidades Comerciales",
+            eyebrow: "Criterio comercial",
             title: (
                 <>
-                    Ordena oportunidades comerciales por uso y zona.
+                    Decide por corredor, giro y rendimiento.
                 </>
             ),
             description:
-                "La estructura está preparada para ordenar activos comerciales por ubicación, flujo, formato y potencial de operación cuando el catálogo real esté disponible.",
+                "Priorizamos activos por demanda, exposición y claridad operativa.",
             items: [
                 {
                     icon: Briefcase,
-                    title: "Oficinas Ejecutivas",
+                    title: "Zona Río",
                     description:
-                        "Espacios de trabajo modernos en corredores comerciales consolidados como Zona Río, Otay y Díaz Ordaz. Estacionamiento, seguridad y servicios incluidos.",
+                        "Corredor corporativo con servicios, accesos y demanda de oficinas profesionales.",
                 },
                 {
                     icon: Building,
-                    title: "Locales y Plazas Comerciales",
+                    title: "Otay",
                     description:
-                        "Locales de alta visibilidad en plazas con flujo peatonal comprobado. Ideales para retail, restaurantes, consultorios y showrooms en zonas de alto tráfico.",
+                        "Punto de cruce entre comercio, operación y conectividad binacional.",
                 },
                 {
                     icon: TrendingUp,
-                    title: "Inversión en Renta Comercial",
+                    title: "Díaz Ordaz",
                     description:
-                        "Activos con inquilinos verificados y contratos a largo plazo. Análisis de cap rate y flujo operativo incluido para cada oportunidad de inversión.",
+                        "Eje comercial de alto movimiento para retail, servicios y atención local.",
                 },
             ],
         },
@@ -313,11 +313,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         inventory: {
             brandSlug: "business",
             propertyUse: "Comercial",
-            title: "Locales y",
-            highlight: "Oficinas",
+            title: "Activos",
+            highlight: "Comerciales",
             subtitle:
-                "Muestra de cómo se presentará el inventario comercial real con formato, superficie y datos de operación administrables.",
-            ctaText: "Ver Todas las Propiedades",
+                "Compara opciones por formato, zona, superficie y uso comercial antes de agendar recorrido.",
+            ctaText: "Ver inventario comercial",
             accentColor: "gold",
         },
         cta: {
@@ -327,32 +327,32 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             notesFormat: "optional",
             sectionId: "business-cta",
             eyebrowIcon: "lock",
-            eyebrow: "Asesoría Comercial",
-            title: "Encuentra el Espacio",
-            titleHighlight: "Ideal para tu Negocio",
+            eyebrow: "Asesoría comercial",
+            title: "Solicita una lectura",
+            titleHighlight: "de operación",
             description:
-                "Solicita información y te contactaremos cuando el catálogo comercial real esté listo para publicarse.",
+                "Cuéntanos el giro, zona y formato que buscas. Te ayudamos a comparar opciones con criterio comercial.",
             indicator: "Respuesta en menos de 24h",
             companyLabel: "Empresa",
             companyPlaceholder: "Empresa",
             companyRequired: false,
             emailPlaceholder: "Correo Electrónico",
-            submitLabel: "Solicitar Asesoría Comercial",
-            successTitle: "¡Solicitud Recibida!",
+            submitLabel: "Solicitar análisis comercial",
+            successTitle: "Solicitud recibida",
             successMessage:
-                "Tu solicitud ha sido registrada. Nuestro equipo de asesoría comercial se pondrá en contacto contigo en las próximas 24 horas con opciones personalizadas.",
+                "Tu solicitud ha sido registrada. Nuestro equipo se pondrá en contacto contigo con opciones comerciales alineadas a tu operación.",
         },
         jsonLd: {
             ...baseJsonLd,
             "@type": "ItemList",
             name: "Black Business · Centros Comerciales y Locales en Tijuana",
             description:
-                "Locales comerciales, oficinas ejecutivas y plazas en zonas de alto tráfico de Tijuana, Baja California.",
+                "Locales, oficinas y plazas comerciales evaluadas por flujo, visibilidad y operación en Tijuana, Baja California.",
         },
         metadata: {
-            title: "Centros Comerciales y Locales en Tijuana | Inversión Comercial | Black Capital",
+            title: "Locales Comerciales en Tijuana | Black Capital",
             description:
-                "Locales comerciales, oficinas y plazas en zonas de alto tráfico en Tijuana. Inversión segura con flujo comprobado y contratos transparentes. Solicita información.",
+                "Locales, oficinas y plazas en Tijuana evaluadas por flujo, visibilidad y operación. Asesoría comercial con lectura de zona.",
             keywords: [
                 "centros comerciales Tijuana",
                 "locales comerciales Tijuana",
@@ -367,9 +367,9 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 canonical: "https://blackmx.vercel.app/black-business",
             },
             openGraph: {
-                title: "Centros Comerciales y Locales en Tijuana | Inversión Comercial",
+                title: "Locales Comerciales en Tijuana | Black Capital",
                 description:
-                    "Locales comerciales, oficinas y plazas en zonas de alto tráfico en Tijuana. Análisis de cap rate y flujo operativo incluido.",
+                    "Locales, oficinas y plazas en Tijuana evaluadas por flujo, visibilidad y operación.",
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Capital",
@@ -385,9 +385,9 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             },
             twitter: {
                 card: "summary_large_image",
-                title: "Centros Comerciales y Locales en Tijuana | Inversión Comercial",
+                title: "Locales Comerciales en Tijuana | Black Capital",
                 description:
-                    "Locales comerciales, oficinas y plazas en zonas de alto tráfico en Tijuana. Análisis de cap rate y flujo operativo incluido.",
+                    "Locales, oficinas y plazas en Tijuana evaluadas por flujo, visibilidad y operación.",
                 images: ["https://blackmx.vercel.app/hero-business.webp"],
             },
         },
@@ -402,45 +402,51 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             backgroundImageWebp: "/industrial-hero.webp",
             backgroundAlt: "Nave industrial moderna en parque logístico de Tijuana",
             accent: "steel",
-            overlayClass: "from-black/70 via-black/50",
+            overlayClass: "from-background via-background/90 to-background/55",
             headline: (
                 <>
                     Operación industrial.
                 </>
             ),
             subtitle:
-                "Naves, bodegas y corredores logísticos en Tijuana.",
-            primaryCta: { label: "Ver Inventario Industrial", href: "/inventario?brand=industrial" },
+                "Naves, bodegas y suelo para decisiones de escala operativa.",
+            primaryCta: { label: "Ver activos industriales", href: "/inventario?brand=industrial" },
+            secondaryCta: { label: "Solicitar portafolio", href: "#industrial-cta" },
+            highlights: [
+                { value: "m²", label: "Superficie" },
+                { value: "Otay", label: "Corredor" },
+                { value: "Carga", label: "Operación" },
+            ],
             gridLines: true,
             cursorGlow: false,
         },
         value: {
-            eyebrow: "Verticales de Activo",
+            eyebrow: "Activos industriales",
             title: (
                 <>
-                    Filtra naves, bodegas y suelo industrial con claridad.
+                    La operación manda sobre la ficha.
                 </>
             ),
             description:
-                "La estructura está preparada para presentar activos industriales por ubicación, conectividad, capacidad y criterios logísticos cuando el catálogo real esté disponible.",
+                "Ordenamos opciones por capacidad, conectividad y restricciones de uso.",
             items: [
                 {
                     icon: Factory,
                     title: "Naves Industriales",
                     description:
-                        "Naves clase A con alturas de +8m, andenes de carga y patios de maniobra. Ideales para manufactura ligera, ensamblaje, almacenaje y distribución en parques consolidados.",
+                        "Altura, claros, energía y andenes leídos contra el tipo de operación.",
                 },
                 {
                     icon: Warehouse,
                     title: "Bodegas y Almacenes",
                     description:
-                        "Espacios de almacenamiento seco con acceso controlado, rampas y muelles. Desde bodegas de 500 m² hasta centros de distribución de 5,000 m² cerca de la garita de Otay.",
+                        "Almacenaje, patios y rampas revisados por flujo de entrada y salida.",
                 },
                 {
                     icon: Truck,
                     title: "Parques Logísticos",
                     description:
-                        "Parques industriales con conectividad directa a vías primarias, acceso a corredores de exportación T-MEC y servicios de infraestructura completa para operaciones logísticas.",
+                        "Conectividad a garitas, rutas primarias y corredores de distribución.",
                 },
             ],
         },
@@ -451,8 +457,8 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: "Naves y",
             highlight: "Bodegas",
             subtitle:
-                "Muestra de cómo se presentará el inventario industrial real con superficie, uso, conectividad y estado comercial administrables.",
-            ctaText: "Ver Todas las Propiedades",
+                "Revisa activos por superficie, conectividad, tipo de operación y capacidad de maniobra.",
+            ctaText: "Ver inventario industrial",
             accentColor: "steel",
         },
         cta: {
@@ -461,31 +467,31 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             notesPrefix: "Industrial Landing",
             notesFormat: "always",
             eyebrowIcon: "download",
-            eyebrow: "Portafolio Industrial",
-            title: "Recibe Nuestro Portafolio",
-            titleHighlight: "Industrial Actualizado",
+            eyebrow: "Portafolio industrial",
+            title: "Solicita una lectura",
+            titleHighlight: "operativa",
             description:
-                "Solicita información y te contactaremos cuando el portafolio industrial real esté listo para publicarse.",
+                "Comparte superficie, uso y zona objetivo. Te ayudamos a filtrar activos por capacidad real de operación.",
             companyLabel: "Empresa",
             companyPlaceholder: "Empresa *",
             companyRequired: true,
             emailPlaceholder: "Correo Corporativo",
-            submitLabel: "Solicitar Portafolio Industrial",
+            submitLabel: "Solicitar análisis industrial",
             successTitle: "Solicitud Registrada",
             successMessage:
-                "Nuestro equipo de inversiones industriales se pondrá en contacto contigo en las próximas 24 horas con el portafolio actualizado y análisis correspondiente.",
+                "Nuestro equipo se pondrá en contacto contigo con una lectura industrial alineada a tu operación.",
         },
         jsonLd: {
             ...baseJsonLd,
             "@type": "ItemList",
             name: "Black Industrial · Naves, Bodegas y Parques Logísticos en Tijuana",
             description:
-                "Naves industriales, bodegas y parques logísticos en los principales corredores industriales de Tijuana, Baja California.",
+                "Naves, bodegas y activos industriales en Tijuana evaluados por superficie, conectividad y capacidad operativa.",
         },
         metadata: {
-            title: "Naves Industriales y Parques Logísticos en Tijuana | Black Capital",
+            title: "Naves Industriales en Tijuana | Black Capital",
             description:
-                "Naves industriales, bodegas y parques logísticos en Tijuana. Ubicación estratégica cerca de garitas y corredores de exportación. Contáctanos.",
+                "Naves, bodegas y parques industriales en Tijuana evaluados por superficie, conectividad y capacidad operativa.",
             keywords: [
                 "naves industriales Tijuana",
                 "parques industriales Tijuana",
@@ -500,9 +506,9 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 canonical: "https://blackmx.vercel.app/black-industrial",
             },
             openGraph: {
-                title: "Naves Industriales y Parques Logísticos en Tijuana | Black Capital",
+                title: "Naves Industriales en Tijuana | Black Capital",
                 description:
-                    "Naves industriales, bodegas y parques logísticos en Tijuana. Conectividad estratégica cerca de garitas y corredores de exportación T-MEC.",
+                    "Naves, bodegas y parques industriales en Tijuana evaluados por superficie, conectividad y operación.",
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Capital",
@@ -518,9 +524,9 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             },
             twitter: {
                 card: "summary_large_image",
-                title: "Naves Industriales y Parques Logísticos en Tijuana | Black Capital",
+                title: "Naves Industriales en Tijuana | Black Capital",
                 description:
-                    "Naves industriales, bodegas y parques logísticos en Tijuana. Conectividad estratégica cerca de garitas y corredores de exportación T-MEC.",
+                    "Naves, bodegas y parques industriales en Tijuana evaluados por superficie, conectividad y operación.",
                 images: ["https://blackmx.vercel.app/industrial-hero.webp"],
             },
         },

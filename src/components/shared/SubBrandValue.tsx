@@ -54,13 +54,35 @@ const BRAND_IMAGES: Record<SubBrandValueProps["brand"], BrandCardImage[]> = {
     business: [
         {
             src: "/brand-business.webp",
-            alt: "Espacio comercial en Tijuana",
+            alt: "Espacio comercial con visibilidad en Tijuana",
+            imageClassName: "object-[48%_50%]",
+        },
+        {
+            src: "/hero-business.webp",
+            alt: "Local comercial en corredor corporativo de Tijuana",
+            imageClassName: "object-[58%_50%]",
+        },
+        {
+            src: "/brand-business.webp",
+            alt: "Interior comercial para operación de servicios en Tijuana",
+            imageClassName: "object-[70%_50%]",
         },
     ],
     industrial: [
         {
             src: "/brand-industrial.webp",
-            alt: "Nave industrial en Tijuana",
+            alt: "Nave industrial con patio de maniobra en Tijuana",
+            imageClassName: "object-[42%_50%]",
+        },
+        {
+            src: "/industrial-hero.webp",
+            alt: "Parque industrial con conectividad logística en Tijuana",
+            imageClassName: "object-[55%_50%]",
+        },
+        {
+            src: "/hero-industrial.webp",
+            alt: "Bodega industrial para operación logística en Tijuana",
+            imageClassName: "object-[66%_50%]",
         },
     ],
 };

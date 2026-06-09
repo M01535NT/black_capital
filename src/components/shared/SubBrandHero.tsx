@@ -121,10 +121,14 @@ export function SubBrandHero({
     backgroundImage,
     backgroundImageWebp,
     backgroundAlt,
+    overlayClass,
     headline,
     subtitle,
     primaryCta,
     secondaryCta,
+    highlights,
+    gridLines = false,
+    cursorGlow = true,
 }: SubBrandHeroProps) {
     const router = useRouter();
     const quickSearch = QUICK_SEARCH_CONFIG[brand] ?? QUICK_SEARCH_CONFIG["Black Luxury"];
@@ -176,8 +180,29 @@ export function SubBrandHero({
                     className="object-cover opacity-35 lg:scale-105"
                 />
             )}
-            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/35" />
+            <div className={`absolute inset-0 bg-gradient-to-r ${overlayClass ?? "from-background via-background/88 to-background/35"}`} />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
+            {cursorGlow && (
+                <div
+                    aria-hidden="true"
+                    className="absolute inset-0 mix-blend-screen opacity-20"
+                    style={{
+                        background:
+                            "radial-gradient(ellipse at 82% 18%, rgba(210, 167, 60, 0.42), transparent 55%)",
+                    }}
+                />
+            )}
+            {gridLines && (
+                <div
+                    aria-hidden="true"
+                    className="absolute inset-0 opacity-[0.08]"
+                    style={{
+                        backgroundImage:
+                            "linear-gradient(to right, rgba(255,255,255,0.28) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.24) 1px, transparent 1px)",
+                        backgroundSize: "96px 96px",
+                    }}
+                />
+            )}
 
             <div className="relative z-10 mx-auto grid max-w-[90rem] grid-cols-1 items-center gap-8 px-6 py-10 sm:px-10 lg:min-h-[calc(92svh-6rem)] lg:grid-cols-12 lg:gap-10 lg:px-16 lg:py-12">
                 <div className="lg:col-span-7">
@@ -194,6 +219,17 @@ export function SubBrandHero({
                     <p className="mt-4 max-w-2xl text-body leading-relaxed text-white/72 lg:mt-6">
                         {subtitle}
                     </p>
+
+                    {highlights && highlights.length > 0 && (
+                        <dl className="mt-6 grid max-w-2xl grid-cols-3 gap-px overflow-hidden border border-white/[0.08] bg-white/[0.06] sm:flex sm:w-fit">
+                            {highlights.map((item) => (
+                                <div key={`${item.value}-${item.label}`} className="min-w-0 bg-background/70 px-3 py-3 sm:min-w-32 sm:px-4">
+                                    <dt className="property-tag-type text-white/48">{item.label}</dt>
+                                    <dd className="mt-1 text-display-4 leading-tight text-white">{item.value}</dd>
+                                </div>
+                            ))}
+                        </dl>
+                    )}
 
                     <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-8">
                         <Link href={primaryCta.href} className="w-full sm:w-auto">

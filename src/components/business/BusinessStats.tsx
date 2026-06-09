@@ -12,8 +12,9 @@ export function BusinessStats() {
     return (
         <SubBrandStats
             brand="business"
-            eyebrow="Indicadores de ejemplo"
-            title="Muestra visual para activos comerciales."
+            eyebrow="Lectura comercial"
+            title="Corredores que se comparan por operación."
+            description="Cada zona se evalúa por flujo, visibilidad, acceso y capacidad de sostener renta o venta."
             accent="gold"
             stats={SUB_BRAND_CONFIGS.business.stats}
         />

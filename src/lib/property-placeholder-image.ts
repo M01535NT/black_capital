@@ -1,15 +1,15 @@
 const PROPERTY_PLACEHOLDER_IMAGES: Record<string, { src: string; alt: string }> = {
     residencial: {
         src: "/brand-luxury.webp",
-        alt: "Residencia placeholder en Tijuana",
+        alt: "Residencia seleccionada en Tijuana",
     },
     comercial: {
         src: "/brand-business.webp",
-        alt: "Espacio comercial placeholder en Tijuana",
+        alt: "Espacio comercial en Tijuana",
     },
     industrial: {
         src: "/brand-industrial.webp",
-        alt: "Nave industrial placeholder en Tijuana",
+        alt: "Nave industrial en Tijuana",
     },
 };
 
