@@ -48,8 +48,16 @@ export function Footer() {
             aria-label="Pie de página"
             className="w-full bg-background mt-auto relative"
         >
+            <div
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/35 to-transparent"
+            />
             {/* ═══════ FOOTER PROPIAMENTE ═══════ */}
-            <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 pt-20 pb-8">
+            <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 pt-16 pb-8 sm:pt-20">
+                <p className="mb-16 max-w-3xl text-display-4 leading-snug text-white/82">
+                    Información, criterio y respaldo en cada operación —{" "}
+                    <span className="gold-ink">sin metros vacíos</span>.
+                </p>
                 <div className="grid grid-cols-2 md:grid-cols-12 gap-10 lg:gap-12 mb-16">
                     {/* Brand */}
                     <div className="col-span-2 md:col-span-4 space-y-5">
@@ -178,7 +186,7 @@ export function Footer() {
                 </div>
 
                 {/* Compliance */}
-                <p className="footer-legal-type mb-6 max-w-3xl leading-relaxed">
+                <p className="footer-legal-type mb-6 max-w-3xl leading-relaxed text-white/55">
                     Cumplimiento LFPIORPI Art. 27 y disposiciones COFECE aplicables. Black Capital opera como intermediario inmobiliario; no presta servicios de asesoría financiera ni de inversión. Toda la información publicada está sujeta a disponibilidad y confirmación.
                 </p>
 

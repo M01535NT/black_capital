@@ -4,28 +4,28 @@ import { useEffect, useRef, useState } from "react";
 
 const counters = [
   {
-    label: "Propiedades gestionadas",
+    label: "Propiedades",
     value: 24,
     suffix: "+",
-    copy: "Residencial, comercial e industrial.",
+    verb: "Custodiadas",
   },
   {
-    label: "Superficie comercializada",
+    label: "Superficie",
     value: 18000,
     suffix: "M²",
-    copy: "Activos asesorados y comercializados.",
+    verb: "Comercializados",
   },
   {
-    label: "Clientes atendidos",
+    label: "Clientes",
     value: 70,
     suffix: "+",
-    copy: "Compradores, vendedores y propietarios.",
+    verb: "Acompañados",
   },
   {
-    label: "Experiencia inmobiliaria",
+    label: "Años",
     value: 8,
-    suffix: "AÑOS",
-    copy: "Lectura local del mercado de Tijuana.",
+    suffix: "",
+    verb: "Operando",
   },
 ];
 
@@ -77,88 +77,73 @@ function useCountUp(target: number, durationMs = 2200) {
   return [ref, value] as const;
 }
 
-function CounterValue({
-  value,
-  suffix,
-}: {
-  value: number;
-  suffix: string;
-}) {
-  const formattedValue = formatCount(value);
-
-  return (
-    <p className="flex w-full items-end justify-center">
-      <span className="inline-flex max-w-full items-end justify-center gap-2 whitespace-nowrap metallic-gold-static gold-glow">
-        <span className="font-display text-stat-lg font-extrabold uppercase leading-none tracking-[0.02em] tabular-nums">
-          {formattedValue}
-        </span>
-        <span className="pb-1 font-display text-caption font-extrabold uppercase leading-none sm:pb-1.5">
-          {suffix}
-        </span>
-      </span>
-    </p>
-  );
-}
-
 function CounterItem({
   label,
   value,
   suffix,
-  copy,
+  verb,
   index,
 }: {
   label: string;
   value: number;
   suffix: string;
-  copy: string;
+  verb: string;
   index: number;
 }) {
   const [counterRef, count] = useCountUp(value);
+  const formatted = formatCount(count);
 
   return (
     <div
       ref={counterRef}
-      className="group relative flex min-h-[170px] min-w-0 flex-col items-center justify-center px-4 py-4 text-center sm:min-h-[190px] lg:px-6"
+      className="relative flex min-w-0 flex-col items-center justify-center px-5 py-7 text-center sm:py-8 lg:px-8"
     >
       {index > 0 ? (
-        <span className="absolute left-0 top-1/2 hidden h-20 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-white/[0.10] to-transparent xl:block" />
+        <span className="absolute left-0 top-1/2 hidden h-14 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-[var(--color-accent)]/30 to-transparent lg:block" />
       ) : null}
       {index % 2 === 1 ? (
-        <span className="absolute left-0 top-1/2 h-20 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-white/[0.10] to-transparent xl:hidden" />
+        <span className="absolute left-0 top-1/2 h-14 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-[var(--color-accent)]/25 to-transparent lg:hidden" />
       ) : null}
       {index > 1 ? (
-        <span className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.10] to-transparent xl:hidden" />
+        <span className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/20 to-transparent lg:hidden" />
       ) : null}
-      <CounterValue value={count} suffix={suffix} />
-      <p className="mt-5 property-tag-type text-white/72">
-        {label}
+
+      <p className="flex items-baseline justify-center gap-1.5">
+        <span className="metallic-gold-static gold-glow font-display text-stat-lg font-extrabold uppercase leading-none tabular-nums tracking-[0.02em]">
+          {formatted}
+        </span>
+        {suffix ? (
+          <span className="metallic-gold-static font-display text-caption font-extrabold uppercase leading-none">
+            {suffix}
+          </span>
+        ) : null}
       </p>
-      <p className="mt-3 max-w-[14rem] text-body text-white/52 leading-relaxed">{copy}</p>
+      <p className="mt-3 property-tag-type text-white/55">
+        {label} <span className="text-white/85">/ {verb}</span>
+      </p>
     </div>
   );
 }
 
 export function HomeCounters() {
   return (
-    <section className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
-      <div className="mx-auto mb-10 max-w-3xl text-center">
-        <p className="mb-3 text-caption gold-ink">
-          Indicadores comerciales
-        </p>
-        <h2 className="text-display-2 leading-display tracking-headline text-white">
-          PRESENCIA Y RESULTADOS
-        </h2>
-        <p className="mx-auto mt-5 max-w-xl text-body text-white/58">
-          Cifras de referencia para mostrar alcance, experiencia y capacidad de asesoría.
-        </p>
-      </div>
-
-      <div className="mx-auto grid max-w-[90rem] grid-cols-2 gap-y-6 border-y border-white/[0.06] py-6 sm:gap-y-8 sm:py-8 lg:py-10 xl:grid-cols-4 xl:gap-y-0">
+    <section
+      aria-label="Indicadores comerciales Black Capital"
+      className="relative border-y border-white/[0.04] bg-white/[0.015]"
+    >
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/40 to-transparent"
+      />
+      <div className="mx-auto grid max-w-[90rem] grid-cols-2 lg:grid-cols-4">
         {counters.map((counter, index) => (
           <CounterItem key={counter.label} {...counter} index={index} />
         ))}
       </div>
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/40 to-transparent"
+      />
     </section>
   );
 }
-
