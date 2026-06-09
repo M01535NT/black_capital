@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { adminNoticeClass } from "@/components/admin/admin-ui";
 
 export function AccountEmailForm({ currentEmail }: { currentEmail: string }) {
   const router = useRouter();
@@ -69,7 +70,7 @@ export function AccountEmailForm({ currentEmail }: { currentEmail: string }) {
       </div>
 
       {error && <p className="border border-red-500/20 bg-red-500/10 px-3 py-2 text-body-sm text-red-400">{error}</p>}
-      {message && <p className="border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-body-sm text-emerald-400">{message}</p>}
+      {message && <p className={adminNoticeClass}>{message}</p>}
 
       <div className="flex justify-end border-t border-white/[0.06] pt-5">
         <Button disabled={saving || !email || !password || email === currentEmail} className="brushed-gold rounded-full px-6 font-bold">

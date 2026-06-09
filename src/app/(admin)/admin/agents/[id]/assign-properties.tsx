@@ -84,25 +84,25 @@ export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertie
 
             {open && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-                    <div className="bg-card border border-foreground/10 rounded-2xl shadow-2xl w-full max-w-lg max-h-[80vh] flex flex-col">
+                    <div className="flex max-h-[80vh] w-full max-w-lg flex-col border border-white/[0.08] bg-[#050505] shadow-2xl">
                         {/* Header */}
-                        <div className="flex items-center justify-between p-4 border-b border-foreground/10">
-                            <h3 className="font-bold text-lg">Asignar Inventario</h3>
-                            <button onClick={() => setOpen(false)} className="p-1 hover:text-foreground/50">
+                        <div className="flex items-center justify-between border-b border-white/[0.08] p-4">
+                            <h3 className="text-lg font-bold text-white">Asignar Inventario</h3>
+                            <button onClick={() => setOpen(false)} className="p-1 text-white/55 hover:text-white">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
 
                         {/* Search */}
-                        <div className="p-3 border-b border-foreground/5">
+                        <div className="border-b border-white/[0.06] p-3">
                             <div className="relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/50" />
+                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
                                 <input
                                     type="text"
                                     placeholder="Buscar propiedad..."
                                     value={search}
                                     onChange={e => setSearch(e.target.value)}
-                                    className="w-full pl-9 pr-3 py-2 bg-muted/30 border border-foreground/10 rounded-lg text-sm focus:outline-none focus:border-[var(--color-accent)]/50 text-foreground placeholder:text-foreground/50"
+                                    className="w-full border border-white/[0.1] bg-background/70 py-2 pl-9 pr-3 text-sm text-white placeholder:text-white/35 focus:border-[var(--color-accent)]/50 focus:outline-none"
                                 />
                             </div>
                         </div>
@@ -110,7 +110,7 @@ export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertie
                         {/* Property List */}
                         <div className="flex-1 overflow-y-auto p-2">
                             {filtered.length === 0 ? (
-                                <p className="text-center text-sm text-foreground/50 py-8">
+                                <p className="py-8 text-center text-sm text-white/50">
                                     {search ? "Sin resultados" : "No hay propiedades disponibles"}
                                 </p>
                             ) : (
@@ -128,23 +128,23 @@ export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertie
                                                 );
                                             }}
                                             className={cn(
-                                                "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm transition-colors",
+                                                "flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm transition-colors",
                                                 isSelected
-                                                    ? "bg-[var(--color-accent)]/5 text-foreground"
-                                                    : "hover:bg-muted/50 text-foreground/80"
+                                                    ? "bg-[var(--color-accent)]/10 text-white"
+                                                    : "text-white/80 hover:bg-white/[0.04]"
                                             )}
                                         >
                                             <div className={cn(
-                                                "w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors",
+                                                "flex h-5 w-5 shrink-0 items-center justify-center border-2 transition-colors",
                                                 isSelected
                                                     ? "bg-[var(--color-accent)] border-[var(--color-accent)]"
-                                                    : "border-foreground/20"
+                                                    : "border-white/20"
                                             )}>
                                                 {isSelected && <Check className="w-3 h-3 text-black" />}
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <div className="font-medium truncate">{prop.title}</div>
-                                                <div className="text-xs text-foreground/50">
+                                                <div className="text-xs text-white/50">
                                                     {prop.business_type}
                                                 </div>
                                             </div>
@@ -162,8 +162,8 @@ export function AssignPropertiesButton({ agentId, assignedIds }: AssignPropertie
                         </div>
 
                         {/* Footer */}
-                        <div className="flex items-center justify-between p-4 border-t border-foreground/10">
-                            <span className="text-sm text-foreground/50">
+                        <div className="flex items-center justify-between border-t border-white/[0.08] p-4">
+                            <span className="text-sm text-white/50">
                                 {selected.length} seleccionada{selected.length !== 1 ? "s" : ""}
                             </span>
                             <div className="flex gap-2">

@@ -75,7 +75,7 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
                 onClick={() => !disabled && setOpen(!open)}
                 disabled={disabled}
                 className={cn(
-                    "flex min-h-10 w-full items-center gap-1.5 rounded-md border border-foreground/20 bg-transparent px-3 py-2 text-sm ring-offset-background",
+                    "flex min-h-10 w-full items-center gap-1.5 border border-white/[0.1] bg-background/70 px-3 py-2 text-sm ring-offset-background",
                     "focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40 focus:border-[var(--color-accent)]/50",
                     "disabled:cursor-not-allowed disabled:opacity-50",
                     open && "border-[var(--color-accent)]/50 ring-2 ring-[var(--color-accent)]/20"
@@ -83,12 +83,12 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
             >
                 <div className="flex-1 flex flex-wrap gap-1">
                     {selectedAgents.length === 0 ? (
-                        <span className="text-foreground/50">Seleccionar agente(s)...</span>
+                        <span className="text-white/50">Seleccionar agente(s)...</span>
                     ) : (
                         selectedAgents.map(a => (
                             <span
                                 key={a.id}
-                                className="inline-flex items-center gap-1 border border-[var(--color-accent)]/20 bg-white/[0.035] px-2 py-0.5 text-xs font-medium gold-ink rounded-full"
+                                className="inline-flex items-center gap-1 border border-[var(--color-accent)]/20 bg-white/[0.035] px-2 py-0.5 text-xs font-medium gold-ink"
                             >
                                 {a.full_name.split(" ")[0]}
                                 <button
@@ -105,21 +105,21 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
                         ))
                     )}
                 </div>
-                <ChevronDown className={cn("h-4 w-4 text-foreground/50 shrink-0 transition-transform", open && "rotate-180")} />
+                <ChevronDown className={cn("h-4 w-4 shrink-0 text-white/50 transition-transform", open && "rotate-180")} />
             </button>
 
             {open && (
-                <div className="absolute z-50 mt-1 w-full min-w-[280px] bg-card border border-foreground/10 rounded-xl shadow-2xl shadow-black/40 overflow-hidden">
+                <div className="absolute z-50 mt-1 w-full min-w-[280px] overflow-hidden border border-white/[0.08] bg-[#050505] shadow-2xl shadow-black/40">
                     {loading ? (
-                        <div className="p-4 text-center text-sm text-foreground/50">Cargando agentes...</div>
+                        <div className="p-4 text-center text-sm text-white/50">Cargando agentes...</div>
                     ) : error ? (
                         <div className="p-4 text-center text-sm text-red-400">{error}</div>
                     ) : agents.length === 0 ? (
-                        <div className="p-4 text-center text-sm text-foreground/50">
+                        <div className="p-4 text-center text-sm text-white/50">
                             No hay agentes activos. <Link href="/admin/agents/new" className="gold-ink underline">Registra uno</Link>
                         </div>
                     ) : (
-                        <div className="max-h-60 overflow-y-auto divide-y divide-foreground/5">
+                        <div className="max-h-60 divide-y divide-white/[0.06] overflow-y-auto">
                             {agents.map((agent) => {
                                 const isSelected = value.includes(agent.id);
                                 return (
@@ -130,16 +130,16 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
                                         className={cn(
                                             "w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm transition-colors",
                                             isSelected
-                                                ? "bg-[var(--color-accent)]/5 text-foreground"
-                                                : "hover:bg-muted/50 text-foreground/80"
+                                                ? "bg-[var(--color-accent)]/10 text-white"
+                                                : "text-white/80 hover:bg-white/[0.04]"
                                         )}
                                     >
                                         <div
                                             className={cn(
-                                                "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 border",
+                                                "flex h-8 w-8 shrink-0 items-center justify-center border text-xs font-bold",
                                                 isSelected
                                                     ? "gold-gradient text-black border-[var(--color-accent)]"
-                                                    : "bg-muted text-foreground/50 border-foreground/10"
+                                                    : "border-white/[0.08] bg-white/[0.035] text-white/50"
                                             )}
                                         >
                                             {agent.full_name.charAt(0).toUpperCase()}
@@ -147,7 +147,7 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
                                         <div className="flex-1 min-w-0">
                                             <div className="font-medium truncate">{agent.full_name}</div>
                                             {agent.email && (
-                                                <div className="text-xs text-foreground/50 truncate">{agent.email}</div>
+                                                <div className="truncate text-xs text-white/50">{agent.email}</div>
                                             )}
                                         </div>
                                         {isSelected && <Check className="w-4 h-4 text-[var(--color-accent)] shrink-0" />}

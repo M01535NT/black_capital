@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Loader2, MailPlus, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { adminCardClass } from "@/components/admin/admin-ui";
+import { adminBadgeAccentClass, adminBadgeMutedClass, adminCardClass } from "@/components/admin/admin-ui";
 
 interface AdminUser {
   id: string;
@@ -96,7 +96,7 @@ export function UsersClient({ initialUsers }: {
               <span className="mr-2 text-caption text-white/35 sm:hidden">Rol</span>
               {user.role}
             </span>
-            <button onClick={() => toggleActive(user)} className={`w-fit px-2 py-1 text-caption ${user.is_active ? "bg-emerald-500/10 text-emerald-400" : "bg-white/[0.04] text-white/45"}`}>
+            <button onClick={() => toggleActive(user)} className={`w-fit px-2 py-1 text-caption ${user.is_active ? adminBadgeAccentClass : adminBadgeMutedClass}`}>
               {user.is_active ? "Activo" : "Inactivo"}
             </button>
           </div>

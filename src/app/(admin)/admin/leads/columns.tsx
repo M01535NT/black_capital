@@ -13,6 +13,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { adminBadgeAccentClass, adminBadgeClass, adminBadgeMutedClass } from "@/components/admin/admin-ui";
 
 export type LeadRow = {
     id: string;
@@ -30,7 +31,7 @@ export const columns: ColumnDef<LeadRow>[] = [
         accessorKey: "name",
         header: "Nombre",
         cell: ({ row }) => (
-            <Link href={`/admin/leads/${row.original.id}`} className="font-bold text-foreground hover:text-[var(--color-accent)] transition-colors">
+            <Link href={`/admin/leads/${row.original.id}`} className="font-bold text-white transition-colors hover:text-[var(--color-accent)]">
                 {row.getValue("name")}
             </Link>
         ),
@@ -38,12 +39,12 @@ export const columns: ColumnDef<LeadRow>[] = [
     {
         accessorKey: "email",
         header: "Correo",
-        cell: ({ row }) => <span className="text-foreground/70 text-sm">{row.getValue("email")}</span>,
+        cell: ({ row }) => <span className="text-sm text-white/70">{row.getValue("email")}</span>,
     },
     {
         accessorKey: "phone",
         header: "Teléfono",
-        cell: ({ row }) => <span className="text-foreground/70 text-sm">{row.getValue("phone")}</span>,
+        cell: ({ row }) => <span className="text-sm text-white/70">{row.getValue("phone")}</span>,
     },
     {
         accessorKey: "source",
@@ -68,15 +69,15 @@ export const columns: ColumnDef<LeadRow>[] = [
         cell: ({ row }) => {
             const status = row.getValue("status") as string;
             const statusMap: Record<string, { label: string, color: string }> = {
-                new: { label: "Nuevo", color: "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20" },
-                contacted: { label: "Contactado", color: "bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20" },
-                qualified: { label: "Calificado", color: "bg-purple-500/10 text-purple-500 hover:bg-purple-500/20" },
-                lost: { label: "Perdido", color: "bg-red-500/10 text-red-500 hover:bg-red-500/20" },
-                won: { label: "Ganado", color: "bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20" },
+                new: { label: "Nuevo", color: adminBadgeAccentClass },
+                contacted: { label: "Contactado", color: adminBadgeClass },
+                qualified: { label: "Calificado", color: adminBadgeClass },
+                lost: { label: "Perdido", color: adminBadgeMutedClass },
+                won: { label: "Ganado", color: adminBadgeAccentClass },
             };
-            const mapped = statusMap[status] || { label: status, color: "bg-foreground/5" };
+            const mapped = statusMap[status] || { label: status, color: adminBadgeMutedClass };
             return (
-                <Badge variant="secondary" className={mapped.color}>{mapped.label}</Badge>
+                <Badge variant="outline" className={mapped.color}>{mapped.label}</Badge>
             );
         }
     },

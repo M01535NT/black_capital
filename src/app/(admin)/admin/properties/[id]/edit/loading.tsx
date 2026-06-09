@@ -7,7 +7,7 @@ export default function PropertyEditLoading() {
                 <div className="w-12 h-12 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center">
                     <Loader2 className="h-6 w-6 text-[var(--color-accent)] animate-spin" />
                 </div>
-                <p className="text-foreground/50 text-sm">Cargando formulario de edición...</p>
+                <p className="text-sm text-white/50">Cargando formulario de edición...</p>
             </div>
         </div>
     );

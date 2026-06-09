@@ -6,6 +6,7 @@ import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/lib/supabase/client";
+import { adminNoticeClass } from "@/components/admin/admin-ui";
 
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState("");
@@ -41,7 +42,7 @@ export default function ResetPasswordPage() {
           <p className="mt-2 text-sm text-white/50">Enviaremos un enlace de recuperación al correo del usuario.</p>
         </div>
         <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="correo@empresa.com" className="border-white/[0.1] bg-background/70 text-white" />
-        {message && <p className="bg-emerald-500/10 px-3 py-2 text-sm text-emerald-400">{message}</p>}
+        {message && <p className={adminNoticeClass}>{message}</p>}
         {error && <p className="bg-red-500/10 px-3 py-2 text-sm text-red-400">{error}</p>}
         <Button disabled={loading || !email} className="brushed-gold w-full rounded-full font-bold">
           {loading ? "Enviando..." : "Enviar enlace"}

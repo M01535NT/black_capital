@@ -3,6 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { Bell, LayoutDashboard, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { adminNoticeClass } from "@/components/admin/admin-ui";
 
 const DEFAULTS = {
   startPage: "/admin",
@@ -82,7 +83,7 @@ export function AccountPreferencesForm({ profileId }: { profileId: string }) {
         />
       </div>
 
-      {message && <p className="border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-body-sm text-emerald-400">{message}</p>}
+      {message && <p className={adminNoticeClass}>{message}</p>}
 
       <div className="flex justify-end border-t border-white/[0.06] pt-5">
         <Button type="button" onClick={save} className="brushed-gold rounded-full px-6 font-bold">
@@ -115,7 +116,7 @@ function PreferenceToggle({
         <span className="text-[var(--color-accent)]">{icon}</span>
         {label}
       </span>
-      <span className={enabled ? "text-caption text-emerald-400" : "text-caption text-white/35"}>
+      <span className={enabled ? "text-caption text-[var(--color-accent)]" : "text-caption text-white/35"}>
         {enabled ? "Activo" : "Inactivo"}
       </span>
     </button>

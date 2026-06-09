@@ -136,13 +136,13 @@ export default async function AgentsPage() {
                                         <p className="text-caption font-display uppercase tracking-wider text-white/45">Propiedades</p>
                                     </div>
                                     <div className="border border-white/[0.06] bg-white/[0.025] p-2 text-center">
-                                        <p className="text-lg font-bold text-emerald-400">{wonCount}</p>
+                                        <p className="text-lg font-bold text-[var(--color-accent)]">{wonCount}</p>
                                         <p className="text-caption font-display uppercase tracking-wider text-white/45">Cierres</p>
                                     </div>
                                 </div>
                                 <div className="mt-auto flex items-center justify-between border-t border-white/[0.06] pt-3">
                                     <div className="flex items-center gap-2">
-                                        <span className={`h-2 w-2 ${agent.is_active ? "bg-emerald-400" : "bg-white/20"}`} />
+                                        <span className={`h-2 w-2 ${agent.is_active ? "bg-[var(--color-accent)]" : "bg-white/20"}`} />
                                         <span className="text-xs text-white/45">{agent.is_active ? "Activo" : "Inactivo"}</span>
                                     </div>
                                     <div className="flex items-center gap-1">
