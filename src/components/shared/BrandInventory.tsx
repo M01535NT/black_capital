@@ -219,7 +219,7 @@ export async function BrandInventory({
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+            <div data-section="brand-inventory-rail" className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0 lg:pb-0">
                 {displayProperties.map((prop) => {
                     const href = prop.isPlaceholder
                         ? `/contacto?interes=${encodeURIComponent(propertyUse)}`
@@ -232,7 +232,7 @@ export async function BrandInventory({
                     return (
                         <article
                             key={prop.id}
-                            className="group overflow-hidden border border-white/[0.08] bg-white/[0.025]"
+                            className="group flex min-w-[82vw] snap-center flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] sm:min-w-[62vw] lg:min-w-0"
                         >
                             <div className="relative aspect-[16/10] overflow-hidden bg-white/[0.02]">
                                 <Image
@@ -251,7 +251,7 @@ export async function BrandInventory({
                                 </div>
                             </div>
 
-                            <div className="space-y-5 p-5">
+                            <div className="flex flex-1 flex-col space-y-5 p-5">
                                 <div className="flex flex-wrap gap-4 text-body-sm text-white/55">
                                     <span className="inline-flex items-center gap-1.5">
                                         <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
@@ -267,7 +267,7 @@ export async function BrandInventory({
                                 <p className="property-tag-type text-white/42">
                                     {prop.priceLabel ?? formatPrice(prop.price, prop.currency)}
                                 </p>
-                                <div className="flex flex-col gap-2 sm:flex-row">
+                                <div className="mt-auto flex flex-col gap-2 sm:flex-row">
                                     <Link
                                         href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
                                         className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type gold-ink transition-colors hover:border-[var(--color-accent)]"

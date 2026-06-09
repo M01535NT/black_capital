@@ -75,16 +75,16 @@ export function SubBrandValue({
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+            <div className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0">
                 {items.map((item, index) => {
                     const Icon = item.icon;
                     const image = BRAND_IMAGE[brand];
                     return (
                         <article
                             key={item.title}
-                            className="group flex h-full flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025]"
+                            className="group flex min-w-[78vw] snap-center flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] sm:min-w-[58vw] lg:min-w-0"
                         >
-                            <div className="relative aspect-[16/10] overflow-hidden bg-white/[0.03]">
+                            <div className="relative aspect-[16/10] overflow-hidden bg-white/[0.03] lg:aspect-[16/11]">
                                 <Image
                                     src={image.src}
                                     alt={image.alt}
@@ -104,7 +104,7 @@ export function SubBrandValue({
                                 </div>
                             </div>
                             <div className="flex flex-1 flex-col p-5">
-                                <p className="text-body leading-relaxed text-white/64">{item.description}</p>
+                                <p className="line-clamp-3 text-body leading-relaxed text-white/64 lg:line-clamp-none">{item.description}</p>
                                 <p className="mt-5 footer-legal-type text-white/42">
                                     {BRAND_LABEL[brand]} · contenido editable
                                 </p>

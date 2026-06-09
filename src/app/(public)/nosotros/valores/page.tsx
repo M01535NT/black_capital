@@ -14,39 +14,33 @@ export const metadata: Metadata = {
 const valores = [
     {
         icon: Eye,
-        titulo: "Transparencia Radical",
-        descripcion:
-            "Cada propiedad tiene un análisis financiero detrás. Sin letra chica, sin sorpresas. Si algo no conviene, te lo decimos antes de que preguntes.",
+        titulo: "Transparencia",
+        descripcion: "Análisis claro, sin letra chica.",
     },
     {
         icon: Handshake,
-        titulo: "El Trato es Directo",
-        descripcion:
-            "Sin intermediarios innecesarios. Tú hablas con quien estructura la operación. Una línea de comunicación, una mesa de decisión.",
+        titulo: "Trato directo",
+        descripcion: "Una línea de comunicación.",
     },
     {
         icon: Target,
-        titulo: "Enfoque en Resultados",
-        descripcion:
-            "No medimos el éxito en propiedades mostradas, sino en operaciones cerradas. Cada activo que entra al inventario pasa un filtro cuantitativo riguroso.",
+        titulo: "Resultados",
+        descripcion: "Operaciones cerradas con criterio.",
     },
     {
         icon: Shield,
-        titulo: "Tu Patrimonio, en Serio",
-        descripcion:
-            "Tratamos tu inversión como si fuera nuestra. Porque así empezamos: comprando, vendiendo y estructurando con nuestras propias tesis antes de ofrecerlas.",
+        titulo: "Patrimonio",
+        descripcion: "Cuidamos cada decisión.",
     },
     {
         icon: Scale,
-        titulo: "Due Diligence sin Atajos",
-        descripcion:
-            "Verificación legal, fiscal y técnica de cada propiedad. Si un activo no pasa el filtro, no entra al inventario. Por más bonita que se vea la foto.",
+        titulo: "Due diligence",
+        descripcion: "Verificación legal, fiscal y técnica.",
     },
     {
         icon: Zap,
-        titulo: "Velocidad con Precisión",
-        descripcion:
-            "El mercado de Tijuana se mueve rápido. Nosotros también. Pero sin sacrificar el análisis. Cerramos más rápido porque empezamos con mejor información.",
+        titulo: "Precisión",
+        descripcion: "Rapidez sin perder análisis.",
     },
 ];
 
@@ -64,22 +58,21 @@ export default function ValoresPage() {
                             Lo Que <span className="metallic-gold-static">Nos Define</span>
                         </h1>
                         <p className="text-body text-foreground/58 max-w-2xl mx-auto">
-                            Seis principios aplicados a cada operación: claridad, disciplina,
-                            verificación y seguimiento hasta el cierre.
+                            Claridad, disciplina y cierre.
                         </p>
                     </FadeIn>
                 </div>
             </div>
 
             <div className="container mx-auto px-4 py-20">
-                <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 max-w-6xl mx-auto border-t border-white/[0.06]">
+                <StaggerChildren className="grid grid-cols-2 gap-0 max-w-6xl mx-auto border-t border-white/[0.06] lg:grid-cols-3">
                     {valores.map((v) => {
                         const Icon = v.icon;
                         return (
                             <StaggerItem key={v.titulo}>
-                                <div className="group p-8 border-b md:border-r border-white/[0.06] bg-white/[0.01] transition-colors duration-500 hover:bg-white/[0.025] h-full">
-                                    <div className="w-12 h-12 rounded-md bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 flex items-center justify-center mb-6 group-hover:bg-[var(--color-accent)]/20 group-hover:border-[var(--color-accent)]/40 transition-all duration-500">
-                                        <Icon className="w-5 h-5 text-[var(--color-accent)]" aria-hidden="true" />
+                                <div className="group h-full min-h-[210px] border-b border-r border-white/[0.06] bg-white/[0.01] p-5 transition-colors duration-500 hover:bg-white/[0.025] sm:p-8">
+                                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-md border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 transition-all duration-500 group-hover:border-[var(--color-accent)]/40 group-hover:bg-[var(--color-accent)]/20 sm:h-12 sm:w-12">
+                                        <Icon className="h-4 w-4 text-[var(--color-accent)] sm:h-5 sm:w-5" aria-hidden="true" />
                                     </div>
                                 <h3 className="text-display-3 font-semibold text-foreground mb-3">
                                     {v.titulo}

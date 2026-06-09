@@ -60,7 +60,7 @@ export function ContactLeadForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-5">
+    <form onSubmit={onSubmit} className="space-y-3 sm:space-y-5">
       <input
         type="text"
         name="company_honeypot"
@@ -70,14 +70,14 @@ export function ContactLeadForm() {
         aria-hidden="true"
       />
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-2 gap-3 sm:gap-5">
         <Input
           name="full_name"
           required
           minLength={2}
           placeholder="Nombre completo"
           autoComplete="name"
-          className="h-12 rounded-none border-white/12 bg-white/[0.035]"
+          className="h-11 rounded-none border-white/12 bg-white/[0.035] sm:h-12"
         />
         <Input
           name="email"
@@ -85,21 +85,21 @@ export function ContactLeadForm() {
           type="email"
           placeholder="Correo"
           autoComplete="email"
-          className="h-12 rounded-none border-white/12 bg-white/[0.035]"
+          className="h-11 rounded-none border-white/12 bg-white/[0.035] sm:h-12"
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-2 gap-3 sm:gap-5">
         <Input
           name="phone"
           type="tel"
           placeholder="WhatsApp / teléfono"
           autoComplete="tel"
-          className="h-12 rounded-none border-white/12 bg-white/[0.035]"
+          className="h-11 rounded-none border-white/12 bg-white/[0.035] sm:h-12"
         />
         <select
           name="interest"
-          className="h-12 border border-white/12 bg-[#0b0b0b] px-3 text-body text-white/75 outline-none focus:border-[var(--color-accent)]"
+          className="h-11 border border-white/12 bg-[#0b0b0b] px-3 text-body-sm text-white/75 outline-none focus:border-[var(--color-accent)] sm:h-12 sm:text-body"
           defaultValue="Residencial"
         >
           {interestOptions.map((option) => (
@@ -112,12 +112,12 @@ export function ContactLeadForm() {
 
       <textarea
         name="message"
-        rows={4}
-        placeholder="Cuéntanos qué estás buscando: zona, presupuesto, operación o tipo de inmueble."
-        className="w-full resize-none border border-white/12 bg-white/[0.035] px-3 py-3 text-body text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)]"
+        rows={3}
+        placeholder="Zona, presupuesto u operación."
+        className="w-full resize-none border border-white/12 bg-white/[0.035] px-3 py-3 text-body-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)] sm:text-body"
       />
 
-      <label className="flex items-start gap-3 text-caption text-white/58">
+      <label className="flex items-start gap-3 text-[0.68rem] font-semibold uppercase leading-snug tracking-[0.08em] text-white/58 sm:text-caption">
         <input
           name="privacy_accepted"
           type="checkbox"
@@ -131,7 +131,7 @@ export function ContactLeadForm() {
           <Button
           type="submit"
           disabled={status === "submitting"}
-          className="brushed-gold min-h-[48px] w-full rounded-full px-7 text-body font-bold sm:w-auto"
+          className="brushed-gold min-h-11 w-full rounded-full px-7 text-body-sm font-bold sm:min-h-[48px] sm:w-auto sm:text-body"
         >
           {status === "submitting" ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

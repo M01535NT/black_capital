@@ -22,17 +22,17 @@ export const metadata: Metadata = {
 const contactCards = [
     {
         icon: Phone,
-        title: "WhatsApp Directo",
+        title: "WhatsApp",
         lines: [CONTACT_CONFIG.phone],
         action: {
-            label: "Enviar Mensaje",
+            label: "Enviar",
             href: `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, me gustaría recibir información sobre propiedades de inversión.")}`,
             external: true,
         },
     },
     {
         icon: Mail,
-        title: "Correo Electrónico",
+        title: "Correo",
         lines: [CONTACT_CONFIG.email],
         action: {
             label: "Escribir",
@@ -42,13 +42,13 @@ const contactCards = [
     },
     {
         icon: MapPin,
-        title: "Oficina Corporativa",
+        title: "Oficina",
         lines: CONTACT_CONFIG.addressLines,
         action: null,
     },
     {
         icon: Clock,
-        title: "Horario de Atención",
+        title: "Horario",
         lines: CONTACT_CONFIG.hours,
         action: null,
     },
@@ -60,7 +60,7 @@ export default function ContactoPage() {
             {/* Hero — mismo lenguaje que Home */}
             <section
                 aria-label="Contacto"
-                className="relative min-h-[72svh] overflow-hidden border-b border-white/[0.06] pt-24 lg:pt-28"
+                className="relative overflow-hidden border-b border-white/[0.06] pt-20 lg:min-h-[72svh] lg:pt-28"
             >
                 <Image
                     src="/hero-poster.webp"
@@ -73,9 +73,9 @@ export default function ContactoPage() {
                 <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/35" />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
 
-                <div className="relative z-10 mx-auto grid min-h-[calc(72svh-6rem)] max-w-[90rem] grid-cols-1 items-center gap-10 px-6 py-12 sm:px-10 lg:grid-cols-12 lg:px-16">
+                <div className="relative z-10 mx-auto grid max-w-[90rem] grid-cols-1 items-center gap-8 px-6 py-8 sm:px-10 lg:min-h-[calc(72svh-6rem)] lg:grid-cols-12 lg:gap-10 lg:px-16 lg:py-12">
                     <div className="lg:col-span-7">
-            <div className="mb-6 inline-flex items-center gap-2 border border-white/10 bg-black/35 px-3 py-2 property-tag-type text-white/70">
+            <div className="mb-4 inline-flex items-center gap-2 border border-white/10 bg-black/35 px-3 py-2 property-tag-type text-white/70 lg:mb-6">
                 <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
                 Tijuana, Baja California
             </div>
@@ -85,10 +85,10 @@ export default function ContactoPage() {
                         <h1 className="max-w-4xl text-display-1 leading-hero tracking-tight text-white text-balance">
                             Hablemos de tu siguiente operación.
                         </h1>
-                        <p className="mt-6 max-w-2xl text-body-fluid leading-relaxed text-white/72">
-                            Comparte tu búsqueda y el equipo preparará opciones para seguimiento comercial: residencia, local, oficina, nave o venta de propiedad.
+                        <p className="mt-4 max-w-2xl text-body-fluid leading-relaxed text-white/72 lg:mt-5">
+                            Comparte tu búsqueda. Te damos seguimiento con una ruta clara.
                         </p>
-                        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                        <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-7">
                             <Link
                                 href="#solicitud"
                                 className="brushed-gold inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none premium-cta"
@@ -107,7 +107,7 @@ export default function ContactoPage() {
                         </div>
                     </div>
 
-                    <div className="lg:col-span-5">
+                    <div className="hidden lg:col-span-5 lg:block">
                         <div className="border border-white/10 bg-background/82 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl">
                             <div className="flex items-center gap-3 border-b border-white/[0.08] pb-4">
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-accent)] text-black">
@@ -118,10 +118,10 @@ export default function ContactoPage() {
                                     <p className="text-body-sm text-white/50">Formulario y WhatsApp disponibles</p>
                                 </div>
                             </div>
-                            <div className="grid gap-3 py-4">
+                            <div className="grid grid-cols-2 gap-3 py-4 lg:grid-cols-1">
                                 {["Tipo de activo", "Zona de interés", "Presupuesto", "Datos de contacto"].map((label) => (
-                                    <div key={label} className="flex items-center justify-between border border-white/[0.08] bg-white/[0.03] px-4 py-3">
-                                        <span className="text-body text-white/65">{label}</span>
+                                    <div key={label} className="flex min-h-16 flex-col justify-between border border-white/[0.08] bg-white/[0.03] px-3 py-3 lg:min-h-0 lg:flex-row lg:items-center lg:px-4">
+                                        <span className="text-body-sm text-white/65 lg:text-body">{label}</span>
                                         <span className="property-tag-type text-[var(--color-accent)]">Enviar</span>
                                     </div>
                                 ))}
@@ -153,25 +153,25 @@ export default function ContactoPage() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2" role="list">
+                <div className="grid min-w-0 grid-cols-2 gap-3 md:gap-5" role="list">
                     {contactCards.map((card, i) => {
                         const Icon = card.icon;
                         return (
                             <div
                                 key={card.title}
                                 role="listitem"
-                                className="border border-white/[0.08] bg-white/[0.025] p-5 transition-colors hover:border-[var(--color-accent)]/35"
+                                className="flex min-h-[220px] min-w-0 flex-col border border-white/[0.08] bg-white/[0.025] p-4 transition-colors hover:border-[var(--color-accent)]/35 sm:p-5"
                             >
-                                <span className="mb-5 block property-tag-type text-white/40">
+                                <span className="mb-4 block property-tag-type text-white/40">
                                     /{String(i + 1).padStart(2, "0")}
                                 </span>
-                                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-accent)] text-black" aria-hidden="true">
-                                    <Icon className="h-5 w-5" strokeWidth={1.8} />
+                                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-accent)] text-black" aria-hidden="true">
+                                    <Icon className="h-4 w-4" strokeWidth={1.8} />
                                 </div>
                                 <h3 className="mb-3 text-display-3 text-white">{card.title}</h3>
-                                <div className="mb-6 min-h-12 space-y-1">
+                                <div className="mb-5 min-h-12 flex-1 space-y-1">
                                     {card.lines.map((line, idx) => (
-                                        <p key={idx} className="text-body leading-relaxed text-white/64">
+                                        <p key={idx} className="min-w-0 break-words text-body-sm leading-relaxed text-white/64 [overflow-wrap:anywhere] sm:text-body">
                                             {line}
                                         </p>
                                     ))}
@@ -193,8 +193,8 @@ export default function ContactoPage() {
                 </div>
             </section>
 
-            <section id="solicitud" aria-label="Solicitud" className="border-y border-white/[0.06] bg-white/[0.02] py-16 lg:py-24">
-                <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 sm:px-10 lg:grid-cols-12 lg:gap-16 lg:px-16">
+            <section id="solicitud" aria-label="Solicitud" className="border-y border-white/[0.06] bg-white/[0.02] py-10 lg:py-24">
+                <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-6 px-6 sm:px-10 lg:grid-cols-12 lg:gap-16 lg:px-16">
                     <div className="lg:col-span-5">
                         <p className="mb-3 property-tag-type text-[var(--color-accent)]">
                             Captura de lead
@@ -202,8 +202,8 @@ export default function ContactoPage() {
                         <h2 className="text-display-2 text-white leading-display tracking-headline">
                             Deja tus datos y el contexto de búsqueda.
                         </h2>
-                        <p className="mt-6 max-w-md text-body text-white/58">
-                            Este formulario usa placeholders operativos. Cuando el cliente defina inventario, zonas y agentes, el panel de administración podrá alimentar el seguimiento real.
+                        <p className="mt-4 max-w-md text-body text-white/58 lg:mt-6">
+                            Déjanos tu contexto y preparamos el siguiente paso comercial.
                         </p>
                     </div>
                     <div className="lg:col-span-7">

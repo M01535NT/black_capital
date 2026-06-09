@@ -4,19 +4,14 @@ import Link from "next/link";
 import {
   ArrowRight,
   Building2,
-  ClipboardList,
-  FileCheck2,
-  FileText,
-  Handshake,
   Home,
-  KeyRound,
   MapPin,
-  SearchCheck,
   Warehouse,
 } from "lucide-react";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { HomeCounters } from "@/components/home/HomeCounters";
 import { HomeHeroHeadline } from "@/components/home/HomeHeroHeadline";
+import { WhyBlackCapitalTimeline } from "@/components/home/WhyBlackCapitalTimeline";
 
 export const metadata: Metadata = {
   title: "Inmobiliaria Premium en Tijuana",
@@ -83,48 +78,39 @@ const segments = [
   },
 ];
 
-const services = [
-  { title: "Asesoría en compra y venta", icon: Handshake },
-  { title: "Opinión de valor / avalúo comercial", icon: FileText },
-  { title: "Opinión de factibilidad y curación de inventario", icon: SearchCheck },
-  { title: "Comercialización de propiedades", icon: Building2 },
-  { title: "Gestoría de traslación de dominio", icon: KeyRound },
-  { title: "Acompañamiento documental y cierre", icon: FileCheck2 },
-];
-
 const whyBlackCapital = [
   {
     step: "01",
     title: "Conocimiento local",
-    text: "Leemos Tijuana como ciudad: barrios, uso de suelo y dinámica real de demanda.",
-    signal: "Ventaja territorial",
+    text: "Zonas, usos y demanda real.",
+    signal: "Ventaja local",
   },
   {
     step: "02",
     title: "Diagnóstico de activo",
-    text: "Cada caso se evalúa por tipología, potencial de ocupación y contexto legal.",
-    signal: "Ruta clara desde el inicio",
+    text: "Tipología, ocupación y contexto legal.",
+    signal: "Ruta clara",
   },
   {
     step: "03",
     title: "Estrategia de ruta",
-    text: "Combinamos marketing, negociación y acompañamiento para ir directo al cierre.",
-    signal: "Sin ruido operativo",
+    text: "Marketing, negociación y cierre.",
+    signal: "Sin ruido",
   },
   {
     step: "04",
     title: "Cierre con respaldo",
-    text: "Documentación, valor y negociación con criterio comercial para decisiones seguras.",
-    signal: "Decisión con criterio",
+    text: "Documentación y criterio comercial.",
+    signal: "Criterio",
   },
 ];
 
 const serviceProcess = [
-  "Diagnóstico del objetivo",
-  "Revisión de propiedad / mercado / documentos",
-  "Opinión de valor o factibilidad",
-  "Estrategia comercial o búsqueda",
-  "Negociación, gestoría y cierre",
+  "Diagnóstico",
+  "Revisión",
+  "Valor",
+  "Estrategia",
+  "Cierre",
 ];
 
 const intentCtas = [
@@ -240,37 +226,6 @@ export default function HomePage() {
                 ))}
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <p className="mb-3 text-caption gold-ink">
-              Qué hacemos
-            </p>
-            <h2 className="text-display-2 leading-display tracking-headline text-white">
-              Algunos de nuestros servicios
-            </h2>
-            <p className="mt-6 max-w-md text-body text-white/58">
-              Acompañamos compra, venta y renta de activos con lectura de mercado, documentación y cierre.
-            </p>
-          </div>
-          <div className="grid gap-x-12 sm:grid-cols-2 lg:col-span-8">
-            {services.map((service) => {
-              const Icon = service.icon;
-              return (
-                <article key={service.title} className="group flex min-h-[108px] items-start gap-5 border-t border-white/[0.10] py-6">
-                  <span className="gold-gradient flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-black transition-transform duration-300 group-hover:scale-105">
-                    <Icon className="h-4 w-4" />
-                  </span>
-                  <h3 className="max-w-sm text-display-4 leading-tight text-white transition-colors duration-300 group-hover:text-[var(--color-accent)]">
-                    {service.title}
-                  </h3>
-                </article>
-              );
-            })}
           </div>
         </div>
       </section>
@@ -391,40 +346,24 @@ export default function HomePage() {
 
       <section className="relative overflow-hidden">
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/35 to-transparent" />
-        <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-24">
-          <div className="lg:col-span-5">
+        <div className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
+          <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-7">
             <p className="mb-3 property-tag-type gold-ink">
               Por qué Black Capital
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
               Así convertimos información en decisiones.
             </h2>
+            </div>
+            <div className="lg:col-span-5 lg:flex lg:justify-end">
             <p className="mt-6 max-w-md text-body text-white/58">
               Cada ruta empieza con contexto real y termina con claridad operativa para decidir con precisión.
             </p>
-          </div>
-          <div className="relative lg:col-span-7">
-            <div className="timeline-track absolute left-4 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/40 to-transparent md:left-6" />
-            <div className="pl-8 md:pl-12">
-            {whyBlackCapital.map((item) => (
-              <article
-                key={item.step}
-                className="group relative timeline-item border-b border-white/[0.08] py-5 transition-colors duration-300 last:border-b-0 md:py-6"
-                style={{ animationDelay: `${Number(item.step) * 110}ms` }}
-              >
-                <span className="absolute -left-[26px] top-6 h-3 w-3 rounded-full border border-[var(--color-accent)] bg-background shadow-[0_0_0_6px_rgba(0,0,0,0.2)] md:-left-[33px]" />
-                <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="property-tag-type gold-ink">{item.step}</p>
-                  <span className="w-fit border-b border-[var(--color-accent)]/35 pb-1 text-caption text-white/72 transition-colors duration-300 group-hover:text-white">
-                    {item.signal}
-                  </span>
-                </div>
-                <h3 className="text-display-4 text-white transition-colors duration-300 group-hover:text-[var(--color-accent)]">{item.title}</h3>
-                <p className="mt-2 text-body text-white/70">{item.text}</p>
-              </article>
-            ))}
             </div>
           </div>
+
+          <WhyBlackCapitalTimeline items={whyBlackCapital} />
         </div>
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
       </section>
@@ -440,21 +379,21 @@ export default function HomePage() {
             </h2>
           </div>
           <p className="max-w-xl text-body text-white/58">
-            Integramos evaluación, estrategia comercial, búsqueda, negociación y gestoría en una sola ruta de trabajo.
+            Evaluación, estrategia, negociación y cierre.
           </p>
         </div>
 
-        <div className="grid border-y border-white/[0.08] lg:grid-cols-5">
+        <div data-section="home-process-rail" className="scrollbar-none -mx-6 flex snap-x snap-mandatory items-stretch overflow-x-auto border-y border-white/[0.08] px-6 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-5">
           {serviceProcess.map((item, index) => (
-            <article key={item} className="group relative flex min-h-[170px] flex-col justify-between border-b border-white/[0.08] py-6 transition-colors duration-300 last:border-b-0 lg:border-b-0 lg:border-r lg:px-5 lg:last:border-r-0">
-              <div className="mb-8 flex items-center justify-between">
-                <span className="property-tag-type gold-ink">0{index + 1}</span>
-                <ClipboardList className="h-5 w-5 text-[var(--color-accent)] opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
-              </div>
-              <div>
-                <span className="mb-4 block h-px w-10 bg-[var(--color-accent)]/45 transition-all duration-300 group-hover:w-16" />
-                <p className="text-display-4 leading-tight text-white transition-colors duration-300 group-hover:text-[var(--color-accent)]">{item}</p>
-              </div>
+            <article
+              key={item}
+              className="group relative flex min-h-[190px] min-w-[58vw] snap-center flex-col border-r border-white/[0.08] p-6 transition-colors duration-300 last:border-r-0 sm:min-w-0 sm:border-b sm:last:border-r-0 lg:min-h-[200px] lg:border-b-0 lg:p-7 lg:last:border-r-0"
+            >
+              <span className="property-tag-type gold-ink">0{index + 1}</span>
+              <span className="mt-14 block h-px w-10 bg-[var(--color-accent)]/45 transition-all duration-300 group-hover:w-16" />
+              <p className="mt-5 text-display-4 max-w-[12rem] leading-tight text-white transition-colors duration-300 group-hover:text-[var(--color-accent)]">
+                {item}
+              </p>
             </article>
           ))}
         </div>
@@ -486,22 +425,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       <JsonLd id="ld-org" data={ORGANIZATION_SCHEMA} />
-      <style>{`
-        .timeline-item {
-          animation: timeline-reveal 650ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          opacity: 0;
-          transform: translateY(18px);
-        }
-
-        @keyframes timeline-reveal {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </main>
   );
 }

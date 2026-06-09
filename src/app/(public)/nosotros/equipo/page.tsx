@@ -14,14 +14,12 @@ const miembros = [
     {
         nombre: "Moisés Núñez",
         cargo: "Director General",
-        descripcion:
-            "Al frente de Black Capital desde su fundación. Especialista en estructuración de operaciones inmobiliarias y análisis financiero para inversionistas en Tijuana.",
+        descripcion: "Estructura operaciones y análisis para inversionistas.",
     },
     {
         nombre: "Omar Medina Yañez",
-        cargo: "Asesor Inmobiliario Senior",
-        descripcion:
-            "Más de 8 años de experiencia en el mercado inmobiliario de Tijuana. Especializado en propiedades residenciales premium y fraccionamientos privados.",
+        cargo: "Asesor Senior",
+        descripcion: "Residencial premium y fraccionamientos privados.",
     },
 ];
 
@@ -40,21 +38,19 @@ export default function EquipoPage() {
                             <span className="metallic-gold-static">Black Capital</span>
                         </h1>
                         <p className="text-body text-foreground/58 max-w-2xl mx-auto">
-                            Asesores inmobiliarios con conocimiento profundo del mercado de Tijuana.
-                            Trabajamos con criterio local, análisis financiero y seguimiento directo
-                            en cada operación.
+                            Equipo local, análisis claro y seguimiento directo.
                         </p>
                     </FadeIn>
                 </div>
             </div>
 
             <div className="container mx-auto px-4 py-20">
-                <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-0 max-w-4xl mx-auto border-t border-white/[0.06]">
+                <StaggerChildren className="grid grid-cols-2 gap-0 max-w-4xl mx-auto border-t border-white/[0.06]">
                     {miembros.map((m) => (
                         <StaggerItem key={m.nombre}>
-                            <div className="group h-full p-8 border-b md:border-b-0 md:border-r last:border-r-0 border-white/[0.06] bg-white/[0.01] transition-colors duration-500 hover:bg-white/[0.025]">
-                                <div className="w-16 h-16 rounded-md bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 flex items-center justify-center mb-6">
-                                    <span className="text-[var(--color-accent)] text-xl font-bold">
+                            <div className="group h-full min-h-[260px] border-b border-white/[0.06] bg-white/[0.01] p-5 transition-colors duration-500 hover:bg-white/[0.025] first:border-r sm:p-8">
+                                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-md border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 sm:h-16 sm:w-16">
+                                    <span className="text-lg font-bold text-[var(--color-accent)] sm:text-xl">
                                         {m.nombre.split(" ").map((n) => n[0]).join("")}
                                     </span>
                                 </div>

@@ -17,26 +17,22 @@ const pillars = [
     {
         icon: Shield,
         title: "Due Diligence",
-        description:
-            "Cada propiedad pasa por un proceso de verificación legal, financiera y técnica antes de ser publicada en nuestra plataforma.",
+        description: "Verificación legal, financiera y técnica.",
     },
     {
         icon: Users,
-        title: "Relaciones de Confianza",
-        description:
-            "Construimos relaciones a largo plazo con compradores, vendedores e inversionistas basadas en transparencia y resultados.",
+        title: "Confianza",
+        description: "Relaciones claras con compradores, vendedores e inversionistas.",
     },
     {
         icon: TrendingUp,
-        title: "Análisis Financiero",
-        description:
-            "Brochures ejecutivos con Cap Rate, TIR, flujos proyectados y comparativos de mercado para una toma de decisiones informada.",
+        title: "Análisis",
+        description: "Comparables, flujos y lectura de mercado.",
     },
     {
         icon: Award,
-        title: "Especialización por Vertical",
-        description:
-            "Tres marcas especializadas — Luxury, Business e Industrial — con equipos dedicados que entienden cada segmento a profundidad.",
+        title: "Especialización",
+        description: "Luxury, Business e Industrial con enfoque propio.",
     },
 ];
 
@@ -76,9 +72,7 @@ export default function NosotrosPage() {
                                 <span className="metallic-gold-static gold-glow">criterio</span>.
                             </h1>
                             <p className="text-body-fluid text-white/70 leading-relaxed max-w-2xl mt-6 sm:mt-10">
-                                Black Capital es una plataforma inmobiliaria premium enfocada en Tijuana, Baja
-                                California. Conectamos a compradores, vendedores e inversionistas con los mejores
-                                activos residenciales, comerciales e industriales de la región.
+                                Plataforma premium en Tijuana para activos residenciales, comerciales e industriales.
                             </p>
                         </div>
                     </div>
@@ -96,12 +90,12 @@ export default function NosotrosPage() {
                     </div>
                 </div>
 
-                <ul className="grid grid-cols-1 md:grid-cols-3 border-t border-white/[0.06]" role="list">
+                <ul className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto border-t border-white/[0.06] px-6 pb-2 sm:-mx-10 sm:px-10 md:mx-0 md:grid md:grid-cols-3 md:gap-0 md:overflow-visible md:px-0 md:pb-0" role="list">
                     {subpaginas.map((s, i) => (
                         <li
                             key={s.href}
                             className={
-                                "border-b md:border-b-0 border-white/[0.06] " +
+                                "min-w-[76vw] snap-center border border-white/[0.06] md:min-w-0 md:border-b-0 md:border-l-0 md:border-t-0 " +
                                 (i < subpaginas.length - 1 ? "md:border-r md:border-white/[0.06] " : "")
                             }
                         >
@@ -143,15 +137,15 @@ export default function NosotrosPage() {
                     </p>
                 </div>
 
-                <div className="relative grid grid-cols-1 md:grid-cols-2 gap-0 border-t border-white/[0.06]" role="list">
+                <div className="relative grid grid-cols-2 gap-0 border-t border-white/[0.06]" role="list">
                     {/* Horizontal hairline entre filas (mobile-first) */}
                     <div
-                        className="md:hidden absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent pointer-events-none"
+                        className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent pointer-events-none"
                         aria-hidden="true"
                     />
                     {/* Vertical hairline entre columnas (desktop) */}
                     <div
-                        className="hidden md:block absolute top-0 bottom-0 left-1/2 w-px bg-gradient-to-b from-transparent via-[var(--color-accent)]/30 to-transparent pointer-events-none"
+                        className="absolute top-0 bottom-0 left-1/2 w-px bg-gradient-to-b from-transparent via-[var(--color-accent)]/30 to-transparent pointer-events-none"
                         aria-hidden="true"
                     />
 
@@ -162,15 +156,15 @@ export default function NosotrosPage() {
                                 key={pillar.title}
                                 role="listitem"
                                 className={
-                                    "relative p-8 sm:p-10 lg:p-14 flex flex-col items-start " +
+                                    "relative flex min-h-[250px] flex-col items-start p-5 sm:min-h-[270px] sm:p-8 lg:p-14 " +
                                     (i < 2 ? "border-b md:border-b border-white/[0.06]" : "")
                                 }
                             >
-                                <span className="property-tag-type text-white/40 mb-6">
+                                <span className="property-tag-type text-white/40 mb-5">
                                     /{String(i + 1).padStart(2, "0")}
                                 </span>
-                                <div className="w-14 h-14 rounded-full border border-[var(--color-accent)]/40 flex items-center justify-center mb-8" aria-hidden="true">
-                                    <Icon className="w-6 h-6 text-[var(--color-accent)]" strokeWidth={1.5} />
+                                <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-accent)]/40 sm:h-14 sm:w-14" aria-hidden="true">
+                                    <Icon className="h-5 w-5 text-[var(--color-accent)] sm:h-6 sm:w-6" strokeWidth={1.5} />
                                 </div>
                                 <h3 className="text-display-3 font-semibold text-white mb-3">
                                     {pillar.title}

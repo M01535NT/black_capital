@@ -104,7 +104,10 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
           <span className="sr-only">Abrir navegación</span>
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-80 sm:w-96 lg:w-[420px] rounded-none bg-[#0a0a0a]/95 backdrop-blur-2xl border-l border-[var(--color-accent)]/15">
+      <DrawerContent
+        accessibleTitle="Navegación principal"
+        className="h-screen top-0 right-0 left-auto mt-0 w-80 sm:w-96 lg:w-[420px] rounded-none bg-[#0a0a0a]/95 backdrop-blur-2xl border-l border-[var(--color-accent)]/15"
+      >
         <div className="mx-auto flex h-full w-full max-w-sm flex-col overflow-hidden p-4 sm:p-5">
           <DrawerHeader className="shrink-0 px-0 pb-2 pt-0 text-left flex flex-row items-center justify-end">
             <button

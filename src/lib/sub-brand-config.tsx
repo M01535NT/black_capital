@@ -132,7 +132,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         ctaSectionId: "luxury-cta",
         hero: {
             brand: "Black Luxury",
-            backgroundImage: "/luxury-hero.png",
+            backgroundImage: "/hero-luxury.webp",
             backgroundImageWebp: "/hero-luxury.webp",
             backgroundAlt: "Casa residencial premium en fraccionamiento privado",
             accent: "gold",
@@ -243,7 +243,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 url: "https://blackmx.vercel.app/black-luxury",
                 images: [
                     {
-                        url: "https://blackmx.vercel.app/luxury-hero.png",
+                        url: "https://blackmx.vercel.app/hero-luxury.webp",
                         width: 1200,
                         height: 630,
                         alt: "Casa residencial premium en Tijuana",
@@ -255,7 +255,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 title: "Casas Residenciales Premium en Tijuana | Fraccionamientos Privados",
                 description:
                     "Casas en los mejores fraccionamientos de Tijuana. Residencial Plus con seguridad 24/7, amenidades premium y ubicación estratégica.",
-                images: ["https://blackmx.vercel.app/luxury-hero.png"],
+                images: ["https://blackmx.vercel.app/hero-luxury.webp"],
             },
         },
     },
@@ -265,7 +265,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         ctaSectionId: "business-cta",
         hero: {
             brand: "Black Business",
-            backgroundImage: "/business-hero.png",
+            backgroundImage: "/hero-business.webp",
             backgroundImageWebp: "/hero-business.webp",
             backgroundAlt: "Local comercial en plaza corporativa de Tijuana",
             accent: "gold",
@@ -376,7 +376,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 url: "https://blackmx.vercel.app/black-business",
                 images: [
                     {
-                        url: "https://blackmx.vercel.app/business-hero.png",
+                        url: "https://blackmx.vercel.app/hero-business.webp",
                         width: 1200,
                         height: 630,
                         alt: "Local comercial en Tijuana",
@@ -388,7 +388,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 title: "Centros Comerciales y Locales en Tijuana | Inversión Comercial",
                 description:
                     "Locales comerciales, oficinas y plazas en zonas de alto tráfico en Tijuana. Análisis de cap rate y flujo operativo incluido.",
-                images: ["https://blackmx.vercel.app/business-hero.png"],
+                images: ["https://blackmx.vercel.app/hero-business.webp"],
             },
         },
     },
@@ -398,7 +398,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         ctaSectionId: "industrial-cta",
         hero: {
             brand: "Black Industrial",
-            backgroundImage: "/industrial-hero.png",
+            backgroundImage: "/industrial-hero.webp",
             backgroundImageWebp: "/industrial-hero.webp",
             backgroundAlt: "Nave industrial moderna en parque logístico de Tijuana",
             accent: "steel",
@@ -509,7 +509,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 url: "https://blackmx.vercel.app/black-industrial",
                 images: [
                     {
-                        url: "https://blackmx.vercel.app/industrial-hero.png",
+                        url: "https://blackmx.vercel.app/industrial-hero.webp",
                         width: 1200,
                         height: 630,
                         alt: "Nave industrial en Tijuana",
@@ -521,7 +521,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 title: "Naves Industriales y Parques Logísticos en Tijuana | Black Capital",
                 description:
                     "Naves industriales, bodegas y parques logísticos en Tijuana. Conectividad estratégica cerca de garitas y corredores de exportación T-MEC.",
-                images: ["https://blackmx.vercel.app/industrial-hero.png"],
+                images: ["https://blackmx.vercel.app/industrial-hero.webp"],
             },
         },
     },

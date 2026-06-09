@@ -48,10 +48,13 @@ function DrawerOverlay({
 }
 
 function DrawerContent({
+  accessibleTitle,
   className,
   children,
   ...props
-}: React.ComponentProps<typeof Content>) {
+}: React.ComponentProps<typeof Content> & {
+  accessibleTitle?: React.ReactNode
+}) {
   return (
     <DrawerPortal data-slot="drawer-portal">
       <DrawerOverlay />
@@ -67,6 +70,9 @@ function DrawerContent({
         )}
         {...props}
       > 
+        {accessibleTitle ? (
+          <VaulDrawer.Title className="sr-only">{accessibleTitle}</VaulDrawer.Title>
+        ) : null}
         <div className="bg-muted mx-auto mt-4 hidden h-2 w-[100px] shrink-0 rounded-full group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
         {children}
       </Content>

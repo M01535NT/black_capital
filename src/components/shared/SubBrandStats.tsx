@@ -1,5 +1,3 @@
-import { CheckCircle2 } from "lucide-react";
-
 export type SubBrand = "luxury" | "business" | "industrial";
 export type Accent = "gold" | "steel";
 
@@ -52,25 +50,22 @@ export function SubBrandStats({
                     </p>
                 </div>
 
-                <div className="grid gap-4 lg:col-span-7">
+                <div className="grid grid-cols-2 gap-3 lg:col-span-7 lg:gap-4">
                     {stats.map((stat, index) => (
                         <div
                             key={stat.label}
-                            className="flex gap-4 border border-white/[0.08] bg-background/70 p-5"
+                            className="flex min-h-[150px] flex-col justify-between border border-white/[0.08] bg-background/70 p-4 sm:min-h-[160px] sm:p-5"
                         >
-                            <span className="min-w-8 text-display-3 gold-ink">
+                            <span className="property-tag-type gold-ink">
                                 0{index + 1}
                             </span>
-                            <div className="flex flex-1 items-start justify-between gap-4">
-                                <div className="flex items-start gap-3">
-                                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-accent)]" aria-hidden="true" />
-                                    <p className="text-body text-white/70">{stat.label}</p>
-                                </div>
-                                    <p className="shrink-0 text-display-3 text-white">
-                                        {stat.prefix ?? ""}
-                                        {stat.value.toLocaleString()}
-                                        {stat.suffix ?? ""}
+                            <div>
+                                <p className="text-display-3 text-white">
+                                    {stat.prefix ?? ""}
+                                    {stat.value.toLocaleString()}
+                                    {stat.suffix ?? ""}
                                 </p>
+                                <p className="mt-3 text-body-sm text-white/62">{stat.label}</p>
                             </div>
                         </div>
                     ))}

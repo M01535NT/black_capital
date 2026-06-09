@@ -12,7 +12,7 @@ const counters = [
   {
     label: "Superficie comercializada",
     value: 18000,
-    suffix: " m²",
+    suffix: "M²",
     copy: "Activos asesorados y comercializados.",
   },
   {
@@ -24,7 +24,7 @@ const counters = [
   {
     label: "Experiencia inmobiliaria",
     value: 8,
-    suffix: " años",
+    suffix: "AÑOS",
     copy: "Lectura local del mercado de Tijuana.",
   },
 ];
@@ -77,27 +77,59 @@ function useCountUp(target: number, durationMs = 2200) {
   return [ref, value] as const;
 }
 
-function CounterCard({
+function CounterValue({
+  value,
+  suffix,
+}: {
+  value: number;
+  suffix: string;
+}) {
+  const formattedValue = formatCount(value);
+
+  return (
+    <p className="flex w-full items-end justify-center">
+      <span className="inline-flex max-w-full items-end justify-center gap-2 whitespace-nowrap metallic-gold-static gold-glow">
+        <span className="font-display text-stat-lg font-extrabold uppercase leading-none tracking-[0.02em] tabular-nums">
+          {formattedValue}
+        </span>
+        <span className="pb-1 font-display text-caption font-extrabold uppercase leading-none sm:pb-1.5">
+          {suffix}
+        </span>
+      </span>
+    </p>
+  );
+}
+
+function CounterItem({
   label,
   value,
   suffix,
   copy,
+  index,
 }: {
   label: string;
   value: number;
   suffix: string;
   copy: string;
+  index: number;
 }) {
   const [counterRef, count] = useCountUp(value);
 
   return (
-    <div ref={counterRef} className="flex min-h-[190px] flex-col items-center justify-center border border-white/[0.08] bg-white/[0.025] p-5 text-center">
-      <p className="font-display text-[2.25rem] font-extrabold uppercase leading-none tracking-[0.04em] metallic-gold-static gold-glow sm:text-display-1">
-        {formatCount(count)}
-        <span className="text-sm align-baseline metallic-gold-static gold-glow sm:text-display-4">
-          {suffix}
-        </span>
-      </p>
+    <div
+      ref={counterRef}
+      className="group relative flex min-h-[170px] min-w-0 flex-col items-center justify-center px-4 py-4 text-center sm:min-h-[190px] lg:px-6"
+    >
+      {index > 0 ? (
+        <span className="absolute left-0 top-1/2 hidden h-20 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-white/[0.10] to-transparent xl:block" />
+      ) : null}
+      {index % 2 === 1 ? (
+        <span className="absolute left-0 top-1/2 h-20 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-white/[0.10] to-transparent xl:hidden" />
+      ) : null}
+      {index > 1 ? (
+        <span className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.10] to-transparent xl:hidden" />
+      ) : null}
+      <CounterValue value={count} suffix={suffix} />
       <p className="mt-5 property-tag-type text-white/72">
         {label}
       </p>
@@ -108,7 +140,7 @@ function CounterCard({
 
 export function HomeCounters() {
   return (
-    <section className="mx-auto max-w-[90rem] px-6 pb-16 sm:px-10 lg:px-16 lg:pb-24">
+    <section className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
       <div className="mx-auto mb-10 max-w-3xl text-center">
         <p className="mb-3 text-caption gold-ink">
           Indicadores comerciales
@@ -121,9 +153,9 @@ export function HomeCounters() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
-        {counters.map((counter) => (
-          <CounterCard key={counter.label} {...counter} />
+      <div className="mx-auto grid max-w-[90rem] grid-cols-2 gap-y-6 border-y border-white/[0.06] py-6 sm:gap-y-8 sm:py-8 lg:py-10 xl:grid-cols-4 xl:gap-y-0">
+        {counters.map((counter, index) => (
+          <CounterItem key={counter.label} {...counter} index={index} />
         ))}
       </div>
     </section>

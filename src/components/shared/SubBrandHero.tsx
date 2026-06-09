@@ -152,7 +152,7 @@ export function SubBrandHero({
     return (
         <section
             aria-label={`${brand} — Presentación`}
-            className="relative min-h-[92svh] overflow-hidden border-b border-white/[0.06] pt-24 lg:pt-28"
+            className="relative overflow-hidden border-b border-white/[0.06] pt-20 lg:min-h-[92svh] lg:pt-28"
         >
             {backgroundImageWebp ? (
                 <picture>
@@ -163,7 +163,7 @@ export function SubBrandHero({
                         fill
                         priority
                         sizes="100vw"
-                        className="object-cover opacity-35"
+                        className="object-cover opacity-35 lg:scale-105"
                     />
                 </picture>
             ) : (
@@ -173,15 +173,15 @@ export function SubBrandHero({
                     fill
                     priority
                     sizes="100vw"
-                    className="object-cover opacity-35"
+                    className="object-cover opacity-35 lg:scale-105"
                 />
             )}
             <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/35" />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
 
-            <div className="relative z-10 mx-auto grid min-h-[calc(92svh-6rem)] max-w-[90rem] grid-cols-1 items-center gap-10 px-6 py-12 sm:px-10 lg:grid-cols-12 lg:px-16">
+            <div className="relative z-10 mx-auto grid max-w-[90rem] grid-cols-1 items-center gap-8 px-6 py-10 sm:px-10 lg:min-h-[calc(92svh-6rem)] lg:grid-cols-12 lg:gap-10 lg:px-16 lg:py-12">
                 <div className="lg:col-span-7">
-                    <div className="mb-6 inline-flex items-center gap-2 border border-white/10 bg-black/35 px-3 py-2 text-caption text-white/70">
+                    <div className="mb-4 inline-flex items-center gap-2 border border-white/10 bg-black/35 px-3 py-2 text-caption text-white/70 lg:mb-6">
                         <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
                         Tijuana, Baja California
                     </div>
@@ -191,11 +191,11 @@ export function SubBrandHero({
                     <h1 className="max-w-4xl text-display-1 text-white text-balance">
                         {headline}
                     </h1>
-                    <p className="mt-6 max-w-2xl text-body leading-relaxed text-white/72">
+                    <p className="mt-4 max-w-2xl text-body leading-relaxed text-white/72 lg:mt-6">
                         {subtitle}
                     </p>
 
-                    <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                    <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-8">
                         <Link href={primaryCta.href} className="w-full sm:w-auto">
                             <Button className="brushed-gold premium-cta inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-none sm:w-auto">
                                 {primaryCta.label}
@@ -218,16 +218,16 @@ export function SubBrandHero({
                         onSubmit={submitQuickSearch}
                         className="border border-white/10 bg-background/82 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl"
                     >
-                        <div className="flex items-center gap-3 border-b border-white/[0.08] pb-4">
+                        <div className="flex items-center gap-3 border-b border-white/[0.08] pb-3 lg:pb-4">
                             <div className="gold-gradient flex h-10 w-10 items-center justify-center rounded-full text-black">
                                 <Search className="h-5 w-5" aria-hidden="true" />
                             </div>
                             <div>
                                 <p className="text-body-sm text-white">Búsqueda rápida</p>
-                                <p className="text-body-sm text-white/50">Ejemplo editable desde admin</p>
+                                <p className="text-body-sm text-white/50">Filtra opciones</p>
                             </div>
                         </div>
-                        <div className="grid gap-3 py-4">
+                        <div className="grid grid-cols-2 gap-3 py-3 lg:grid-cols-1 lg:py-4">
                             <label className="grid gap-2">
                                 <span className="text-body-sm text-white/65">{quickSearch.propertyLabel}</span>
                                 <select
