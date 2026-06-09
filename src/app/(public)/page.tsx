@@ -250,7 +250,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[90rem] overflow-hidden px-6 pb-16 sm:px-10 lg:px-16 lg:pb-24">
+      <HomeCounters />
+
+      <section className="mx-auto max-w-[90rem] overflow-hidden px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="mb-3 text-caption gold-ink">
@@ -361,8 +363,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      <HomeCounters />
 
       <section className="relative overflow-hidden">
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/35 to-transparent" />
