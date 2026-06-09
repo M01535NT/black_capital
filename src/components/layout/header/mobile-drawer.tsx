@@ -73,7 +73,7 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
           variant="ghost"
           size="icon"
           className={cn(
-            "group relative h-11 w-11 overflow-hidden rounded-full border transition-all duration-300",
+            "group relative h-11 w-11 overflow-hidden rounded-none border transition-all duration-300",
             "border-white/12 bg-black/20 text-foreground hover:border-[var(--color-accent)]/55 hover:bg-white/[0.06]",
             "focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             open && "border-[var(--color-accent)]/55 bg-[var(--color-accent)]/10",

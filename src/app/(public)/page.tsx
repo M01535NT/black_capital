@@ -142,14 +142,14 @@ export default function HomePage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/inventario"
-                className="brushed-gold premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full"
+                className="brushed-gold premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none"
               >
                 Ver inventario
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/contacto"
-                className="premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full border border-white/18 bg-white/[0.04] text-white hover:border-[var(--color-accent)]"
+                className="premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none border border-white/18 bg-white/[0.04] text-white hover:border-[var(--color-accent)]"
               >
                 Solicitar asesoría
               </Link>

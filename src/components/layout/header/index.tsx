@@ -94,7 +94,7 @@ export function Header() {
         <div className="flex items-center gap-2 flex-shrink-0">
           <Link
             href="/contacto"
-            className="premium-cta brushed-gold font-display hidden lg:inline-flex items-center gap-2 rounded-full hover:scale-[1.015] transition-all duration-300"
+            className="premium-cta brushed-gold font-display hidden lg:inline-flex items-center gap-2 rounded-none hover:scale-[1.015] transition-all duration-300"
           >
             <span>Asesoría</span>
             <span aria-hidden="true">→</span>
