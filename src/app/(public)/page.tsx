@@ -50,31 +50,31 @@ const segments = [
     title: "Black Luxury",
     category: "Residencial",
     href: "/black-luxury",
-    inventoryHref: "/inventario?uso=Residencial",
     image: "/brand-luxury.webp",
     icon: Home,
-    copy: "Residencias, casas y oportunidades habitacionales con criterio de ubicación, plusvalía y estilo de vida.",
-    zones: "Chapultepec · Zona Río · Playas",
+    copy: "Residencias seleccionadas por ubicación, plusvalía y narrativa de vida. Para propietarios y familias que compran para quedarse.",
+    zones: ["Chapultepec", "Zona Río", "Playas"],
+    metric: "Acompañamiento dedicado en cada operación residencial.",
   },
   {
     title: "Black Business",
     category: "Comercial",
     href: "/black-business",
-    inventoryHref: "/inventario?uso=Comercial",
     image: "/brand-business.webp",
     icon: Building2,
-    copy: "Locales, oficinas, plazas y activos comerciales evaluados por flujo, visibilidad y operación.",
-    zones: "Zona Río · Otay · Díaz Ordaz",
+    copy: "Locales, oficinas y plazas evaluadas por flujo, visibilidad y rentabilidad operativa antes de salir al mercado.",
+    zones: ["Zona Río", "Otay", "Díaz Ordaz"],
+    metric: "Lectura comercial del activo antes de la primera visita.",
   },
   {
     title: "Black Industrial",
     category: "Industrial",
     href: "/black-industrial",
-    inventoryHref: "/inventario?uso=Industrial",
     image: "/brand-industrial.webp",
     icon: Warehouse,
-    copy: "Naves, bodegas, parques y tierra industrial para producción, logística y expansión empresarial.",
-    zones: "Otay · Pacífico · El Florido",
+    copy: "Naves, bodegas y parques industriales conectados a los corredores logísticos de Tijuana.",
+    zones: ["Otay", "Pacífico", "El Florido"],
+    metric: "Criterio operativo y expansión por encima del metraje.",
   },
 ];
 
@@ -158,6 +158,96 @@ const videoInsights = [
     label: "Ver ruta documental",
   },
 ];
+
+type Segment = (typeof segments)[number];
+type SegmentVariant = "hero" | "compact" | "mobile";
+
+function SegmentCard({
+  segment,
+  variant,
+}: {
+  segment: Segment;
+  variant: SegmentVariant;
+}) {
+  const Icon = segment.icon;
+  const isHero = variant === "hero";
+  const isMobile = variant === "mobile";
+  const imageAspect = isHero
+    ? "aspect-[4/3] lg:aspect-[16/11]"
+    : isMobile
+      ? "aspect-[4/5]"
+      : "aspect-[16/9] lg:aspect-[16/10]";
+
+  return (
+    <article className="group relative flex h-full flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-colors duration-500 hover:border-[var(--color-accent)]/40">
+      <div className={`relative overflow-hidden ${imageAspect}`}>
+        <Image
+          src={segment.image}
+          alt={`Línea inmobiliaria ${segment.title} en Tijuana`}
+          fill
+          sizes={
+            isHero
+              ? "(max-width: 768px) 100vw, 58vw"
+              : "(max-width: 768px) 100vw, 42vw"
+          }
+          className="object-cover transition-transform duration-[1100ms] ease-out group-hover:scale-[1.06]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+        <div className="absolute inset-x-5 bottom-5 flex items-end justify-between gap-3">
+          <div>
+            <p className="property-tag-type gold-ink">{segment.category}</p>
+            <h3
+              className={
+                isHero
+                  ? "mt-1 text-display-2 font-extrabold leading-none text-white"
+                  : "mt-1 text-display-3 font-semibold leading-tight text-white"
+              }
+            >
+              {segment.title}
+            </h3>
+          </div>
+          <span className="gold-gradient flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-black">
+            <Icon className="h-4 w-4" />
+          </span>
+        </div>
+      </div>
+
+      <div className={`flex flex-1 flex-col gap-5 p-5 ${isHero ? "lg:p-7" : ""}`}>
+        <p className={`text-body text-white/68 ${isHero ? "lg:text-body-lg" : ""}`}>
+          {segment.copy}
+        </p>
+
+        <ul className="flex flex-wrap gap-1.5">
+          {segment.zones.map((zone) => (
+            <li
+              key={zone}
+              className="border border-white/12 px-2.5 py-1 property-tag-type text-white/65"
+            >
+              {zone}
+            </li>
+          ))}
+        </ul>
+
+        <p className="text-body-sm leading-relaxed text-white/55 transition-all duration-500 md:max-h-0 md:translate-y-1 md:overflow-hidden md:opacity-0 md:group-hover:max-h-32 md:group-hover:translate-y-0 md:group-hover:opacity-100">
+          {segment.metric}
+        </p>
+
+        <div className="mt-auto pt-1">
+          <Link
+            href={segment.href}
+            className="group/cta inline-flex items-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"
+          >
+            <span className="property-tag-type relative pb-1">
+              Ver línea
+              <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover/cta:opacity-100" />
+            </span>
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/cta:translate-x-1" />
+          </Link>
+        </div>
+      </div>
+    </article>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -253,9 +343,9 @@ export default function HomePage() {
       <HomeCounters />
 
       <section className="mx-auto max-w-[90rem] overflow-hidden px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
-        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="mb-3 text-caption gold-ink">
+            <p className="mb-3 property-tag-type gold-ink">
               Tres líneas de negocio
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
@@ -263,49 +353,26 @@ export default function HomePage() {
             </h2>
           </div>
           <p className="max-w-xl text-body text-white/58">
-            Tres líneas inmobiliarias, una misma experiencia.
+            Tres líneas inmobiliarias, un mismo criterio de inversión.
           </p>
         </div>
 
-        <div className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-1 sm:-mx-10 sm:px-10 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0 md:pb-0">
-          {segments.map((segment) => {
-            const Icon = segment.icon;
-            return (
-              <article key={segment.title} className="group flex min-w-[82vw] snap-center flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] sm:min-w-[68vw] md:min-w-0">
-                <div className="relative aspect-[4/5] overflow-hidden sm:aspect-[16/11] md:aspect-[4/5] lg:aspect-[16/10]">
-                  <Image
-                    src={segment.image}
-                    alt={`Ejemplo de propiedad ${segment.title.toLowerCase()} en Tijuana`}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 33vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
-                  <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                    <span className="gold-gradient flex h-9 w-9 items-center justify-center rounded-full text-black">
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <div>
-                      <p className="property-tag-type gold-ink">{segment.category}</p>
-                      <h3 className="text-display-3 font-semibold text-white">{segment.title}</h3>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-1 flex-col space-y-5 p-5">
-                  <p className="text-body text-white/64">{segment.copy}</p>
-                  <p className="property-tag-type gold-ink opacity-75">{segment.zones}</p>
-                  <div className="mt-auto flex flex-col gap-2 sm:flex-row">
-                    <Link href={segment.inventoryHref} className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type gold-ink">
-                      Inventario
-                    </Link>
-                    <Link href={segment.href} className="inline-flex flex-1 items-center justify-center gap-2 border border-white/10 px-4 py-2.5 property-tag-type text-white/75">
-                      Ver línea
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+        <div className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-1 sm:-mx-10 sm:px-10 md:hidden">
+          {segments.map((segment) => (
+            <div key={`mobile-${segment.title}`} className="min-w-[82vw] snap-center sm:min-w-[68vw]">
+              <SegmentCard segment={segment} variant="mobile" />
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden md:grid md:grid-cols-12 md:gap-5 lg:gap-6">
+          <div className="md:col-span-7">
+            <SegmentCard segment={segments[0]} variant="hero" />
+          </div>
+          <div className="flex flex-col gap-5 md:col-span-5 lg:gap-6">
+            <SegmentCard segment={segments[1]} variant="compact" />
+            <SegmentCard segment={segments[2]} variant="compact" />
+          </div>
         </div>
       </section>
 
