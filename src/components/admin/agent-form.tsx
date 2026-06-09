@@ -69,7 +69,11 @@ export function AgentForm({ initialData }: AgentFormProps) {
                 throw new Error(result.error || "Error al guardar agente");
             }
 
-            toast.success(isEditing ? "Agente actualizado" : "Agente registrado");
+            if (!isEditing && (result.emailDelivery?.skipped || result.emailDelivery?.error)) {
+                toast.warning("Agente registrado, pero no se pudo enviar el correo de invitación. Revisa la configuración de Resend.");
+            } else {
+                toast.success(isEditing ? "Agente actualizado" : "Agente registrado");
+            }
             router.push("/admin/agents");
             router.refresh();
         } catch (error) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Building2, Warehouse, Calculator, ArrowRightLeft, Percent } from "lucide-react";
+import { Home, Building2, Warehouse, Calculator, ArrowRightLeft, Percent, type LucideIcon } from "lucide-react";
 
 export const baseLinks = [
   { name: "Inicio", href: "/" },
@@ -43,7 +43,7 @@ export interface DropdownDef {
   key: DropdownKey;
   label: string;
   href: string;
-  items: { name: string; href: string; icon: React.ComponentType<{ className?: string }> }[];
+  items: { name: string; href: string; icon: LucideIcon }[];
 }
 
 export const DESKTOP_DROPDOWNS: DropdownDef[] = [

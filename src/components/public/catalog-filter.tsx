@@ -35,6 +35,8 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
 
     const brandUse = searchParams.get("brand") ? BRAND_TO_USE[searchParams.get("brand") as string] : null;
     const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
+    const [activePropertyType, setActivePropertyType] = useState<string | null>(searchParams.get("propiedad") || null);
+    const [activeZone, setActiveZone] = useState<string | null>(searchParams.get("zona") || null);
     const [activeBusiness, setActiveBusiness] = useState<string | null>(searchParams.get("tipo") || null);
     const [activeUse, setActiveUse] = useState<string | null>(searchParams.get("uso") || brandUse || null);
     const [sort, setSort] = useState(searchParams.get("orden") || "newest");
@@ -65,6 +67,8 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
     const updateURL = useCallback((params: Record<string, string | null>) => {
         const sp = new URLSearchParams();
         const currentSearch = params.q !== undefined ? params.q : searchTerm;
+        const currentPropertyType = params.propiedad !== undefined ? params.propiedad : activePropertyType;
+        const currentZone = params.zona !== undefined ? params.zona : activeZone;
         const currentBusiness = params.tipo !== undefined ? params.tipo : activeBusiness;
         const currentUse = params.uso !== undefined ? params.uso : activeUse;
         const currentSort = params.orden !== undefined ? params.orden : sort;
@@ -75,6 +79,8 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
         const currentMinArea = params.m2_min !== undefined ? params.m2_min : minArea;
 
         if (currentSearch) sp.set("q", currentSearch);
+        if (currentPropertyType) sp.set("propiedad", currentPropertyType);
+        if (currentZone) sp.set("zona", currentZone);
         if (currentBusiness) sp.set("tipo", currentBusiness);
         if (currentUse) sp.set("uso", currentUse);
         if (currentStatus) sp.set("estatus", currentStatus);
@@ -86,12 +92,14 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
 
         const qs = sp.toString();
         router.replace(`${pathname}${qs ? `?${qs}` : ""}`, { scroll: false });
-    }, [searchTerm, activeBusiness, activeUse, activeStatus, activeCurrency, minPrice, maxPrice, minArea, sort, router, pathname]);
+    }, [searchTerm, activePropertyType, activeZone, activeBusiness, activeUse, activeStatus, activeCurrency, minPrice, maxPrice, minArea, sort, router, pathname]);
 
     const filtered = useMemo(() => {
         const result = properties.filter((p) => {
             const searchable = `${p.title} ${p.address ?? ""} ${p.property_use} ${p.property_type ?? ""} ${p.business_type}`.toLowerCase();
             const matchSearch = searchable.includes(searchTerm.toLowerCase());
+            const matchPropertyType = activePropertyType ? (p.property_type ?? "").toLowerCase().includes(activePropertyType.toLowerCase()) : true;
+            const matchZone = activeZone ? searchable.includes(activeZone.toLowerCase()) : true;
             const matchBusiness = activeBusiness ? p.business_type.toLowerCase() === activeBusiness.toLowerCase() : true;
             const matchUse = activeUse ? p.property_use === activeUse : true;
             const matchStatus = activeStatus ? p.status === activeStatus : true;
@@ -100,7 +108,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
             const matchMaxPrice = maxPrice ? p.price <= Number(maxPrice) : true;
             const area = Math.max(p.m2_terrain || 0, p.m2_construction || 0);
             const matchMinArea = minArea ? area >= Number(minArea) : true;
-            return matchSearch && matchBusiness && matchUse && matchStatus && matchCurrency && matchMinPrice && matchMaxPrice && matchMinArea;
+            return matchSearch && matchPropertyType && matchZone && matchBusiness && matchUse && matchStatus && matchCurrency && matchMinPrice && matchMaxPrice && matchMinArea;
         });
 
         if (sort === "price_asc") result.sort((a, b) => a.price - b.price);
@@ -110,10 +118,12 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
         else if (sort === "featured") result.sort((a, b) => Number(Boolean(b.is_featured)) - Number(Boolean(a.is_featured)));
 
         return result;
-    }, [properties, searchTerm, activeBusiness, activeUse, activeStatus, activeCurrency, minPrice, maxPrice, minArea, sort]);
+    }, [properties, searchTerm, activePropertyType, activeZone, activeBusiness, activeUse, activeStatus, activeCurrency, minPrice, maxPrice, minArea, sort]);
 
     const clearAll = () => {
         setSearchTerm("");
+        setActivePropertyType(null);
+        setActiveZone(null);
         setActiveBusiness(null);
         setActiveUse(null);
         setActiveStatus(null);
@@ -126,7 +136,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
         searchInputRef.current?.focus();
     };
 
-    const hasFilters = activeBusiness || activeUse || activeStatus || activeCurrency || searchTerm || minPrice || maxPrice || minArea || sort !== "newest";
+    const hasFilters = activeBusiness || activeUse || activeStatus || activeCurrency || activePropertyType || activeZone || searchTerm || minPrice || maxPrice || minArea || sort !== "newest";
     const pillBase = "flex min-h-10 w-full items-center justify-center px-2 property-tag-type transition-colors sm:px-4";
     const pillActive = "gold-gradient text-black";
     const pillInactive = "border border-white/[0.08] bg-white/[0.025] text-white/62 hover:border-[var(--color-accent)]/35 hover:text-white";

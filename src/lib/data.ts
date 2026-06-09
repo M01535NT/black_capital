@@ -74,7 +74,7 @@ export async function getRecentProperties(limit = 5) {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("properties")
-    .select("id, title, business_type, price, currency, cover_image, status, created_at")
+    .select("id, title, property_use, business_type, price, currency, cover_image, status, created_at")
     .order("created_at", { ascending: false })
     .limit(limit);
   if (error) {

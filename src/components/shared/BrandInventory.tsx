@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { ArrowRight, ImageIcon, MapPin, Maximize2 } from "lucide-react";
+import { ArrowRight, MapPin, Maximize2 } from "lucide-react";
+import { getPropertyPlaceholderImage } from "@/lib/property-placeholder-image";
 
 interface BrandProperty {
     id: string;
@@ -224,6 +225,9 @@ export async function BrandInventory({
                         ? `/contacto?interes=${encodeURIComponent(propertyUse)}`
                         : `/inventario/${prop.slug || prop.id}`;
                     const hasCoverImage = Boolean(prop.cover_image);
+                    const fallbackImage = getPropertyPlaceholderImage(propertyUse);
+                    const imageSrc = prop.cover_image || fallbackImage.src;
+                    const imageAlt = hasCoverImage ? prop.title : fallbackImage.alt;
 
                     return (
                         <article
@@ -231,25 +235,14 @@ export async function BrandInventory({
                             className="group overflow-hidden border border-white/[0.08] bg-white/[0.025]"
                         >
                             <div className="relative aspect-[16/10] overflow-hidden bg-white/[0.02]">
-                                {hasCoverImage ? (
-                                    <Image
-                                        src={prop.cover_image as string}
-                                        alt={prop.title}
-                                        fill
-                                        sizes="(max-width: 1024px) 100vw, 33vw"
-                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                    />
-                                ) : (
-                                <div className="gold-premium-overlay absolute inset-0 flex flex-col items-center justify-center">
-                                    <ImageIcon className="mb-3 h-6 w-6 text-[var(--color-accent)]" aria-hidden="true" />
-                                    <span className="property-tag-type text-white/68">
-                                        Imagen de ejemplo
-                                    </span>
-                                </div>
-                                )}
-                                {hasCoverImage && (
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
-                                )}
+                                <Image
+                                    src={imageSrc}
+                                    alt={imageAlt}
+                                    fill
+                                    sizes="(max-width: 1024px) 100vw, 33vw"
+                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/18 to-transparent" />
                                 <div className="absolute left-4 top-4 rounded-full border border-[var(--color-accent)]/30 bg-background/85 px-3 py-1 property-tag-type gold-ink">
                                     {prop.isPlaceholder ? "Ejemplo" : prop.property_type}
                                 </div>

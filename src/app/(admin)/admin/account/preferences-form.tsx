@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Bell, LayoutDashboard, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -13,20 +13,21 @@ const DEFAULTS = {
 
 type Preferences = typeof DEFAULTS;
 
+function readStoredPreferences(storageKey: string): Preferences {
+  if (typeof window === "undefined") return DEFAULTS;
+  const raw = window.localStorage.getItem(storageKey);
+  if (!raw) return DEFAULTS;
+  try {
+    return { ...DEFAULTS, ...JSON.parse(raw) };
+  } catch {
+    return DEFAULTS;
+  }
+}
+
 export function AccountPreferencesForm({ profileId }: { profileId: string }) {
   const storageKey = `black-capital:account-preferences:${profileId}`;
-  const [preferences, setPreferences] = useState<Preferences>(DEFAULTS);
+  const [preferences, setPreferences] = useState<Preferences>(() => readStoredPreferences(storageKey));
   const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    const raw = window.localStorage.getItem(storageKey);
-    if (!raw) return;
-    try {
-      setPreferences({ ...DEFAULTS, ...JSON.parse(raw) });
-    } catch {
-      setPreferences(DEFAULTS);
-    }
-  }, [storageKey]);
 
   function save() {
     window.localStorage.setItem(storageKey, JSON.stringify(preferences));
@@ -99,7 +100,7 @@ function PreferenceToggle({
   enabled,
   onChange,
 }: {
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
   enabled: boolean;
   onChange: (enabled: boolean) => void;

@@ -20,6 +20,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { AdminPageHeader, AdminSectionCard, AdminStatCard } from "@/components/admin/admin-ui";
+import { getPropertyPlaceholderImage } from "@/lib/property-placeholder-image";
 
 export const revalidate = 0;
 
@@ -45,7 +46,7 @@ export default async function AdminDashboard() {
         ]);
         const propertyIds = (assignedProperties || []).map((row) => row.property_id);
         const { data: scopedRecentProperties } = propertyIds.length > 0
-            ? await supabase.from("properties").select("id, title, business_type, price, currency, cover_image, status, created_at").in("id", propertyIds).order("created_at", { ascending: false }).limit(5)
+            ? await supabase.from("properties").select("id, title, property_use, business_type, price, currency, cover_image, status, created_at").in("id", propertyIds).order("created_at", { ascending: false }).limit(5)
             : { data: [] };
         totalProperties = propertyIds.length;
         totalAgents = 1;
@@ -196,26 +197,31 @@ export default async function AdminDashboard() {
                     {recentProperties && recentProperties.length > 0 ? (
                         <div className="space-y-2">
                             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                            {recentProperties.map((property: any) => (
-                                <Link key={property.id} href={`/admin/properties/${property.id}/edit`} className="flex items-center gap-3 border border-white/[0.06] bg-white/[0.02] p-3 transition-colors hover:border-[var(--color-accent)]/25">
-                                    <div className="relative h-11 w-11 shrink-0 overflow-hidden bg-white/[0.04]">
-                                        {property.cover_image ? (
-                                            <Image src={property.cover_image} alt={property.title} fill sizes="44px" className="object-cover" />
-                                        ) : (
-                                            <Building2 className="m-3 h-5 w-5 text-white/25" />
-                                        )}
-                                    </div>
-                                    <div className="min-w-0 flex-1">
-                                        <p className="truncate text-body-sm font-medium text-white">{property.title}</p>
-                                        <p className="truncate text-body-sm text-white/45">
-                                            {propertyStatusLabels[property.status] || property.status} · {property.business_type}
+                            {recentProperties.map((property: any) => {
+                                const fallbackImage = getPropertyPlaceholderImage(property.property_use);
+                                return (
+                                    <Link key={property.id} href={`/admin/properties/${property.id}/edit`} className="flex items-center gap-3 border border-white/[0.06] bg-white/[0.02] p-3 transition-colors hover:border-[var(--color-accent)]/25">
+                                        <div className="relative h-11 w-11 shrink-0 overflow-hidden bg-white/[0.04]">
+                                            <Image
+                                                src={property.cover_image || fallbackImage.src}
+                                                alt={property.cover_image ? property.title : fallbackImage.alt}
+                                                fill
+                                                sizes="44px"
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="truncate text-body-sm font-medium text-white">{property.title}</p>
+                                            <p className="truncate text-body-sm text-white/45">
+                                                {propertyStatusLabels[property.status] || property.status} · {property.business_type}
+                                            </p>
+                                        </div>
+                                        <p className="shrink-0 text-caption text-[var(--color-accent)]">
+                                            {formatPrice(property.price, property.currency)}
                                         </p>
-                                    </div>
-                                    <p className="shrink-0 text-caption text-[var(--color-accent)]">
-                                        {formatPrice(property.price, property.currency)}
-                                    </p>
-                                </Link>
-                            ))}
+                                    </Link>
+                                );
+                            })}
                         </div>
                     ) : (
                         <p className="py-8 text-center text-body-sm text-white/45">No hay propiedades recientes.</p>

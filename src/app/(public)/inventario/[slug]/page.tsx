@@ -183,6 +183,7 @@ export default async function PropertyDetailPage({
                             images={property.images || []}
                             title={property.title}
                             coverImage={property.cover_image}
+                            propertyUse={property.property_use}
                         />
                     </div>
                 </section>

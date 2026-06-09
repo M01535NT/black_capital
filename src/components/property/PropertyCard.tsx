@@ -3,9 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Building2, ImageIcon, Maximize2, MessageCircle, MapPin } from "lucide-react";
+import { ArrowRight, Building2, Maximize2, MessageCircle, MapPin } from "lucide-react";
 import { formatShortPrice, formatArea } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { getPropertyPlaceholderImage } from "@/lib/property-placeholder-image";
 import { ShareButton } from "./ShareButton";
 import { PublishedBadge } from "./PublishedBadge";
 import { FavoriteButton } from "./favorite-button";
@@ -80,32 +81,24 @@ export function PropertyCard({
     const isCompact = variant === "similar";
     const statusLabel = STATUS_LABELS[property.status || ""] || property.status || "Disponible";
     const hasCoverImage = Boolean(property.cover_image);
+    const fallbackImage = getPropertyPlaceholderImage(property.property_use);
+    const imageSrc = property.cover_image || fallbackImage.src;
+    const imageAlt = hasCoverImage ? `Fotografía de ${property.title}` : fallbackImage.alt;
 
     const card = (
         <article className="group relative overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-colors duration-300 hover:border-[var(--color-accent)]/35">
             <Link href={href} aria-label={`Ver detalles de ${property.title}`} className="block">
                 <div className={cn("relative overflow-hidden bg-white/[0.02]", ASPECT[variant])}>
-                    {hasCoverImage ? (
-                        <Image
-                            src={property.cover_image as string}
-                            alt={`Fotografía de ${property.title}`}
-                            fill
-                            sizes={SIZES[variant]}
-                            priority={priority}
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                    ) : (
-                        <div className="gold-premium-overlay absolute inset-0 flex flex-col items-center justify-center">
-                            <ImageIcon className="mb-3 h-6 w-6 text-[var(--color-accent)]" aria-hidden="true" />
-                            <span className="property-tag-type text-white/68">
-                                {property.isPlaceholder ? "Imagen de ejemplo" : "Sin imagen"}
-                            </span>
-                        </div>
-                    )}
+                    <Image
+                        src={imageSrc}
+                        alt={imageAlt}
+                        fill
+                        sizes={SIZES[variant]}
+                        priority={priority}
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
 
-                    {hasCoverImage && (
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                     <div className="absolute left-4 top-4 flex flex-wrap gap-2">
                         <span className="border border-white/10 bg-black/60 px-3 py-1 property-tag-type text-white backdrop-blur-md">

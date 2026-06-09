@@ -5,11 +5,13 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getPropertyPlaceholderImage } from "@/lib/property-placeholder-image";
 
 interface ImageGalleryProps {
   images: string[];
   title: string;
   coverImage?: string | null;
+  propertyUse?: string | null;
   videos?: string[];
 }
 
@@ -17,13 +19,16 @@ export function ImageGallery({
   images,
   title,
   coverImage,
+  propertyUse,
 }: ImageGalleryProps) {
+  const fallbackImage = getPropertyPlaceholderImage(propertyUse);
   // ── Build unique ordered image list (cover first, no duplicates) ──
   const allImages: string[] = [];
   if (coverImage) allImages.push(coverImage);
   for (const img of images) {
     if (img && !allImages.includes(img)) allImages.push(img);
   }
+  if (allImages.length === 0) allImages.push(fallbackImage.src);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -133,11 +138,10 @@ export function ImageGallery({
   const lightboxTouchStartX = useRef(0);
   const lightboxTouchEndX = useRef(0);
 
-  if (allImages.length === 0) return null;
-
   const displayIndex = lightboxOpen ? lightboxIndex : activeIndex;
   const hasError = imageErrors.has(displayIndex);
   const isLoading = !hasError && !hasLoaded.has(displayIndex);
+  const displaySrc = hasError ? fallbackImage.src : allImages[displayIndex];
 
   const handleLightboxTouchStart = (e: React.TouchEvent) => {
     lightboxTouchStartX.current = e.touches[0].clientX;
@@ -178,28 +182,20 @@ export function ImageGallery({
               transition={{ duration: 0.4, ease: "easeOut" }}
               className="absolute inset-0"
             >
-              {hasError ? (
-                <div className="w-full h-full flex items-center justify-center bg-foreground/[0.03]">
-                  <span className="property-tag-type text-foreground/50">
-                    Sin imagen
-                  </span>
-                </div>
-              ) : (
-                <Image
-                  src={allImages[displayIndex]}
-                  alt={`${title} — Imagen ${displayIndex + 1}`}
-                  fill
-                  priority={displayIndex === 0}
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 90vw, (max-width: 1024px) 80vw, 1200px"
-                  className={cn(
-                    "object-cover object-center transition-all duration-700 ease-out",
-                    "group-hover:scale-[1.02]",
-                    isLoading ? "opacity-0" : "opacity-100",
-                  )}
-                  onLoad={() => markLoaded(displayIndex)}
-                  onError={() => handleImageError(displayIndex)}
-                />
-              )}
+              <Image
+                src={displaySrc}
+                alt={`${title} — Imagen ${displayIndex + 1}`}
+                fill
+                priority={displayIndex === 0}
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 90vw, (max-width: 1024px) 80vw, 1200px"
+                className={cn(
+                  "object-cover object-center transition-all duration-700 ease-out",
+                  "group-hover:scale-[1.02]",
+                  isLoading ? "opacity-0" : "opacity-100",
+                )}
+                onLoad={() => markLoaded(displayIndex)}
+                onError={() => handleImageError(displayIndex)}
+              />
 
               {/* Loading shimmer */}
               {isLoading && (
@@ -275,20 +271,14 @@ export function ImageGallery({
                   )}
                   aria-label={`Ver imagen ${idx + 1}`}
                 >
-                  {imageErrors.has(idx) ? (
-                    <div className="w-full h-full bg-foreground/[0.05] flex items-center justify-center">
-                    <span className="property-tag-type text-white/20">—</span>
-                    </div>
-                  ) : (
-                    <Image
-                      src={src}
-                      alt={`${title} — Miniatura ${idx + 1}`}
-                      fill
-                      sizes="(max-width: 640px) 40px, (max-width: 768px) 50px, (max-width: 1024px) 60px, 72px"
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      loading="lazy"
-                    />
-                  )}
+                  <Image
+                    src={imageErrors.has(idx) ? fallbackImage.src : src}
+                    alt={`${title} — Miniatura ${idx + 1}`}
+                    fill
+                    sizes="(max-width: 640px) 40px, (max-width: 768px) 50px, (max-width: 1024px) 60px, 72px"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy"
+                  />
                   {idx === activeIndex && (
                     <div className="absolute inset-0 bg-[var(--color-accent)]/15 pointer-events-none" />
                   )}
@@ -339,21 +329,15 @@ export function ImageGallery({
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   className="relative w-full h-full"
                 >
-                  {imageErrors.has(lightboxIndex) ? (
-                    <div className="w-full h-full flex items-center justify-center text-body text-white/50">
-                      Sin imagen
-                    </div>
-                  ) : (
-                    <Image
-                      src={allImages[lightboxIndex]}
-                      alt={`${title} — Vista completa ${lightboxIndex + 1}`}
-                      fill
-                      sizes="90vw"
-                      priority
-                      className="object-contain"
-                      onError={() => handleImageError(lightboxIndex)}
-                    />
-                  )}
+                  <Image
+                    src={imageErrors.has(lightboxIndex) ? fallbackImage.src : allImages[lightboxIndex]}
+                    alt={`${title} — Vista completa ${lightboxIndex + 1}`}
+                    fill
+                    sizes="90vw"
+                    priority
+                    className="object-contain"
+                    onError={() => handleImageError(lightboxIndex)}
+                  />
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -398,18 +382,14 @@ export function ImageGallery({
                     )}
                     aria-label={`Ir a imagen ${idx + 1}`}
                   >
-                    {imageErrors.has(idx) ? (
-                      <div className="w-full h-full bg-white/5" />
-                    ) : (
-                      <Image
-                        src={src}
-                        alt={`Miniatura ${idx + 1}`}
-                        fill
-                        sizes="40px"
-                        className="object-cover"
-                        loading="lazy"
-                      />
-                    )}
+                    <Image
+                      src={imageErrors.has(idx) ? fallbackImage.src : src}
+                      alt={`Miniatura ${idx + 1}`}
+                      fill
+                      sizes="40px"
+                      className="object-cover"
+                      loading="lazy"
+                    />
                   </button>
                 ))}
               </div>

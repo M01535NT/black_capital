@@ -68,7 +68,7 @@ export default function HerramientasPage() {
                             <p className="text-body-sm property-tag-type text-[var(--color-accent)]">
                                 Black tools
                             </p>
-                            <h1 className="mt-4 text-display-1 text-white">
+                            <h1 className="mt-4 max-w-56 text-5xl font-semibold leading-[0.95] tracking-normal text-white sm:text-6xl lg:text-5xl">
                                 Centro de cálculo.
                             </h1>
                         </div>

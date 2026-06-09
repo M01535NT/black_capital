@@ -131,6 +131,7 @@ export async function POST(req: NextRequest) {
 
         const origin = req.headers.get("origin") || process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
         let userId = "";
+        let actionLink = "";
         const role: AdminRole = data.role === "admin" ? "admin" : "agent";
         const { data: inviteData, error: inviteError } = await supabase.auth.admin.generateLink({
             type: "invite",
@@ -151,8 +152,25 @@ export async function POST(req: NextRequest) {
                 );
             }
             userId = existingUser.id;
+            const { data: recoveryData, error: recoveryError } = await supabase.auth.admin.generateLink({
+                type: "recovery",
+                email,
+                options: {
+                    redirectTo: `${origin}/admin/update-password`,
+                },
+            });
+
+            if (recoveryError || !recoveryData.properties?.action_link) {
+                await supabase.from("agents").delete().eq("id", agent.id);
+                return NextResponse.json(
+                    { error: recoveryError?.message || "No se pudo generar el enlace de acceso del integrante." },
+                    { status: 400 }
+                );
+            }
+            actionLink = recoveryData.properties.action_link;
         } else {
             userId = inviteData.user.id;
+            actionLink = inviteData.properties.action_link;
         }
 
         await supabase.auth.admin.updateUserById(userId, {
@@ -175,16 +193,23 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: profileError.message }, { status: 400 });
         }
 
-        if (inviteData?.properties?.action_link) {
-            await sendTeamInviteEmail({
+        const emailDelivery = await sendTeamInviteEmail({
+            to: email,
+            fullName: agent.full_name,
+            role,
+            actionLink,
+        });
+
+        if (emailDelivery.skipped || emailDelivery.error) {
+            logger.error("API/agents", "Agent access email was not delivered", {
                 to: email,
-                fullName: agent.full_name,
-                role,
-                actionLink: inviteData.properties.action_link,
+                skipped: emailDelivery.skipped,
+                error: emailDelivery.error,
+                reason: emailDelivery.reason,
             });
         }
 
-        return NextResponse.json({ agent }, { status: 201 });
+        return NextResponse.json({ agent, emailDelivery }, { status: 201 });
     } catch (err) {
         const message = err instanceof Error ? err.message : "Error interno del servidor";
         return NextResponse.json({ error: `Error en operación de agente: ${message}` }, { status: 500 });

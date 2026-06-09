@@ -4,28 +4,28 @@ import { useEffect, useRef, useState } from "react";
 
 const counters = [
   {
-    label: "Negocios cerrados",
+    label: "Propiedades gestionadas",
     value: 24,
     suffix: "+",
-    copy: "Operaciones acompañadas.",
+    copy: "Residencial, comercial e industrial.",
   },
   {
-    label: "M² comercializados",
+    label: "Superficie comercializada",
     value: 18000,
-    suffix: "+",
-    copy: "Residencial, comercial e industrial.",
+    suffix: " m²",
+    copy: "Activos asesorados y comercializados.",
   },
   {
     label: "Clientes atendidos",
     value: 70,
     suffix: "+",
-    copy: "Compradores, vendedores y arrendadores.",
+    copy: "Compradores, vendedores y propietarios.",
   },
   {
-    label: "Servicios ofrecidos",
-    value: 6,
-    suffix: "+",
-    copy: "Compra, venta, renta y dictamen.",
+    label: "Experiencia inmobiliaria",
+    value: 8,
+    suffix: " años",
+    copy: "Lectura local del mercado de Tijuana.",
   },
 ];
 
@@ -92,14 +92,16 @@ function CounterCard({
 
   return (
     <div ref={counterRef} className="flex min-h-[190px] flex-col items-center justify-center border border-white/[0.08] bg-white/[0.025] p-5 text-center">
-      <p className="mb-4 property-tag-type text-white/42">
+      <p className="font-display text-[2.25rem] font-extrabold uppercase leading-none tracking-[0.04em] metallic-gold-static gold-glow sm:text-display-1">
+        {formatCount(count)}
+        <span className="text-sm align-baseline metallic-gold-static gold-glow sm:text-display-4">
+          {suffix}
+        </span>
+      </p>
+      <p className="mt-5 property-tag-type text-white/72">
         {label}
       </p>
-      <p className="text-display-1 leading-none metallic-gold-static gold-glow">
-        {formatCount(count)}
-        <span className="text-display-4 align-baseline metallic-gold-static gold-glow">{suffix}</span>
-      </p>
-      <p className="mt-5 max-w-[14rem] text-body text-white/58 leading-relaxed">{copy}</p>
+      <p className="mt-3 max-w-[14rem] text-body text-white/52 leading-relaxed">{copy}</p>
     </div>
   );
 }
@@ -112,7 +114,7 @@ export function HomeCounters() {
           Indicadores comerciales
         </p>
         <h2 className="text-display-2 leading-display tracking-headline text-white">
-          Resultados en movimiento.
+          PRESENCIA Y RESULTADOS
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-body text-white/58">
           Cifras de referencia para mostrar alcance, experiencia y capacidad de asesoría.

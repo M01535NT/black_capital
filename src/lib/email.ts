@@ -10,7 +10,10 @@ export async function sendOperationalEmail({
   html: string;
 }) {
   const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey || apiKey === "re_placeholder") return { skipped: true };
+  if (!apiKey || apiKey === "re_placeholder") {
+    logger.error("email", "Resend is not configured; operational email was not sent", { to, subject });
+    return { skipped: true, reason: "RESEND_API_KEY no está configurada." };
+  }
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -28,7 +31,7 @@ export async function sendOperationalEmail({
 
   if (!response.ok) {
     const body = await response.text();
-    logger.warn("email", "Resend operational email failed", body);
+    logger.error("email", "Resend operational email failed", body);
     return { skipped: false, error: body };
   }
 

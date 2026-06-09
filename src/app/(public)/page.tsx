@@ -4,9 +4,14 @@ import Link from "next/link";
 import {
   ArrowRight,
   Building2,
-  CheckCircle2,
+  ClipboardList,
+  FileCheck2,
+  FileText,
+  Handshake,
   Home,
+  KeyRound,
   MapPin,
+  SearchCheck,
   Warehouse,
 } from "lucide-react";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -47,70 +52,132 @@ const ORGANIZATION_SCHEMA = {
 
 const segments = [
   {
-    title: "Residencial",
+    title: "Black Luxury",
+    category: "Residencial",
     href: "/black-luxury",
     inventoryHref: "/inventario?uso=Residencial",
     image: "/brand-luxury.webp",
     icon: Home,
-    copy: "Casas en zona dorada.",
+    copy: "Residencias, casas y oportunidades habitacionales con criterio de ubicación, plusvalía y estilo de vida.",
     zones: "Chapultepec · Zona Río · Playas",
   },
   {
-    title: "Comercial",
+    title: "Black Business",
+    category: "Comercial",
     href: "/black-business",
     inventoryHref: "/inventario?uso=Comercial",
     image: "/brand-business.webp",
     icon: Building2,
-    copy: "Locales y plazas comerciales.",
+    copy: "Locales, oficinas, plazas y activos comerciales evaluados por flujo, visibilidad y operación.",
     zones: "Zona Río · Otay · Díaz Ordaz",
   },
   {
-    title: "Industrial",
+    title: "Black Industrial",
+    category: "Industrial",
     href: "/black-industrial",
     inventoryHref: "/inventario?uso=Industrial",
     image: "/brand-industrial.webp",
     icon: Warehouse,
-    copy: "Naves y suelo industrial.",
+    copy: "Naves, bodegas, parques y tierra industrial para producción, logística y expansión empresarial.",
     zones: "Otay · Pacífico · El Florido",
   },
 ];
 
-const process = [
-  "Analizamos ubicación, condición y comparables.",
-  "Definimos valor, mensaje y perfil objetivo.",
-  "Gestionamos marketing, negociación y cierre.",
+const services = [
+  { title: "Asesoría en compra y venta", icon: Handshake },
+  { title: "Opinión de valor / avalúo comercial", icon: FileText },
+  { title: "Opinión de factibilidad y curación de inventario", icon: SearchCheck },
+  { title: "Comercialización de propiedades", icon: Building2 },
+  { title: "Gestoría de traslación de dominio", icon: KeyRound },
+  { title: "Acompañamiento documental y cierre", icon: FileCheck2 },
 ];
 
-const advisoryPaths = [
+const whyBlackCapital = [
   {
-    audience: "Compradores",
-    title: "Comprar con criterio.",
-    copy: "Definimos perfil, filtramos opciones y negociamos con datos.",
-    steps: ["Perfil de búsqueda", "Opciones viables", "Cierre acompañado"],
+    step: "01",
+    title: "Conocimiento local",
+    text: "Leemos Tijuana como ciudad: barrios, uso de suelo y dinámica real de demanda.",
+    signal: "Ventaja territorial",
   },
   {
-    audience: "Vendedores",
-    title: "Vender con estrategia.",
-    copy: "Opinión de valor, precio de salida y plan comercial.",
-    steps: ["Dictamen inicial", "Marketing sobrio", "Seguimiento comercial"],
+    step: "02",
+    title: "Diagnóstico de activo",
+    text: "Cada caso se evalúa por tipología, potencial de ocupación y contexto legal.",
+    signal: "Ruta clara desde el inicio",
   },
   {
-    audience: "Arrendadores",
-    title: "Rentar sin improvisar.",
-    copy: "Perfilamos interesados, cuidamos condiciones y documentamos entrega.",
-    steps: ["Renta objetivo", "Prospectos calificados", "Contrato y entrega"],
+    step: "03",
+    title: "Estrategia de ruta",
+    text: "Combinamos marketing, negociación y acompañamiento para ir directo al cierre.",
+    signal: "Sin ruido operativo",
+  },
+  {
+    step: "04",
+    title: "Cierre con respaldo",
+    text: "Documentación, valor y negociación con criterio comercial para decisiones seguras.",
+    signal: "Decisión con criterio",
   },
 ];
 
-const values = [
-  "Honestidad",
-  "Compromiso",
-  "Disciplina",
-  "Conocimiento",
-  "Transparencia",
-  "Experiencia",
-  "Integridad",
-  "Resultados",
+const serviceProcess = [
+  "Diagnóstico del objetivo",
+  "Revisión de propiedad / mercado / documentos",
+  "Opinión de valor o factibilidad",
+  "Estrategia comercial o búsqueda",
+  "Negociación, gestoría y cierre",
+];
+
+const intentCtas = [
+  { label: "Quiero vender una propiedad", href: "/contacto?objetivo=vender" },
+  { label: "Busco comprar", href: "/contacto?objetivo=comprar" },
+  { label: "Necesito opinión de valor", href: "/contacto?objetivo=opinion-de-valor" },
+  { label: "Quiero evaluar una propiedad", href: "/contacto?objetivo=evaluar" },
+];
+
+const videoInsights = [
+  {
+    title: "Ruta de Compraventa",
+    tag: "Ruta de Compraventa",
+    video: "/hero.webm",
+    poster: "/hero-luxury.webp",
+    copy: "Definimos objetivo, comparables y estrategia inicial para comprar o vender.",
+    href: "/inventario",
+    label: "Ver rutas",
+  },
+  {
+    title: "Ruta Residencial",
+    tag: "Ruta Residencial",
+    video: "/hero.webm",
+    poster: "/hero-business.webp",
+    copy: "Selección por ubicación, plusvalía y condición para propiedades residenciales.",
+    href: "/black-luxury",
+    label: "Ver ruta",
+  },
+  {
+    title: "Ruta Comercial",
+    tag: "Ruta Comercial",
+    video: "/hero.webm",
+    poster: "/industrial-hero.webp",
+    copy: "Análisis de flujo, demanda y estrategia de posicionamiento comercial.",
+    href: "/black-business",
+    label: "Ver ruta de renta",
+  },
+  {
+    title: "Ruta Industrial",
+    tag: "Ruta Industrial",
+    video: "/hero.webm",
+    poster: "/hero-industrial.webp",
+    copy: "Conectamos operación logística, rentabilidad y viabilidad de activo industrial.",
+    href: "/black-industrial",
+    label: "Ver ruta documental",
+  },
+];
+
+const marqueeItems = [
+  "RESIDENCIAL PREMIUM",
+  "ESPACIOS COMERCIALES",
+  "PROPIEDADES INDUSTRIALES",
+  "UBICACIONES ESTRATÉGICAS",
 ];
 
 export default function HomePage() {
@@ -136,7 +203,7 @@ export default function HomePage() {
             </div>
             <HomeHeroHeadline />
             <p className="mt-6 max-w-xl text-body text-white/66">
-              Compra, venta y renta inmobiliaria en Tijuana con estrategia.
+              Residencial, comercial e industrial en ubicaciones estratégicas.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -157,18 +224,17 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="absolute inset-x-0 top-[calc(100svh-3.5rem)] z-20 sm:top-[calc(100svh-4rem)]">
-          <div className="h-px bg-[var(--color-accent)]/25" />
-          <div className="flex overflow-hidden whitespace-nowrap bg-background/88 py-4 backdrop-blur-md sm:py-5">
+        <div className="absolute inset-x-0 bottom-0 z-20">
+          <div className="flex h-10 items-center overflow-hidden whitespace-nowrap bg-transparent sm:h-12">
             {[0, 1].map((track) => (
               <div key={track} className="animate-marquee inline-flex shrink-0">
-                {values.map((value, index) => (
+                {marqueeItems.map((value, index) => (
                   <span key={`${track}-${value}-${index}`} className="inline-flex shrink-0 items-center">
-                    <span className="px-5 property-tag-type text-white/78 transition-colors duration-300 hover:text-[var(--color-accent)] sm:px-10">
+                    <span className="px-5 property-tag-type text-white/72 transition-colors duration-300 hover:text-[var(--color-accent)] sm:px-10">
                       {value}
                     </span>
-                    <span className="select-none text-[var(--color-accent)]" aria-hidden="true">
-                      •
+                    <span className="select-none gold-ink" aria-hidden="true">
+                      ·
                     </span>
                   </span>
                 ))}
@@ -179,26 +245,57 @@ export default function HomePage() {
       </section>
 
       <section className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <p className="mb-3 text-caption gold-ink">
+              Qué hacemos
+            </p>
+            <h2 className="text-display-2 leading-display tracking-headline text-white">
+              Algunos de nuestros servicios
+            </h2>
+            <p className="mt-6 max-w-md text-body text-white/58">
+              Acompañamos compra, venta y renta de activos con lectura de mercado, documentación y cierre.
+            </p>
+          </div>
+          <div className="grid gap-x-12 sm:grid-cols-2 lg:col-span-8">
+            {services.map((service) => {
+              const Icon = service.icon;
+              return (
+                <article key={service.title} className="group flex min-h-[108px] items-start gap-5 border-t border-white/[0.10] py-6">
+                  <span className="gold-gradient flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-black transition-transform duration-300 group-hover:scale-105">
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <h3 className="max-w-sm text-display-4 leading-tight text-white transition-colors duration-300 group-hover:text-[var(--color-accent)]">
+                    {service.title}
+                  </h3>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[90rem] overflow-hidden px-6 pb-16 sm:px-10 lg:px-16 lg:pb-24">
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="mb-3 text-caption gold-ink">
               Tres líneas de negocio
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
-              Activos con demanda real.
+              Explora por categoría.
             </h2>
           </div>
           <p className="max-w-xl text-body text-white/58">
-            Residencial, comercial e industrial en Tijuana.
+            Tres líneas inmobiliarias, una misma experiencia.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+        <div className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-1 sm:-mx-10 sm:px-10 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0 md:pb-0">
           {segments.map((segment) => {
             const Icon = segment.icon;
             return (
-              <article key={segment.title} className="group overflow-hidden border border-white/[0.08] bg-white/[0.025]">
-                <div className="relative aspect-[16/10] overflow-hidden">
+              <article key={segment.title} className="group flex min-w-[82vw] snap-center flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] sm:min-w-[68vw] md:min-w-0">
+                <div className="relative aspect-[4/5] overflow-hidden sm:aspect-[16/11] md:aspect-[4/5] lg:aspect-[16/10]">
                   <Image
                     src={segment.image}
                     alt={`Ejemplo de propiedad ${segment.title.toLowerCase()} en Tijuana`}
@@ -211,13 +308,16 @@ export default function HomePage() {
                     <span className="gold-gradient flex h-9 w-9 items-center justify-center rounded-full text-black">
                       <Icon className="h-4 w-4" />
                     </span>
-                  <h3 className="text-display-3 font-semibold text-white">{segment.title}</h3>
+                    <div>
+                      <p className="property-tag-type gold-ink">{segment.category}</p>
+                      <h3 className="text-display-3 font-semibold text-white">{segment.title}</h3>
+                    </div>
                   </div>
                 </div>
-                <div className="space-y-5 p-5">
+                <div className="flex flex-1 flex-col space-y-5 p-5">
                   <p className="text-body text-white/64">{segment.copy}</p>
                   <p className="property-tag-type gold-ink opacity-75">{segment.zones}</p>
-                  <div className="flex flex-col gap-2 sm:flex-row">
+                  <div className="mt-auto flex flex-col gap-2 sm:flex-row">
                     <Link href={segment.inventoryHref} className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type gold-ink">
                       Inventario
                     </Link>
@@ -233,71 +333,175 @@ export default function HomePage() {
       </section>
 
       <section className="border-y border-white/[0.06] bg-white/[0.02]">
-        <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-24">
-          <div className="lg:col-span-5">
+        <div className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
+          <div className="mb-10">
             <p className="mb-3 property-tag-type gold-ink">
-              Asesoría inmobiliaria
+              Carrusel de video
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
-              Según tu objetivo.
+              Entiende nuestras rutas en 60 segundos.
             </h2>
-            <p className="mt-6 max-w-md text-body text-white/58">
-              Comprar, vender o rentar exige procesos distintos. El punto de partida cambia; el criterio no.
+            <p className="mt-6 max-w-2xl text-body text-white/58">
+              Selecciona una ruta y revisa el enfoque visual de cada etapa clave.
             </p>
           </div>
-          <div className="grid gap-4 lg:col-span-7">
-            {advisoryPaths.map((path) => (
-              <article key={path.audience} className="border border-white/[0.08] bg-background/70 p-5">
-                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                                <p className="mb-2 property-tag-type gold-ink">
-                                    {path.audience}
-                                </p>
-                                <h3 className="text-display-3 text-white">{path.title}</h3>
-                              </div>
-                              <p className="max-w-sm text-body text-white/58">{path.copy}</p>
-                            </div>
-                            <div className="grid gap-2 sm:grid-cols-3">
-                              {path.steps.map((step, index) => (
-                                <div key={step} className="flex items-center gap-2 border border-white/[0.08] bg-white/[0.025] px-3 py-3">
-                                  <span className="property-tag-type gold-ink">0{index + 1}</span>
-                                  <span className="text-body text-white/68">{step}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </article>
-                        ))}
+
+          <div className="md:-mx-10 md:px-10">
+            <div className="scrollbar-none -mx-6 flex gap-4 overflow-x-auto px-6 pb-3 sm:gap-5 sm:px-10 md:mx-0 md:grid md:grid-cols-2 md:px-0 md:pb-0 lg:grid-cols-4">
+              {videoInsights.map((item) => (
+                <article
+                  key={item.title}
+                  className="group min-w-[82vw] snap-center rounded-none border border-white/[0.12] bg-white/[0.03] md:min-w-0"
+                >
+                  <div className="relative aspect-[16/9] overflow-hidden">
+                    <video
+                      controls
+                      preload="metadata"
+                      playsInline
+                      poster={item.poster}
+                      className="h-full w-full object-cover"
+                    >
+                      <source src={item.video} type="video/webm" />
+                    </video>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <span className="absolute left-4 top-4 inline-flex rounded-none border border-white/20 bg-black/30 px-3 py-1 text-caption property-tag-type gold-ink">
+                      {item.tag}
+                    </span>
+                  </div>
+
+                  <div className="space-y-3 border-t border-white/[0.08] p-5">
+                    <h3 className="text-display-4 leading-tight text-white">{item.title}</h3>
+                    <p className="text-body text-white/70">{item.copy}</p>
+                    <Link
+                      href={item.href}
+                      className="inline-flex items-center gap-2 text-caption gold-ink transition-opacity duration-300 hover:opacity-85"
+                    >
+                      {item.label}
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       <HomeCounters />
 
-      <section className="border-y border-white/[0.06] bg-white/[0.02]">
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/35 to-transparent" />
         <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-24">
           <div className="lg:col-span-5">
             <p className="mb-3 property-tag-type gold-ink">
-              Flujo comercial
+              Por qué Black Capital
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
-              Marketing y negociación.
+              Así convertimos información en decisiones.
+            </h2>
+            <p className="mt-6 max-w-md text-body text-white/58">
+              Cada ruta empieza con contexto real y termina con claridad operativa para decidir con precisión.
+            </p>
+          </div>
+          <div className="relative lg:col-span-7">
+            <div className="timeline-track absolute left-4 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/40 to-transparent md:left-6" />
+            <div className="pl-8 md:pl-12">
+            {whyBlackCapital.map((item) => (
+              <article
+                key={item.step}
+                className="group relative timeline-item border-b border-white/[0.08] py-5 transition-colors duration-300 last:border-b-0 md:py-6"
+                style={{ animationDelay: `${Number(item.step) * 110}ms` }}
+              >
+                <span className="absolute -left-[26px] top-6 h-3 w-3 rounded-full border border-[var(--color-accent)] bg-background shadow-[0_0_0_6px_rgba(0,0,0,0.2)] md:-left-[33px]" />
+                <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="property-tag-type gold-ink">{item.step}</p>
+                  <span className="w-fit border-b border-[var(--color-accent)]/35 pb-1 text-caption text-white/72 transition-colors duration-300 group-hover:text-white">
+                    {item.signal}
+                  </span>
+                </div>
+                <h3 className="text-display-4 text-white transition-colors duration-300 group-hover:text-[var(--color-accent)]">{item.title}</h3>
+                <p className="mt-2 text-body text-white/70">{item.text}</p>
+              </article>
+            ))}
+            </div>
+          </div>
+        </div>
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+      </section>
+
+      <section className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
+        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="mb-3 property-tag-type gold-ink">
+              Nuestro proceso
+            </p>
+            <h2 className="text-display-2 leading-display tracking-headline text-white">
+              De la intención al cierre.
             </h2>
           </div>
-          <div className="grid gap-4 lg:col-span-7">
-            {process.map((item, index) => (
-              <div key={item} className="flex gap-4 border border-white/[0.08] bg-background/70 p-5">
-                    <span className="property-tag-type gold-ink">0{index + 1}</span>
-                    <div className="flex items-start gap-3">
-                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-accent)]" />
-                      <p className="text-body text-white/70">{item}</p>
-                    </div>
-                  </div>
-                ))}
+          <p className="max-w-xl text-body text-white/58">
+            Integramos evaluación, estrategia comercial, búsqueda, negociación y gestoría en una sola ruta de trabajo.
+          </p>
+        </div>
+
+        <div className="grid border-y border-white/[0.08] lg:grid-cols-5">
+          {serviceProcess.map((item, index) => (
+            <article key={item} className="group relative flex min-h-[170px] flex-col justify-between border-b border-white/[0.08] py-6 transition-colors duration-300 last:border-b-0 lg:border-b-0 lg:border-r lg:px-5 lg:last:border-r-0">
+              <div className="mb-8 flex items-center justify-between">
+                <span className="property-tag-type gold-ink">0{index + 1}</span>
+                <ClipboardList className="h-5 w-5 text-[var(--color-accent)] opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
+              </div>
+              <div>
+                <span className="mb-4 block h-px w-10 bg-[var(--color-accent)]/45 transition-all duration-300 group-hover:w-16" />
+                <p className="text-display-4 leading-tight text-white transition-colors duration-300 group-hover:text-[var(--color-accent)]">{item}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="border-t border-white/[0.06] bg-white/[0.02]">
+        <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-8 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-20">
+          <div className="lg:col-span-4">
+            <p className="mb-3 property-tag-type gold-ink">
+              Siguiente paso
+            </p>
+            <h2 className="text-display-3 leading-tight text-white">
+              Elige cómo quieres iniciar.
+            </h2>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:col-span-8">
+            {intentCtas.map((cta) => (
+              <Link
+                key={cta.label}
+                href={cta.href}
+                className="group flex min-h-[64px] items-center justify-between gap-4 border border-white/[0.08] bg-background/70 px-5 py-4 text-left transition-colors duration-300 hover:border-[var(--color-accent)]"
+              >
+                <span className="property-tag-type text-white/78 transition-colors duration-300 group-hover:text-[var(--color-accent)]">
+                  {cta.label}
+                </span>
+                <ArrowRight className="h-4 w-4 shrink-0 text-[var(--color-accent)]" />
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
       <JsonLd id="ld-org" data={ORGANIZATION_SCHEMA} />
+      <style>{`
+        .timeline-item {
+          animation: timeline-reveal 650ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          opacity: 0;
+          transform: translateY(18px);
+        }
+
+        @keyframes timeline-reveal {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </main>
   );
 }

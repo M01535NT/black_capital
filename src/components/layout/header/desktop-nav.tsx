@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useCallback, useEffect, KeyboardEvent, useId, type ComponentType } from "react";
+import { useRef, useCallback, useEffect, KeyboardEvent, useId } from "react";
 import Link from "next/link";
-import { ChevronDown, ArrowRight } from "lucide-react";
+import { ChevronDown, ArrowRight, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navLinkBase, navLinkActive, type DropdownDef } from "./constants";
 
@@ -13,7 +13,7 @@ interface NavDropdownProps {
   onClose: () => void;
 }
 
-function GoldDropdownIcon({ icon: Icon }: { icon: ComponentType<any> }) {
+function GoldDropdownIcon({ icon: Icon }: { icon: LucideIcon }) {
   const gradientId = useId().replace(/:/g, "");
 
   return (

@@ -2,6 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import type { FormEvent, ReactNode } from "react";
+import { useMemo, useState } from "react";
 import { ArrowRight, MapPin, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -14,7 +17,7 @@ export interface SubBrandHeroProps {
     backgroundAlt: string;
     overlayClass?: string;
     accent: Accent;
-    headline: React.ReactNode;
+    headline: ReactNode;
     subtitle: string;
     primaryCta: { label: string; href: string };
     secondaryCta?: { label: string; href: string };
@@ -24,10 +27,93 @@ export interface SubBrandHeroProps {
     scrollIndicator?: boolean;
 }
 
-const SEARCH_FIELDS: Record<string, string[]> = {
-    "Black Luxury": ["Tipo de propiedad", "Zona residencial", "Presupuesto", "Amenidades"],
-    "Black Business": ["Formato comercial", "Zona de operación", "Tipo de operación", "Superficie"],
-    "Black Industrial": ["Tipo de nave", "Corredor logístico", "Rango de m²", "Uso operativo"],
+interface QuickSearchOption {
+    label: string;
+    value: string;
+}
+
+interface QuickSearchConfig {
+    use: "Residencial" | "Comercial" | "Industrial";
+    propertyLabel: string;
+    propertyPlaceholder: string;
+    propertyOptions: QuickSearchOption[];
+    zoneLabel: string;
+    zonePlaceholder: string;
+    zoneOptions: QuickSearchOption[];
+    areaLabel: string;
+    areaOptions: QuickSearchOption[];
+}
+
+const QUICK_SEARCH_CONFIG: Record<string, QuickSearchConfig> = {
+    "Black Luxury": {
+        use: "Residencial",
+        propertyLabel: "Tipo de propiedad",
+        propertyPlaceholder: "Cualquier residencia",
+        propertyOptions: [
+            { label: "Casa", value: "Casa" },
+            { label: "Departamento", value: "Departamento" },
+            { label: "Preventa", value: "Preventa" },
+        ],
+        zoneLabel: "Zona residencial",
+        zonePlaceholder: "Toda Tijuana",
+        zoneOptions: [
+            { label: "Zona Río", value: "Zona Río" },
+            { label: "Chapultepec", value: "Chapultepec" },
+            { label: "Playas", value: "Playas" },
+        ],
+        areaLabel: "Construcción mínima",
+        areaOptions: [
+            { label: "Desde 150 m²", value: "150" },
+            { label: "Desde 250 m²", value: "250" },
+            { label: "Desde 350 m²", value: "350" },
+        ],
+    },
+    "Black Business": {
+        use: "Comercial",
+        propertyLabel: "Formato comercial",
+        propertyPlaceholder: "Cualquier formato",
+        propertyOptions: [
+            { label: "Local", value: "Local" },
+            { label: "Oficina", value: "Oficina" },
+            { label: "Plaza", value: "Plaza" },
+        ],
+        zoneLabel: "Zona de operación",
+        zonePlaceholder: "Toda Tijuana",
+        zoneOptions: [
+            { label: "Zona Río", value: "Zona Río" },
+            { label: "Otay", value: "Otay" },
+            { label: "Díaz Ordaz", value: "Díaz Ordaz" },
+        ],
+        areaLabel: "Superficie mínima",
+        areaOptions: [
+            { label: "Desde 75 m²", value: "75" },
+            { label: "Desde 150 m²", value: "150" },
+            { label: "Desde 300 m²", value: "300" },
+        ],
+    },
+    "Black Industrial": {
+        use: "Industrial",
+        propertyLabel: "Tipo de nave",
+        propertyPlaceholder: "Cualquier activo",
+        propertyOptions: [
+            { label: "Nave", value: "Nave" },
+            { label: "Bodega", value: "Bodega" },
+            { label: "Industrial", value: "Industrial" },
+        ],
+        zoneLabel: "Corredor logístico",
+        zonePlaceholder: "Todo corredor",
+        zoneOptions: [
+            { label: "Parque Industrial", value: "Parque Industrial" },
+            { label: "Otay", value: "Otay" },
+            { label: "Garita", value: "Garita" },
+        ],
+        areaLabel: "Rango de m²",
+        areaOptions: [
+            { label: "Desde 500 m²", value: "500" },
+            { label: "Desde 1,500 m²", value: "1500" },
+            { label: "Desde 3,000 m²", value: "3000" },
+        ],
+    },
 };
 
 export function SubBrandHero({
@@ -40,7 +126,28 @@ export function SubBrandHero({
     primaryCta,
     secondaryCta,
 }: SubBrandHeroProps) {
-    const fields = SEARCH_FIELDS[brand] ?? SEARCH_FIELDS["Black Luxury"];
+    const router = useRouter();
+    const quickSearch = QUICK_SEARCH_CONFIG[brand] ?? QUICK_SEARCH_CONFIG["Black Luxury"];
+    const [propertyType, setPropertyType] = useState("");
+    const [zone, setZone] = useState("");
+    const [operation, setOperation] = useState("");
+    const [minArea, setMinArea] = useState("");
+
+    const quickSearchHref = useMemo(() => {
+        const params = new URLSearchParams({ uso: quickSearch.use });
+        if (propertyType) params.set("propiedad", propertyType);
+        if (zone) params.set("zona", zone);
+        if (operation) params.set("tipo", operation);
+        if (minArea) params.set("m2_min", minArea);
+        return `/inventario?${params.toString()}`;
+    }, [minArea, operation, propertyType, quickSearch.use, zone]);
+
+    const submitQuickSearch = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        router.push(quickSearchHref);
+    };
+
+    const selectClassName = "h-11 w-full appearance-none border border-white/[0.08] bg-white/[0.035] px-3 property-tag-type text-white outline-none transition-colors focus:border-[var(--color-accent)]";
 
     return (
         <section
@@ -107,7 +214,10 @@ export function SubBrandHero({
                 </div>
 
                 <div className="lg:col-span-5">
-                    <div className="border border-white/10 bg-background/82 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl">
+                    <form
+                        onSubmit={submitQuickSearch}
+                        className="border border-white/10 bg-background/82 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl"
+                    >
                         <div className="flex items-center gap-3 border-b border-white/[0.08] pb-4">
                             <div className="gold-gradient flex h-10 w-10 items-center justify-center rounded-full text-black">
                                 <Search className="h-5 w-5" aria-hidden="true" />
@@ -118,26 +228,75 @@ export function SubBrandHero({
                             </div>
                         </div>
                         <div className="grid gap-3 py-4">
-                            {fields.map((label) => (
-                                <div
-                                    key={label}
-                                    className="flex items-center justify-between border border-white/[0.08] bg-white/[0.03] px-4 py-3"
+                            <label className="grid gap-2">
+                                <span className="text-body-sm text-white/65">{quickSearch.propertyLabel}</span>
+                                <select
+                                    value={propertyType}
+                                    onChange={(event) => setPropertyType(event.target.value)}
+                                    className={selectClassName}
                                 >
-                                    <span className="text-body-sm text-white/65">{label}</span>
-                                    <span className="property-tag-type gold-ink">
-                                        Seleccionar
-                                    </span>
-                                </div>
-                            ))}
+                                    <option value="" className="bg-background text-white">{quickSearch.propertyPlaceholder}</option>
+                                    {quickSearch.propertyOptions.map((option) => (
+                                        <option key={option.value} value={option.value} className="bg-background text-white">
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+
+                            <label className="grid gap-2">
+                                <span className="text-body-sm text-white/65">{quickSearch.zoneLabel}</span>
+                                <select
+                                    value={zone}
+                                    onChange={(event) => setZone(event.target.value)}
+                                    className={selectClassName}
+                                >
+                                    <option value="" className="bg-background text-white">{quickSearch.zonePlaceholder}</option>
+                                    {quickSearch.zoneOptions.map((option) => (
+                                        <option key={option.value} value={option.value} className="bg-background text-white">
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+
+                            <label className="grid gap-2">
+                                <span className="text-body-sm text-white/65">Tipo de operación</span>
+                                <select
+                                    value={operation}
+                                    onChange={(event) => setOperation(event.target.value)}
+                                    className={selectClassName}
+                                >
+                                    <option value="" className="bg-background text-white">Venta y renta</option>
+                                    <option value="Venta" className="bg-background text-white">Venta</option>
+                                    <option value="Renta" className="bg-background text-white">Renta</option>
+                                </select>
+                            </label>
+
+                            <label className="grid gap-2">
+                                <span className="text-body-sm text-white/65">{quickSearch.areaLabel}</span>
+                                <select
+                                    value={minArea}
+                                    onChange={(event) => setMinArea(event.target.value)}
+                                    className={selectClassName}
+                                >
+                                    <option value="" className="bg-background text-white">Sin mínimo</option>
+                                    {quickSearch.areaOptions.map((option) => (
+                                        <option key={option.value} value={option.value} className="bg-background text-white">
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
                         </div>
-                        <Link
-                            href={primaryCta.href}
-                            className="gold-gradient premium-cta inline-flex w-full items-center justify-center gap-2 px-5 py-3 text-black"
+                        <Button
+                            type="submit"
+                            className="gold-gradient premium-cta inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-none px-5 py-3 text-black hover:opacity-95"
                         >
                             Buscar opciones
                             <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                        </Link>
-                    </div>
+                        </Button>
+                    </form>
                 </div>
             </div>
         </section>

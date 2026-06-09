@@ -236,13 +236,13 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
         }
     }, [data]);
 
-    function toggleSelected(id: string) {
+    const toggleSelected = useCallback((id: string) => {
         setSelectedIds((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
-    }
+    }, []);
 
-    function toggleAllSelected() {
+    const toggleAllSelected = useCallback(() => {
         setSelectedIds((current) => current.length === data.length ? [] : data.map((lead) => lead.id));
-    }
+    }, [data]);
 
     async function bulkUpdate(payload: { status?: string; assigned_agent_id?: string | null }) {
         if (selectedIds.length === 0) return;
@@ -403,7 +403,7 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                 </button>
             ) : null,
         },
-    ], [agents, data.length, isAdmin, selectedIds, updateStatus, updateAgent]);
+    ], [agents, data.length, isAdmin, selectedIds, toggleAllSelected, toggleSelected, updateStatus, updateAgent]);
 
     const attentionLeads = useMemo(() => {
         return data.filter((lead) => {
