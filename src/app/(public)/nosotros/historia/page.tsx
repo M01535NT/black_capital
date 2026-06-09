@@ -50,14 +50,14 @@ export default function HistoriaPage() {
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent" />
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <FadeIn>
-                        <span className="text-xs font-bold uppercase tracking-mega text-gold-500/80 mb-4 inline-block">
+                        <span className="property-tag-type text-gold-500/80 mb-4 inline-block">
                             Nuestra Trayectoria
                         </span>
-                        <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-display uppercase text-foreground mb-4 text-balance">
+                        <h1 className="text-display-1 uppercase text-foreground mb-4 text-balance">
                             De Tijuana para{" "}
                             <span className="metallic-gold-static">Inversionistas</span>
                         </h1>
-                        <p className="text-foreground/58 text-lg max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-body text-foreground/58 max-w-2xl mx-auto">
                             Una historia de crecimiento constante, construida sobre la confianza
                             de nuestros clientes y el conocimiento profundo del mercado inmobiliario
                             de Baja California.
@@ -90,19 +90,19 @@ export default function HistoriaPage() {
 
                                     {/* Año */}
                                     <div className="md:w-1/2 pt-1 pl-10 md:pl-0 md:text-right">
-                                        <span className="text-gold-500 text-2xl font-light tabular-nums">
+                                        <span className="text-gold-500 text-2xl tabular-nums">
                                             {h.anio}
                                         </span>
                                     </div>
 
                                     {/* Contenido */}
                                     <div className="md:w-1/2 pl-10 md:pl-0">
-                                        <h3 className="font-display text-lg font-semibold text-foreground mb-2">
-                                            {h.titulo}
-                                        </h3>
-                                        <p className="text-foreground/50 text-sm leading-relaxed">
-                                            {h.descripcion}
-                                        </p>
+                                <h3 className="text-display-3 font-semibold text-foreground mb-2">
+                                    {h.titulo}
+                                </h3>
+                                <p className="text-body text-foreground/50">
+                                    {h.descripcion}
+                                </p>
                                     </div>
                                 </div>
                             ))}
@@ -113,3 +113,4 @@ export default function HistoriaPage() {
         </div>
     );
 }
+

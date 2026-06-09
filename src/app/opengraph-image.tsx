@@ -17,7 +17,7 @@ export default async function Image() {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: "Manrope, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                 }}
             >
                 <div
@@ -30,19 +30,26 @@ export default async function Image() {
                 >
                     <div
                         style={{
-                            fontSize: "64px",
+                            fontSize: "clamp(2.75rem, 6vw, 5.75rem)",
                             fontWeight: "bold",
                             color: "#FAFAFA",
                             letterSpacing: "-0.02em",
+                            textTransform: "uppercase",
+                            wordSpacing: "0.08em",
+                            lineHeight: "0.94",
                         }}
                     >
                         BLACK <span style={{ color: "#CFB155" }}>CORP</span>
                     </div>
                     <div
                         style={{
-                            fontSize: "24px",
+                            fontSize: "clamp(1.05rem, 1.6vw, 1.375rem)",
                             color: "#A1A1AA",
                             textAlign: "center",
+                            fontWeight: 500,
+                            letterSpacing: "-0.005em",
+                            lineHeight: "1.45",
+                            maxWidth: "62ch",
                         }}
                     >
                         Plataforma Inmobiliaria de Alta Gama
@@ -62,8 +69,12 @@ export default async function Image() {
                                     border: "1px solid #CFB155",
                                     borderRadius: "8px",
                                     color: "#CFB155",
-                                    fontSize: "18px",
+                                    fontSize: "0.95rem",
                                     fontWeight: "500",
+                                    letterSpacing: "0.02em",
+                                    lineHeight: "1.5",
+                                    fontFamily:
+                                        "Manrope, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                                 }}
                             >
                                 {brand}

@@ -32,14 +32,14 @@ export default function EquipoPage() {
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent" />
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <FadeIn>
-                        <span className="text-xs font-bold uppercase tracking-mega text-gold-500/80 mb-4 inline-block">
+                        <span className="property-tag-type text-gold-500/80 mb-4 inline-block">
                             Nuestro Equipo
                         </span>
-                        <h1 className="font-display text-3xl md:text-5xl font-semibold tracking-display uppercase text-foreground mb-4 text-balance">
+                        <h1 className="text-display-1 uppercase text-foreground mb-4 text-balance">
                             Las Personas Detrás de{" "}
                             <span className="metallic-gold-static">Black Capital</span>
                         </h1>
-                        <p className="text-foreground/58 text-lg max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-body text-foreground/58 max-w-2xl mx-auto">
                             Asesores inmobiliarios con conocimiento profundo del mercado de Tijuana.
                             Trabajamos con criterio local, análisis financiero y seguimiento directo
                             en cada operación.
@@ -58,13 +58,13 @@ export default function EquipoPage() {
                                         {m.nombre.split(" ").map((n) => n[0]).join("")}
                                     </span>
                                 </div>
-                                <h3 className="font-display text-xl font-semibold text-foreground mb-1">
+                                <h3 className="text-display-3 font-semibold text-foreground mb-1">
                                     {m.nombre}
                                 </h3>
-                                <p className="text-gold-500/80 text-sm font-medium mb-4">
+                                <p className="text-foreground/50 text-body-sm mb-4">
                                     {m.cargo}
                                 </p>
-                                <p className="text-foreground/50 text-sm leading-relaxed">
+                                <p className="text-foreground/50 text-body">
                                     {m.descripcion}
                                 </p>
                             </div>

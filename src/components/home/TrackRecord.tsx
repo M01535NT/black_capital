@@ -54,13 +54,13 @@ export async function TrackRecord() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-16 sm:mb-24">
           <div className="max-w-2xl">
             <Eyebrow label="Track Record" />
-            <h2 className="text-display-2 font-light text-white leading-display tracking-headline">
+            <h2 className="text-display-2 text-white leading-display tracking-headline">
               Cifras auditadas.
               <br />
               <span className="text-white/45">No estimadas.</span>
             </h2>
           </div>
-          <p className="text-body-fluid-sm text-white/55 leading-relaxed font-light max-w-md sm:text-right">
+          <p className="text-body-fluid-sm text-white/55 leading-relaxed max-w-md sm:text-right">
             Datos consolidados al cierre del último trimestre fiscal. Sin inflar, sin aproximar.
           </p>
         </div>
@@ -96,12 +96,12 @@ export async function TrackRecord() {
               className="relative flex flex-col items-start justify-center py-10 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-10 first:pl-0 lg:first:pl-2 last:pr-0 lg:last:pr-2"
             >
               {/* Index */}
-              <span className="text-[10px] tracking-[0.2em] uppercase text-white/40 font-semibold mb-4">
+              <span className="property-tag-type text-white/40 mb-4">
                 /{String(i + 1).padStart(2, "0")}
               </span>
 
               {/* Giant number */}
-              <div className="text-stat-mega font-light metallic-gold-static tabular-nums leading-stat mb-5">
+              <div className="text-stat-mega metallic-gold-static tabular-nums leading-stat mb-5">
                 <Counter
                   from={0}
                   to={stat.display}
@@ -112,7 +112,7 @@ export async function TrackRecord() {
               </div>
 
               {/* Label */}
-              <p className="text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-white/55 font-semibold leading-[1.5] max-w-[16ch]">
+              <p className="property-tag-type text-white/55 leading-relaxed max-w-[16ch]">
                 {stat.label}
               </p>
             </div>
@@ -120,9 +120,10 @@ export async function TrackRecord() {
         </div>
 
         {/* Footnote */}
-        <p className="mt-12 sm:mt-16 text-[10px] tracking-[0.18em] uppercase text-white/30 font-semibold max-w-2xl">
+        <p className="mt-12 sm:mt-16 property-tag-type text-white/30 max-w-2xl">
           Datos auditables. Cumplimiento LFPIORPI Art. 27 y disposiciones COFECE aplicables.
         </p>
     </Section>
   );
 }
+

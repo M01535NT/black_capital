@@ -55,13 +55,13 @@ export function Hero() {
               className="flex items-center gap-3 mb-3 sm:mb-10"
             >
               <span className="h-px w-6 sm:w-10 bg-[var(--color-accent)]/60" />
-              <span className="text-[9px] sm:text-[11px] tracking-[0.22em] uppercase text-white/75 font-semibold">
+              <span className="text-caption text-white/75">
                 Inversión inmobiliaria · Tijuana
               </span>
             </motion.div>
 
             {/* Massive title */}
-            <h1 className="text-display-1 font-light leading-hero tracking-tight text-white mb-4 sm:mb-12 text-balance">
+            <h1 className="text-display-1 text-white mb-4 sm:mb-12 text-balance">
               <motion.span
                 initial={shouldReduceMotion ? {} : { opacity: 0, y: 32, filter: "blur(8px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -108,7 +108,7 @@ export function Hero() {
               initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className="text-body-fluid text-white/75 leading-relaxed max-w-xl mb-5 sm:mb-14 font-light"
+              className="text-body text-white/75 leading-relaxed max-w-xl mb-5 sm:mb-14"
             >
               Estructuramos, curamos y gestionamos activos residenciales, comerciales e industriales en Tijuana. Con análisis financiero claro, directo y sin rodeos.
             </motion.p>
@@ -122,14 +122,14 @@ export function Hero() {
             >
               <Link
                 href="/inventario"
-                className="brushed-gold group w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-2.5 px-6 sm:px-9 py-3 sm:py-4 text-[13px] sm:text-sm font-bold tracking-[0.06em] rounded-full hover:scale-[1.015] transition-all duration-300 min-h-[48px]"
+                className="brushed-gold premium-cta group w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-2.5 hover:scale-[1.015] transition-all duration-300 min-h-[48px]"
               >
                 <span>Explorar Propiedades</span>
                 <span aria-hidden="true" className="text-base leading-none transition-transform duration-300 group-hover:translate-x-1">→</span>
               </Link>
               <Link
                 href="/contacto"
-                className="btn-ghost-gold inline-flex items-center justify-center gap-2 sm:gap-2.5 px-6 sm:px-9 py-3 sm:py-4 bg-white/[0.04] border border-white/35 text-white text-[13px] sm:text-sm font-semibold tracking-[0.06em] rounded-full transition-colors duration-300 hover:border-accent hover:bg-white/[0.06]"
+                className="btn-ghost-gold premium-cta inline-flex items-center justify-center gap-2 sm:gap-2.5 bg-white/[0.04] border border-white/35 transition-colors duration-300 hover:border-accent hover:bg-white/[0.06]"
               >
                 <span>Hablar con un Asesor</span>
               </Link>
@@ -191,7 +191,7 @@ export function Hero() {
                   <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--color-accent)] opacity-60 animate-ping" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
                 </span>
-                <span className="text-[8px] sm:text-[10px] tracking-[0.22em] uppercase text-white/80 font-semibold">
+                <span className="property-tag-type text-white/80">
                   Live · Mercado
                 </span>
               </div>
@@ -212,10 +212,10 @@ export function Hero() {
           <div className="animate-marquee inline-flex shrink-0">
             {VALUES.map((v, i) => (
               <span key={`a-${v}-${i}`} className="inline-flex items-center shrink-0">
-                <span className="px-2.5 sm:px-10 text-[8px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
+                <span className="property-tag-type px-2.5 sm:px-10 whitespace-nowrap">
                   {v}
                 </span>
-                <span className="text-accent text-[10px] sm:text-sm select-none" aria-hidden="true">
+                <span className="text-accent text-sm select-none" aria-hidden="true">
                   •
                 </span>
               </span>
@@ -224,10 +224,10 @@ export function Hero() {
           <div className="animate-marquee inline-flex shrink-0">
             {VALUES.map((v, i) => (
               <span key={`b-${v}-${i}`} className="inline-flex items-center shrink-0">
-                <span className="px-2.5 sm:px-10 text-[8px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.28em] uppercase text-white/75 font-semibold whitespace-nowrap">
+                <span className="property-tag-type px-2.5 sm:px-10 whitespace-nowrap">
                   {v}
                 </span>
-                <span className="text-accent text-[10px] sm:text-sm select-none" aria-hidden="true">
+                <span className="text-accent text-sm select-none" aria-hidden="true">
                   •
                 </span>
               </span>

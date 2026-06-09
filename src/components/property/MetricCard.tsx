@@ -21,10 +21,10 @@ export function MetricCard({
                 {icon}
             </div>
             <div className="relative min-w-0 space-y-1">
-                <p className="break-words text-[7px] font-semibold uppercase leading-tight tracking-normal text-white/45 sm:text-[10px] sm:tracking-[0.16em]">
+                <p className="break-words property-tag-type text-white/45">
                     {label}
                 </p>
-                <p className="break-words text-[11px] font-semibold leading-tight text-white sm:text-base">
+                <p className="break-words text-display-3 leading-snug text-white">
                     {value}
                 </p>
             </div>

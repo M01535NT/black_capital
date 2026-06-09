@@ -127,7 +127,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
     };
 
     const hasFilters = activeBusiness || activeUse || activeStatus || activeCurrency || searchTerm || minPrice || maxPrice || minArea || sort !== "newest";
-    const pillBase = "flex min-h-10 w-full items-center justify-center px-2 text-center text-[10px] font-bold uppercase tracking-[0.12em] transition-colors sm:px-4 sm:text-[11px] sm:tracking-[0.14em]";
+    const pillBase = "flex min-h-10 w-full items-center justify-center px-2 property-tag-type transition-colors sm:px-4";
     const pillActive = "bg-[var(--color-accent)] text-black";
     const pillInactive = "border border-white/[0.08] bg-white/[0.025] text-white/62 hover:border-[var(--color-accent)]/35 hover:text-white";
 
@@ -150,7 +150,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                                 setSearchTerm(e.target.value);
                                 updateURL({ q: e.target.value || null });
                             }}
-                            className="h-12 w-full border border-white/[0.08] bg-background/70 pl-11 pr-11 text-sm text-white outline-none placeholder:text-white/35 transition-colors focus:border-[var(--color-accent)]"
+                            className="h-12 w-full border border-white/[0.08] bg-background/70 pl-11 pr-11 text-body-sm text-white outline-none placeholder:text-white/35 transition-colors focus:border-[var(--color-accent)]"
                         />
                         {searchTerm && (
                             <button
@@ -169,7 +169,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                     </div>
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center lg:col-span-7 lg:justify-end">
-                        <div className="text-sm text-white/55">
+                        <div className="text-body-sm text-white/55">
                             <strong className="font-semibold text-white">{filtered.length}</strong>{" "}
                             {filtered.length === 1 ? "resultado" : "resultados"}
                         </div>
@@ -184,7 +184,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                                     setSort(e.target.value);
                                     updateURL({ orden: e.target.value === "newest" ? null : e.target.value });
                                 }}
-                                className="h-11 w-full appearance-none rounded-full border border-white/[0.08] bg-background/70 pl-4 pr-10 text-[11px] font-bold uppercase tracking-[0.14em] text-white/70 outline-none transition-colors focus:border-[var(--color-accent)] sm:w-auto"
+                                className="h-11 w-full appearance-none rounded-full border border-white/[0.08] bg-background/70 pl-4 pr-10 property-tag-type text-white/70 outline-none transition-colors focus:border-[var(--color-accent)] sm:w-auto"
                             >
                                 {SORT_OPTIONS.map((opt) => (
                                     <option key={opt.value} value={opt.value} className="bg-background text-white">
@@ -198,7 +198,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             <button
                                 type="button"
                                 onClick={clearAll}
-                                className="min-h-11 rounded-full border border-[var(--color-accent)]/35 px-5 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                                className="min-h-11 rounded-full border border-[var(--color-accent)]/35 px-5 property-tag-type text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
                             >
                                 Limpiar
                             </button>
@@ -252,9 +252,9 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                     </div>
                 </div>
 
-                <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-12">
-                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-5 lg:col-span-5">
-                        <button
+                        <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-12">
+                            <div className="grid grid-cols-2 gap-2 sm:grid-cols-5 lg:col-span-5">
+                                <button
                             type="button"
                             onClick={() => {
                                 setActiveStatus(null);
@@ -297,8 +297,8 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                         ))}
                     </div>
 
-                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:col-span-5">
-                        <input
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:col-span-5">
+                            <input
                             type="number"
                             min="0"
                             inputMode="numeric"
@@ -308,7 +308,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                                 setMinPrice(e.target.value);
                                 updateURL({ precio_min: e.target.value || null });
                             }}
-                            className="h-11 w-full border border-white/[0.08] bg-background/70 px-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)]"
+                            className="h-11 w-full border border-white/[0.08] bg-background/70 px-4 text-body-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)]"
                         />
                         <input
                             type="number"
@@ -320,8 +320,8 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                                 setMaxPrice(e.target.value);
                                 updateURL({ precio_max: e.target.value || null });
                             }}
-                            className="h-11 w-full border border-white/[0.08] bg-background/70 px-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)]"
-                        />
+                        className="h-11 w-full border border-white/[0.08] bg-background/70 px-4 text-body-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)]"
+                    />
                         <input
                             type="number"
                             min="0"
@@ -332,8 +332,8 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                                 setMinArea(e.target.value);
                                 updateURL({ m2_min: e.target.value || null });
                             }}
-                            className="h-11 w-full border border-white/[0.08] bg-background/70 px-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)]"
-                        />
+                        className="h-11 w-full border border-white/[0.08] bg-background/70 px-4 text-body-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)]"
+                    />
                     </div>
                 </div>
             </div>
@@ -347,23 +347,23 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                     <div className="mx-auto mb-5 flex size-16 items-center justify-center rounded-full bg-[var(--color-accent)] text-black">
                         <Search className="size-6" aria-hidden="true" />
                     </div>
-                    <h2 className="mb-3 text-display-4 font-semibold text-white">
+                    <h2 className="mb-3 text-display-4 text-white">
                         No encontramos coincidencias
                     </h2>
-                    <p className="mx-auto mb-8 max-w-md text-sm leading-6 text-white/58">
+                    <p className="mx-auto mb-8 max-w-md text-body text-white/58">
                         Ajusta los filtros o comparte tu búsqueda con un asesor para preparar opciones similares.
                     </p>
                     <div className="flex flex-col justify-center gap-3 sm:flex-row">
                         <button
                             type="button"
                             onClick={clearAll}
-                            className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-accent)]/35 px-6 text-sm font-bold text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                            className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-accent)]/35 px-6 premium-cta text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
                         >
                             Limpiar filtros
                         </button>
                         <Link
                             href={`/contacto?interes=inventario${searchTerm ? `&busqueda=${encodeURIComponent(searchTerm)}` : ""}`}
-                            className="brushed-gold inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-bold"
+                            className="brushed-gold premium-cta inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6"
                         >
                             Hablar con asesor
                             <ArrowRight className="h-4 w-4" aria-hidden="true" />

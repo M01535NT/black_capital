@@ -38,7 +38,7 @@ export function VideoEmbed({ urls }: VideoEmbedProps) {
         <section className="space-y-5">
             <div className="flex items-center gap-3">
                 <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
-                <h2 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/48">
+                <h2 className="property-tag-type text-white/48">
                     Video Promocional
                 </h2>
             </div>

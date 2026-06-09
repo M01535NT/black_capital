@@ -21,10 +21,10 @@ export const columns: ColumnDef<AgentRow>[] = [
         header: "Nombre",
         cell: ({ row }) => (
             <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-500 text-xs font-bold uppercase">
+                <div className="w-8 h-8 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-500 text-caption">
                     {row.getValue<string>("full_name").charAt(0)}
                 </div>
-                <span className="font-bold text-foreground">{row.getValue("full_name")}</span>
+                <span className="text-body-sm font-medium text-foreground">{row.getValue("full_name")}</span>
             </div>
         ),
     },
@@ -73,8 +73,8 @@ export const columns: ColumnDef<AgentRow>[] = [
                             <MoreHorizontal className="h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                <DropdownMenuContent align="end">
+                        <DropdownMenuLabel className="text-caption">Acciones</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
                             <Link href={`/admin/agents/${agent.id}/edit`}>
                                 <Pencil className="w-3.5 h-3.5 mr-2" />

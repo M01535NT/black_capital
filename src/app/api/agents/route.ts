@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { isAdmin, requireApiProfile } from "@/lib/auth";
 import { sendTeamInviteEmail } from "@/lib/email/team-invite";
 import type { AdminRole } from "@/lib/auth";
@@ -301,11 +302,26 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({ error: "No autorizado" }, { status: 401 });
         }
         const { searchParams } = new URL(req.url);
-        const id = searchParams.get("id");
+        const body = await req.json().catch(() => ({}));
+        const id = searchParams.get("id") || String(body.id || "");
+        const password = String(body.password || "");
         const supabase = createAdminClient();
 
         if (!id) {
             return NextResponse.json({ error: "Se requiere el ID del agente" }, { status: 400 });
+        }
+        if (!password) {
+            return NextResponse.json({ error: "Confirma tu contraseña de administrador." }, { status: 400 });
+        }
+
+        const authClient = await createClient();
+        const { error: passwordError } = await authClient.auth.signInWithPassword({
+            email: profile.email,
+            password,
+        });
+
+        if (passwordError) {
+            return NextResponse.json({ error: "Contraseña incorrecta." }, { status: 401 });
         }
 
         const { propertyCount, leadCount } = await countAgentAssignments(supabase, id);
@@ -316,6 +332,11 @@ export async function DELETE(req: NextRequest) {
             );
         }
 
+        const { data: adminProfiles } = await supabase
+            .from("admin_profiles")
+            .select("id")
+            .eq("agent_id", id);
+
         const { error } = await supabase.from("agents").delete().eq("id", id);
 
         if (error) {
@@ -323,6 +344,12 @@ export async function DELETE(req: NextRequest) {
                 { error: translateError(error) },
                 { status: 400 }
             );
+        }
+
+        if (adminProfiles?.length) {
+            const profileIds = adminProfiles.map((item) => item.id);
+            await supabase.from("admin_profiles").delete().in("id", profileIds);
+            await Promise.all(profileIds.map((profileId) => supabase.auth.admin.deleteUser(profileId)));
         }
 
         return NextResponse.json({ success: true }, { status: 200 });

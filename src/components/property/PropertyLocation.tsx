@@ -1,5 +1,5 @@
 const SECTION_HEADING =
-    "text-[11px] font-bold uppercase tracking-[0.18em] text-white/48";
+    "property-tag-type text-white/48";
 
 /**
  * Google Maps embed with premium frame.

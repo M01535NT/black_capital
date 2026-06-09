@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Bell, LogOut, UserCircle } from "lucide-react";
+import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AdminTooltip } from "@/components/admin/admin-tooltip";
 
 interface NotificationItem {
   id: string;
@@ -19,7 +19,6 @@ export function AdminTopbarActions() {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<NotificationItem[]>([]);
   const [unread, setUnread] = useState(0);
-  const router = useRouter();
   const isMounted = useRef(true);
   const inFlight = useRef(false);
 
@@ -51,12 +50,6 @@ export function AdminTopbarActions() {
     };
   }, []);
 
-  async function logout() {
-    await fetch("/api/admin/logout", { method: "POST" });
-    router.push("/admin/login");
-    router.refresh();
-  }
-
   async function markAllRead() {
     await fetch("/api/admin/notifications", {
       method: "PATCH",
@@ -70,20 +63,22 @@ export function AdminTopbarActions() {
   return (
     <div className="flex min-w-0 shrink-0 items-center gap-1.5 sm:gap-2">
       <div className="relative">
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          onClick={() => setOpen((current) => !current)}
-          className="relative h-9 w-9 rounded-full border-white/[0.12] bg-white/[0.025] text-white"
-        >
-          <Bell className="h-4 w-4" />
-          {unread > 0 && (
-            <span className="absolute -right-1 -top-1 min-w-4 bg-[var(--color-accent)] px-1 text-[10px] font-bold text-black">
-              {unread}
-            </span>
-          )}
-        </Button>
+        <AdminTooltip label="Notificaciones">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            onClick={() => setOpen((current) => !current)}
+            className="relative h-9 w-9 rounded-full border-white/[0.12] bg-white/[0.025] text-white"
+          >
+            <Bell className="h-4 w-4" />
+            {unread > 0 && (
+              <span className="absolute -right-1 -top-1 min-w-4 bg-[var(--color-accent)] px-1 text-[10px] font-bold text-black">
+                {unread}
+              </span>
+            )}
+          </Button>
+        </AdminTooltip>
         {open && (
           <>
             <button className="fixed inset-0 z-20 cursor-default" onClick={() => setOpen(false)} aria-label="Cerrar notificaciones" />
@@ -135,16 +130,6 @@ export function AdminTopbarActions() {
           </>
         )}
       </div>
-      <Button asChild type="button" variant="outline" size="icon" className="h-9 w-9 rounded-full border-white/[0.12] bg-white/[0.025] text-white">
-        <Link href="/admin/account">
-          <UserCircle className="h-4 w-4" />
-          <span className="sr-only">Mi cuenta</span>
-        </Link>
-      </Button>
-      <Button type="button" variant="outline" size="icon" onClick={logout} className="h-9 w-9 rounded-full border-white/[0.12] bg-white/[0.025] text-white">
-        <LogOut className="h-4 w-4" />
-        <span className="sr-only">Cerrar sesión</span>
-      </Button>
     </div>
   );
 }

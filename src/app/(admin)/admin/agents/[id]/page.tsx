@@ -8,6 +8,7 @@ import Link from "next/link";
 import { AssignPropertiesButton } from "./assign-properties";
 import Image from "next/image";
 import { AgentStatusToggle } from "@/components/admin/agent-status-toggle";
+import { AgentDeleteButton } from "@/components/admin/agent-delete-button";
 
 export const revalidate = 0;
 
@@ -73,6 +74,9 @@ export default async function AgentDetailPage({
                 </div>
                 <div className="flex flex-wrap items-center justify-end gap-2">
                     <AgentStatusToggle agentId={id} initialActive={!!agent.is_active} compact />
+                    {!agent.is_active && (
+                        <AgentDeleteButton agentId={id} agentName={agent.full_name} />
+                    )}
                     <Link href={`/admin/agents/${id}/edit`}>
                         <Button variant="outline" className="gap-2 border-foreground/20">
                             <Edit className="w-4 h-4" /> Editar Datos

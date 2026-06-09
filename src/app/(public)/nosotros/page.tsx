@@ -71,11 +71,11 @@ export default function NosotrosPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
                         <div className="lg:col-span-8">
                             <Eyebrow label="Acerca de nosotros" />
-                            <h1 className="text-display-1 font-light text-white leading-hero tracking-tight text-balance">
+                            <h1 className="text-display-1 text-white leading-hero tracking-tight text-balance">
                                 Plataforma inmobiliaria con{" "}
                                 <span className="metallic-gold-static gold-glow">criterio</span>.
                             </h1>
-                            <p className="text-body-fluid text-white/70 leading-relaxed font-light max-w-2xl mt-6 sm:mt-10">
+                            <p className="text-body-fluid text-white/70 leading-relaxed max-w-2xl mt-6 sm:mt-10">
                                 Black Capital es una plataforma inmobiliaria premium enfocada en Tijuana, Baja
                                 California. Conectamos a compradores, vendedores e inversionistas con los mejores
                                 activos residenciales, comerciales e industriales de la región.
@@ -87,12 +87,12 @@ export default function NosotrosPage() {
 
             {/* Subpáginas — links con hairlines (sin glass cards) */}
             <Section id="subpaginas" label="Secciones" spacing="default" containerWidth="wide">
-                <div className="flex items-end justify-between gap-8 mb-14 sm:mb-20">
-                    <div className="max-w-2xl">
-                        <Eyebrow label="Profundiza" />
-                        <h2 className="text-display-2 font-light text-white leading-display tracking-headline">
-                            Conoce más sobre nosotros.
-                        </h2>
+                        <div className="flex items-end justify-between gap-8 mb-14 sm:mb-20">
+                            <div className="max-w-2xl">
+                                <Eyebrow label="Profundiza" />
+                                <h2 className="text-display-2 text-white leading-display tracking-headline">
+                                    Conoce más sobre nosotros.
+                                </h2>
                     </div>
                 </div>
 
@@ -109,16 +109,16 @@ export default function NosotrosPage() {
                                 href={s.href}
                                 className="group block p-8 sm:p-10 lg:p-12 transition-colors duration-500 hover:bg-white/[0.015]"
                             >
-                                <span className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-accent)] font-semibold">
+                                <span className="property-tag-type text-[var(--color-accent)]">
                                     /{String(i + 1).padStart(2, "0")}
                                 </span>
-                                <h3 className="text-display-4 font-semibold text-white tracking-snug mt-4 mb-3 group-hover:text-[var(--color-accent-light)] transition-colors duration-300">
+                                <h3 className="text-display-3 font-semibold text-white mt-4 mb-3 group-hover:text-[var(--color-accent-light)] transition-colors duration-300">
                                     {s.titulo}
                                 </h3>
-                                <p className="text-body-sm text-white/60 leading-relaxed font-light mb-6 max-w-xs">
+                                <p className="text-body-sm text-white/60 leading-relaxed mb-6 max-w-xs">
                                     {s.descripcion}
                                 </p>
-                                <span className="inline-flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase text-white/55 font-semibold group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                                <span className="inline-flex items-center gap-2 footer-link-type property-tag-type text-white/55 group-hover:text-[var(--color-accent)] transition-colors duration-300">
                                     Explorar
                                     <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
                                 </span>
@@ -131,14 +131,14 @@ export default function NosotrosPage() {
             {/* Pilares — 2×2 con vlines y hairline horizontal (mismo patrón que TrackRecord) */}
             <Section id="pilares" label="Pilares" spacing="default" containerWidth="wide">
                 <div className="flex items-end justify-between gap-8 mb-14 sm:mb-20">
-                    <div className="max-w-2xl">
+                                <div className="max-w-2xl">
                         <Eyebrow label="Pilares" />
-                        <h2 className="text-display-2 font-light text-white leading-display tracking-headline">
+                        <h2 className="text-display-2 text-white leading-display tracking-headline">
                             Cuatro principios.{" "}
                             <span className="text-white/45">Cero excepciones.</span>
                         </h2>
                     </div>
-                    <p className="text-body-fluid-sm text-white/55 leading-relaxed font-light max-w-md sm:text-right hidden sm:block">
+                    <p className="text-body-fluid-sm text-white/55 leading-relaxed max-w-md sm:text-right hidden sm:block">
                         Lo que audita cada activo antes de salir al mercado, y lo que firma cada operación antes de cerrar.
                     </p>
                 </div>
@@ -166,16 +166,16 @@ export default function NosotrosPage() {
                                     (i < 2 ? "border-b md:border-b border-white/[0.06]" : "")
                                 }
                             >
-                                <span className="text-[10px] tracking-[0.2em] uppercase text-white/40 font-semibold mb-6">
+                                <span className="property-tag-type text-white/40 mb-6">
                                     /{String(i + 1).padStart(2, "0")}
                                 </span>
                                 <div className="w-14 h-14 rounded-full border border-[var(--color-accent)]/40 flex items-center justify-center mb-8" aria-hidden="true">
                                     <Icon className="w-6 h-6 text-[var(--color-accent)]" strokeWidth={1.5} />
                                 </div>
-                                <h3 className="text-display-4 font-semibold text-white tracking-snug mb-3">
+                                <h3 className="text-display-3 font-semibold text-white mb-3">
                                     {pillar.title}
                                 </h3>
-                                <p className="text-body-sm text-white/60 leading-relaxed font-light max-w-xs">
+                                <p className="text-body-sm text-white/60 leading-relaxed max-w-xs">
                                     {pillar.description}
                                 </p>
                             </div>
@@ -186,3 +186,4 @@ export default function NosotrosPage() {
         </div>
     );
 }
+

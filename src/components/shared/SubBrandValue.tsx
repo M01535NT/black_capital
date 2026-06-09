@@ -47,14 +47,14 @@ export function SubBrandValue({
         >
             <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div className="max-w-3xl">
-                    <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                    <p className="mb-3 text-caption text-[var(--color-accent)]">
                         {eyebrow}
                     </p>
-                    <h2 className="text-display-2 font-light leading-display tracking-headline text-white">
+                    <h2 className="text-display-2 text-white">
                         {title}
                     </h2>
                 </div>
-                <p className="max-w-xl text-sm leading-7 text-white/58 sm:text-right">
+                <p className="max-w-xl text-body text-white/58 sm:text-right">
                     {description}
                 </p>
             </div>
@@ -69,24 +69,24 @@ export function SubBrandValue({
                         >
                             <div className="relative aspect-[16/10] overflow-hidden bg-[linear-gradient(135deg,rgba(255,255,255,0.04),rgba(212,175,55,0.08),rgba(255,255,255,0.02))]">
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
-                                <div className="absolute left-4 top-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/42">
+                                <div className="absolute left-4 top-4 property-tag-type text-white/42">
                                     /{String(index + 1).padStart(2, "0")}
                                 </div>
                                 <div className="absolute bottom-4 left-4 flex items-center gap-2">
                                     <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-accent)] text-black">
                                         <Icon className="h-4 w-4" aria-hidden="true" />
                                     </span>
-                                    <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                                    <h3 className="text-display-3 text-white">{item.title}</h3>
                                 </div>
                             </div>
                             <div className="space-y-5 p-5">
-                                <p className="text-sm leading-6 text-white/64">{item.description}</p>
-                                <p className="text-xs uppercase tracking-[0.16em] text-white/42">
+                                <p className="text-body text-white/64">{item.description}</p>
+                                <p className="footer-legal-type text-white/42">
                                     {BRAND_LABEL[brand]} · contenido editable
                                 </p>
                                 <Link
                                     href={BRAND_HREF[brand]}
-                                    className="inline-flex w-full items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.12em] text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                                    className="inline-flex w-full items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 premium-cta hover:bg-[var(--color-accent)] hover:text-black"
                                 >
                                     Inventario
                                     <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

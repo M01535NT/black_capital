@@ -64,10 +64,11 @@ export function Header() {
       role="banner"
     >
       <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 h-16 lg:h-20 flex items-center justify-between gap-4">
-        <Logo href="/" variant="mark" size="md" tone="gold" className="flex-shrink-0" />
+        <div className="min-h-[72px] flex items-center justify-between gap-4 w-full">
+          <Logo href="/" variant="mark" size="md" tone="gold" className="flex-shrink-0" />
 
         {/* Desktop nav (center) */}
-        <nav aria-label="Menu principal" className="hidden lg:flex items-center gap-8">
+        <nav aria-label="Menu principal" className="hidden lg:flex items-center gap-[clamp(1.25rem,2vw,2.25rem)]">
           {baseLinks.map((link) => (
             <Link
               key={link.name}
@@ -93,13 +94,14 @@ export function Header() {
         <div className="flex items-center gap-2 flex-shrink-0">
           <Link
             href="/contacto"
-            className="brushed-gold hidden lg:inline-flex items-center gap-2 px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] rounded-full hover:scale-[1.015] transition-all duration-300"
+            className="premium-cta brushed-gold font-display hidden lg:inline-flex items-center gap-2 rounded-full hover:scale-[1.015] transition-all duration-300"
           >
             <span>Asesoría</span>
             <span aria-hidden="true">→</span>
           </Link>
 
           <MobileDrawer pathname={pathname} />
+        </div>
         </div>
       </div>
     </header>

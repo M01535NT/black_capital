@@ -180,7 +180,7 @@ export function ImageGallery({
             >
               {hasError ? (
                 <div className="w-full h-full flex items-center justify-center bg-foreground/[0.03]">
-                  <span className="text-xs uppercase tracking-wider font-display text-foreground/50">
+                  <span className="property-tag-type text-foreground/50">
                     Sin imagen
                   </span>
                 </div>
@@ -220,9 +220,9 @@ export function ImageGallery({
 
           {/* Counter */}
           <div className="absolute left-4 top-4 z-20">
-            <span className="rounded-full border border-white/10 bg-black/60 px-3 py-1.5 text-xs font-medium text-white/90 backdrop-blur-md">
-              {displayIndex + 1} / {allImages.length}
-            </span>
+              <span className="rounded-full border border-white/10 bg-black/60 px-3 py-1.5 property-metadata-type text-white/90 backdrop-blur-md">
+                {displayIndex + 1} / {allImages.length}
+              </span>
           </div>
 
           {/* Navigation arrows (desktop hover) */}
@@ -277,7 +277,7 @@ export function ImageGallery({
                 >
                   {imageErrors.has(idx) ? (
                     <div className="w-full h-full bg-foreground/[0.05] flex items-center justify-center">
-                      <span className="text-[9px] text-white/20 uppercase">—</span>
+                    <span className="property-tag-type text-white/20">—</span>
                     </div>
                   ) : (
                     <Image
@@ -321,9 +321,9 @@ export function ImageGallery({
             </button>
 
             <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10">
-              <span className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-md">
-                {lightboxIndex + 1} / {allImages.length}
-              </span>
+                <span className="rounded-full border border-white/10 bg-white/10 px-4 py-2 property-metadata-type text-white backdrop-blur-md">
+                  {lightboxIndex + 1} / {allImages.length}
+                </span>
             </div>
 
             <div
@@ -340,7 +340,7 @@ export function ImageGallery({
                   className="relative w-full h-full"
                 >
                   {imageErrors.has(lightboxIndex) ? (
-                    <div className="w-full h-full flex items-center justify-center text-white/50 text-sm uppercase tracking-wider">
+                    <div className="w-full h-full flex items-center justify-center text-body text-white/50">
                       Sin imagen
                     </div>
                   ) : (

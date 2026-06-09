@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
     const propertyId = formData.get("propertyId") as string | null;
+    const purpose = (formData.get("purpose") as string | null) || "property";
     const bucket = (formData.get("bucket") as string) || "public";
 
     // Validate bucket whitelist
@@ -25,8 +26,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!file || !propertyId) {
-      return NextResponse.json({ error: "Faltan file o propertyId" }, { status: 400 });
+    if (!file) {
+      return NextResponse.json({ error: "Falta el archivo" }, { status: 400 });
+    }
+
+    if (purpose === "property" && !propertyId) {
+      return NextResponse.json({ error: "Falta propertyId" }, { status: 400 });
     }
 
     // Validate file size (max 10 MB)
@@ -35,13 +40,17 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate content type
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/avif", "application/pdf"];
+    const allowedTypes = purpose === "agent-profile"
+      ? ["image/jpeg", "image/png", "image/webp"]
+      : ["image/jpeg", "image/png", "image/webp", "image/avif", "application/pdf"];
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json({ error: "Tipo de archivo no permitido" }, { status: 400 });
     }
 
     const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_");
-    const fileName = `${propertyId}/${Date.now()}-${safeName}`;
+    const fileName = purpose === "agent-profile"
+      ? `agents/profile-photos/${Date.now()}-${safeName}`
+      : `${propertyId}/${Date.now()}-${safeName}`;
 
     const supabase = createAdminClient();
     const arrayBuffer = await file.arrayBuffer();

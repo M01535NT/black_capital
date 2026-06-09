@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const SECTION_HEADING =
-    "text-[11px] font-bold uppercase tracking-[0.18em] text-white/48";
+    "property-tag-type text-white/48";
 
 /**
  * Property description block with read more/less toggle and premium typography.
@@ -33,7 +33,7 @@ export function PropertyDescription({ description }: { description: string }) {
             {isLong && (
                 <button
                     onClick={() => setExpanded(!expanded)}
-                    className="group mt-3 inline-flex items-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-5 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                    className="group mt-3 inline-flex items-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-5 py-2 property-tag-type text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
                 >
                     {expanded ? "Leer menos" : "Leer más"}
                     <ChevronDown 

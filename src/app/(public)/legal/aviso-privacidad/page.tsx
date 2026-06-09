@@ -17,10 +17,10 @@ export default function PrivacidadPage() {
             <div className="bg-zinc-950 py-16 border-b border-gold-500/20 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--color-gold-500)/0.05,_transparent_50%)]" />
                 <div className="container mx-auto px-4 relative z-10">
-                    <h1 className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl md:text-5xl text-foreground mb-4">
+                    <h1 className="text-display-2 uppercase text-foreground mb-4">
                         Aviso de Privacidad
                     </h1>
-                    <p className="text-gold-500/80 max-w-2xl text-lg">
+                    <p className="footer-legal-type text-gold-500/80 max-w-2xl">
                         Última actualización: Junio 2026
                     </p>
                 </div>
@@ -30,9 +30,9 @@ export default function PrivacidadPage() {
                 <div className="container mx-auto px-4 py-16 max-w-4xl">
                     <div className="prose prose-invert prose-lg max-w-none space-y-8 text-foreground/70">
                         <section>
-                            <h2 className="text-2xl font-bold text-foreground border-b border-foreground/10 pb-4">
-                                I. Responsable del Tratamiento
-                            </h2>
+                        <h2 className="text-display-3 font-semibold text-foreground border-b border-foreground/10 pb-4">
+                            I. Responsable del Tratamiento
+                        </h2>
                             <p>
                                 Black Capital, con domicilio en Tijuana, Baja California, México, es responsable
                                 del tratamiento de los datos personales que nos proporcione, los cuales serán

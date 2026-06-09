@@ -15,7 +15,7 @@ export default function TermsPage() {
             <div className="bg-zinc-950 py-16 border-b border-gold-500/20">
                 <div className="container mx-auto px-4 text-center">
                     <FadeIn>
-                        <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-3">
+                        <h1 className="text-display-2 uppercase text-foreground mb-3">
                             Términos y <span className="text-gold-500">Condiciones</span>
                         </h1>
                         <p className="text-body text-foreground/60">
@@ -29,7 +29,7 @@ export default function TermsPage() {
                 <FadeIn delay={0.1}>
                     <div className="prose prose-invert prose-zinc max-w-none">
                         <section className="mb-12">
-                            <h2 className="font-display text-xl font-semibold text-foreground mb-4">
+                            <h2 className="text-display-3 font-semibold text-foreground mb-4">
                                 1. Aceptación de los Términos
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
@@ -38,7 +38,7 @@ export default function TermsPage() {
                         </section>
 
                         <section className="mb-12">
-                            <h2 className="font-display text-xl font-semibold text-foreground mb-4">
+                            <h2 className="text-display-3 font-semibold text-foreground mb-4">
                                 2. Descripción del Servicio
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
@@ -47,7 +47,7 @@ export default function TermsPage() {
                         </section>
 
                         <section className="mb-12">
-                            <h2 className="font-display text-xl font-semibold text-foreground mb-4">
+                            <h2 className="text-display-3 font-semibold text-foreground mb-4">
                                 3. Uso Permitido
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
@@ -63,7 +63,7 @@ export default function TermsPage() {
                         </section>
 
                         <section className="mb-12">
-                            <h2 className="font-display text-xl font-semibold text-foreground mb-4">
+                            <h2 className="text-display-3 font-semibold text-foreground mb-4">
                                 4. Propiedad Intelectual
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
@@ -72,7 +72,7 @@ export default function TermsPage() {
                         </section>
 
                         <section className="mb-12">
-                            <h2 className="font-display text-xl font-semibold text-foreground mb-4">
+                            <h2 className="text-display-3 font-semibold text-foreground mb-4">
                                 5. Información de Propiedades
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
@@ -81,7 +81,7 @@ export default function TermsPage() {
                         </section>
 
                         <section className="mb-12">
-                            <h2 className="font-display text-xl font-semibold text-foreground mb-4">
+                            <h2 className="text-display-3 font-semibold text-foreground mb-4">
                                 6. Registro y Datos Personales
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
@@ -90,7 +90,7 @@ export default function TermsPage() {
                         </section>
 
                         <section className="mb-12">
-                            <h2 className="font-display text-xl font-semibold text-foreground mb-4">
+                            <h2 className="text-display-3 font-semibold text-foreground mb-4">
                                 7. Limitación de Responsabilidad
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
@@ -99,7 +99,7 @@ export default function TermsPage() {
                         </section>
 
                         <section className="mb-12">
-                            <h2 className="font-display text-xl font-semibold text-foreground mb-4">
+                            <h2 className="text-display-3 font-semibold text-foreground mb-4">
                                 8. Enlaces a Terceros
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
@@ -108,7 +108,7 @@ export default function TermsPage() {
                         </section>
 
                         <section className="mb-12">
-                            <h2 className="font-display text-xl font-semibold text-foreground mb-4">
+                            <h2 className="text-display-3 font-semibold text-foreground mb-4">
                                 9. Modificaciones
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
@@ -117,7 +117,7 @@ export default function TermsPage() {
                         </section>
 
                         <section className="mb-12">
-                            <h2 className="font-display text-xl font-semibold text-foreground mb-4">
+                            <h2 className="text-display-3 font-semibold text-foreground mb-4">
                                 10. Ley Aplicable y Jurisdicción
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
@@ -126,7 +126,7 @@ export default function TermsPage() {
                         </section>
 
                         <section className="mb-12">
-                            <h2 className="font-display text-xl font-semibold text-foreground mb-4">
+                            <h2 className="text-display-3 font-semibold text-foreground mb-4">
                                 11. Contacto
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">

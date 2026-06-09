@@ -43,7 +43,7 @@ type SimilarProperty = {
 };
 
 const SECTION_HEADING =
-    "text-[11px] font-bold uppercase tracking-[0.18em] text-white/48";
+    "property-tag-type text-white/48";
 
 export async function generateMetadata({
     params,
@@ -269,9 +269,9 @@ export default async function PropertyDetailPage({
                                                 <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
                                                 <h2 className={SECTION_HEADING}>Propiedades Similares</h2>
                                             </div>
-                                            <Link
+                                                <Link
                                                 href={`/inventario?uso=${encodeURIComponent(property.property_use)}`}
-                                                className="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent)]"
+                                                className="property-tag-type text-[var(--color-accent)]"
                                             >
                                                 Ver inventario
                                             </Link>

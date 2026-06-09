@@ -186,23 +186,23 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                                 ) : (
                                     <Download className="w-4 h-4 text-[var(--color-accent)]" aria-hidden="true" />
                                 )}
-                                <span className="text-[11px] tracking-[0.22em] uppercase text-white/70 font-semibold">
+                                <span className="text-caption text-white/70">
                                     {config.eyebrow}
                                 </span>
                             </div>
 
-                            <h2 className="text-display-2 font-light text-white leading-display tracking-headline text-balance">
+                            <h2 className="text-display-2 text-white text-balance">
                                 {config.title}
                                 <br />
                                 <span className="metallic-gold-static">{config.titleHighlight}</span>
                             </h2>
 
-                            <p className="text-body-fluid-sm text-white/65 leading-relaxed font-light max-w-md">
+                            <p className="text-body text-white/65 leading-relaxed max-w-md">
                                 {config.description}
                             </p>
 
                             {config.indicator && (
-                                <div className="flex items-center gap-3 pt-2 text-white/55 text-[10px] tracking-[0.2em] uppercase font-semibold">
+                                <div className="flex items-center gap-3 pt-2 footer-legal-type text-white/55">
                                     <span className="w-2 h-2 rounded-full bg-[var(--color-accent)]" aria-hidden="true" />
                                     {config.indicator}
                                 </div>
@@ -219,7 +219,7 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                                 <div className="space-y-1">
                                     <Input
                                         placeholder="Nombre Completo"
-                                        className="w-full bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-3 text-sm font-light"
+                                        className="w-full bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-3 text-body"
                                         aria-invalid={hasErr("fullName") || undefined}
                                         {...register("fullName")}
                                     />
@@ -232,7 +232,7 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                                 <div className="space-y-1">
                                     <Input
                                         placeholder={config.companyPlaceholder}
-                                        className="w-full bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-3 text-sm font-light"
+                                        className="w-full bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-3 text-body"
                                         aria-invalid={hasErr("company") || undefined}
                                         {...register("company")}
                                     />
@@ -249,7 +249,7 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                                     <Input
                                         type="email"
                                         placeholder={config.emailPlaceholder}
-                                        className="w-full bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-3 text-sm font-light"
+                                        className="w-full bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-3 text-body"
                                         aria-invalid={hasErr("email") || undefined}
                                         {...register("email")}
                                     />
@@ -263,7 +263,7 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                                     <Input
                                         type="tel"
                                         placeholder="Teléfono (Opcional)"
-                                        className="w-full bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-3 text-sm font-light"
+                                        className="w-full bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-3 text-body"
                                         aria-invalid={hasErr("phone") || undefined}
                                         {...register("phone")}
                                     />
@@ -289,7 +289,7 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                                 />
                                 <label
                                     htmlFor={privacyId}
-                                    className="text-sm text-white/65 leading-relaxed cursor-pointer font-light"
+                                    className="text-body text-white/65 leading-relaxed cursor-pointer"
                                 >
                                     Acepto el{" "}
                                     <a
@@ -314,7 +314,7 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="brushed-gold w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 text-[13px] font-bold tracking-[0.06em] rounded-full hover:scale-[1.015] transition-all duration-300 min-h-[48px]"
+                                    className="brushed-gold premium-cta w-full sm:w-auto inline-flex items-center justify-center gap-2 hover:scale-[1.015] transition-all duration-300 min-h-[48px]"
                                 >
                                     {isSubmitting ? (
                                         <Loader2
@@ -339,10 +339,10 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                         <div className="w-20 h-20 rounded-full border border-[var(--color-accent)]/40 flex items-center justify-center mx-auto mb-6">
                             <CheckCircle2 className="w-10 h-10 text-[var(--color-accent)]" aria-hidden="true" />
                         </div>
-                        <h3 className="text-display-3 font-light text-white leading-display tracking-headline mb-4">
+                        <h3 className="text-display-3 text-white mb-4">
                             {config.successTitle}
                         </h3>
-                        <p className="text-body-fluid-sm text-white/65 leading-relaxed font-light">
+                        <p className="text-body text-white/65 leading-relaxed">
                             {config.successMessage}
                         </p>
                     </div>

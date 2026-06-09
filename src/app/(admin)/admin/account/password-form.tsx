@@ -63,14 +63,14 @@ export function AccountPasswordForm() {
       <button
         type="button"
         onClick={() => setShowPassword((current) => !current)}
-        className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-white/45 transition-colors hover:text-[var(--color-accent)]"
+        className="text-caption text-white/45 inline-flex items-center gap-2 transition-colors hover:text-[var(--color-accent)]"
       >
         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
         {showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
       </button>
 
-      {error && <p className="border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-400">{error}</p>}
-      {message && <p className="border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-400">{message}</p>}
+      {error && <p className="border border-red-500/20 bg-red-500/10 px-3 py-2 text-body-sm text-red-400">{error}</p>}
+      {message && <p className="border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-body-sm text-emerald-400">{message}</p>}
 
       <div className="flex justify-end border-t border-white/[0.06] pt-5">
         <Button disabled={saving || !password || !confirmPassword} className="brushed-gold rounded-full px-6 font-bold">
@@ -95,7 +95,7 @@ function PasswordInput({
 }) {
   return (
     <label className="block space-y-2">
-      <span className="text-sm font-medium text-white/70">{label}</span>
+      <span className="text-body-sm font-medium text-white/70">{label}</span>
       <Input
         type={showPassword ? "text" : "password"}
         value={value}

@@ -162,7 +162,7 @@ export function InvestmentTabs() {
                     {/* Giant number */}
                     <span
                       className={cn(
-                        "text-stat-lg font-light leading-none tabular-nums transition-all duration-500 shrink-0",
+                        "text-stat-lg leading-none tabular-nums transition-all duration-500 shrink-0",
                         isActive ? "metallic-gold-static" : "text-white/20",
                       )}
                     >
@@ -171,8 +171,8 @@ export function InvestmentTabs() {
 
                     {/* Name + badge */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-accent)] font-semibold">
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="property-tag-type text-[var(--color-accent)]">
                           {linea.badge}
                         </span>
                       </div>
@@ -235,7 +235,7 @@ export function InvestmentTabs() {
 
                 {/* Content overlay */}
                 <div className="relative h-full flex flex-col justify-end p-6 sm:p-10 lg:p-12 min-h-[480px] lg:min-h-[560px]">
-                  <p className="text-body-fluid-sm text-white/85 leading-relaxed font-light max-w-2xl mb-8">
+                  <p className="text-body-fluid-sm text-white/85 leading-relaxed max-w-2xl mb-8">
                     {active.longDescription}
                   </p>
 
@@ -244,7 +244,7 @@ export function InvestmentTabs() {
                     {active.highlights.map((h) => (
                       <li
                         key={h}
-                        className="flex items-center gap-3 text-body-sm text-white/75 font-light"
+                        className="flex items-center gap-3 text-body-sm text-white/75"
                       >
                         <span className="w-3 h-px bg-[var(--color-accent)] shrink-0" />
                         <span>{h}</span>
@@ -257,10 +257,10 @@ export function InvestmentTabs() {
                     <div className="grid grid-cols-3 gap-6 sm:gap-8">
                       {active.metric.map((m) => (
                         <div key={m.label} className="min-w-0">
-                          <div className="text-stat-md font-light metallic-gold-static tabular-nums leading-none mb-1.5">
+                          <div className="text-stat-md metallic-gold-static tabular-nums leading-none mb-1.5">
                             {m.value}
                           </div>
-                          <div className="text-[10px] tracking-[0.18em] uppercase text-white/55 font-semibold leading-tight">
+                          <div className="property-tag-type text-white/55 leading-tight">
                             {m.label}
                           </div>
                         </div>
@@ -269,7 +269,7 @@ export function InvestmentTabs() {
 
                     <Link
                       href={active.href}
-                      className="btn-ghost-gold inline-flex items-center gap-2 px-6 py-3 border border-white/25 text-white text-xs font-semibold uppercase tracking-[0.16em] rounded-full transition-colors duration-300 hover:border-[var(--color-accent)]/70 shrink-0"
+                      className="btn-ghost-gold premium-cta inline-flex items-center gap-2 px-6 py-3 border border-white/25 shrink-0"
                     >
                       <span>Ver línea completa</span>
                       <span aria-hidden="true" className="text-[var(--color-accent)]">→</span>
@@ -277,7 +277,7 @@ export function InvestmentTabs() {
                   </div>
 
                   {/* Disclaimer */}
-                  <p className="mt-6 text-[10px] tracking-[0.16em] uppercase text-white/35 font-semibold leading-relaxed max-w-2xl">
+                  <p className="mt-6 property-tag-type text-white/35 leading-relaxed max-w-2xl">
                     Rangos modelados; cifras finales por activo en el brochure ejecutivo de cada propiedad.
                   </p>
                 </div>
@@ -288,3 +288,4 @@ export function InvestmentTabs() {
     </Section>
   );
 }
+

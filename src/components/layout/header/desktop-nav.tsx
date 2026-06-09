@@ -81,12 +81,12 @@ export function NavDropdown({ def, isOpen, onOpen, onClose }: NavDropdownProps) 
         <div
           role="menu"
           aria-label={def.label}
-          className="absolute top-full left-1/2 -translate-x-1/2 translate-y-2 min-w-[260px] bg-[#111111]/96 border border-white/10 rounded-2xl p-3 shadow-[0_20px_60px_rgba(0,0,0,0.7)] backdrop-blur-2xl z-50"
+          className="font-display absolute top-full left-1/2 -translate-x-1/2 translate-y-2 min-w-[260px] bg-[#111111]/96 border border-white/10 rounded-none p-3 shadow-[0_20px_60px_rgba(0,0,0,0.7)] backdrop-blur-2xl z-50"
         >
           <Link
             href={def.href}
             role="menuitem"
-            className="flex items-center justify-between px-4 py-2.5 mb-1 text-xs uppercase tracking-overline font-display font-bold text-gold-solid rounded-xl border-b border-white/5 pb-3 hover:text-gold-400 focus-visible:outline-none focus-visible:text-gold-400"
+            className="font-display property-tag-type flex items-center justify-between px-4 py-2.5 mb-1 text-gold-solid rounded-none border-b border-white/5 pb-3 hover:text-gold-400 focus-visible:outline-none focus-visible:text-gold-400"
             onClick={onClose}
           >
             Ver todo de {def.label}
@@ -99,7 +99,7 @@ export function NavDropdown({ def, isOpen, onOpen, onClose }: NavDropdownProps) 
                 key={item.name}
                 href={item.href}
                 role="menuitem"
-                className="flex items-center gap-3 px-4 py-3 text-sm text-foreground rounded-xl transition-all duration-300 hover:bg-gold-500/10 hover:text-gold-solid hover:pl-5 focus-visible:bg-gold-500/10 focus-visible:text-gold-solid focus-visible:outline-none"
+                className="font-display text-body-sm flex items-center gap-3 px-4 py-3 text-foreground rounded-none transition-all duration-300 hover:bg-gold-500/10 hover:text-gold-solid hover:pl-5 focus-visible:bg-gold-500/10 focus-visible:text-gold-solid focus-visible:outline-none"
                 onClick={onClose}
               >
                 <Icon className="w-4 h-4 text-gold-solid" aria-hidden="true" />

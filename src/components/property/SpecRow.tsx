@@ -12,10 +12,10 @@ export function SpecRow({
 }) {
     return (
         <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] py-2 last:border-b-0">
-            <span className="text-[10px] uppercase tracking-[0.16em] text-white/45">{label}</span>
+            <span className="property-tag-type text-white/45">{label}</span>
             <span
-                className={`text-right text-sm font-medium text-white/78 ${
-                    mono ? "font-mono text-xs" : ""
+                className={`text-right text-body text-white/78 ${
+                    mono ? "font-mono text-body-sm" : ""
                 }`}
             >
                 {value}

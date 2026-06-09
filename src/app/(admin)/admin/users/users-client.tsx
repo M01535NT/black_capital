@@ -64,19 +64,19 @@ export function UsersClient({ initialUsers }: {
     <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,360px)_minmax(0,1fr)]">
       <form onSubmit={invite} className={`${adminCardClass} min-w-0 space-y-4 p-5`}>
         <div>
-          <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-accent)]">Invitar administrador</p>
-          <p className="mt-2 text-sm text-white/50">Para agentes usa la sección Agentes. Aquí solo se gestiona acceso administrativo.</p>
+          <p className="text-caption text-[var(--color-accent)]">Invitar administrador</p>
+          <p className="mt-2 text-body-sm text-white/50">Para agentes usa la sección Agentes. Aquí solo se gestiona acceso administrativo.</p>
         </div>
         <Input value={form.full_name} onChange={(e) => setForm((prev) => ({ ...prev, full_name: e.target.value }))} placeholder="Nombre completo" className="border-white/[0.1] bg-background/70 text-white" />
         <Input type="email" value={form.email} onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))} placeholder="correo@empresa.com" className="border-white/[0.1] bg-background/70 text-white" />
-        {error && <p className="bg-red-500/10 px-3 py-2 text-sm text-red-400">{error}</p>}
+        {error && <p className="bg-red-500/10 px-3 py-2 text-body-sm text-red-400">{error}</p>}
         <Button disabled={saving || !form.email || !form.full_name} className="brushed-gold w-full rounded-full font-bold">
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <><MailPlus className="mr-2 h-4 w-4" /> Invitar administrador</>}
         </Button>
       </form>
 
       <div className={`${adminCardClass} overflow-hidden`}>
-        <div className="hidden grid-cols-[1fr_120px_120px] border-b border-white/[0.08] px-4 py-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/42 sm:grid">
+        <div className="hidden grid-cols-[1fr_120px_120px] border-b border-white/[0.08] px-4 py-3 text-caption text-white/42 sm:grid">
           <span>Usuario</span>
           <span>Rol</span>
           <span>Acceso</span>
@@ -88,20 +88,20 @@ export function UsersClient({ initialUsers }: {
                 <Shield className="h-4 w-4 text-[var(--color-accent)]" />
               </div>
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-white">{user.full_name}</p>
-                <p className="truncate text-xs text-white/45">{user.email}</p>
-              </div>
+                <p className="truncate text-body-sm font-medium text-white">{user.full_name}</p>
+                <p className="truncate text-body-sm text-white/45">{user.email}</p>
             </div>
-            <span className="text-sm capitalize text-white/65 sm:block">
-              <span className="mr-2 text-xs uppercase tracking-[0.12em] text-white/35 sm:hidden">Rol</span>
+          </div>
+            <span className="text-body-sm capitalize text-white/65 sm:block">
+              <span className="mr-2 text-caption text-white/35 sm:hidden">Rol</span>
               {user.role}
             </span>
-            <button onClick={() => toggleActive(user)} className={`w-fit px-2 py-1 text-xs font-semibold ${user.is_active ? "bg-emerald-500/10 text-emerald-400" : "bg-white/[0.04] text-white/45"}`}>
+            <button onClick={() => toggleActive(user)} className={`w-fit px-2 py-1 text-caption ${user.is_active ? "bg-emerald-500/10 text-emerald-400" : "bg-white/[0.04] text-white/45"}`}>
               {user.is_active ? "Activo" : "Inactivo"}
             </button>
           </div>
         ))}
-        {users.length === 0 && <p className="px-4 py-12 text-center text-sm text-white/45">No hay usuarios registrados.</p>}
+        {users.length === 0 && <p className="px-4 py-12 text-center text-body-sm text-white/45">No hay usuarios registrados.</p>}
       </div>
     </div>
   );

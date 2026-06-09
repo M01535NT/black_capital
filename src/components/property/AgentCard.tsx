@@ -31,11 +31,11 @@ export function AgentCard({ agent }: { agent: AgentInfo }) {
                 )}
             </div>
             <div className="min-w-0 flex-1 space-y-1.5">
-                <p className="font-semibold leading-tight text-white">
+                <p className="text-display-3 font-semibold leading-tight text-white">
                     {agent.full_name}
                 </p>
-                {agent.license_number && (
-                    <p className="text-caption uppercase tracking-wider text-white/45">
+                    {agent.license_number && (
+                    <p className="text-caption uppercase text-white/45">
                         Céd. {agent.license_number}
                     </p>
                 )}
@@ -45,7 +45,7 @@ export function AgentCard({ agent }: { agent: AgentInfo }) {
                             href={`https://wa.me/${agent.phone.replace(/[^0-9]/g, "")}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex w-fit items-center gap-2 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/10 px-3 py-1.5 text-xs font-semibold text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                            className="inline-flex w-fit items-center gap-2 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/10 px-3 py-1.5 property-tag-type text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
                         >
                             <MessageCircle className="size-3" />
                             WhatsApp
@@ -54,7 +54,7 @@ export function AgentCard({ agent }: { agent: AgentInfo }) {
                     {agent.email && (
                         <a
                             href={`mailto:${agent.email}`}
-                            className="inline-flex w-fit items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-white/56 transition-colors hover:border-white/18 hover:text-white"
+                            className="inline-flex w-fit items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.04] px-3 py-1.5 property-metadata-type text-white/56 transition-colors hover:border-white/18 hover:text-white"
                         >
                             <Mail className="size-3" />
                             Email

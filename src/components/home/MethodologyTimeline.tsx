@@ -102,7 +102,7 @@ export function MethodologyTimeline() {
                     {/* Content */}
                     <div className="flex-1 min-w-0 lg:pt-2">
                       <div className="flex items-baseline gap-3 mb-3">
-                        <span className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-accent)] font-semibold">
+                        <span className="property-tag-type text-[var(--color-accent)]">
                           {step.number}
                         </span>
                         <span className="h-px flex-1 bg-white/[0.08] lg:hidden" />
@@ -110,7 +110,7 @@ export function MethodologyTimeline() {
                       <h3 className="text-display-4 font-semibold text-white tracking-snug mb-3">
                         {step.title}
                       </h3>
-                      <p className="text-body-sm text-white/60 leading-relaxed font-light max-w-xs">
+                      <p className="text-body-sm text-white/60 leading-relaxed max-w-xs">
                         {step.body}
                       </p>
                     </div>
@@ -131,3 +131,4 @@ export function MethodologyTimeline() {
     </Section>
   );
 }
+

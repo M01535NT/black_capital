@@ -135,7 +135,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <h1 className="mb-2 font-display text-4xl font-bold uppercase leading-none tracking-wide text-white">
-            BLACK <span className="block text-lg font-light tracking-[0.2em] text-[var(--color-accent)]">CAPITAL</span>
+            BLACK <span className="block text-lg tracking-[0.2em] text-[var(--color-accent)]">CAPITAL</span>
           </h1>
           <p className="text-sm text-white/50">Panel de administración</p>
         </div>
@@ -147,3 +147,4 @@ export default function AdminLoginPage() {
     </div>
   );
 }
+

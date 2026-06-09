@@ -9,10 +9,9 @@ interface SectionHeaderProps {
   className?: string;
 }
 
-const TITLE_CLASS =
-  "text-display-2 font-light text-white leading-display tracking-headline";
+const TITLE_CLASS = "text-display-2 text-white";
 const DESC_CLASS =
-  "text-body-fluid-sm text-white/65 leading-relaxed font-light max-w-xl";
+  "text-body max-w-xl";
 
 export function SectionHeader({
   eyebrow,

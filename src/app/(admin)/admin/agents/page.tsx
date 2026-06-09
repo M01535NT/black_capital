@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { AdminEmptyState, AdminPageHeader, adminCardClass } from "@/components/admin/admin-ui";
 import { AgentStatusToggle } from "@/components/admin/agent-status-toggle";
+import { AgentDeleteButton } from "@/components/admin/agent-delete-button";
 import { Button } from "@/components/ui/button";
 
 export const revalidate = 0;
@@ -156,6 +157,9 @@ export default async function AgentsPage() {
                                                 <Edit className="w-3.5 h-3.5" />
                                             </Button>
                                         </Link>
+                                        {!agent.is_active && (
+                                            <AgentDeleteButton agentId={agent.id} agentName={agent.full_name} compact />
+                                        )}
                                     </div>
                                 </div>
                             </div>

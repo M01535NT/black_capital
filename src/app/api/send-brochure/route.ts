@@ -59,7 +59,7 @@ export async function POST(req: Request) {
         const html = `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
-<body style="background:#0A0A0A;color:#FAFAFA;font-family:Inter,-apple-system,sans-serif;padding:48px 24px;margin:0">
+<body style="background:#0A0A0A;color:#FAFAFA;font-family:'Manrope',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:48px 24px;margin:0">
     <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto">
         <tr>
             <td style="padding-bottom:32px;border-bottom:1px solid #222">

@@ -27,7 +27,7 @@ export function AdminPageHeader({
                         {eyebrow}
                     </p>
                 )}
-                <h1 className="break-words text-3xl font-light leading-tight tracking-normal text-white sm:text-4xl lg:text-5xl">
+                <h1 className="break-words text-3xl leading-tight tracking-normal text-white sm:text-4xl lg:text-5xl">
                     {title}
                 </h1>
                 {description && (
@@ -80,7 +80,7 @@ export function AdminStatCard({
                 </span>
                 {href && <ArrowRight className="h-4 w-4 text-white/20 transition-all group-hover:translate-x-1 group-hover:text-[var(--color-accent)]" />}
             </div>
-            <p className="text-4xl font-light leading-none text-white">{value}</p>
+            <p className="text-4xl leading-none text-white">{value}</p>
             <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-white/42">{label}</p>
             {note && <p className="mt-2 text-xs leading-5 text-white/50">{note}</p>}
         </div>
@@ -131,7 +131,7 @@ export function AdminEmptyState({
             <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
                 <Icon className="h-6 w-6" aria-hidden="true" />
             </div>
-            <h3 className="text-xl font-light text-white">{title}</h3>
+            <h3 className="text-xl text-white">{title}</h3>
             <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-white/55">{description}</p>
             {action && (
                 <Link href={action.href} className="brushed-gold mt-6 inline-flex min-h-11 items-center justify-center rounded-full px-6 text-sm font-bold">
@@ -141,3 +141,4 @@ export function AdminEmptyState({
         </div>
     );
 }
+

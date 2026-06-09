@@ -205,15 +205,15 @@ export async function BrandInventory({
         >
             <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div className="max-w-3xl">
-                    <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                    <p className="mb-3 text-caption text-[var(--color-accent)]">
                         {eyebrow}
                     </p>
-                    <h2 className="text-display-2 font-light leading-display tracking-headline text-white">
+                    <h2 className="text-display-2 leading-display tracking-headline text-white">
                         {title}
                         {highlight && <> <span className="metallic-gold-static">{highlight}</span></>}
                     </h2>
                 </div>
-                <p className="max-w-xl text-sm leading-7 text-white/58 sm:text-right">
+                <p className="max-w-xl text-body text-white/58 sm:text-right">
                     {subtitle}
                 </p>
             </div>
@@ -239,15 +239,15 @@ export async function BrandInventory({
                                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                                     />
                                 ) : (
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-[linear-gradient(135deg,rgba(255,255,255,0.04),rgba(212,175,55,0.08),rgba(255,255,255,0.02))]">
-                                        <ImageIcon className="mb-3 h-5 w-5 text-[var(--color-accent)]/70" aria-hidden="true" />
-                                        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/44">
-                                            Imagen de ejemplo
-                                        </span>
-                                    </div>
+                                <div className="absolute inset-0 flex flex-col items-center justify-center bg-[linear-gradient(135deg,rgba(255,255,255,0.04),rgba(212,175,55,0.08),rgba(255,255,255,0.02))]">
+                                    <ImageIcon className="mb-3 h-5 w-5 text-[var(--color-accent)]/70" aria-hidden="true" />
+                                    <span className="property-tag-type text-white/44">
+                                        Imagen de ejemplo
+                                    </span>
+                                </div>
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
-                                <div className="absolute left-4 top-4 rounded-full border border-[var(--color-accent)]/30 bg-background/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+                                <div className="absolute left-4 top-4 rounded-full border border-[var(--color-accent)]/30 bg-background/85 px-3 py-1 property-tag-type text-[var(--color-accent)]">
                                     {prop.isPlaceholder ? "Ejemplo" : prop.property_type}
                                 </div>
                                 <div className="absolute bottom-4 left-4 right-4">
@@ -256,31 +256,31 @@ export async function BrandInventory({
                             </div>
 
                             <div className="space-y-5 p-5">
-                                <div className="flex flex-wrap gap-4 text-[13px] text-white/55">
+                                <div className="flex flex-wrap gap-4 text-body-sm text-white/55">
                                     <span className="inline-flex items-center gap-1.5">
                                         <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
                                         {prop.business_type}
                                     </span>
-                                    {prop.m2_construction && (
-                                        <span className="inline-flex items-center gap-1.5">
-                                            <Maximize2 className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
-                                            {prop.m2_construction.toLocaleString()} m²
-                                        </span>
-                                    )}
-                                </div>
-                                <p className="text-xs uppercase tracking-[0.16em] text-white/42">
+                                {prop.m2_construction && (
+                                    <span className="inline-flex items-center gap-1.5">
+                                        <Maximize2 className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
+                                        {prop.m2_construction.toLocaleString()} m²
+                                    </span>
+                                )}
+                            </div>
+                                <p className="property-tag-type text-white/42">
                                     {prop.priceLabel ?? formatPrice(prop.price, prop.currency)}
                                 </p>
                                 <div className="flex flex-col gap-2 sm:flex-row">
                                     <Link
                                         href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
-                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.12em] text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
                                     >
                                         Inventario
                                     </Link>
                                     <Link
                                         href={href}
-                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-white/10 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.12em] text-white/75 transition-colors hover:border-white/30"
+                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-white/10 px-4 py-2.5 property-tag-type text-white/75 transition-colors hover:border-white/30"
                                     >
                                         Solicitar
                                     </Link>
@@ -294,7 +294,7 @@ export async function BrandInventory({
             <div className="mt-10 text-center">
                 <Link
                     href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
-                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:border-[var(--color-accent)]"
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-6 property-tag-type text-white transition-colors hover:border-[var(--color-accent)]"
                 >
                     {ctaText}
                     <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -303,3 +303,4 @@ export async function BrandInventory({
         </section>
     );
 }
+

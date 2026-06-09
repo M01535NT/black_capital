@@ -20,7 +20,7 @@ export function DocumentCard({ doc }: { doc: DocumentLink }) {
                 <FileText className="size-4 text-gold-500" />
             </div>
             <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-foreground truncate group-hover:text-gold-500 transition-colors">
+                <p className="text-body text-foreground truncate group-hover:text-gold-500 transition-colors">
                     {doc.label}
                 </p>
                 <p className="text-caption text-foreground/50 uppercase tracking-wider">PDF</p>

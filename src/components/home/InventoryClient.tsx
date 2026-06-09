@@ -37,10 +37,10 @@ export function InventoryClient({ items, isLive }: InventoryClientProps) {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8 mb-14 sm:mb-20">
         <div className="max-w-2xl">
           <Eyebrow label="Inventario" />
-          <h2 className="text-display-2 font-light text-white leading-display tracking-headline mb-4">
+          <h2 className="text-display-2 text-white leading-display tracking-headline mb-4">
             Propiedades con <span className="metallic-gold-static">potencial real</span>.
           </h2>
-          <p className="text-body-fluid-sm text-white/65 leading-relaxed font-light max-w-lg">
+          <p className="text-body-fluid-sm text-white/65 leading-relaxed max-w-lg">
             Sin maquillaje, sin fotos con truco. Lo que ves es lo que hay, con análisis financiero estructurado por activo.
           </p>
         </div>
@@ -65,7 +65,7 @@ export function InventoryClient({ items, isLive }: InventoryClientProps) {
           </button>
           <Link
             href="/inventario"
-            className="hidden sm:inline-flex items-center gap-2 ml-3 px-5 py-2.5 border border-[var(--color-accent)]/30 text-white text-[11px] font-semibold uppercase tracking-[0.16em] rounded-full hover:border-[var(--color-accent)] hover:text-[var(--color-accent-light)] transition-all duration-300"
+            className="hidden sm:inline-flex premium-cta items-center gap-2 ml-3 px-5 py-2.5 border border-[var(--color-accent)]/30 transition-all duration-300"
           >
             <span>Ver todo</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -106,10 +106,10 @@ export function InventoryClient({ items, isLive }: InventoryClientProps) {
         </div>
       ) : (
         <div className="text-center py-20 max-w-md mx-auto">
-          <h3 className="text-xl font-light text-white/70 mb-2 tracking-snug">
+          <h3 className="text-display-3 text-white/70 mb-2">
             {isLive ? "Actualizando inventario" : "Sin propiedades destacadas"}
           </h3>
-          <p className="text-sm text-white/50 font-light">
+          <p className="text-body-sm text-white/50">
             {isLive
               ? "Estamos seleccionando propiedades con cuidado. Vuelve pronto."
               : "No pudimos cargar el inventario. Recarga la página en un momento."}
@@ -121,7 +121,7 @@ export function InventoryClient({ items, isLive }: InventoryClientProps) {
       <div className="sm:hidden mt-10 text-center">
         <Link
           href="/inventario"
-          className="inline-flex items-center gap-2 px-5 py-2.5 border border-[var(--color-accent)]/30 text-white text-[11px] font-semibold uppercase tracking-[0.16em] rounded-full"
+          className="inline-flex premium-cta items-center gap-2 px-5 py-2.5 border border-[var(--color-accent)]/30"
         >
           <span>Ver todo</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -130,3 +130,4 @@ export function InventoryClient({ items, isLive }: InventoryClientProps) {
     </Section>
   );
 }
+

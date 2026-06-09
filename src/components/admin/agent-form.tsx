@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2 } from "lucide-react";
+import { ImagePlus, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 
 interface AgentFormProps {
@@ -28,6 +28,8 @@ interface AgentFormProps {
 export function AgentForm({ initialData }: AgentFormProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+    const photoInputRef = useRef<HTMLInputElement | null>(null);
 
     const form = useForm<AgentFormValues>({
         resolver: zodResolver(agentSchema),
@@ -77,6 +79,47 @@ export function AgentForm({ initialData }: AgentFormProps) {
         }
     }
 
+    async function handlePhotoUpload(file: File | undefined) {
+        if (!file) return;
+
+        const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+        if (!allowedTypes.includes(file.type)) {
+            toast.error("La foto debe estar en formato JPG, PNG o WEBP");
+            return;
+        }
+
+        if (file.size > 10 * 1024 * 1024) {
+            toast.error("La foto no puede pesar más de 10 MB");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("purpose", "agent-profile");
+        formData.append("bucket", "public");
+
+        setIsUploadingPhoto(true);
+        try {
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
+            const result = await res.json();
+
+            if (!res.ok) {
+                throw new Error(result.error || "No se pudo subir la foto");
+            }
+
+            form.setValue("photo_url", result.url, { shouldDirty: true, shouldValidate: true });
+            toast.success("Foto de perfil cargada");
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : "Error al subir foto");
+        } finally {
+            setIsUploadingPhoto(false);
+            if (photoInputRef.current) photoInputRef.current.value = "";
+        }
+    }
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit, () => {
@@ -85,7 +128,7 @@ export function AgentForm({ initialData }: AgentFormProps) {
             })} className="border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6" noValidate>
                 <div className="mb-6 border-b border-white/[0.06] pb-5">
                     <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
-                        Datos del asesor
+                        Datos del agente
                     </p>
                     <p className="mt-2 text-sm text-white/55">
                         Al registrar al integrante se enviará una invitación para configurar su contraseña y entrar al panel.
@@ -176,10 +219,70 @@ export function AgentForm({ initialData }: AgentFormProps) {
                         control={form.control}
                         name="photo_url"
                         render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>URL de Foto</FormLabel>
+                            <FormItem className="md:col-span-2">
+                                <FormLabel>Foto de perfil</FormLabel>
                                 <FormControl>
-                                    <Input className="border-white/[0.1] bg-background/70 text-white" placeholder="https://..." {...field} />
+                                    <div className="flex flex-col gap-4 border border-white/[0.08] bg-background/45 p-4 sm:flex-row sm:items-center">
+                                        <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden border border-white/[0.12] bg-white/[0.03]">
+                                            {field.value ? (
+                                                // eslint-disable-next-line @next/next/no-img-element
+                                                <img
+                                                    src={field.value}
+                                                    alt="Vista previa de foto de perfil"
+                                                    className="h-full w-full object-cover"
+                                                />
+                                            ) : (
+                                                <ImagePlus className="h-7 w-7 text-white/35" />
+                                            )}
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="text-sm font-medium text-white">
+                                                Sube una foto desde la galería del equipo
+                                            </p>
+                                            <p className="mt-1 text-xs leading-relaxed text-white/50">
+                                                Formatos permitidos: JPG, PNG o WEBP. Tamaño máximo: 10 MB.
+                                            </p>
+                                            <div className="mt-4 flex flex-wrap gap-3">
+                                                <input
+                                                    ref={photoInputRef}
+                                                    type="file"
+                                                    accept="image/jpeg,image/png,image/webp"
+                                                    className="hidden"
+                                                    onChange={(event) => handlePhotoUpload(event.target.files?.[0])}
+                                                />
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    disabled={isUploadingPhoto}
+                                                    onClick={() => photoInputRef.current?.click()}
+                                                    className="rounded-full border-white/15 bg-white/[0.03] text-white hover:bg-white/[0.08]"
+                                                >
+                                                    {isUploadingPhoto ? (
+                                                        <>
+                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                            Subiendo...
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <ImagePlus className="mr-2 h-4 w-4" />
+                                                            Elegir foto
+                                                        </>
+                                                    )}
+                                                </Button>
+                                                {field.value ? (
+                                                    <Button
+                                                        type="button"
+                                                        variant="ghost"
+                                                        onClick={() => form.setValue("photo_url", "", { shouldDirty: true, shouldValidate: true })}
+                                                        className="rounded-full text-white/60 hover:bg-white/[0.06] hover:text-white"
+                                                    >
+                                                        <X className="mr-2 h-4 w-4" />
+                                                        Quitar foto
+                                                    </Button>
+                                                ) : null}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

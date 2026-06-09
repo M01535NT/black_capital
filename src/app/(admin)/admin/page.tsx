@@ -135,7 +135,7 @@ export default async function AdminDashboard() {
                         href={action.href}
                         className="group flex min-h-16 items-center justify-between border border-white/[0.08] bg-white/[0.025] px-4 transition-colors hover:border-[var(--color-accent)]/30"
                     >
-                        <span className="flex items-center gap-3 text-sm font-semibold text-white/78 group-hover:text-white">
+                        <span className="text-body-sm font-semibold text-white/78 group-hover:text-white flex items-center gap-3">
                             <action.icon className="h-4 w-4 text-[var(--color-accent)]" />
                             {action.label}
                         </span>
@@ -156,9 +156,9 @@ export default async function AdminDashboard() {
                             return (
                                 <div key={stage.key} className="space-y-2">
                                     <div className="flex justify-between text-xs">
-                                        <span className="font-semibold uppercase tracking-[0.14em] text-white/55">{stage.label}</span>
-                                        <span className="text-white">{stage.count}</span>
-                                    </div>
+                        <span className="text-caption text-white/55">{stage.label}</span>
+                        <span className="text-white">{stage.count}</span>
+                    </div>
                                     <div className="h-2 w-full overflow-hidden bg-white/[0.045]">
                                         <div className={`h-full ${stage.color}`} style={{ width: `${pct}%` }} />
                                     </div>
@@ -174,12 +174,12 @@ export default async function AdminDashboard() {
                             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {recentLeads.map((lead: any) => (
                                 <Link key={lead.id} href={`/admin/leads/${lead.id}`} className="flex items-center gap-3 border border-white/[0.06] bg-white/[0.02] p-3 transition-colors hover:border-[var(--color-accent)]/25">
-                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center bg-[var(--color-accent)]/10 text-sm font-bold text-[var(--color-accent)]">
+                                    <div className="text-display-4 flex h-9 w-9 shrink-0 items-center justify-center bg-[var(--color-accent)]/10">
                                         {(lead.full_name || "?").charAt(0).toUpperCase()}
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                        <p className="truncate text-sm font-medium text-white">{lead.full_name}</p>
-                                        <p className="truncate text-xs text-white/45">{sourceLabels[lead.source] || lead.source}</p>
+                                        <p className="text-body-sm font-medium truncate text-white">{lead.full_name}</p>
+                                        <p className="truncate text-body-sm text-white/45">{sourceLabels[lead.source] || lead.source}</p>
                                     </div>
                                     <Badge className="border border-white/[0.08] bg-white/[0.03] text-[10px] text-white/60">
                                         {statusLabels[lead.status] || lead.status}
@@ -188,7 +188,7 @@ export default async function AdminDashboard() {
                             ))}
                         </div>
                     ) : (
-                        <p className="py-8 text-center text-sm text-white/45">No hay leads recientes.</p>
+                            <p className="py-8 text-center text-body-sm text-white/45">No hay leads recientes.</p>
                     )}
                 </AdminSectionCard>
 
@@ -206,19 +206,19 @@ export default async function AdminDashboard() {
                                         )}
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                        <p className="truncate text-sm font-medium text-white">{property.title}</p>
-                                        <p className="truncate text-xs text-white/45">
+                                        <p className="truncate text-body-sm font-medium text-white">{property.title}</p>
+                                        <p className="truncate text-body-sm text-white/45">
                                             {propertyStatusLabels[property.status] || property.status} · {property.business_type}
                                         </p>
                                     </div>
-                                    <p className="shrink-0 text-xs font-semibold text-[var(--color-accent)]">
+                                    <p className="shrink-0 text-caption text-[var(--color-accent)]">
                                         {formatPrice(property.price, property.currency)}
                                     </p>
                                 </Link>
                             ))}
                         </div>
                     ) : (
-                        <p className="py-8 text-center text-sm text-white/45">No hay propiedades recientes.</p>
+                        <p className="py-8 text-center text-body-sm text-white/45">No hay propiedades recientes.</p>
                     )}
                 </AdminSectionCard>
             </div>

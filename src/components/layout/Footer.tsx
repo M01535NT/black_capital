@@ -104,12 +104,12 @@ function FooterNewsletter() {
                 placeholder="Tu correo corporativo"
                 autoComplete="email"
                 aria-label="Correo para suscribirse al directorio"
-                className="flex-1 bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-2 text-sm font-light"
+                className="flex-1 bg-transparent border-0 border-b border-white/15 text-white placeholder:text-white/30 rounded-none focus-visible:ring-0 focus-visible:border-[var(--color-accent)] px-0 py-2 text-sm"
             />
             <Button
                 type="submit"
                 disabled={status === "submitting"}
-                className="btn-ghost-gold border border-[var(--color-accent)]/40 text-white text-[11px] font-semibold uppercase tracking-[0.16em] rounded-full px-6 py-3 hover:border-[var(--color-accent)]"
+                className="btn-ghost-gold premium-cta border border-[var(--color-accent)]/40 text-white hover:border-[var(--color-accent)]"
             >
                 <span>{status === "submitting" ? "Enviando" : "Suscribir"}</span>
                 <span aria-hidden="true" className="ml-1.5 text-[var(--color-accent)]">→</span>
@@ -143,21 +143,21 @@ export function Footer() {
                   {/* Eyebrow */}
                   <div className="flex items-center justify-center gap-3 mb-5">
                     <span className="h-px w-10 bg-[var(--color-accent)]/60" />
-                    <span className="text-[11px] tracking-[0.22em] uppercase text-white/70 font-semibold">
-                      Acceso Directo
+                    <span className="text-caption text-white/70">
+                        Acceso Directo
                     </span>
                     <span className="h-px w-10 bg-[var(--color-accent)]/60" />
                   </div>
 
                   {/* Compact headline */}
-                  <h2 className="text-display-3 font-light text-white leading-display tracking-headline mb-6 max-w-2xl mx-auto">
+                  <h2 className="text-display-3 text-white mb-6 max-w-2xl mx-auto">
                     ¿Listo para invertir con <span className="metallic-gold-static">claridad</span>?
                   </h2>
 
                   {/* Newsletter inline */}
                   <div className="max-w-md mx-auto">
                     <FooterNewsletter />
-                    <p className="text-[10px] tracking-[0.18em] uppercase text-white/30 font-semibold mt-4">
+                    <p className="footer-legal-type mt-4">
                       Compliance LFPIORPI · COFECE · Privacidad garantizada
                     </p>
                   </div>
@@ -170,7 +170,7 @@ export function Footer() {
                     {/* Brand */}
                     <div className="col-span-2 md:col-span-4 space-y-5">
                         <Logo href="/" variant="full" size="md" tone="gold" />
-                        <p className="text-[13px] text-white/55 leading-[1.7] font-light max-w-sm">
+                        <p className="text-body max-w-sm">
                             Plataforma inmobiliaria premium en Tijuana, Baja California. Casas residenciales, centros comerciales y naves industriales con análisis financiero estructurado para compradores, empresarios e inversionistas.
                         </p>
                         <div className="flex gap-2 pt-2 flex-wrap">
@@ -211,17 +211,17 @@ export function Footer() {
 
                     {/* Marcas */}
                     <div className="col-span-1 md:col-span-3 space-y-5">
-                        <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/55">
+                        <h4 className="footer-heading-type text-white/55">
                             Marcas
                         </h4>
                         <ul className="space-y-3">
                             {brandLinks.map((link) => (
                                 <li key={link.name}>
                                     <Link href={link.href} className="group flex flex-col">
-                                        <span className="text-[13px] font-semibold uppercase tracking-wide text-white/75 group-hover:text-[var(--color-accent)] transition-colors">
+                                        <span className="footer-link-type group-hover:text-[var(--color-accent)] transition-colors">
                                             {link.name}
                                         </span>
-                                        <span className="text-[10px] text-white/40 uppercase tracking-wider mt-0.5">
+                                        <span className="footer-legal-type mt-0.5">
                                             {link.desc}
                                         </span>
                                     </Link>
@@ -232,7 +232,7 @@ export function Footer() {
 
                     {/* Corporativo */}
                     <div className="col-span-1 md:col-span-2 space-y-5">
-                        <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/55">
+                        <h4 className="footer-heading-type text-white/55">
                             Corporativo
                         </h4>
                         <ul className="space-y-3">
@@ -240,7 +240,7 @@ export function Footer() {
                                 <li key={link.name}>
                                     <Link
                                         href={link.href}
-                                        className="text-[13px] font-semibold uppercase tracking-wide text-white/75 hover:text-[var(--color-accent)] transition-colors"
+                                        className="footer-link-type hover:text-[var(--color-accent)] transition-colors"
                                     >
                                         {link.name}
                                     </Link>
@@ -251,10 +251,10 @@ export function Footer() {
 
                     {/* Contacto */}
                     <div className="col-span-2 md:col-span-3 space-y-5">
-                        <h4 className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/55">
+                        <h4 className="footer-heading-type text-white/55">
                             Contacto
                         </h4>
-                        <ul className="space-y-3 text-[13px] text-white/55 leading-relaxed">
+                        <ul className="space-y-3 footer-link-type text-white/55 leading-relaxed">
                             <li>
                                 <a
                                     href={mapsHref}
@@ -284,26 +284,26 @@ export function Footer() {
                                     <span className="group-hover:underline">{CONTACT_CONFIG.email}</span>
                                 </a>
                             </li>
-                            <li className="pt-1 text-[10px] tracking-[0.18em] uppercase text-white/35 leading-relaxed">
-                                {CONTACT_CONFIG.hours.map((line) => (
-                                    <span key={line} className="block">{line}</span>
-                                ))}
+                                <li className="pt-1 footer-legal-type text-white/35 leading-relaxed">
+                                    {CONTACT_CONFIG.hours.map((line) => (
+                                        <span key={line} className="block">{line}</span>
+                                    ))}
                             </li>
                         </ul>
                     </div>
                 </div>
 
                 {/* Compliance */}
-                <p className="text-[10px] tracking-[0.16em] uppercase text-white/30 mb-6 max-w-3xl leading-relaxed font-light">
+                <p className="footer-legal-type mb-6 max-w-3xl leading-relaxed">
                     Cumplimiento LFPIORPI Art. 27 y disposiciones COFECE aplicables. Black Capital opera como intermediario inmobiliario; no presta servicios de asesoría financiera ni de inversión. Toda la información publicada está sujeta a disponibilidad y confirmación.
                 </p>
 
                 {/* Bottom bar */}
                 <div className="pt-6 border-t border-white/[0.06] flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-[10px] tracking-[0.18em] uppercase text-white/40">
+                    <p className="footer-legal-type text-white/40">
                         © {new Date().getFullYear()} Black Capital. Todos los derechos reservados.
                     </p>
-                    <p className="text-[10px] tracking-[0.18em] uppercase text-white/30">
+                    <p className="footer-legal-type text-white/30">
                         Representación inmobiliaria profesional
                     </p>
                 </div>

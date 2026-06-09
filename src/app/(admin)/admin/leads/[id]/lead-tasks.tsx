@@ -64,19 +64,19 @@ export function LeadTasks({ leadId, initialTasks }: { leadId: string; initialTas
   return (
     <div className="space-y-3">
       <form onSubmit={createTask} className="space-y-2">
-        <Input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Nueva tarea" className="border-foreground/10 bg-muted/20 text-sm" />
-        <Textarea value={description} onChange={(event) => setDescription(event.target.value)} placeholder="Detalle opcional" className="h-16 border-foreground/10 bg-muted/20 text-sm" />
+        <Input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Nueva tarea" className="border-foreground/10 bg-muted/20 text-body-sm" />
+        <Textarea value={description} onChange={(event) => setDescription(event.target.value)} placeholder="Detalle opcional" className="h-16 border-foreground/10 bg-muted/20 text-body-sm" />
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           <select
             value={priority}
             onChange={(event) => setPriority(event.target.value as Task["priority"])}
-            className="h-10 border border-foreground/10 bg-muted/20 px-3 text-sm text-foreground"
+            className="h-10 border border-foreground/10 bg-muted/20 px-3 text-body-sm text-foreground"
           >
             <option value="low">Baja prioridad</option>
             <option value="normal">Prioridad normal</option>
             <option value="high">Alta prioridad</option>
           </select>
-        <Input type="datetime-local" value={dueAt} onChange={(event) => setDueAt(event.target.value)} className="border-foreground/10 bg-muted/20 text-sm" />
+        <Input type="datetime-local" value={dueAt} onChange={(event) => setDueAt(event.target.value)} className="border-foreground/10 bg-muted/20 text-body-sm" />
         </div>
         <Button size="sm" disabled={saving || !title.trim()} className="w-full bg-gold-500 text-black hover:bg-gold-600">
           {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Plus className="h-3 w-3" />}
@@ -86,7 +86,7 @@ export function LeadTasks({ leadId, initialTasks }: { leadId: string; initialTas
       <div className="space-y-2">
         {pendingTasks.map((task) => <TaskCard key={task.id} task={task} onComplete={completeTask} />)}
         {doneTasks.map((task) => <TaskCard key={task.id} task={task} onComplete={completeTask} />)}
-        {tasks.length === 0 && <p className="py-4 text-center text-sm text-foreground/45">Sin tareas pendientes.</p>}
+        {tasks.length === 0 && <p className="py-4 text-center text-body-sm text-foreground/45">Sin tareas pendientes.</p>}
       </div>
     </div>
   );
@@ -106,12 +106,12 @@ function TaskCard({ task, onComplete }: { task: Task; onComplete: (taskId: strin
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <p className={`text-sm font-medium ${task.status === "done" ? "text-foreground/40 line-through" : "text-foreground"}`}>{task.title}</p>
-            <span className={`text-[10px] font-bold uppercase tracking-[0.12em] ${priorityClass}`}>{task.priority === "high" ? "Alta" : task.priority === "low" ? "Baja" : "Normal"}</span>
+            <p className={`text-body-sm font-medium ${task.status === "done" ? "text-foreground/40 line-through" : "text-foreground"}`}>{task.title}</p>
+            <span className={`text-caption ${priorityClass}`}>{task.priority === "high" ? "Alta" : task.priority === "low" ? "Baja" : "Normal"}</span>
           </div>
-          {task.description && <p className="mt-1 text-xs leading-5 text-foreground/55">{task.description}</p>}
+          {task.description && <p className="mt-1 text-body-sm leading-5 text-foreground/55">{task.description}</p>}
           {dueDate && (
-            <p className={`mt-2 flex items-center gap-1 text-xs ${isOverdue ? "text-red-400" : isDueToday ? "text-gold-500" : "text-foreground/45"}`}>
+            <p className={`mt-2 flex items-center gap-1 text-body-sm ${isOverdue ? "text-red-400" : isDueToday ? "text-gold-500" : "text-foreground/45"}`}>
               {isOverdue ? <AlertTriangle className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
               {dueDate.toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" })}
             </p>

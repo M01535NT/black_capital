@@ -20,7 +20,7 @@ export function HomeHeroHeadline() {
   }, [shouldReduceMotion]);
 
   return (
-    <h1 className="max-w-4xl text-[clamp(3.15rem,15vw,5.25rem)] font-light leading-[0.96] tracking-tight text-white text-balance sm:text-[clamp(4rem,8vw,6rem)] lg:text-[clamp(4.75rem,7vw,7rem)]">
+    <h1 className="text-display-1 text-white text-balance">
       Invierte con{" "}
       <span className="relative inline-block min-w-[8.5ch] text-[var(--color-accent)]">
         <AnimatePresence mode="wait" initial={false}>
@@ -39,3 +39,4 @@ export function HomeHeroHeadline() {
     </h1>
   );
 }
+

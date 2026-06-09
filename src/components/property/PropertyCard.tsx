@@ -96,37 +96,37 @@ export function PropertyCard({
                     ) : (
                         <div className="absolute inset-0 flex flex-col items-center justify-center bg-[linear-gradient(135deg,rgba(255,255,255,0.04),rgba(212,175,55,0.08),rgba(255,255,255,0.02))]">
                             <ImageIcon className="mb-3 h-5 w-5 text-[var(--color-accent)]/70" aria-hidden="true" />
-                            <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/44">
+                            <span className="property-tag-type text-white/44">
                                 {property.isPlaceholder ? "Imagen de ejemplo" : "Sin imagen"}
                             </span>
                         </div>
                     )}
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                     <div className="absolute left-4 top-4 flex flex-wrap gap-2">
-                        <span className="border border-white/10 bg-black/60 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur-md">
+                        <span className="border border-white/10 bg-black/60 px-3 py-1 property-tag-type text-white backdrop-blur-md">
                             {property.property_use}
                         </span>
                         {property.isPlaceholder && (
-                            <span className="border border-[var(--color-accent)]/35 bg-background/75 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent)] backdrop-blur-md">
+                            <span className="border border-[var(--color-accent)]/35 bg-background/75 px-3 py-1 property-tag-type text-[var(--color-accent)] backdrop-blur-md">
                                 Ejemplo
                             </span>
                         )}
                         {property.created_at && <PublishedBadge createdAt={property.created_at} />}
                         {property.is_featured && (
-                            <span className="border border-[var(--color-accent)]/35 bg-background/75 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent)] backdrop-blur-md">
+                            <span className="border border-[var(--color-accent)]/35 bg-background/75 px-3 py-1 property-tag-type text-[var(--color-accent)] backdrop-blur-md">
                                 Destacada
                             </span>
                         )}
                     </div>
 
                     <div className="absolute bottom-4 left-4 right-4">
-                        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--color-accent)]">
+                        <p className="mb-2 property-tag-type text-[var(--color-accent)]">
                             {property.business_type}
                             {property.property_type ? ` · ${property.property_type}` : ""}
                         </p>
-                        <h3 className="line-clamp-2 text-xl font-semibold leading-snug text-white">
+                        <h3 className="line-clamp-2 text-display-3 font-semibold leading-tight text-white">
                             {property.title}
                         </h3>
                     </div>
@@ -134,15 +134,20 @@ export function PropertyCard({
 
                 <div className={cn("space-y-5 p-5", isCompact && "p-4")}>
                     <div className="flex items-center justify-between gap-3">
-                        <span className={cn("border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em]", STATUS_STYLES[property.status || ""] || "border-white/[0.08] bg-white/[0.025] text-white/60")}>
+                        <span
+                            className={cn(
+                                "border px-2.5 py-1 property-tag-type",
+                                STATUS_STYLES[property.status || ""] || "border-white/[0.08] bg-white/[0.025] text-white/60",
+                            )}
+                        >
                             {statusLabel}
                         </span>
-                        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/35">
+                        <span className="property-metadata-type text-white/35">
                             {property.currency}
                         </span>
                     </div>
 
-                    <div className="flex flex-wrap gap-x-4 gap-y-2 text-[13px] text-white/55">
+                    <div className="flex flex-wrap gap-x-4 gap-y-2 property-metadata-type text-white/55">
                         {property.address && (
                             <span className="inline-flex items-center gap-1.5">
                                 <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
@@ -164,12 +169,12 @@ export function PropertyCard({
                     </div>
 
                     <div className="flex items-end justify-between gap-4 border-t border-white/[0.06] pt-4">
-                        <p className="text-sm font-semibold text-[var(--color-accent)]">
+                        <p className="property-price-type text-[var(--color-accent)]">
                             {property.isPlaceholder
                                 ? "Precio de ejemplo"
                                 : formatShortPrice(property.price, property.currency, property.business_type)}
                         </p>
-                        <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.14em] text-white/70 transition-colors group-hover:text-[var(--color-accent)]">
+                        <span className="inline-flex items-center gap-2 property-tag-type text-white/70 transition-colors group-hover:text-[var(--color-accent)]">
                             {property.isPlaceholder ? "Solicitar" : "Ver ficha"}
                             <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                         </span>
@@ -180,7 +185,7 @@ export function PropertyCard({
                 <div className="border-t border-white/[0.06] p-4 pt-0">
                     <Link
                         href={contactHref}
-                        className="flex min-h-10 items-center justify-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-4 text-xs font-bold uppercase tracking-[0.12em] text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                        className="premium-cta flex min-h-10 items-center justify-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-4 text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
                     >
                         <MessageCircle className="h-4 w-4" aria-hidden="true" />
                         Solicitar información

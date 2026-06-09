@@ -4,7 +4,7 @@ import { DocumentCard, type DocumentLink } from "./DocumentCard";
 import { formatArea } from "@/lib/format";
 
 const SECTION_HEADING =
-    "text-[11px] font-bold uppercase tracking-[0.18em] text-white/48";
+    "property-tag-type text-white/48";
 
 const CARD_CLASS = "border border-white/[0.08] bg-white/[0.025] p-5 space-y-4";
 
@@ -79,10 +79,10 @@ export function PropertySidebar({ agents, property, documents }: PropertySidebar
 
             <div className="border border-[var(--color-accent)]/25 bg-white/[0.035] p-5">
                 <p className={SECTION_CARD_TITLE}>Siguiente paso</p>
-                <h2 className="mt-4 text-2xl font-light leading-tight text-white">
+                <h2 className="mt-4 text-display-3 leading-tight text-white">
                     Confirma disponibilidad y agenda visita.
                 </h2>
-                <p className="mt-2 text-sm leading-6 text-white/58">
+                <p className="mt-2 text-body text-white/58">
                     Un asesor puede validar condiciones, documentación y tiempos de respuesta.
                 </p>
             </div>
@@ -90,3 +90,4 @@ export function PropertySidebar({ agents, property, documents }: PropertySidebar
         </aside>
     );
 }
+

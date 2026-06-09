@@ -77,7 +77,7 @@ export function ValuesAccordion() {
                   {/* Number */}
                   <span
                     className={cn(
-                      "shrink-0 text-[clamp(1.5rem,2.5vw,2.25rem)] font-light tabular-nums leading-none mt-2 transition-colors duration-700",
+                      "shrink-0 text-[clamp(1.5rem,2.5vw,2.25rem)] tabular-nums leading-none mt-2 transition-colors duration-700",
                       isFocused ? "metallic-gold-static" : "text-white/55",
                     )}
                     aria-hidden="true"
@@ -89,7 +89,7 @@ export function ValuesAccordion() {
                   <div className="flex-1 min-w-0">
                     <h3
                       className={cn(
-                        "text-[clamp(1.5rem,2.8vw,2.5rem)] font-light leading-display tracking-display transition-colors duration-700",
+                        "text-[clamp(1.5rem,2.8vw,2.5rem)] leading-display tracking-display transition-colors duration-700",
                         isFocused ? "text-white" : "text-white/90",
                       )}
                     >
@@ -106,7 +106,7 @@ export function ValuesAccordion() {
                           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                           className="overflow-hidden"
                         >
-                          <p className="text-body-fluid-sm text-white/90 leading-relaxed font-light max-w-3xl pt-6">
+                          <p className="text-body-fluid-sm text-white/90 leading-relaxed max-w-3xl pt-6">
                             {v.body}
                           </p>
                         </motion.div>
@@ -134,3 +134,4 @@ export function ValuesAccordion() {
     </Section>
   );
 }
+

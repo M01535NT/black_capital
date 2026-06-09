@@ -173,14 +173,14 @@ export function DataTable<TData extends object>({
                 {hasActiveFilters && (
                     <button
                         onClick={clearFilters}
-                        className="ml-auto text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent)] transition-colors hover:text-white"
+                        className="ml-auto text-caption text-[var(--color-accent)] transition-colors hover:text-white"
                     >
                         Limpiar filtros
                     </button>
                 )}
                 <button
                     onClick={exportCsv}
-                    className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white/45 transition-colors hover:text-[var(--color-accent)]"
+                    className="inline-flex items-center gap-2 text-caption text-white/45 transition-colors hover:text-[var(--color-accent)]"
                 >
                     <Download className="h-3.5 w-3.5" />
                     Exportar
@@ -193,13 +193,13 @@ export function DataTable<TData extends object>({
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id} className="border-white/[0.08] hover:bg-transparent">
-                                {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id} className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/42">
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(header.column.columnDef.header, header.getContext())}
-                                    </TableHead>
-                                ))}
+                            {headerGroup.headers.map((header) => (
+                                <TableHead key={header.id} className="text-caption text-white/42">
+                                    {header.isPlaceholder
+                                        ? null
+                                        : flexRender(header.column.columnDef.header, header.getContext())}
+                                </TableHead>
+                            ))}
                             </TableRow>
                         ))}
                     </TableHeader>
@@ -221,7 +221,7 @@ export function DataTable<TData extends object>({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-32 text-center">
-                                    <div className="text-sm text-white/50">
+                                    <div className="text-body-sm text-white/50">
                                         {hasActiveFilters
                                             ? "Sin resultados para los filtros actuales."
                                             : "No hay datos disponibles."}
@@ -247,11 +247,11 @@ export function DataTable<TData extends object>({
                         size="sm"
                         onClick={() => table.previousPage()}
                         disabled={!table.getCanPreviousPage()}
-                        className="h-8 border-white/[0.1] bg-white/[0.02] px-3 text-xs text-white/65"
+                        className="h-8 border-white/[0.1] bg-white/[0.02] px-3 text-caption text-white/65"
                     >
                         Anterior
                     </Button>
-                    <span className="px-1 text-xs text-white/45">
+                    <span className="px-1 text-body-sm text-white/45">
                         {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
                     </span>
                     <Button
@@ -259,7 +259,7 @@ export function DataTable<TData extends object>({
                         size="sm"
                         onClick={() => table.nextPage()}
                         disabled={!table.getCanNextPage()}
-                        className="h-8 border-white/[0.1] bg-white/[0.02] px-3 text-xs text-white/65"
+                        className="h-8 border-white/[0.1] bg-white/[0.02] px-3 text-caption text-white/65"
                     >
                         Siguiente
                     </Button>
@@ -289,7 +289,7 @@ function FilterDropdown({
             <button
                 onClick={onToggle}
                 className={cn(
-                    "flex items-center gap-1.5 border px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] transition-all",
+                    "flex items-center gap-1.5 border px-3 py-2 text-caption transition-all",
                     current
                         ? "border-[var(--color-accent)]/35 bg-[var(--color-accent)]/10 text-[var(--color-accent)]"
                         : "border-white/[0.08] bg-white/[0.025] text-white/55 hover:border-white/[0.16] hover:text-white"

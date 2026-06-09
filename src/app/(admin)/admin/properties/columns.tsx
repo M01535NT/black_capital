@@ -68,7 +68,7 @@ export const columns: ColumnDef<PropertyRow>[] = [
         cell: ({ row }) => (
             <Link
                 href={`/admin/properties/${row.original.id}/edit`}
-                className="font-bold text-foreground hover:text-gold-500 transition-colors"
+                className="text-body-sm font-medium text-foreground hover:text-gold-500 transition-colors"
             >
                 {row.getValue("title")}
             </Link>
@@ -134,7 +134,7 @@ export const columns: ColumnDef<PropertyRow>[] = [
         cell: ({ row }) => {
             const value = row.original.updated_at;
             return (
-                <span className="text-sm text-foreground/50">
+                <span className="text-body-sm text-foreground/50">
                     {value ? new Intl.DateTimeFormat("es-MX", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(value)) : "—"}
                 </span>
             );
@@ -154,7 +154,7 @@ export const columns: ColumnDef<PropertyRow>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel className="uppercase text-caption tracking-wider font-display">Acciones</DropdownMenuLabel>
+                        <DropdownMenuLabel className="text-caption">Acciones</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
                             <Link href={`/admin/properties/${property.id}/edit`}>
                                 <Edit className="w-3.5 h-3.5 mr-2 text-gold-500" />

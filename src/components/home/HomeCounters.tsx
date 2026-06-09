@@ -92,14 +92,14 @@ function CounterCard({
 
   return (
     <div ref={counterRef} className="flex min-h-[190px] flex-col items-center justify-center border border-white/[0.08] bg-white/[0.025] p-5 text-center">
-      <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.18em] text-white/42">
+      <p className="mb-4 property-tag-type text-white/42">
         {label}
       </p>
-      <p className="text-5xl font-light leading-none tracking-tight text-[var(--color-accent)] sm:text-6xl">
+      <p className="text-display-1 leading-none text-[var(--color-accent)]">
         {formatCount(count)}
-        <span className="text-3xl sm:text-4xl">{suffix}</span>
+        <span className="text-display-4 align-baseline text-[var(--color-accent)]">{suffix}</span>
       </p>
-      <p className="mt-5 max-w-[14rem] text-sm leading-6 text-white/58">{copy}</p>
+      <p className="mt-5 max-w-[14rem] text-body text-white/58 leading-relaxed">{copy}</p>
     </div>
   );
 }
@@ -108,13 +108,13 @@ export function HomeCounters() {
   return (
     <section className="mx-auto max-w-[90rem] px-6 pb-16 sm:px-10 lg:px-16 lg:pb-24">
       <div className="mx-auto mb-10 max-w-3xl text-center">
-        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+        <p className="mb-3 text-caption text-[var(--color-accent)]">
           Indicadores comerciales
         </p>
-        <h2 className="text-display-2 font-light leading-display tracking-headline text-white">
+        <h2 className="text-display-2 leading-display tracking-headline text-white">
           Resultados en movimiento.
         </h2>
-        <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-white/58">
+        <p className="mx-auto mt-5 max-w-xl text-body text-white/58">
           Cifras de referencia para mostrar alcance, experiencia y capacidad de asesoría.
         </p>
       </div>
@@ -127,3 +127,4 @@ export function HomeCounters() {
     </section>
   );
 }
+

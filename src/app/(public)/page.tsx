@@ -130,26 +130,26 @@ export default function HomePage() {
 
         <div className="relative z-10 mx-auto grid min-h-[calc(100svh-6rem)] max-w-[90rem] grid-cols-1 items-center px-6 pb-28 pt-10 sm:px-10 sm:pb-32 lg:grid-cols-12 lg:px-16">
           <div className="lg:col-span-8">
-            <div className="mb-6 inline-flex items-center gap-2 border border-white/10 bg-black/35 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">
+            <div className="mb-6 inline-flex items-center gap-2 border border-white/10 bg-black/35 px-3 py-2 text-caption text-white/70">
               <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" />
               Tijuana, Baja California
             </div>
             <HomeHeroHeadline />
-            <p className="mt-6 max-w-xl text-base leading-8 text-white/66 sm:text-lg">
+            <p className="mt-6 max-w-xl text-body text-white/66">
               Compra, venta y renta inmobiliaria en Tijuana con estrategia.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/inventario"
-                className="brushed-gold inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full px-7 text-sm font-bold"
+                className="brushed-gold premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full"
               >
                 Ver inventario
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/contacto"
-                className="inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full border border-white/18 bg-white/[0.04] px-7 text-sm font-semibold text-white hover:border-[var(--color-accent)]"
+                className="premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full border border-white/18 bg-white/[0.04] text-white hover:border-[var(--color-accent)]"
               >
                 Solicitar asesoría
               </Link>
@@ -164,7 +164,7 @@ export default function HomePage() {
               <div key={track} className="animate-marquee inline-flex shrink-0">
                 {values.map((value, index) => (
                   <span key={`${track}-${value}-${index}`} className="inline-flex shrink-0 items-center">
-                    <span className="px-5 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/78 transition-colors duration-300 hover:text-[var(--color-accent)] sm:px-10 sm:text-[11px]">
+                    <span className="px-5 property-tag-type text-white/78 transition-colors duration-300 hover:text-[var(--color-accent)] sm:px-10">
                       {value}
                     </span>
                     <span className="select-none text-[var(--color-accent)]" aria-hidden="true">
@@ -181,14 +181,14 @@ export default function HomePage() {
       <section className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+            <p className="mb-3 text-caption text-[var(--color-accent)]">
               Tres líneas de negocio
             </p>
-            <h2 className="text-display-2 font-light leading-display tracking-headline text-white">
+            <h2 className="text-display-2 leading-display tracking-headline text-white">
               Activos con demanda real.
             </h2>
           </div>
-          <p className="max-w-xl text-sm leading-7 text-white/58">
+          <p className="max-w-xl text-body text-white/58">
             Residencial, comercial e industrial en Tijuana.
           </p>
         </div>
@@ -211,17 +211,17 @@ export default function HomePage() {
                     <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-accent)] text-black">
                       <Icon className="h-4 w-4" />
                     </span>
-                    <h3 className="text-xl font-semibold text-white">{segment.title}</h3>
+                  <h3 className="text-display-3 font-semibold text-white">{segment.title}</h3>
                   </div>
                 </div>
                 <div className="space-y-5 p-5">
-                  <p className="text-sm leading-6 text-white/64">{segment.copy}</p>
-                  <p className="text-xs uppercase tracking-[0.16em] text-white/42">{segment.zones}</p>
+                  <p className="text-body text-white/64">{segment.copy}</p>
+                  <p className="property-tag-type text-white/42">{segment.zones}</p>
                   <div className="flex flex-col gap-2 sm:flex-row">
-                    <Link href={segment.inventoryHref} className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.12em] text-[var(--color-accent)]">
+                    <Link href={segment.inventoryHref} className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type text-[var(--color-accent)]">
                       Inventario
                     </Link>
-                    <Link href={segment.href} className="inline-flex flex-1 items-center justify-center gap-2 border border-white/10 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.12em] text-white/75">
+                    <Link href={segment.href} className="inline-flex flex-1 items-center justify-center gap-2 border border-white/10 px-4 py-2.5 property-tag-type text-white/75">
                       Ver línea
                     </Link>
                   </div>
@@ -235,13 +235,13 @@ export default function HomePage() {
       <section className="border-y border-white/[0.06] bg-white/[0.02]">
         <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-24">
           <div className="lg:col-span-5">
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+            <p className="mb-3 property-tag-type text-[var(--color-accent)]">
               Asesoría inmobiliaria
             </p>
-            <h2 className="text-display-2 font-light leading-display tracking-headline text-white">
+            <h2 className="text-display-2 leading-display tracking-headline text-white">
               Según tu objetivo.
             </h2>
-            <p className="mt-6 max-w-md text-sm leading-7 text-white/58">
+            <p className="mt-6 max-w-md text-body text-white/58">
               Comprar, vender o rentar exige procesos distintos. El punto de partida cambia; el criterio no.
             </p>
           </div>
@@ -250,23 +250,23 @@ export default function HomePage() {
               <article key={path.audience} className="border border-white/[0.08] bg-background/70 p-5">
                 <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
-                      {path.audience}
-                    </p>
-                    <h3 className="text-xl font-light text-white">{path.title}</h3>
-                  </div>
-                  <p className="max-w-sm text-sm leading-6 text-white/58">{path.copy}</p>
-                </div>
-                <div className="grid gap-2 sm:grid-cols-3">
-                  {path.steps.map((step, index) => (
-                    <div key={step} className="flex items-center gap-2 border border-white/[0.08] bg-white/[0.025] px-3 py-3">
-                      <span className="text-[10px] font-bold text-[var(--color-accent)]">0{index + 1}</span>
-                      <span className="text-xs font-medium text-white/68">{step}</span>
-                    </div>
-                  ))}
-                </div>
-              </article>
-            ))}
+                                <p className="mb-2 property-tag-type text-[var(--color-accent)]">
+                                    {path.audience}
+                                </p>
+                                <h3 className="text-display-3 text-white">{path.title}</h3>
+                              </div>
+                              <p className="max-w-sm text-body text-white/58">{path.copy}</p>
+                            </div>
+                            <div className="grid gap-2 sm:grid-cols-3">
+                              {path.steps.map((step, index) => (
+                                <div key={step} className="flex items-center gap-2 border border-white/[0.08] bg-white/[0.025] px-3 py-3">
+                                  <span className="property-tag-type text-[var(--color-accent)]">0{index + 1}</span>
+                                  <span className="text-body text-white/68">{step}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </article>
+                        ))}
           </div>
         </div>
       </section>
@@ -276,23 +276,23 @@ export default function HomePage() {
       <section className="border-y border-white/[0.06] bg-white/[0.02]">
         <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 py-16 sm:px-10 lg:grid-cols-12 lg:px-16 lg:py-24">
           <div className="lg:col-span-5">
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+            <p className="mb-3 property-tag-type text-[var(--color-accent)]">
               Flujo comercial
             </p>
-            <h2 className="text-display-2 font-light leading-display tracking-headline text-white">
+            <h2 className="text-display-2 leading-display tracking-headline text-white">
               Marketing y negociación.
             </h2>
           </div>
           <div className="grid gap-4 lg:col-span-7">
             {process.map((item, index) => (
               <div key={item} className="flex gap-4 border border-white/[0.08] bg-background/70 p-5">
-                <span className="text-sm font-bold text-[var(--color-accent)]">0{index + 1}</span>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-accent)]" />
-                  <p className="text-sm leading-6 text-white/70">{item}</p>
-                </div>
-              </div>
-            ))}
+                    <span className="property-tag-type text-[var(--color-accent)]">0{index + 1}</span>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-accent)]" />
+                      <p className="text-body text-white/70">{item}</p>
+                    </div>
+                  </div>
+                ))}
           </div>
         </div>
       </section>
@@ -301,3 +301,4 @@ export default function HomePage() {
     </main>
   );
 }
+

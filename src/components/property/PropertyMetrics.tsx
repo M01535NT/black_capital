@@ -11,7 +11,7 @@ interface PropertyMetricsProps {
 }
 
 const SECTION_HEADING =
-    "text-[11px] font-bold uppercase tracking-[0.18em] text-white/48";
+    "property-tag-type text-white/48";
 
 /**
  * The "Características" section with premium styling.
@@ -69,7 +69,7 @@ export function PropertyMetrics({
                         {Object.entries(customAttributes).map(([key, value]) => (
                             <span 
                                 key={key} 
-                                className="border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-accent)]"
+                                className="border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 px-3 py-1.5 property-tag-type text-[var(--color-accent)]"
                             >
                                 {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
                             </span>

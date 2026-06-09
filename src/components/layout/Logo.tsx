@@ -124,7 +124,7 @@ export function Logo({
       <text
         x="14"
         y="38"
-        fontFamily="var(--font-display), 'Space Grotesk', 'Helvetica Neue', sans-serif"
+        fontFamily="var(--font-display)"
         fontSize={blackSize}
         fontWeight="700"
         letterSpacing="0.5"
@@ -136,7 +136,7 @@ export function Logo({
       <text
         x="14"
         y="62"
-        fontFamily="var(--font-display), 'Space Grotesk', 'Helvetica Neue', sans-serif"
+        fontFamily="var(--font-display)"
         fontSize={capitalSize}
         fontWeight="400"
         letterSpacing="3"

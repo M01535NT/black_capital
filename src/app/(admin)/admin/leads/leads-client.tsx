@@ -79,7 +79,7 @@ function StatusCell({ lead, onChange }: { lead: Lead; onChange: (id: string, sta
             <button
                 onClick={() => setOpen(!open)}
                 className={cn(
-                    "flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-medium border transition-all",
+                    "flex items-center gap-1.5 px-2 py-1 rounded-lg text-body-sm font-medium border transition-all",
                     current.color
                 )}
             >
@@ -98,7 +98,7 @@ function StatusCell({ lead, onChange }: { lead: Lead; onChange: (id: string, sta
                                     setOpen(false);
                                 }}
                                 className={cn(
-                                    "w-full text-left px-3 py-2 text-xs transition-colors flex items-center gap-2",
+                                    "w-full text-left px-3 py-2 text-body-sm transition-colors flex items-center gap-2",
                                     opt.value === lead.status
                                         ? "bg-[var(--color-accent)]/10 font-medium text-[var(--color-accent)]"
                                         : "text-white/70 hover:bg-white/[0.04]"
@@ -125,7 +125,7 @@ function AgentCell({ lead, agents, onChange }: { lead: Lead; agents: Agent[]; on
             <button
                 onClick={() => setOpen(!open)}
                 className={cn(
-                    "flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-medium border transition-all",
+                    "flex items-center gap-1.5 px-2 py-1 rounded-lg text-body-sm font-medium border transition-all",
                     assigned
                         ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/20"
                         : "bg-white/[0.03] text-white/50 border-white/[0.08]"
@@ -144,7 +144,7 @@ function AgentCell({ lead, agents, onChange }: { lead: Lead; agents: Agent[]; on
                                 setOpen(false);
                             }}
                             className={cn(
-                                "w-full text-left px-3 py-2 text-xs transition-colors",
+                                "w-full text-left px-3 py-2 text-body-sm transition-colors",
                                 !assigned ? "font-medium text-[var(--color-accent)]" : "text-white/70 hover:bg-white/[0.04]"
                             )}
                         >
@@ -159,7 +159,7 @@ function AgentCell({ lead, agents, onChange }: { lead: Lead; agents: Agent[]; on
                                     setOpen(false);
                                 }}
                                 className={cn(
-                                    "w-full text-left px-3 py-2 text-xs transition-colors flex items-center gap-2",
+                                    "w-full text-left px-3 py-2 text-body-sm transition-colors flex items-center gap-2",
                                     agent.id === lead.assigned_agent_id
                                         ? "bg-[var(--color-accent)]/10 font-medium text-[var(--color-accent)]"
                                         : "text-white/70 hover:bg-white/[0.04]"
@@ -328,7 +328,7 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
             accessorKey: "full_name",
             header: "Nombre",
             cell: ({ row }) => (
-                <Link href={`/admin/leads/${row.original.id}`} className="font-bold text-white hover:text-[var(--color-accent)] transition-colors">
+                <Link href={`/admin/leads/${row.original.id}`} className="text-body-sm font-medium text-white hover:text-[var(--color-accent)] transition-colors">
                     {row.getValue("full_name")}
                 </Link>
             ),
@@ -336,19 +336,19 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
         {
             accessorKey: "email",
             header: "Correo",
-            cell: ({ row }) => <span className="text-sm text-white/62">{row.getValue("email")}</span>,
+            cell: ({ row }) => <span className="text-body-sm text-white/62">{row.getValue("email")}</span>,
         },
         {
             accessorKey: "phone",
             header: "Teléfono",
-            cell: ({ row }) => <span className="text-sm text-white/62">{row.getValue("phone")}</span>,
+            cell: ({ row }) => <span className="text-body-sm text-white/62">{row.getValue("phone")}</span>,
         },
         {
             accessorKey: "source",
             header: "Origen",
             cell: ({ row }) => {
                 const source = row.getValue("source") as string;
-                return <div className="capitalize text-sm">{sourceLabels[source] || source}</div>;
+                return <div className="capitalize text-body-sm">{sourceLabels[source] || source}</div>;
             },
         },
         {
@@ -366,10 +366,10 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
             header: "Atención",
             cell: ({ row }) => {
                 const attention = getLeadAttention(row.original);
-                if (attention.isOverdue) return <span className="text-xs font-semibold text-red-400">Tarea vencida</span>;
-                if (attention.dueToday) return <span className="text-xs font-semibold text-[var(--color-accent)]">Vence hoy</span>;
-                if (attention.stale) return <span className="text-xs font-semibold text-white/55">Sin seguimiento {attention.daysWithoutFollowUp}d</span>;
-                return <span className="text-xs text-white/30">Al día</span>;
+                if (attention.isOverdue) return <span className="text-body-sm text-red-400">Tarea vencida</span>;
+                if (attention.dueToday) return <span className="text-body-sm text-[var(--color-accent)]">Vence hoy</span>;
+                if (attention.stale) return <span className="text-body-sm text-white/55">Sin seguimiento {attention.daysWithoutFollowUp}d</span>;
+                return <span className="text-body-sm text-white/30">Al día</span>;
             },
         },
         {
@@ -383,7 +383,7 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                     month: "short",
                     year: "numeric"
                 }).format(date);
-                return <div className="text-right text-sm text-white/45">{formatted}</div>;
+                return <div className="text-right text-body-sm text-white/45">{formatted}</div>;
             },
         },
         {
@@ -474,7 +474,7 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                         <button
                             type="button"
                             onClick={() => setViewMode("kanban")}
-                            className={cn("flex items-center gap-2 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em]", viewMode === "kanban" ? "bg-[var(--color-accent)] text-black" : "text-white/55 hover:text-white")}
+                            className={cn("flex items-center gap-2 px-3 py-2 text-body-sm font-semibold text-white/65", viewMode === "kanban" ? "bg-[var(--color-accent)] text-black" : "text-white/55 hover:text-white")}
                         >
                             <Columns3 className="h-4 w-4" />
                             Pipeline
@@ -482,13 +482,13 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                         <button
                             type="button"
                             onClick={() => setViewMode("table")}
-                            className={cn("flex items-center gap-2 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em]", viewMode === "table" ? "bg-[var(--color-accent)] text-black" : "text-white/55 hover:text-white")}
+                            className={cn("flex items-center gap-2 px-3 py-2 text-body-sm font-semibold text-white/65", viewMode === "table" ? "bg-[var(--color-accent)] text-black" : "text-white/55 hover:text-white")}
                         >
                             <Table2 className="h-4 w-4" />
                             Tabla
                         </button>
                     </div>
-                    <Button onClick={() => setOpen(true)} className="brushed-gold shrink-0 rounded-full px-6 font-bold">
+                    <Button onClick={() => setOpen(true)} className="brushed-gold shrink-0 rounded-full px-6 text-body-sm font-semibold">
                         <PlusCircle className="mr-2 h-4 w-4" />
                         Registrar lead
                     </Button>
@@ -556,7 +556,6 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                                 selectedIds={selectedIds}
                                 onToggleSelected={toggleSelected}
                                 onEdit={setEditingLead}
-                                onStatusChange={updateStatus}
                             />
                         ) : (
                             <div className={`${adminCardClass} overflow-hidden`}>
@@ -581,7 +580,7 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
                     <div className="w-full max-w-md border border-white/[0.08] bg-[#0b0b0b] shadow-2xl">
                         <div className="flex items-center justify-between border-b border-white/[0.08] p-4">
-                            <h3 className="font-display text-sm font-bold uppercase tracking-[0.18em] text-white">Registrar lead</h3>
+                            <h3 className="text-caption">Registrar lead</h3>
                             <button onClick={() => setOpen(false)} className="p-1 text-white/50 hover:text-white">
                                 <X className="w-5 h-5" />
                             </button>
@@ -589,7 +588,7 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
 
                         <form onSubmit={handleSubmit} className="p-4 space-y-4">
                             <div>
-                                <label className="mb-1 block text-sm font-medium text-white/70">Nombre completo *</label>
+                                <label className="mb-1 block text-body-sm font-medium text-white/70">Nombre completo *</label>
                                 <Input
                                     placeholder="Ej. Juan Pérez"
                                     value={form.full_name}
@@ -597,7 +596,7 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                                 />
                             </div>
                             <div>
-                                <label className="mb-1 block text-sm font-medium text-white/70">Correo electrónico *</label>
+                                <label className="mb-1 block text-body-sm font-medium text-white/70">Correo electrónico *</label>
                                 <Input
                                     type="email"
                                     placeholder="correo@ejemplo.com"
@@ -606,7 +605,7 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                                 />
                             </div>
                             <div>
-                                <label className="mb-1 block text-sm font-medium text-white/70">Teléfono *</label>
+                                <label className="mb-1 block text-body-sm font-medium text-white/70">Teléfono *</label>
                                 <Input
                                     placeholder="+52 555 123 4567"
                                     value={form.phone}
@@ -614,50 +613,51 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                                 />
                             </div>
                             <div>
-                                <label className="mb-1 block text-sm font-medium text-white/70">Origen</label>
+                                <label className="mb-1 block text-body-sm font-medium text-white/70">Origen</label>
                                 <select
                                     value={form.source}
                                     onChange={e => setForm(prev => ({ ...prev, source: e.target.value }))}
-                                    className="flex h-10 w-full border border-white/[0.12] bg-transparent px-3 py-2 text-sm text-white ring-offset-background focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                                    className="flex h-10 w-full border border-white/[0.12] bg-[#0b0b0b] px-3 py-2 text-body-sm text-white ring-offset-background focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                                 >
-                                    <option value="organic">Orgánico</option>
-                                    <option value="campaign">Campaña</option>
-                                    <option value="referral">Referido</option>
-                                    <option value="other">Otro</option>
-                                    <option value="landing_luxury">Landing Luxury</option>
-                                    <option value="landing_business">Landing Business</option>
-                                    <option value="landing_industrial">Landing Industrial</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="organic">Orgánico</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="campaign">Campaña</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="referral">Referido</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="other">Otro</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="landing_luxury">Landing Luxury</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="landing_business">Landing Business</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="landing_industrial">Landing Industrial</option>
                                 </select>
                             </div>
                             <div>
-                                <label className="mb-1 block text-sm font-medium text-white/70">Estado</label>
+                                <label className="mb-1 block text-body-sm font-medium text-white/70">Estado</label>
                                 <select
                                     value={form.status}
                                     onChange={e => setForm(prev => ({ ...prev, status: e.target.value }))}
-                                    className="flex h-10 w-full border border-white/[0.12] bg-transparent px-3 py-2 text-sm text-white ring-offset-background focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                                    className="flex h-10 w-full border border-white/[0.12] bg-[#0b0b0b] px-3 py-2 text-body-sm text-white ring-offset-background focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                                 >
-                                    <option value="new">Nuevo</option>
-                                    <option value="contacted">Contactado</option>
-                                    <option value="qualified">Calificado</option>
-                                    <option value="won">Ganado</option>
-                                    <option value="lost">Perdido</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="new">Nuevo</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="contacted">Contactado</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="qualified">Calificado</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="won">Ganado</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="lost">Perdido</option>
                                 </select>
                             </div>
                             <div>
-                                <label className="mb-1 block text-sm font-medium text-white/70">Asesor asignado</label>
+                                <label className="mb-1 block text-body-sm font-medium text-white/70">Asesor asignado</label>
                                 <select
                                     value={form.assigned_agent_id || ""}
                                     onChange={e => setForm(prev => ({ ...prev, assigned_agent_id: e.target.value || undefined }))}
-                                    className="flex h-10 w-full border border-white/[0.12] bg-transparent px-3 py-2 text-sm text-white ring-offset-background focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                                    className="flex h-10 w-full border border-white/[0.12] bg-[#0b0b0b] px-3 py-2 text-body-sm text-white ring-offset-background focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                                 >
-                                    <option value="">Sin asignar</option>
+                                    <option className="bg-[#0b0b0b] text-white" value="">Sin asignar</option>
                                     {agents.map(agent => (
-                                        <option key={agent.id} value={agent.id}>{agent.full_name}</option>
+                                        <option className="bg-[#0b0b0b] text-white" key={agent.id} value={agent.id}>{agent.full_name}</option>
                                     ))}
+                                    {agents.length === 0 && <option className="bg-[#0b0b0b] text-white" disabled>No hay agentes activos</option>}
                                 </select>
                             </div>
                             <div>
-                                <label className="mb-1 block text-sm font-medium text-white/70">Notas</label>
+                                <label className="mb-1 block text-body-sm font-medium text-white/70">Notas</label>
                                 <Textarea
                                     placeholder="Comentarios adicionales..."
                                     value={form.notes}
@@ -667,7 +667,7 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                             </div>
 
                             {error && (
-                                <p className="text-sm text-red-500">{error}</p>
+                                <p className="text-body-sm text-red-500">{error}</p>
                             )}
 
                             <div className="flex gap-2 pt-2">
@@ -741,7 +741,7 @@ function BulkLeadActions({
 
     return (
         <div className="flex flex-wrap items-center gap-3 border-b border-white/[0.08] bg-[var(--color-accent)]/5 p-4">
-            <span className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-accent)]">
+            <span className="text-caption text-[var(--color-accent)]">
                 {count} seleccionado{count !== 1 ? "s" : ""}
             </span>
             <select
@@ -750,12 +750,12 @@ function BulkLeadActions({
                     if (event.target.value) onStatusChange(event.target.value);
                     event.currentTarget.value = "";
                 }}
-                className="h-9 border border-white/[0.12] bg-[#0b0b0b] px-3 text-xs text-white"
+                className="h-9 border border-white/[0.12] bg-[#0b0b0b] px-3 text-body-sm text-white"
                 defaultValue=""
-            >
-                <option value="">Cambiar estado</option>
+                >
+                <option className="bg-[#0b0b0b] text-white" value="">Cambiar estado</option>
                 {STATUS_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
+                    <option className="bg-[#0b0b0b] text-white" key={option.value} value={option.value}>{option.label}</option>
                 ))}
             </select>
             {isAdmin && (
@@ -766,13 +766,13 @@ function BulkLeadActions({
                         onAgentChange(event.target.value === "__none" ? null : event.target.value);
                         event.currentTarget.value = "";
                     }}
-                    className="h-9 border border-white/[0.12] bg-[#0b0b0b] px-3 text-xs text-white"
+                    className="h-9 border border-white/[0.12] bg-[#0b0b0b] px-3 text-body-sm text-white"
                     defaultValue=""
                 >
-                    <option value="">Reasignar agente</option>
-                    <option value="__none">Sin asignar</option>
+                    <option className="bg-[#0b0b0b] text-white" value="">Reasignar agente</option>
+                    <option className="bg-[#0b0b0b] text-white" value="__none">Sin asignar</option>
                     {agents.map((agent) => (
-                        <option key={agent.id} value={agent.id}>{agent.full_name}</option>
+                        <option className="bg-[#0b0b0b] text-white" key={agent.id} value={agent.id}>{agent.full_name}</option>
                     ))}
                 </select>
             )}
@@ -846,7 +846,7 @@ function LeadEditDialog({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
             <div className="w-full max-w-lg border border-white/[0.08] bg-[#0b0b0b] shadow-2xl">
                 <div className="flex items-center justify-between border-b border-white/[0.08] p-4">
-                    <h3 className="font-display text-sm font-bold uppercase tracking-[0.18em] text-white">Editar lead</h3>
+                    <h3 className="text-caption">Editar lead</h3>
                     <button onClick={onCancel} className="p-1 text-white/50 hover:text-white">
                         <X className="w-5 h-5" />
                     </button>
@@ -868,20 +868,21 @@ function LeadEditDialog({
                         <label className="space-y-1.5">
                             <span className="text-sm font-medium text-white/70">Estado</span>
                             <select value={form.status} onChange={(event) => setForm((prev) => ({ ...prev, status: event.target.value }))} className="h-10 w-full border border-white/[0.12] bg-[#0b0b0b] px-3 text-sm text-white">
-                                {STATUS_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                                {STATUS_OPTIONS.map((option) => <option className="bg-[#0b0b0b] text-white" key={option.value} value={option.value}>{option.label}</option>)}
                             </select>
                         </label>
                         <label className="space-y-1.5">
                             <span className="text-sm font-medium text-white/70">Origen</span>
                             <select value={form.source} onChange={(event) => setForm((prev) => ({ ...prev, source: event.target.value }))} className="h-10 w-full border border-white/[0.12] bg-[#0b0b0b] px-3 text-sm text-white">
-                                {Object.entries(sourceLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                                {Object.entries(sourceLabels).map(([value, label]) => <option className="bg-[#0b0b0b] text-white" key={value} value={value}>{label}</option>)}
                             </select>
                         </label>
                         <label className="space-y-1.5 sm:col-span-2">
                             <span className="text-sm font-medium text-white/70">Agente asignado</span>
                             <select value={form.assigned_agent_id} onChange={(event) => setForm((prev) => ({ ...prev, assigned_agent_id: event.target.value }))} className="h-10 w-full border border-white/[0.12] bg-[#0b0b0b] px-3 text-sm text-white">
-                                <option value="">Sin asignar</option>
-                                {agents.map((agent) => <option key={agent.id} value={agent.id}>{agent.full_name}</option>)}
+                                <option className="bg-[#0b0b0b] text-white" value="">Sin asignar</option>
+                                {agents.map((agent) => <option className="bg-[#0b0b0b] text-white" key={agent.id} value={agent.id}>{agent.full_name}</option>)}
+                                {agents.length === 0 && <option className="bg-[#0b0b0b] text-white" disabled>No hay agentes activos</option>}
                             </select>
                         </label>
                         <label className="space-y-1.5 sm:col-span-2">
@@ -991,9 +992,9 @@ function AttentionSummary({
         )}>
             <div className="flex items-center gap-3">
                 <Icon className="h-4 w-4" />
-                <span className="text-xs font-bold uppercase tracking-[0.14em]">{label}</span>
+            <span className="text-caption">{label}</span>
             </div>
-            <span className="text-2xl font-light text-white">{value}</span>
+            <span className="text-2xl text-white">{value}</span>
         </div>
     );
 }
@@ -1004,25 +1005,39 @@ function LeadKanban({
     selectedIds,
     onToggleSelected,
     onEdit,
-    onStatusChange,
 }: {
     leads: Lead[];
     agents: Agent[];
     selectedIds: string[];
     onToggleSelected: (id: string) => void;
     onEdit: (lead: Lead) => void;
-    onStatusChange: (id: string, status: string) => void;
 }) {
     return (
-        <div className="grid gap-4 xl:grid-cols-5">
+        <>
+        <div className="-mx-3 mb-3 flex gap-2 overflow-x-auto px-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:px-6 xl:hidden">
             {STATUS_OPTIONS.map((status) => {
                 const items = leads.filter((lead) => lead.status === status.value);
                 return (
-                    <section key={status.value} className={`${adminCardClass} min-h-[360px] overflow-hidden`}>
+                    <a
+                        key={status.value}
+                        href={`#lead-column-${status.value}`}
+                        className="shrink-0 border border-white/[0.08] bg-white/[0.025] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-white/62"
+                    >
+                        {status.label}
+                        <span className="ml-2 text-[var(--color-accent)] text-caption">{items.length}</span>
+                    </a>
+                );
+            })}
+        </div>
+        <div className="-mx-3 grid auto-cols-[minmax(280px,86vw)] grid-flow-col gap-4 overflow-x-auto px-3 pb-1 [scroll-snap-type:x_mandatory] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:-mx-6 sm:auto-cols-[minmax(320px,46vw)] sm:px-6 lg:auto-cols-[minmax(340px,32vw)] xl:mx-0 xl:grid-flow-row xl:grid-cols-5 xl:auto-cols-auto xl:overflow-visible xl:px-0 xl:pb-0 xl:[scroll-snap-type:none]">
+            {STATUS_OPTIONS.map((status) => {
+                const items = leads.filter((lead) => lead.status === status.value);
+                return (
+                    <section id={`lead-column-${status.value}`} key={status.value} className={`${adminCardClass} min-h-[360px] overflow-hidden [scroll-snap-align:start]`}>
                         <div className="flex items-center justify-between border-b border-white/[0.08] px-4 py-3">
                             <div className="flex items-center gap-2">
                                 <span className={cn("h-2.5 w-2.5", status.color.split(" ")[0])} />
-                                <h2 className="font-display text-xs font-bold uppercase tracking-[0.14em] text-white/70">{status.label}</h2>
+                                <h2 className="text-caption text-white/70">{status.label}</h2>
                             </div>
                             <span className="text-xs text-white/45">{items.length}</span>
                         </div>
@@ -1044,29 +1059,21 @@ function LeadKanban({
                                                 aria-label={`Seleccionar ${lead.full_name}`}
                                             />
                                         </div>
-                                        <p className="mt-1 truncate text-xs text-white/45">{lead.email}</p>
+                                        <p className="mt-1 truncate text-body-sm text-white/45">{lead.email}</p>
                                         <LeadAttentionBadges lead={lead} />
                                         <div className="mt-3 flex items-center justify-between gap-2">
-                                            <span className="truncate text-xs text-white/45">{assigned?.full_name || "Sin asignar"}</span>
-                                            <select
-                                                value={lead.status}
-                                                onChange={(event) => onStatusChange(lead.id, event.target.value)}
-                                                className="max-w-28 border border-white/[0.08] bg-[#0b0b0b] px-2 py-1 text-xs text-white"
-                                            >
-                                                {STATUS_OPTIONS.map((option) => (
-                                                    <option key={option.value} value={option.value}>{option.label}</option>
-                                                ))}
-                                            </select>
+                                        <span className="truncate text-body-sm text-white/45">{assigned?.full_name || "Sin asignar"}</span>
                                         </div>
                                     </article>
                                 );
                             })}
-                            {items.length === 0 && <p className="py-8 text-center text-sm text-white/35">Sin leads.</p>}
+                            {items.length === 0 && <p className="py-8 text-center text-body-sm text-white/35">Sin leads.</p>}
                         </div>
                     </section>
                 );
             })}
         </div>
+        </>
     );
 }
 
@@ -1081,10 +1088,11 @@ function LeadAttentionBadges({ lead }: { lead: Lead }) {
     return (
         <div className="mt-3 flex flex-wrap gap-1.5">
             {badges.map((badge) => (
-                <span key={badge.label} className={cn("border px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.1em]", badge.className)}>
+                <span key={badge.label} className={cn("border px-2 py-0.5 text-caption", badge.className)}>
                     {badge.label}
                 </span>
             ))}
         </div>
     );
 }
+

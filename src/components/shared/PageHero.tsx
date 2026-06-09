@@ -81,15 +81,15 @@ export function PageHero({
                         </span>
                     )}
 
-                    <h1
+                <h1
                         id={titleId}
-                        className="text-display-3 font-display font-semibold tracking-display uppercase text-3xl md:text-5xl text-foreground mb-6"
+                        className="text-display-3 text-foreground mb-6"
                     >
                         {title}
                     </h1>
 
                     {description && (
-                        <p className="text-foreground/50 text-body-lg leading-relaxed max-w-2xl mx-auto">
+                        <p className="text-foreground/50 text-body max-w-2xl mx-auto">
                             {description}
                         </p>
                     )}

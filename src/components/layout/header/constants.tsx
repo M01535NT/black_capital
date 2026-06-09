@@ -59,7 +59,7 @@ export const DESKTOP_DROPDOWNS: DropdownDef[] = [
  * Gold champagne = var(--color-accent).
  */
 export const navLinkBase =
-  "font-display text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/80 hover:text-foreground transition-colors duration-300 relative py-1 inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:text-foreground " +
+  "font-display nav-link-type text-foreground/80 hover:text-foreground transition-colors duration-300 relative py-1 inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:text-foreground " +
   "after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-[var(--color-accent)] after:transition-transform after:duration-500 after:ease-out " +
   "hover:after:scale-x-100";
 

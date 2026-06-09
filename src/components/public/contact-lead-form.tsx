@@ -51,8 +51,8 @@ export function ContactLeadForm() {
     return (
       <div className="border border-[var(--color-accent)]/30 bg-white/[0.03] p-8" role="status">
         <CheckCircle2 className="mb-5 h-9 w-9 text-[var(--color-accent)]" />
-        <h3 className="mb-3 text-2xl font-light text-white">Solicitud registrada</h3>
-        <p className="text-sm leading-6 text-white/65">
+        <h3 className="mb-3 text-display-3 text-white">Solicitud registrada</h3>
+        <p className="text-body text-white/65 leading-relaxed">
           Recibimos tus datos. El siguiente paso es validar tu necesidad y preparar opciones para seguimiento comercial.
         </p>
       </div>
@@ -99,7 +99,7 @@ export function ContactLeadForm() {
         />
         <select
           name="interest"
-          className="h-12 border border-white/12 bg-[#0b0b0b] px-3 text-sm text-white/75 outline-none focus:border-[var(--color-accent)]"
+          className="h-12 border border-white/12 bg-[#0b0b0b] px-3 text-body text-white/75 outline-none focus:border-[var(--color-accent)]"
           defaultValue="Residencial"
         >
           {interestOptions.map((option) => (
@@ -114,10 +114,10 @@ export function ContactLeadForm() {
         name="message"
         rows={4}
         placeholder="Cuéntanos qué estás buscando: zona, presupuesto, operación o tipo de inmueble."
-        className="w-full resize-none border border-white/12 bg-white/[0.035] px-3 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)]"
+        className="w-full resize-none border border-white/12 bg-white/[0.035] px-3 py-3 text-body text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)]"
       />
 
-      <label className="flex items-start gap-3 text-xs leading-5 text-white/58">
+      <label className="flex items-start gap-3 text-caption text-white/58">
         <input
           name="privacy_accepted"
           type="checkbox"
@@ -128,10 +128,10 @@ export function ContactLeadForm() {
       </label>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Button
+          <Button
           type="submit"
           disabled={status === "submitting"}
-          className="brushed-gold min-h-[48px] w-full rounded-full px-7 text-sm font-bold sm:w-auto"
+          className="brushed-gold min-h-[48px] w-full rounded-full px-7 text-body font-bold sm:w-auto"
         >
           {status === "submitting" ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -140,9 +140,10 @@ export function ContactLeadForm() {
           {status !== "submitting" ? <ArrowRight className="ml-2 h-4 w-4" /> : null}
         </Button>
         {status === "error" ? (
-          <p className="text-sm text-red-400">No se pudo enviar. Revisa los campos e intenta de nuevo.</p>
+          <p className="text-body text-red-400">No se pudo enviar. Revisa los campos e intenta de nuevo.</p>
         ) : null}
       </div>
     </form>
   );
 }
+

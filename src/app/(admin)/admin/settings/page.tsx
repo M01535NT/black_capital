@@ -140,7 +140,7 @@ export default function SettingsPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div>
-                        <label className="text-sm font-medium mb-1 block">URL de Video (Hero)</label>
+                        <label className="text-body-sm font-medium mb-1 block">URL de Video (Hero)</label>
                         <Input
                             placeholder="https://youtube.com/embed/..."
                             value={settings.heroVideoUrl}
@@ -148,7 +148,7 @@ export default function SettingsPage() {
                         />
                     </div>
                     <div>
-                        <label className="text-sm font-medium mb-1 block">URL de Imagen (Hero fallback)</label>
+                        <label className="text-body-sm font-medium mb-1 block">URL de Imagen (Hero fallback)</label>
                         <Input
                             placeholder="https://..."
                             value={settings.heroImageUrl}
@@ -171,17 +171,17 @@ export default function SettingsPage() {
                         { keyTitle: "industrialHeroTitle", keySubtitle: "industrialHeroSubtitle", label: "Black Industrial" },
                     ] satisfies Array<{ keyTitle: keyof AppSettings; keySubtitle: keyof AppSettings; label: string }>).map((brand) => (
                         <div key={brand.label} className="space-y-3 border border-white/[0.08] bg-background/70 p-4">
-                            <p className="text-xs font-bold uppercase tracking-wider text-gold-500 font-display">{brand.label}</p>
+                            <p className="text-caption text-gold-500">{brand.label}</p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="text-sm font-medium mb-1 block">Título</label>
+                                    <label className="text-body-sm font-medium mb-1 block">Título</label>
                                     <Input
                                         value={String(settings[brand.keyTitle] ?? "")}
                                         onChange={e => update(brand.keyTitle, e.target.value)}
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-sm font-medium mb-1 block">Subtítulo</label>
+                                    <label className="text-body-sm font-medium mb-1 block">Subtítulo</label>
                                     <Input
                                         value={String(settings[brand.keySubtitle] ?? "")}
                                         onChange={e => update(brand.keySubtitle, e.target.value)}
@@ -202,7 +202,7 @@ export default function SettingsPage() {
                 <CardContent className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="text-sm font-medium mb-1 block flex items-center gap-2">
+                            <label className="text-body-sm font-medium mb-1 block flex items-center gap-2">
                                 <Phone className="w-3 h-3 text-gold-500" /> Teléfono
                             </label>
                             <Input
@@ -211,7 +211,7 @@ export default function SettingsPage() {
                             />
                         </div>
                         <div>
-                            <label className="text-sm font-medium mb-1 block flex items-center gap-2">
+                            <label className="text-body-sm font-medium mb-1 block flex items-center gap-2">
                                 <Mail className="w-3 h-3 text-gold-500" /> Correo
                             </label>
                             <Input
@@ -221,7 +221,7 @@ export default function SettingsPage() {
                         </div>
                     </div>
                     <div>
-                        <label className="text-sm font-medium mb-1 block flex items-center gap-2">
+                        <label className="text-body-sm font-medium mb-1 block flex items-center gap-2">
                             <MapPin className="w-3 h-3 text-gold-500" /> Dirección
                         </label>
                         <Textarea
@@ -241,7 +241,7 @@ export default function SettingsPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div>
-                        <label className="text-sm font-medium mb-1 block">Mensaje predeterminado</label>
+                        <label className="text-body-sm font-medium mb-1 block">Mensaje predeterminado</label>
                         <Textarea
                             value={settings.whatsAppTemplate}
                             onChange={e => update("whatsAppTemplate", e.target.value)}
@@ -262,7 +262,7 @@ export default function SettingsPage() {
                     Guardar Configuración
                 </Button>
                 {saved && (
-                    <span className="text-xs text-emerald-500 font-medium">Configuración guardada correctamente.</span>
+                    <span className="text-caption text-emerald-500">Configuración guardada correctamente.</span>
                 )}
             </div>
         </div>
