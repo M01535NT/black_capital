@@ -20,7 +20,6 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
     { title: "Dashboard", href: "/admin", icon: LayoutDashboard, roles: ["admin", "agent"] },
     { title: "Inventario", href: "/admin/properties", icon: Building2, roles: ["admin", "agent"] },
-    { title: "Leads nuevos", href: "/admin/leads?status=new", icon: Mail, roles: ["admin", "agent"] },
     { title: "Leads", href: "/admin/leads", icon: Mail, roles: ["admin", "agent"], showBadge: true },
     { title: "Equipo", href: "/admin/agents", icon: UserCircle, roles: ["admin"] },
     { title: "Configuración", href: "/admin/settings", icon: Settings, roles: ["admin"] },
@@ -87,7 +86,7 @@ export function AdminSidebar({ userRole }: AdminSidebarProps) {
                         const showBadge = item.showBadge && newLeadsCount !== null && newLeadsCount > 0;
                         const title =
                             userRole === "agent"
-                                ? (item.title === "Inventario" ? "Mis propiedades" : item.title === "Leads" ? "Mis leads" : item.title === "Leads nuevos" ? "Leads por responder" : item.title)
+                                ? (item.title === "Inventario" ? "Mis propiedades" : item.title === "Leads" ? "Mis leads" : item.title)
                                 : item.title;
 
                         return (

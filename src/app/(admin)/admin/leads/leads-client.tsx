@@ -184,6 +184,7 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
     const [deleteTargetIds, setDeleteTargetIds] = useState<string[]>([]);
     const [deletePassword, setDeletePassword] = useState("");
     const [deleteError, setDeleteError] = useState("");
+    const [editingLead, setEditingLead] = useState<Lead | null>(null);
     const [deleting, setDeleting] = useState(false);
     const [bulkSaving, setBulkSaving] = useState(false);
     const [open, setOpen] = useState(false);
@@ -286,6 +287,19 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
         } finally {
             setDeleting(false);
         }
+    }
+
+    async function updateLeadDetails(leadId: string, payload: Partial<Lead> & { notes?: string }) {
+        const res = await fetch("/api/leads", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: leadId, ...payload }),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json.error || "No se pudo actualizar el lead");
+        setData((current) => current.map((lead) => lead.id === leadId ? { ...lead, ...payload } : lead));
+        setEditingLead(null);
+        router.refresh();
     }
 
     const columns = useMemo<ColumnDef<Lead>[]>(() => [
@@ -517,26 +531,35 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                         )}
                     </>
                 ) : (
-                    viewMode === "kanban" ? (
-                        <LeadKanban leads={data} agents={agents} isAdmin={isAdmin} onDelete={(id) => {
-                            setDeleteTargetIds([id]);
-                            setDeleteError("");
-                        }} onStatusChange={updateStatus} />
-                    ) : (
-                        <div className={`${adminCardClass} overflow-hidden`}>
-                            <BulkLeadActions
+                    <>
+                        <BulkLeadActions
+                            agents={agents}
+                            count={selectedIds.length}
+                            isAdmin={isAdmin}
+                            saving={bulkSaving}
+                            onClear={() => setSelectedIds([])}
+                            onEdit={() => {
+                                const lead = data.find((item) => item.id === selectedIds[0]);
+                                if (lead) setEditingLead(lead);
+                            }}
+                            onStatusChange={(status) => bulkUpdate({ status })}
+                            onAgentChange={(agentId) => bulkUpdate({ assigned_agent_id: agentId })}
+                            onDelete={() => {
+                                setDeleteTargetIds(selectedIds);
+                                setDeleteError("");
+                            }}
+                        />
+                        {viewMode === "kanban" ? (
+                            <LeadKanban
+                                leads={data}
                                 agents={agents}
-                                count={selectedIds.length}
-                                isAdmin={isAdmin}
-                                saving={bulkSaving}
-                                onClear={() => setSelectedIds([])}
-                                onStatusChange={(status) => bulkUpdate({ status })}
-                                onAgentChange={(agentId) => bulkUpdate({ assigned_agent_id: agentId })}
-                                onDelete={() => {
-                                    setDeleteTargetIds(selectedIds);
-                                    setDeleteError("");
-                                }}
+                                selectedIds={selectedIds}
+                                onToggleSelected={toggleSelected}
+                                onEdit={setEditingLead}
+                                onStatusChange={updateStatus}
                             />
+                        ) : (
+                            <div className={`${adminCardClass} overflow-hidden`}>
                             <DataTable
                                 columns={columns}
                                 data={data}
@@ -547,8 +570,9 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                                     { id: "status", label: "Estado", options: ["new", "contacted", "qualified", "lost", "won"] },
                                 ]}
                             />
-                        </div>
-                    )
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
 
@@ -674,6 +698,20 @@ export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: Leads
                     onConfirm={deleteLeads}
                 />
             )}
+
+            {editingLead && (
+                <LeadEditDialog
+                    lead={editingLead}
+                    agents={agents}
+                    isAdmin={isAdmin}
+                    onCancel={() => setEditingLead(null)}
+                    onDelete={() => {
+                        setDeleteTargetIds([editingLead.id]);
+                        setDeleteError("");
+                    }}
+                    onSave={updateLeadDetails}
+                />
+            )}
         </>
     );
 }
@@ -684,6 +722,7 @@ function BulkLeadActions({
     isAdmin,
     saving,
     onClear,
+    onEdit,
     onStatusChange,
     onAgentChange,
     onDelete,
@@ -693,6 +732,7 @@ function BulkLeadActions({
     isAdmin: boolean;
     saving: boolean;
     onClear: () => void;
+    onEdit: () => void;
     onStatusChange: (status: string) => void;
     onAgentChange: (agentId: string | null) => void;
     onDelete: () => void;
@@ -739,12 +779,134 @@ function BulkLeadActions({
             <button type="button" onClick={onClear} className="text-xs text-white/45 hover:text-white">
                 Limpiar seleccion
             </button>
+            {count === 1 && (
+                <Button type="button" variant="outline" size="sm" onClick={onEdit} disabled={saving} className="border-white/[0.12] bg-white/[0.025] text-white">
+                    Editar
+                </Button>
+            )}
             {isAdmin && (
                 <Button type="button" variant="outline" size="sm" onClick={onDelete} disabled={saving} className="ml-auto border-red-500/20 bg-red-500/10 text-red-300 hover:bg-red-500/20">
                     <Trash2 className="mr-2 h-3.5 w-3.5" />
                     Eliminar bloque
                 </Button>
             )}
+        </div>
+    );
+}
+
+function LeadEditDialog({
+    lead,
+    agents,
+    isAdmin,
+    onCancel,
+    onDelete,
+    onSave,
+}: {
+    lead: Lead;
+    agents: Agent[];
+    isAdmin: boolean;
+    onCancel: () => void;
+    onDelete: () => void;
+    onSave: (leadId: string, payload: Partial<Lead> & { notes?: string }) => Promise<void>;
+}) {
+    const [form, setForm] = useState({
+        full_name: lead.full_name || "",
+        email: lead.email || "",
+        phone: lead.phone || "",
+        source: lead.source || "organic",
+        status: lead.status || "new",
+        assigned_agent_id: lead.assigned_agent_id || "",
+        notes: "",
+    });
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState("");
+
+    async function submit(event: React.FormEvent) {
+        event.preventDefault();
+        setSaving(true);
+        setError("");
+        try {
+            await onSave(lead.id, {
+                full_name: form.full_name,
+                email: form.email,
+                phone: form.phone,
+                source: form.source,
+                status: form.status,
+                assigned_agent_id: form.assigned_agent_id || null,
+                notes: form.notes,
+            });
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "No se pudo guardar el lead");
+        } finally {
+            setSaving(false);
+        }
+    }
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+            <div className="w-full max-w-lg border border-white/[0.08] bg-[#0b0b0b] shadow-2xl">
+                <div className="flex items-center justify-between border-b border-white/[0.08] p-4">
+                    <h3 className="font-display text-sm font-bold uppercase tracking-[0.18em] text-white">Editar lead</h3>
+                    <button onClick={onCancel} className="p-1 text-white/50 hover:text-white">
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
+                <form onSubmit={submit} className="space-y-4 p-4">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                        <label className="space-y-1.5 sm:col-span-2">
+                            <span className="text-sm font-medium text-white/70">Nombre completo</span>
+                            <Input value={form.full_name} onChange={(event) => setForm((prev) => ({ ...prev, full_name: event.target.value }))} />
+                        </label>
+                        <label className="space-y-1.5">
+                            <span className="text-sm font-medium text-white/70">Correo</span>
+                            <Input type="email" value={form.email} onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))} />
+                        </label>
+                        <label className="space-y-1.5">
+                            <span className="text-sm font-medium text-white/70">Teléfono</span>
+                            <Input value={form.phone} onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))} />
+                        </label>
+                        <label className="space-y-1.5">
+                            <span className="text-sm font-medium text-white/70">Estado</span>
+                            <select value={form.status} onChange={(event) => setForm((prev) => ({ ...prev, status: event.target.value }))} className="h-10 w-full border border-white/[0.12] bg-[#0b0b0b] px-3 text-sm text-white">
+                                {STATUS_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                            </select>
+                        </label>
+                        <label className="space-y-1.5">
+                            <span className="text-sm font-medium text-white/70">Origen</span>
+                            <select value={form.source} onChange={(event) => setForm((prev) => ({ ...prev, source: event.target.value }))} className="h-10 w-full border border-white/[0.12] bg-[#0b0b0b] px-3 text-sm text-white">
+                                {Object.entries(sourceLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                            </select>
+                        </label>
+                        <label className="space-y-1.5 sm:col-span-2">
+                            <span className="text-sm font-medium text-white/70">Agente asignado</span>
+                            <select value={form.assigned_agent_id} onChange={(event) => setForm((prev) => ({ ...prev, assigned_agent_id: event.target.value }))} className="h-10 w-full border border-white/[0.12] bg-[#0b0b0b] px-3 text-sm text-white">
+                                <option value="">Sin asignar</option>
+                                {agents.map((agent) => <option key={agent.id} value={agent.id}>{agent.full_name}</option>)}
+                            </select>
+                        </label>
+                        <label className="space-y-1.5 sm:col-span-2">
+                            <span className="text-sm font-medium text-white/70">Nueva nota</span>
+                            <Textarea value={form.notes} onChange={(event) => setForm((prev) => ({ ...prev, notes: event.target.value }))} placeholder="Agregar nota de seguimiento..." className="h-20" />
+                        </label>
+                    </div>
+                    {error && <p className="border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-300">{error}</p>}
+                    <div className="flex flex-wrap gap-2 border-t border-white/[0.08] pt-4">
+                        {isAdmin && (
+                            <Button type="button" variant="outline" onClick={onDelete} disabled={saving} className="border-red-500/20 bg-red-500/10 text-red-300 hover:bg-red-500/20">
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Eliminar
+                            </Button>
+                        )}
+                        <Button type="button" variant="outline" onClick={onCancel} disabled={saving} className="ml-auto border-white/[0.12] bg-white/[0.025] text-white">
+                            Cancelar
+                        </Button>
+                        <Button type="submit" disabled={saving} className="brushed-gold font-bold">
+                            {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                            Guardar cambios
+                        </Button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
@@ -839,14 +1001,16 @@ function AttentionSummary({
 function LeadKanban({
     leads,
     agents,
-    isAdmin,
-    onDelete,
+    selectedIds,
+    onToggleSelected,
+    onEdit,
     onStatusChange,
 }: {
     leads: Lead[];
     agents: Agent[];
-    isAdmin: boolean;
-    onDelete: (id: string) => void;
+    selectedIds: string[];
+    onToggleSelected: (id: string) => void;
+    onEdit: (lead: Lead) => void;
     onStatusChange: (id: string, status: string) => void;
 }) {
     return (
@@ -866,21 +1030,19 @@ function LeadKanban({
                             {items.map((lead) => {
                                 const assigned = agents.find((agent) => agent.id === lead.assigned_agent_id);
                                 return (
-                                    <article key={lead.id} className="border border-white/[0.08] bg-white/[0.025] p-3 transition-colors hover:border-[var(--color-accent)]/30">
+                                    <article key={lead.id} onClick={() => onEdit(lead)} className="cursor-pointer border border-white/[0.08] bg-white/[0.025] p-3 transition-colors hover:border-[var(--color-accent)]/30">
                                         <div className="flex items-start justify-between gap-2">
-                                            <Link href={`/admin/leads/${lead.id}`} className="block font-semibold text-white hover:text-[var(--color-accent)]">
+                                            <button type="button" className="block text-left font-semibold text-white hover:text-[var(--color-accent)]">
                                                 {lead.full_name}
-                                            </Link>
-                                            {isAdmin && (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => onDelete(lead.id)}
-                                                    className="shrink-0 text-red-300/70 transition hover:text-red-300"
-                                                    aria-label={`Eliminar ${lead.full_name}`}
-                                                >
-                                                    <Trash2 className="h-3.5 w-3.5" />
-                                                </button>
-                                            )}
+                                            </button>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedIds.includes(lead.id)}
+                                                onClick={(event) => event.stopPropagation()}
+                                                onChange={() => onToggleSelected(lead.id)}
+                                                className="h-4 w-4 shrink-0 accent-[var(--color-accent)]"
+                                                aria-label={`Seleccionar ${lead.full_name}`}
+                                            />
                                         </div>
                                         <p className="mt-1 truncate text-xs text-white/45">{lead.email}</p>
                                         <LeadAttentionBadges lead={lead} />

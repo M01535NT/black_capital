@@ -96,7 +96,7 @@ export async function PUT(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { id, status, notes, assigned_agent_id } = body;
+    const { id, status, notes, assigned_agent_id, full_name, email, phone, source } = body;
 
     if (!id) {
       return NextResponse.json({ error: "Se requiere el ID del lead" }, { status: 400 });
@@ -119,6 +119,10 @@ export async function PUT(req: NextRequest) {
     const updateData: Record<string, unknown> = {};
 
     if (status) updateData.status = status;
+    if (full_name !== undefined) updateData.full_name = String(full_name).trim();
+    if (email !== undefined) updateData.email = String(email).trim();
+    if (phone !== undefined) updateData.phone = String(phone).trim();
+    if (source !== undefined) updateData.source = String(source);
     if (notes !== undefined) updateData.notes = notes;
     if (assigned_agent_id !== undefined && isAdmin(profile)) updateData.assigned_agent_id = assigned_agent_id;
 

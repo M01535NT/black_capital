@@ -16,7 +16,6 @@ import { requireAdminSession } from "@/lib/auth";
 const ADMIN_NAV_ITEMS = [
     { title: "Dashboard", href: "/admin" },
     { title: "Inventario", href: "/admin/properties" },
-    { title: "Leads nuevos", href: "/admin/leads?status=new" },
     { title: "Leads", href: "/admin/leads" },
     { title: "Mi cuenta", href: "/admin/account" },
 ];
@@ -40,9 +39,7 @@ export default async function AdminLayout({
             title:
                 item.title === "Inventario"
                     ? "Mis propiedades"
-                    : item.title === "Leads nuevos"
-                        ? "Leads por responder"
-                        : item.title === "Leads"
+                    : item.title === "Leads"
                             ? "Mis leads"
                             : item.title,
         }));
