@@ -23,7 +23,7 @@ export function AdminPageHeader({
         <div className="flex min-w-0 flex-col gap-5 border-b border-white/[0.06] pb-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="min-w-0">
                 {eyebrow && (
-                    <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                    <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] gold-ink">
                         {eyebrow}
                     </p>
                 )}
@@ -70,7 +70,7 @@ export function AdminStatCard({
                 <span
                     className={cn(
                         "flex h-10 w-10 items-center justify-center border",
-                        accent === "gold" && "border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 text-[var(--color-accent)]",
+                        accent === "gold" && "gold-gradient border-[var(--color-accent)]/25 text-black",
                         accent === "green" && "border-emerald-500/20 bg-emerald-500/10 text-emerald-400",
                         accent === "blue" && "border-sky-500/20 bg-sky-500/10 text-sky-400",
                         accent === "muted" && "border-white/[0.08] bg-white/[0.035] text-white/60",
@@ -105,7 +105,7 @@ export function AdminSectionCard({
             <div className="mb-5 flex min-w-0 items-center justify-between gap-4">
                 <h2 className="min-w-0 text-[11px] font-bold uppercase tracking-[0.18em] text-white/48">{title}</h2>
                 {action && (
-                    <Link href={action.href} className="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent)]">
+                    <Link href={action.href} className="text-[11px] font-bold uppercase tracking-[0.14em] gold-ink">
                         {action.label}
                     </Link>
                 )}
@@ -128,7 +128,7 @@ export function AdminEmptyState({
 }) {
     return (
         <div className={cn(adminCardClass, "px-6 py-14 text-center")}>
-            <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+            <div className="gold-gradient mx-auto mb-5 flex h-14 w-14 items-center justify-center border border-[var(--color-accent)]/25 text-black">
                 <Icon className="h-6 w-6" aria-hidden="true" />
             </div>
             <h3 className="text-xl text-white">{title}</h3>

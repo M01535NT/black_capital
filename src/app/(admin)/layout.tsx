@@ -46,7 +46,17 @@ export default async function AdminLayout({
         }));
 
     return (
-        <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-background text-white">
+        <div className="admin-gold-scope min-h-screen w-full max-w-full overflow-x-hidden bg-background text-white">
+            <svg aria-hidden="true" focusable="false" className="absolute h-0 w-0 overflow-hidden">
+                <defs>
+                    <linearGradient id="admin-gold-icon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#c89625" />
+                        <stop offset="32%" stopColor="#d2a73c" />
+                        <stop offset="58%" stopColor="#f1e292" />
+                        <stop offset="100%" stopColor="#d0a539" />
+                    </linearGradient>
+                </defs>
+            </svg>
             <AdminSidebar userRole={profile.role} />
             <div className="flex min-w-0 max-w-full flex-col overflow-x-hidden transition-[padding] duration-200 md:pl-[var(--admin-sidebar-width,256px)]">
                 <header className="flex h-16 min-w-0 items-center gap-2 overflow-x-clip border-b border-white/[0.08] bg-background/95 px-3 backdrop-blur-xl sm:gap-4 sm:px-4 lg:px-6">
@@ -64,7 +74,7 @@ export default async function AdminLayout({
                         <DrawerContent className="h-full w-[min(18rem,85vw)] rounded-none border-r border-white/[0.08] bg-[#070707] sm:max-w-xs">
                             <div className="flex h-16 items-center border-b border-white/[0.08] px-5">
                                 <Link href="/" className="text-display-3 font-semibold text-white">
-                                    Black <span className="block text-sm tracking-[0.18em] text-[var(--color-accent)]">Capital</span>
+                                    Black <span className="gold-ink block text-sm tracking-[0.18em]">Capital</span>
                                 </Link>
                             </div>
                             <div className="p-4 flex flex-col gap-2">

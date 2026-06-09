@@ -73,7 +73,7 @@ export function AdminTopbarActions() {
           >
             <Bell className="h-4 w-4" />
             {unread > 0 && (
-              <span className="absolute -right-1 -top-1 min-w-4 bg-[var(--color-accent)] px-1 text-[10px] font-bold text-black">
+              <span className="gold-gradient absolute -right-1 -top-1 min-w-4 px-1 text-[10px] font-bold text-black">
                 {unread}
               </span>
             )}
@@ -86,7 +86,7 @@ export function AdminTopbarActions() {
               <div className="flex items-center justify-between border-b border-white/[0.08] px-4 py-3">
                 <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-white">Notificaciones</p>
                 {unread > 0 && (
-                  <button onClick={markAllRead} className="text-xs text-[var(--color-accent)] hover:text-white">
+                  <button onClick={markAllRead} className="gold-ink text-xs hover:text-white">
                     Marcar leídas
                   </button>
                 )}

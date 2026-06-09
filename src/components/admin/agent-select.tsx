@@ -88,7 +88,7 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
                         selectedAgents.map(a => (
                             <span
                                 key={a.id}
-                                className="inline-flex items-center gap-1 bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-xs font-medium px-2 py-0.5 rounded-full border border-[var(--color-accent)]/20"
+                                className="inline-flex items-center gap-1 border border-[var(--color-accent)]/20 bg-white/[0.035] px-2 py-0.5 text-xs font-medium gold-ink rounded-full"
                             >
                                 {a.full_name.split(" ")[0]}
                                 <button
@@ -116,7 +116,7 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
                         <div className="p-4 text-center text-sm text-red-400">{error}</div>
                     ) : agents.length === 0 ? (
                         <div className="p-4 text-center text-sm text-foreground/50">
-                            No hay agentes activos. <Link href="/admin/agents/new" className="text-[var(--color-accent)] underline">Registra uno</Link>
+                            No hay agentes activos. <Link href="/admin/agents/new" className="gold-ink underline">Registra uno</Link>
                         </div>
                     ) : (
                         <div className="max-h-60 overflow-y-auto divide-y divide-foreground/5">
@@ -138,7 +138,7 @@ export function AgentSelect({ value, onChange, disabled }: AgentSelectProps) {
                                             className={cn(
                                                 "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 border",
                                                 isSelected
-                                                    ? "bg-[var(--color-accent)] text-black border-[var(--color-accent)]"
+                                                    ? "gold-gradient text-black border-[var(--color-accent)]"
                                                     : "bg-muted text-foreground/50 border-foreground/10"
                                             )}
                                         >

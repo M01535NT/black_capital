@@ -94,11 +94,11 @@ export function AdminSidebar({ userRole }: AdminSidebarProps) {
             )}
         >
             <div className={cn("flex h-16 items-center justify-between gap-3 border-b border-white/[0.08]", expanded ? "px-5" : "justify-center px-0")}>
-                <Link href="/" className={cn("min-w-0 font-display font-bold uppercase leading-none tracking-wide text-white", expanded ? "text-xl" : "flex h-10 w-10 items-center justify-center border border-[var(--color-accent)]/25 text-sm text-[var(--color-accent)]")}>
+                <Link href="/" className={cn("min-w-0 font-display font-bold uppercase leading-none tracking-wide text-white", expanded ? "text-xl" : "flex h-10 w-10 items-center justify-center border border-[var(--color-accent)]/25 text-sm")}>
                     {expanded ? (
-                        <>Black <span className="block text-sm tracking-[0.18em] text-[var(--color-accent)]">Capital</span></>
+                        <>Black <span className="gold-ink block text-sm tracking-[0.18em]">Capital</span></>
                     ) : (
-                        <span>BC</span>
+                        <span className="gold-ink">BC</span>
                     )}
                 </Link>
                 {expanded && (
@@ -129,14 +129,14 @@ export function AdminSidebar({ userRole }: AdminSidebarProps) {
                                     "mb-1 flex items-center gap-3 border border-transparent px-3 py-3 font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-white/55 transition-colors",
                                         !expanded && "h-11 w-11 justify-center px-0",
                                     active
-                                        ? "border-[var(--color-accent)]/30 bg-[var(--color-accent)]/10 text-[var(--color-accent)]"
+                                        ? "gold-gradient border-[var(--color-accent)]/30 text-black"
                                         : "hover:border-white/[0.08] hover:bg-white/[0.025] hover:text-white"
                                 )}
                             >
-                                <item.icon className={cn("h-4 w-4", active ? "text-[var(--color-accent)]" : "text-white/38")} />
+                                <item.icon className={cn("h-4 w-4", active ? "text-black" : "text-white/38")} />
                                 {expanded && <span className="flex-1">{title}</span>}
                                 {showBadge && expanded && (
-                                    <span className="min-w-[18px] bg-[var(--color-accent)] px-1.5 py-0.5 text-center text-caption font-bold text-black">
+                                    <span className="gold-gradient min-w-[18px] px-1.5 py-0.5 text-center text-caption font-bold text-black">
                                         {newLeadsCount}
                                     </span>
                                 )}
@@ -186,7 +186,7 @@ function SidebarModeControl({
                             className={cn(
                                 "flex h-7 w-7 items-center justify-center border border-transparent text-white/45 transition-colors hover:border-white/[0.08] hover:bg-white/[0.025] hover:text-white",
                                 compact && "h-9 w-9",
-                                mode === option.value && "bg-[var(--color-accent)] text-black hover:text-black"
+                                mode === option.value && "gold-gradient text-black hover:text-black"
                             )}
                         >
                             <Icon className="h-3.5 w-3.5" />

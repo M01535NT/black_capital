@@ -46,7 +46,7 @@ export function AdminPublicLinksMenu() {
           aria-haspopup="menu"
           aria-expanded={isOpen}
           onClick={() => setIsOpen((current) => !current)}
-          className="flex h-10 cursor-pointer items-center gap-2 border border-white/[0.08] bg-white/[0.025] px-4 text-[11px] font-bold uppercase tracking-[0.16em] text-white/55 transition-colors hover:border-[var(--color-accent)]/45 hover:bg-[var(--color-accent)]/10 hover:text-[var(--color-accent)] focus:border-[var(--color-accent)]/45 focus:bg-[var(--color-accent)]/10 focus:text-[var(--color-accent)] focus:outline-none"
+          className="flex h-10 cursor-pointer items-center gap-2 border border-white/[0.08] bg-white/[0.025] px-4 text-[11px] font-bold uppercase tracking-[0.16em] text-white/55 transition-colors hover:border-[var(--color-accent)]/45 hover:bg-white/[0.04] focus:border-[var(--color-accent)]/45 focus:bg-white/[0.04] focus:outline-none"
         >
           Ir al sitio
           <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isOpen ? "rotate-180" : ""}`} />
@@ -64,7 +64,7 @@ export function AdminPublicLinksMenu() {
               href={item.href}
               role="menuitem"
               onClick={() => setIsOpen(false)}
-              className="flex w-full items-center justify-between border-b border-white/[0.06] px-4 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white/58 transition-colors last:border-b-0 hover:bg-[var(--color-accent)]/10 hover:text-[var(--color-accent)] focus:bg-[var(--color-accent)]/10 focus:text-[var(--color-accent)] focus:outline-none"
+              className="flex w-full items-center justify-between border-b border-white/[0.06] px-4 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white/58 transition-colors last:border-b-0 hover:bg-white/[0.04] hover:text-white focus:bg-white/[0.04] focus:text-white focus:outline-none"
             >
               {item.title}
               <ExternalLink className="h-3.5 w-3.5 text-white/35" />

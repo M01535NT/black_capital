@@ -173,14 +173,14 @@ export function DataTable<TData extends object>({
                 {hasActiveFilters && (
                     <button
                         onClick={clearFilters}
-                        className="ml-auto text-caption text-[var(--color-accent)] transition-colors hover:text-white"
+                        className="gold-ink ml-auto text-caption transition-colors hover:text-white"
                     >
                         Limpiar filtros
                     </button>
                 )}
                 <button
                     onClick={exportCsv}
-                    className="inline-flex items-center gap-2 text-caption text-white/45 transition-colors hover:text-[var(--color-accent)]"
+                    className="inline-flex items-center gap-2 text-caption text-white/45 transition-colors hover:text-white"
                 >
                     <Download className="h-3.5 w-3.5" />
                     Exportar
@@ -291,7 +291,7 @@ function FilterDropdown({
                 className={cn(
                     "flex items-center gap-1.5 border px-3 py-2 text-caption transition-all",
                     current
-                        ? "border-[var(--color-accent)]/35 bg-[var(--color-accent)]/10 text-[var(--color-accent)]"
+                        ? "gold-gradient border-[var(--color-accent)]/35 text-black"
                         : "border-white/[0.08] bg-white/[0.025] text-white/55 hover:border-white/[0.16] hover:text-white"
                 )}
             >
@@ -307,7 +307,7 @@ function FilterDropdown({
                             onClick={() => onSelect(null)}
                             className={cn(
                                 "w-full text-left px-3 py-2 text-xs transition-colors",
-                                !current ? "font-medium text-[var(--color-accent)]" : "text-white/60 hover:text-white"
+                                !current ? "font-medium gold-ink" : "text-white/60 hover:text-white"
                             )}
                         >
                             Tod{filter.label.toLowerCase().endsWith("s") ? "os" : "as"}
@@ -320,7 +320,7 @@ function FilterDropdown({
                                 className={cn(
                                     "w-full text-left px-3 py-2 text-xs transition-colors",
                                     current === opt
-                                        ? "bg-[var(--color-accent)]/10 font-medium text-[var(--color-accent)]"
+                                        ? "bg-white/[0.04] font-medium gold-ink"
                                         : "text-white/70 hover:bg-white/[0.04]"
                                 )}
                             >

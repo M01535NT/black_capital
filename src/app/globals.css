@@ -468,6 +468,33 @@ body {
     background: var(--gradient-gold);
   }
 
+  .admin-gold-scope :where(
+    [class~="text-[var(--color-accent)]"],
+    [class^="text-[var(--color-accent)]/"],
+    [class*=" text-[var(--color-accent)]/"]
+  ):not(svg) {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
+  }
+
+  .admin-gold-scope svg:where(
+    [class~="text-[var(--color-accent)]"],
+    [class^="text-[var(--color-accent)]/"],
+    [class*=" text-[var(--color-accent)]/"]
+  ) {
+    color: var(--color-gold-light) !important;
+    stroke: url("#admin-gold-icon-gradient") !important;
+    background: none !important;
+    -webkit-text-fill-color: currentColor;
+  }
+
+  .admin-gold-scope :where([class~="bg-[var(--color-accent)]"]) {
+    background: var(--gradient-gold) !important;
+  }
+
   /* ── Champagne shimmer button (hover fill) ── */
   .btn-ghost-gold {
     position: relative;
