@@ -22,7 +22,7 @@ export function HomeHeroHeadline() {
   return (
     <h1 className="text-display-1 text-white text-balance">
       Invierte con{" "}
-      <span className="relative inline-block min-w-[8.5ch] metallic-gold-static gold-glow">
+      <span className="relative inline-block min-w-[8.5ch] gold-glow">
         <AnimatePresence mode="wait" initial={false}>
           <motion.span
             key={words[index]}
@@ -30,7 +30,7 @@ export function HomeHeroHeadline() {
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             exit={shouldReduceMotion ? undefined : { opacity: 0, y: -14, filter: "blur(4px)" }}
             transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-            className="inline-block"
+            className="metallic-gold-static inline-block"
           >
             {words[index]}
           </motion.span>

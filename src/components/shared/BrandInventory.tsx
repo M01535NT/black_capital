@@ -223,6 +223,7 @@ export async function BrandInventory({
                     const href = prop.isPlaceholder
                         ? `/contacto?interes=${encodeURIComponent(propertyUse)}`
                         : `/inventario/${prop.slug || prop.id}`;
+                    const hasCoverImage = Boolean(prop.cover_image);
 
                     return (
                         <article
@@ -230,9 +231,9 @@ export async function BrandInventory({
                             className="group overflow-hidden border border-white/[0.08] bg-white/[0.025]"
                         >
                             <div className="relative aspect-[16/10] overflow-hidden bg-white/[0.02]">
-                                {prop.cover_image ? (
+                                {hasCoverImage ? (
                                     <Image
-                                        src={prop.cover_image}
+                                        src={prop.cover_image as string}
                                         alt={prop.title}
                                         fill
                                         sizes="(max-width: 1024px) 100vw, 33vw"
@@ -240,13 +241,15 @@ export async function BrandInventory({
                                     />
                                 ) : (
                                 <div className="gold-premium-overlay absolute inset-0 flex flex-col items-center justify-center">
-                                    <ImageIcon className="mb-3 h-5 w-5 text-[var(--color-accent)]/70" aria-hidden="true" />
-                                    <span className="property-tag-type text-white/44">
+                                    <ImageIcon className="mb-3 h-6 w-6 text-[var(--color-accent)]" aria-hidden="true" />
+                                    <span className="property-tag-type text-white/68">
                                         Imagen de ejemplo
                                     </span>
                                 </div>
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
+                                {hasCoverImage && (
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
+                                )}
                                 <div className="absolute left-4 top-4 rounded-full border border-[var(--color-accent)]/30 bg-background/85 px-3 py-1 property-tag-type gold-ink">
                                     {prop.isPlaceholder ? "Ejemplo" : prop.property_type}
                                 </div>
