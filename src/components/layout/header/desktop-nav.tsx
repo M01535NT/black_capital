@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useCallback, useEffect, KeyboardEvent } from "react";
+import { useRef, useCallback, useEffect, KeyboardEvent, useId, type ComponentType } from "react";
 import Link from "next/link";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,6 +11,25 @@ interface NavDropdownProps {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
+}
+
+function GoldDropdownIcon({ icon: Icon }: { icon: ComponentType<any> }) {
+  const gradientId = useId().replace(/:/g, "");
+
+  return (
+    <Icon className="w-4 h-4" stroke={`url(#${gradientId})`} aria-hidden="true">
+      <defs>
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#c89625" />
+          <stop offset="24%" stopColor="#d2a73c" />
+          <stop offset="44%" stopColor="#e4c363" />
+          <stop offset="58%" stopColor="#f1e292" />
+          <stop offset="72%" stopColor="#e4c76a" />
+          <stop offset="100%" stopColor="#d0a539" />
+        </linearGradient>
+      </defs>
+    </Icon>
+  );
 }
 
 export function NavDropdown({ def, isOpen, onOpen, onClose }: NavDropdownProps) {
@@ -86,11 +105,11 @@ export function NavDropdown({ def, isOpen, onOpen, onClose }: NavDropdownProps) 
           <Link
             href={def.href}
             role="menuitem"
-            className="font-display property-tag-type flex items-center justify-between px-4 py-2.5 mb-1 text-[var(--color-accent)] rounded-none border-b border-white/5 pb-3 hover:text-[var(--color-gold-pale)] focus-visible:outline-none focus-visible:text-[var(--color-gold-pale)]"
+            className="font-display property-tag-type flex items-center justify-between px-4 py-2.5 mb-1 rounded-none border-b border-white/5 pb-3 focus-visible:outline-none"
             onClick={onClose}
           >
-            Ver todo de {def.label}
-            <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+            <span className="gold-ink">Ver todo de {def.label}</span>
+            <GoldDropdownIcon icon={ArrowRight} />
           </Link>
           {def.items.map((item) => {
             const Icon = item.icon;
@@ -102,7 +121,7 @@ export function NavDropdown({ def, isOpen, onOpen, onClose }: NavDropdownProps) 
                 className="font-display text-body-sm flex items-center gap-3 px-4 py-3 text-foreground rounded-none transition-all duration-300 hover:bg-[var(--color-accent)]/10 hover:text-[var(--color-accent)] hover:pl-5 focus-visible:bg-[var(--color-accent)]/10 focus-visible:text-[var(--color-accent)] focus-visible:outline-none"
                 onClick={onClose}
               >
-                <Icon className="w-4 h-4 text-[var(--color-accent)]" aria-hidden="true" />
+                <GoldDropdownIcon icon={Icon} />
                 {item.name}
               </Link>
             );

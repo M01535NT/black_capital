@@ -1,8 +1,8 @@
  "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import Link from "next/link";
-import { X } from "lucide-react";
+import { X, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -29,10 +29,29 @@ interface MobileDrawerProps {
   pathname: string;
 }
 
+function GoldMenuIcon({ icon: Icon }: { icon: LucideIcon }) {
+  const gradientId = useId().replace(/:/g, "");
+
+  return (
+    <Icon className="w-3.5 h-3.5" stroke={`url(#${gradientId})`} aria-hidden="true">
+      <defs>
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#c89625" />
+          <stop offset="24%" stopColor="#d2a73c" />
+          <stop offset="44%" stopColor="#e4c363" />
+          <stop offset="58%" stopColor="#f1e292" />
+          <stop offset="72%" stopColor="#e4c76a" />
+          <stop offset="100%" stopColor="#d0a539" />
+        </linearGradient>
+      </defs>
+    </Icon>
+  );
+}
+
 function NavGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="space-y-2.5">
-      <h3 className="footer-heading-type text-[var(--color-accent)]/90">
+      <h3 className="footer-heading-type gold-ink">
         {title}
       </h3>
       {children}
@@ -106,7 +125,7 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
                       href={link.href}
                       className={cn(
                       "font-display flex items-center justify-center border border-white/[0.08] px-3 py-3 text-center hero-mobile-main-link transition-colors",
-                      isActive(link.href) ? "border-[var(--color-accent)]/45 text-[var(--color-accent)]" : "text-foreground hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)]",
+                      isActive(link.href) ? "border-[var(--color-accent)]/45 gold-ink" : "text-foreground hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)]",
                     )}
                     onClick={handleClose}
                     style={{ lineHeight: "normal" }}
@@ -122,7 +141,7 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
                   <Link key={link.name} href={link.href} onClick={handleClose} className="group border border-white/[0.06] bg-white/[0.02] px-3 py-2 focus-visible:outline-none">
                       <span className={cn(
                         "font-display hero-mobile-secondary-link transition-colors",
-                        isActive(link.href) ? "text-[var(--color-accent)]" : "text-foreground group-hover:text-[var(--color-accent)]",
+                        isActive(link.href) ? "gold-ink" : "text-foreground group-hover:text-[var(--color-accent)]",
                       )}>
                         {link.name}
                       </span>
@@ -143,7 +162,7 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
                         className="font-display flex min-h-8 items-center gap-2 hero-mobile-secondary-link transition-colors"
                         onClick={handleClose}
                       >
-                        <Icon className="w-3.5 h-3.5 text-[var(--color-accent)]/80" aria-hidden="true" />
+                        <GoldMenuIcon icon={Icon} />
                         {item.name}
                       </Link>
                     );
@@ -159,7 +178,7 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
                       href={link.href}
                       className={cn(
                         "font-display hero-mobile-secondary-link transition-colors",
-                        isActive(link.href) ? "text-[var(--color-accent)]" : "text-foreground/80 hover:text-[var(--color-accent)]",
+                        isActive(link.href) ? "gold-ink" : "text-foreground/80 hover:text-[var(--color-accent)]",
                       )}
                       onClick={handleClose}
                     >
