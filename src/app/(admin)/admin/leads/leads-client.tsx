@@ -5,7 +5,7 @@ import { DataTable } from "@/components/admin/data-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { AlertTriangle, BellRing, Clock, PlusCircle, Loader2, X, Check, ChevronDown, Users, Columns3, Table2 } from "lucide-react";
+import { AlertTriangle, BellRing, Clock, PlusCircle, Loader2, X, Check, ChevronDown, Users, Columns3, Table2, Trash2, ShieldAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
@@ -35,6 +35,7 @@ interface Agent {
 interface LeadsPageClientProps {
     leads: Lead[];
     agents: Agent[];
+    isAdmin: boolean;
     supabaseError?: string | null;
 }
 
@@ -176,9 +177,15 @@ function AgentCell({ lead, agents, onChange }: { lead: Lead; agents: Agent[]; on
     );
 }
 
-export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClientProps) {
+export function LeadsPageClient({ leads, agents, isAdmin, supabaseError }: LeadsPageClientProps) {
     const [data, setData] = useState<Lead[]>(leads);
     const [viewMode, setViewMode] = useState<"kanban" | "table">("kanban");
+    const [selectedIds, setSelectedIds] = useState<string[]>([]);
+    const [deleteTargetIds, setDeleteTargetIds] = useState<string[]>([]);
+    const [deletePassword, setDeletePassword] = useState("");
+    const [deleteError, setDeleteError] = useState("");
+    const [deleting, setDeleting] = useState(false);
+    const [bulkSaving, setBulkSaving] = useState(false);
     const [open, setOpen] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [form, setForm] = useState({
@@ -228,7 +235,81 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
         }
     }, [data]);
 
+    function toggleSelected(id: string) {
+        setSelectedIds((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
+    }
+
+    function toggleAllSelected() {
+        setSelectedIds((current) => current.length === data.length ? [] : data.map((lead) => lead.id));
+    }
+
+    async function bulkUpdate(payload: { status?: string; assigned_agent_id?: string | null }) {
+        if (selectedIds.length === 0) return;
+        setBulkSaving(true);
+        try {
+            await Promise.all(selectedIds.map((id) => fetch("/api/leads", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, ...payload }),
+            }).then((res) => {
+                if (!res.ok) throw new Error("No se pudo actualizar el bloque de leads");
+            })));
+            setData((current) => current.map((lead) => selectedIds.includes(lead.id) ? { ...lead, ...payload } : lead));
+            router.refresh();
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "No se pudo actualizar el bloque de leads");
+        } finally {
+            setBulkSaving(false);
+        }
+    }
+
+    async function deleteLeads() {
+        if (!isAdmin || deleteTargetIds.length === 0) return;
+        setDeleting(true);
+        setDeleteError("");
+        try {
+            const res = await fetch("/api/leads", {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ ids: deleteTargetIds, password: deletePassword }),
+            });
+            const json = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(json.error || "No se pudieron eliminar los leads");
+            const deletedIds = (json.deletedIds || deleteTargetIds) as string[];
+            setData((current) => current.filter((lead) => !deletedIds.includes(lead.id)));
+            setSelectedIds((current) => current.filter((id) => !deletedIds.includes(id)));
+            setDeleteTargetIds([]);
+            setDeletePassword("");
+            router.refresh();
+        } catch (err) {
+            setDeleteError(err instanceof Error ? err.message : "No se pudieron eliminar los leads");
+        } finally {
+            setDeleting(false);
+        }
+    }
+
     const columns = useMemo<ColumnDef<Lead>[]>(() => [
+        {
+            id: "select",
+            header: () => (
+                <input
+                    type="checkbox"
+                    checked={data.length > 0 && selectedIds.length === data.length}
+                    onChange={toggleAllSelected}
+                    className="h-4 w-4 accent-[var(--color-accent)]"
+                    aria-label="Seleccionar todos"
+                />
+            ),
+            cell: ({ row }) => (
+                <input
+                    type="checkbox"
+                    checked={selectedIds.includes(row.original.id)}
+                    onChange={() => toggleSelected(row.original.id)}
+                    className="h-4 w-4 accent-[var(--color-accent)]"
+                    aria-label={`Seleccionar ${row.original.full_name}`}
+                />
+            ),
+        },
         {
             accessorKey: "full_name",
             header: "Nombre",
@@ -291,7 +372,24 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                 return <div className="text-right text-sm text-white/45">{formatted}</div>;
             },
         },
-    ], [agents, updateStatus, updateAgent]);
+        {
+            id: "actions",
+            header: "",
+            cell: ({ row }) => isAdmin ? (
+                <button
+                    type="button"
+                    onClick={() => {
+                        setDeleteTargetIds([row.original.id]);
+                        setDeleteError("");
+                    }}
+                    className="inline-flex h-8 w-8 items-center justify-center border border-red-500/20 bg-red-500/10 text-red-300 transition hover:bg-red-500/20"
+                    aria-label={`Eliminar ${row.original.full_name}`}
+                >
+                    <Trash2 className="h-3.5 w-3.5" />
+                </button>
+            ) : null,
+        },
+    ], [agents, data.length, isAdmin, selectedIds, updateStatus, updateAgent]);
 
     const attentionLeads = useMemo(() => {
         return data.filter((lead) => {
@@ -420,9 +518,25 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                     </>
                 ) : (
                     viewMode === "kanban" ? (
-                        <LeadKanban leads={data} agents={agents} onStatusChange={updateStatus} />
+                        <LeadKanban leads={data} agents={agents} isAdmin={isAdmin} onDelete={(id) => {
+                            setDeleteTargetIds([id]);
+                            setDeleteError("");
+                        }} onStatusChange={updateStatus} />
                     ) : (
                         <div className={`${adminCardClass} overflow-hidden`}>
+                            <BulkLeadActions
+                                agents={agents}
+                                count={selectedIds.length}
+                                isAdmin={isAdmin}
+                                saving={bulkSaving}
+                                onClear={() => setSelectedIds([])}
+                                onStatusChange={(status) => bulkUpdate({ status })}
+                                onAgentChange={(agentId) => bulkUpdate({ assigned_agent_id: agentId })}
+                                onDelete={() => {
+                                    setDeleteTargetIds(selectedIds);
+                                    setDeleteError("");
+                                }}
+                            />
                             <DataTable
                                 columns={columns}
                                 data={data}
@@ -544,7 +658,154 @@ export function LeadsPageClient({ leads, agents, supabaseError }: LeadsPageClien
                     </div>
                 </div>
             )}
+
+            {deleteTargetIds.length > 0 && (
+                <ConfirmDeleteLeadsDialog
+                    count={deleteTargetIds.length}
+                    password={deletePassword}
+                    error={deleteError}
+                    deleting={deleting}
+                    onPasswordChange={setDeletePassword}
+                    onCancel={() => {
+                        setDeleteTargetIds([]);
+                        setDeletePassword("");
+                        setDeleteError("");
+                    }}
+                    onConfirm={deleteLeads}
+                />
+            )}
         </>
+    );
+}
+
+function BulkLeadActions({
+    agents,
+    count,
+    isAdmin,
+    saving,
+    onClear,
+    onStatusChange,
+    onAgentChange,
+    onDelete,
+}: {
+    agents: Agent[];
+    count: number;
+    isAdmin: boolean;
+    saving: boolean;
+    onClear: () => void;
+    onStatusChange: (status: string) => void;
+    onAgentChange: (agentId: string | null) => void;
+    onDelete: () => void;
+}) {
+    if (count === 0) return null;
+
+    return (
+        <div className="flex flex-wrap items-center gap-3 border-b border-white/[0.08] bg-[var(--color-accent)]/5 p-4">
+            <span className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-accent)]">
+                {count} seleccionado{count !== 1 ? "s" : ""}
+            </span>
+            <select
+                disabled={saving}
+                onChange={(event) => {
+                    if (event.target.value) onStatusChange(event.target.value);
+                    event.currentTarget.value = "";
+                }}
+                className="h-9 border border-white/[0.12] bg-[#0b0b0b] px-3 text-xs text-white"
+                defaultValue=""
+            >
+                <option value="">Cambiar estado</option>
+                {STATUS_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+            </select>
+            {isAdmin && (
+                <select
+                    disabled={saving}
+                    onChange={(event) => {
+                        if (!event.target.value) return;
+                        onAgentChange(event.target.value === "__none" ? null : event.target.value);
+                        event.currentTarget.value = "";
+                    }}
+                    className="h-9 border border-white/[0.12] bg-[#0b0b0b] px-3 text-xs text-white"
+                    defaultValue=""
+                >
+                    <option value="">Reasignar agente</option>
+                    <option value="__none">Sin asignar</option>
+                    {agents.map((agent) => (
+                        <option key={agent.id} value={agent.id}>{agent.full_name}</option>
+                    ))}
+                </select>
+            )}
+            <button type="button" onClick={onClear} className="text-xs text-white/45 hover:text-white">
+                Limpiar seleccion
+            </button>
+            {isAdmin && (
+                <Button type="button" variant="outline" size="sm" onClick={onDelete} disabled={saving} className="ml-auto border-red-500/20 bg-red-500/10 text-red-300 hover:bg-red-500/20">
+                    <Trash2 className="mr-2 h-3.5 w-3.5" />
+                    Eliminar bloque
+                </Button>
+            )}
+        </div>
+    );
+}
+
+function ConfirmDeleteLeadsDialog({
+    count,
+    password,
+    error,
+    deleting,
+    onPasswordChange,
+    onCancel,
+    onConfirm,
+}: {
+    count: number;
+    password: string;
+    error: string;
+    deleting: boolean;
+    onPasswordChange: (value: string) => void;
+    onCancel: () => void;
+    onConfirm: () => void;
+}) {
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
+            <div className="w-full max-w-md border border-red-500/20 bg-[#0b0b0b] shadow-2xl">
+                <div className="border-b border-white/[0.08] p-5">
+                    <div className="flex items-center gap-3">
+                        <span className="flex h-10 w-10 items-center justify-center border border-red-500/20 bg-red-500/10 text-red-300">
+                            <ShieldAlert className="h-5 w-5" />
+                        </span>
+                        <div>
+                            <h3 className="text-base font-semibold text-white">Confirmar eliminacion</h3>
+                            <p className="mt-1 text-sm text-white/50">
+                                Se eliminar{count === 1 ? "a" : "an"} {count} lead{count !== 1 ? "s" : ""}. Esta accion no se puede deshacer.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div className="space-y-4 p-5">
+                    <label className="block space-y-2">
+                        <span className="text-sm font-medium text-white/70">Contraseña de administrador</span>
+                        <Input
+                            type="password"
+                            value={password}
+                            onChange={(event) => onPasswordChange(event.target.value)}
+                            placeholder="Confirma tu contraseña"
+                            className="border-white/[0.1] bg-background/70 text-white"
+                        />
+                    </label>
+                    {error && <p className="border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-300">{error}</p>}
+                    <div className="flex gap-2">
+                        <Button type="button" variant="outline" onClick={onCancel} disabled={deleting} className="flex-1 border-white/[0.12] bg-white/[0.025] text-white">
+                            Cancelar
+                        </Button>
+                        <Button type="button" onClick={onConfirm} disabled={deleting || !password} className="flex-1 bg-red-500 text-white hover:bg-red-600">
+                            {deleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Trash2 className="mr-2 h-4 w-4" />}
+                            Eliminar
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }
 
@@ -578,10 +839,14 @@ function AttentionSummary({
 function LeadKanban({
     leads,
     agents,
+    isAdmin,
+    onDelete,
     onStatusChange,
 }: {
     leads: Lead[];
     agents: Agent[];
+    isAdmin: boolean;
+    onDelete: (id: string) => void;
     onStatusChange: (id: string, status: string) => void;
 }) {
     return (
@@ -602,9 +867,21 @@ function LeadKanban({
                                 const assigned = agents.find((agent) => agent.id === lead.assigned_agent_id);
                                 return (
                                     <article key={lead.id} className="border border-white/[0.08] bg-white/[0.025] p-3 transition-colors hover:border-[var(--color-accent)]/30">
-                                        <Link href={`/admin/leads/${lead.id}`} className="block font-semibold text-white hover:text-[var(--color-accent)]">
-                                            {lead.full_name}
-                                        </Link>
+                                        <div className="flex items-start justify-between gap-2">
+                                            <Link href={`/admin/leads/${lead.id}`} className="block font-semibold text-white hover:text-[var(--color-accent)]">
+                                                {lead.full_name}
+                                            </Link>
+                                            {isAdmin && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => onDelete(lead.id)}
+                                                    className="shrink-0 text-red-300/70 transition hover:text-red-300"
+                                                    aria-label={`Eliminar ${lead.full_name}`}
+                                                >
+                                                    <Trash2 className="h-3.5 w-3.5" />
+                                                </button>
+                                            )}
+                                        </div>
                                         <p className="mt-1 truncate text-xs text-white/45">{lead.email}</p>
                                         <LeadAttentionBadges lead={lead} />
                                         <div className="mt-3 flex items-center justify-between gap-2">

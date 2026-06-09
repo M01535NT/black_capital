@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { canAccessAgentScopedResource, isAdmin, requireApiProfile } from "@/lib/auth";
 import { getLeadsCount } from "@/lib/data";
 import { sendOperationalEmail } from "@/lib/email";
@@ -195,5 +196,78 @@ export async function PUT(req: NextRequest) {
     const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/leads", "[API /leads PUT]", err);
     return NextResponse.json({ error: `Error al actualizar lead: ${message}` }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const profile = await requireApiProfile();
+    if (!profile || !isAdmin(profile)) {
+      return NextResponse.json({ error: "Solo un administrador puede eliminar leads." }, { status: 403 });
+    }
+
+    const body = await req.json();
+    const ids = Array.isArray(body.ids) ? body.ids.filter((id: unknown): id is string => typeof id === "string" && id.length > 0) : [];
+    const password = String(body.password || "");
+
+    if (ids.length === 0) {
+      return NextResponse.json({ error: "Selecciona al menos un lead." }, { status: 400 });
+    }
+    if (!password) {
+      return NextResponse.json({ error: "Confirma tu contraseña de administrador." }, { status: 400 });
+    }
+
+    const authClient = await createClient();
+    const { error: passwordError } = await authClient.auth.signInWithPassword({
+      email: profile.email,
+      password,
+    });
+
+    if (passwordError) {
+      return NextResponse.json({ error: "Contraseña incorrecta." }, { status: 401 });
+    }
+
+    const supabase = createAdminClient();
+    const { data: existingLeads, error: fetchError } = await supabase
+      .from("leads")
+      .select("id")
+      .in("id", ids);
+
+    if (fetchError) {
+      logger.error("API/leads", "[API /leads DELETE fetch]", fetchError);
+      return NextResponse.json({ error: "No se pudieron validar los leads." }, { status: 400 });
+    }
+
+    const existingIds = (existingLeads || []).map((lead) => lead.id);
+    if (existingIds.length === 0) {
+      return NextResponse.json({ error: "No se encontraron leads para eliminar." }, { status: 404 });
+    }
+
+    await supabase.from("lead_tasks").delete().in("lead_id", existingIds);
+    await supabase.from("lead_activities").delete().in("lead_id", existingIds);
+
+    const { error } = await supabase
+      .from("leads")
+      .delete()
+      .in("id", existingIds);
+
+    if (error) {
+      logger.error("API/leads", "[API /leads DELETE]", error);
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    await supabase.from("audit_logs").insert({
+      actor_profile_id: profile.id,
+      action: "lead.delete",
+      entity_type: "lead",
+      entity_id: existingIds.length === 1 ? existingIds[0] : null,
+      metadata: { ids: existingIds, count: existingIds.length },
+    });
+
+    return NextResponse.json({ success: true, deletedIds: existingIds });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Error interno del servidor";
+    logger.error("API/leads", "[API /leads DELETE]", err);
+    return NextResponse.json({ error: `Error al eliminar leads: ${message}` }, { status: 500 });
   }
 }

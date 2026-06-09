@@ -83,6 +83,7 @@ export default async function LeadsPage() {
         <LeadsPageClient
             leads={(enrichedLeads as DbLead[] | null) || []}
             agents={(agents as Pick<DbAgent, "id" | "full_name">[] | null) || []}
+            isAdmin={profile.role === "admin"}
             supabaseError={supabaseError}
         />
     );
