@@ -12,8 +12,9 @@ export function LuxuryStats() {
     return (
         <SubBrandStats
             brand="luxury"
-            eyebrow="Indicadores de ejemplo"
-            title="Muestra visual para el catálogo residencial."
+            eyebrow="Criterios residenciales"
+            title="Menos recorrido. Mejor decisión."
+            description="Cada opción se lee por privacidad, zona, arquitectura y potencial patrimonial antes de recomendar una visita."
             accent="gold"
             stats={SUB_BRAND_CONFIGS.luxury.stats}
         />

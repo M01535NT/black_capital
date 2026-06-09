@@ -106,10 +106,10 @@ const baseJsonLd = {
 } as const;
 
 const LUXURY_STATS: StatItem[] = [
-    { value: 3, label: "Tipos de propiedad", suffix: "", prefix: "" },
-    { value: 24, label: "Horas para responder", suffix: "h", prefix: "" },
-    { value: 5, label: "Zonas de ejemplo", suffix: "", prefix: "" },
-    { value: 1, label: "Catálogo editable", suffix: "", prefix: "" },
+    { value: "Privacidad", label: "Acceso, entorno y ritmo de vida evaluados antes de visitar." },
+    { value: "Zona", label: "Ubicaciones con servicios, conectividad y plusvalía residencial." },
+    { value: "Diseño", label: "Distribución, luz y acabados leídos con criterio familiar." },
+    { value: "Plusvalía", label: "Perspectiva patrimonial para comprar con intención de largo plazo." },
 ];
 
 const BUSINESS_STATS: StatItem[] = [
@@ -142,37 +142,37 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 </>
             ),
             subtitle:
-                "Residencial seleccionado por zona, valor y estilo de vida.",
-            primaryCta: { label: "Explorar Propiedades", href: "/inventario?brand=luxury" },
-            secondaryCta: { label: "Solicitar Información", href: "#luxury-cta" },
+                "Residencias seleccionadas por privacidad, zona y plusvalía.",
+            primaryCta: { label: "Ver residencias", href: "/inventario?brand=luxury" },
+            secondaryCta: { label: "Hablar con asesor", href: "#luxury-cta" },
         },
         value: {
-            eyebrow: "Residencial Premium",
+            eyebrow: "Residencial premium",
             title: (
                 <>
-                    Segmenta propiedades residenciales desde el primer clic.
+                    Residencias con criterio, no solo metros.
                 </>
             ),
             description:
-                "La estructura está preparada para mostrar propiedades por ubicación, seguridad, diseño arquitectónico y potencial de plusvalía cuando el catálogo real esté disponible.",
+                "Curamos opciones por privacidad, ubicación y potencial patrimonial.",
             items: [
                 {
                     icon: Crown,
                     title: "Fraccionamientos Privados",
                     description:
-                        "Casas en cotos con acceso controlado, seguridad 24/7, áreas verdes y amenidades familiares. Chapultepec, La Escondida, El Lago y zonas premium consolidadas.",
+                        "Entornos con acceso controlado, privacidad y vida familiar cerca de servicios clave.",
                 },
                 {
                     icon: Building2,
                     title: "Residencial Plus",
                     description:
-                        "Propiedades de 3+ recámaras con acabados de calidad superior, cocinas equipadas, jardín privado y estacionamiento para 2+ autos. Listas para habitar o personalizar.",
+                        "Casas con distribución, acabados y escala para habitar con intención.",
                 },
                 {
                     icon: Gem,
                     title: "Pre-Venta y Estreno",
                     description:
-                        "Acceso anticipado a desarrollos nuevos en zonas de alta demanda. Oportunidades de compra sobre plano con precio preferencial y condiciones de financiamiento flexibles.",
+                        "Oportunidades nuevas con lectura de zona, entrega y valor futuro.",
                 },
             ],
         },
@@ -180,11 +180,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         inventory: {
             brandSlug: "luxury",
             propertyUse: "Residencial",
-            title: "Casas en",
+            title: "Residencias en",
             highlight: "Tijuana",
             subtitle:
-                "Muestra de cómo se presentará el inventario residencial real con ubicación, superficies, precios y estado comercial administrables.",
-            ctaText: "Ver Todas las Propiedades",
+                "Explora una muestra residencial y solicita opciones alineadas a zona, presupuesto y etapa de compra.",
+            ctaText: "Ver inventario residencial",
             accentColor: "gold",
         },
         cta: {
@@ -194,32 +194,32 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             notesFormat: "optional",
             sectionId: "luxury-cta",
             eyebrowIcon: "lock",
-            eyebrow: "Información Personalizada",
-            title: "Recibe el Catálogo",
-            titleHighlight: "de Casas Disponibles",
+            eyebrow: "Asesoría residencial",
+            title: "Solicita una lectura",
+            titleHighlight: "residencial privada",
             description:
-                "Solicita información y te contactaremos cuando el catálogo residencial real esté listo para publicarse.",
+                "Cuéntanos qué zona y tipo de residencia buscas. Te contactaremos con opciones curadas para tu decisión.",
             indicator: "Respuesta en menos de 24h",
             companyLabel: "Empresa (opcional)",
             companyPlaceholder: "Empresa o particular",
             companyRequired: false,
             emailPlaceholder: "Correo Electrónico",
-            submitLabel: "Recibir Catálogo de Casas",
-            successTitle: "¡Catálogo en Camino!",
+            submitLabel: "Solicitar opciones residenciales",
+            successTitle: "Solicitud recibida",
             successMessage:
-                "Tu solicitud ha sido registrada. Nuestro equipo de asesores se pondrá en contacto contigo en las próximas 24 horas con la información personalizada de propiedades disponibles.",
+                "Tu solicitud ha sido registrada. Nuestro equipo se pondrá en contacto contigo con una lectura residencial personalizada.",
         },
         jsonLd: {
             ...baseJsonLd,
             "@type": "ItemList",
             name: "Black Luxury · Casas Residenciales Premium en Tijuana",
             description:
-                "Casas en fraccionamientos privados con seguridad 24/7, amenidades y ubicación premium en las mejores zonas de Tijuana, Baja California.",
+                "Residencias seleccionadas por privacidad, ubicación y plusvalía en Tijuana, Baja California.",
         },
         metadata: {
-            title: "Casas Residenciales Premium en Tijuana | Fraccionamientos Privados | Black Capital",
+            title: "Casas en Tijuana | Black Capital",
             description:
-                "Encuentra tu casa ideal en los mejores fraccionamientos de Tijuana. Residencial Plus con seguridad 24/7, amenidades y ubicación estratégica. Agenda visita.",
+                "Residencias seleccionadas en Tijuana por privacidad, ubicación y plusvalía. Asesoría residencial premium con criterio patrimonial.",
             keywords: [
                 "casas en Tijuana",
                 "fraccionamientos privados Tijuana",
@@ -234,9 +234,9 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 canonical: "https://blackmx.vercel.app/black-luxury",
             },
             openGraph: {
-                title: "Casas Residenciales Premium en Tijuana | Fraccionamientos Privados",
+                title: "Casas en Tijuana | Black Capital",
                 description:
-                    "Casas en los mejores fraccionamientos de Tijuana. Residencial Plus con seguridad 24/7, amenidades premium y ubicación estratégica.",
+                    "Residencias seleccionadas en Tijuana por privacidad, ubicación y plusvalía.",
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Capital",
@@ -252,9 +252,9 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             },
             twitter: {
                 card: "summary_large_image",
-                title: "Casas Residenciales Premium en Tijuana | Fraccionamientos Privados",
+                title: "Casas en Tijuana | Black Capital",
                 description:
-                    "Casas en los mejores fraccionamientos de Tijuana. Residencial Plus con seguridad 24/7, amenidades premium y ubicación estratégica.",
+                    "Residencias seleccionadas en Tijuana por privacidad, ubicación y plusvalía.",
                 images: ["https://blackmx.vercel.app/hero-luxury.webp"],
             },
         },

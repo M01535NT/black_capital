@@ -21,31 +21,48 @@ interface SubBrandValueProps {
     accent: Accent;
 }
 
-const BRAND_LABEL: Record<SubBrandValueProps["brand"], string> = {
-    luxury: "Residencial",
-    business: "Comercial",
-    industrial: "Industrial",
-};
-
 const BRAND_HREF: Record<SubBrandValueProps["brand"], string> = {
     luxury: "/inventario?uso=Residencial",
     business: "/inventario?uso=Comercial",
     industrial: "/inventario?uso=Industrial",
 };
 
-const BRAND_IMAGE: Record<SubBrandValueProps["brand"], { src: string; alt: string }> = {
-    luxury: {
-        src: "/brand-luxury.webp",
-        alt: "Residencia premium en Tijuana",
-    },
-    business: {
-        src: "/brand-business.webp",
-        alt: "Espacio comercial en Tijuana",
-    },
-    industrial: {
-        src: "/brand-industrial.webp",
-        alt: "Nave industrial en Tijuana",
-    },
+interface BrandCardImage {
+    src: string;
+    alt: string;
+    imageClassName?: string;
+}
+
+const BRAND_IMAGES: Record<SubBrandValueProps["brand"], BrandCardImage[]> = {
+    luxury: [
+        {
+            src: "/brand-luxury.webp",
+            alt: "Residencia privada con acceso controlado en Tijuana",
+            imageClassName: "object-[52%_50%]",
+        },
+        {
+            src: "/hero-luxury.webp",
+            alt: "Casa residencial contemporánea en Tijuana",
+            imageClassName: "object-[58%_50%]",
+        },
+        {
+            src: "/brand-luxury.webp",
+            alt: "Detalle residencial premium con terraza y amenidades",
+            imageClassName: "object-[72%_50%]",
+        },
+    ],
+    business: [
+        {
+            src: "/brand-business.webp",
+            alt: "Espacio comercial en Tijuana",
+        },
+    ],
+    industrial: [
+        {
+            src: "/brand-industrial.webp",
+            alt: "Nave industrial en Tijuana",
+        },
+    ],
 };
 
 export function SubBrandValue({
@@ -78,7 +95,8 @@ export function SubBrandValue({
             <div className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0">
                 {items.map((item, index) => {
                     const Icon = item.icon;
-                    const image = BRAND_IMAGE[brand];
+                    const images = BRAND_IMAGES[brand];
+                    const image = images[index % images.length];
                     return (
                         <article
                             key={item.title}
@@ -90,7 +108,7 @@ export function SubBrandValue({
                                     alt={image.alt}
                                     fill
                                     sizes="(max-width: 1024px) 100vw, 33vw"
-                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                    className={`object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:group-hover:scale-105 ${image.imageClassName ?? ""}`}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/82 via-black/35 to-black/10" />
                                 <div className="absolute left-4 top-4 property-tag-type text-white/42">
@@ -105,16 +123,16 @@ export function SubBrandValue({
                             </div>
                             <div className="flex flex-1 flex-col p-5">
                                 <p className="line-clamp-3 text-body leading-relaxed text-white/64 lg:line-clamp-none">{item.description}</p>
-                                <p className="mt-5 footer-legal-type text-white/42">
-                                    {BRAND_LABEL[brand]} · contenido editable
-                                </p>
                                 <div className="mt-auto pt-6">
                                     <Link
                                         href={BRAND_HREF[brand]}
-                                        className="inline-flex min-h-12 w-full items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 premium-cta gold-ink hover:border-[var(--color-accent)]"
+                                        className="group/cta inline-flex w-fit items-center gap-2 text-white/82 transition-colors duration-300 hover:text-[var(--color-accent)]"
                                     >
-                                        Inventario
-                                        <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                                        <span className="property-tag-type relative pb-1">
+                                            Ver inventario
+                                            <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover/cta:opacity-100" />
+                                        </span>
+                                        <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 motion-safe:group-hover/cta:translate-x-1" aria-hidden="true" />
                                     </Link>
                                 </div>
                             </div>

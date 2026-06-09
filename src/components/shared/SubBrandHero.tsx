@@ -205,9 +205,13 @@ export function SubBrandHero({
                         {secondaryCta && (
                             <Link
                                 href={secondaryCta.href}
-                                className="premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none border border-white/18 bg-white/[0.04] px-7 text-white transition-colors hover:border-[var(--color-accent)]"
+                                className="group inline-flex min-h-[50px] w-fit items-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"
                             >
-                                {secondaryCta.label}
+                                <span className="property-tag-type relative pb-1">
+                                    {secondaryCta.label}
+                                    <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
+                                </span>
+                                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 motion-safe:group-hover:translate-x-1" aria-hidden="true" />
                             </Link>
                         )}
                     </div>

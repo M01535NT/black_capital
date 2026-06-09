@@ -69,7 +69,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 320,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Precio de ejemplo",
+            priceLabel: "Precio bajo consulta",
         },
         {
             id: "placeholder-residencial-2",
@@ -82,7 +82,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 260,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Editable desde admin",
+            priceLabel: "Asesoría por zona",
         },
         {
             id: "placeholder-residencial-3",
@@ -95,7 +95,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 210,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Contenido temporal",
+            priceLabel: "Disponibilidad a confirmar",
         },
     ],
     Comercial: [
@@ -110,7 +110,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 140,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Precio de ejemplo",
+            priceLabel: "Precio bajo consulta",
         },
         {
             id: "placeholder-comercial-2",
@@ -123,7 +123,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 180,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Editable desde admin",
+            priceLabel: "Asesoría por zona",
         },
         {
             id: "placeholder-comercial-3",
@@ -136,7 +136,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 95,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Contenido temporal",
+            priceLabel: "Disponibilidad a confirmar",
         },
     ],
     Industrial: [
@@ -151,7 +151,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 2500,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Precio de ejemplo",
+            priceLabel: "Precio bajo consulta",
         },
         {
             id: "placeholder-industrial-2",
@@ -164,7 +164,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 1800,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Editable desde admin",
+            priceLabel: "Asesoría por zona",
         },
         {
             id: "placeholder-industrial-3",
@@ -177,7 +177,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 4200,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Contenido temporal",
+            priceLabel: "Disponibilidad a confirmar",
         },
     ],
 };
@@ -189,7 +189,7 @@ export async function BrandInventory({
     highlight,
     subtitle,
     ctaText,
-    eyebrow = "Inventario ejemplo",
+    eyebrow = "Inventario seleccionado",
     limit = 3,
     useLiveData = false,
 }: BrandInventoryProps) {
@@ -240,11 +240,11 @@ export async function BrandInventory({
                                     alt={imageAlt}
                                     fill
                                     sizes="(max-width: 1024px) 100vw, 33vw"
-                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                    className="object-cover motion-safe:transition-transform motion-safe:duration-700 motion-safe:group-hover:scale-105"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/18 to-transparent" />
                                 <div className="absolute left-4 top-4 rounded-full border border-[var(--color-accent)]/30 bg-background/85 px-3 py-1 property-tag-type gold-ink">
-                                    {prop.isPlaceholder ? "Ejemplo" : prop.property_type}
+                                    {prop.property_type}
                                 </div>
                                 <div className="absolute bottom-4 left-4 right-4">
                                     <h3 className="text-xl font-semibold text-white">{prop.title}</h3>
@@ -270,9 +270,13 @@ export async function BrandInventory({
                                 <div className="mt-auto flex flex-col gap-2 sm:flex-row">
                                     <Link
                                         href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
-                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type gold-ink transition-colors hover:border-[var(--color-accent)]"
+                                        className="group/cta inline-flex flex-1 items-center justify-center gap-2 px-2 py-2.5 text-white/82 transition-colors duration-300 hover:text-[var(--color-accent)]"
                                     >
-                                        Inventario
+                                        <span className="property-tag-type relative pb-1">
+                                            Inventario
+                                            <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover/cta:opacity-100" />
+                                        </span>
+                                        <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 motion-safe:group-hover/cta:translate-x-1" aria-hidden="true" />
                                     </Link>
                                     <Link
                                         href={href}
@@ -290,10 +294,13 @@ export async function BrandInventory({
             <div className="mt-10 text-center">
                 <Link
                     href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
-                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-6 property-tag-type text-white transition-colors hover:border-[var(--color-accent)]"
+                    className="group inline-flex min-h-11 items-center justify-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"
                 >
-                    {ctaText}
-                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span className="property-tag-type relative pb-1">
+                        {ctaText}
+                        <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
+                    </span>
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 motion-safe:group-hover:translate-x-1" aria-hidden="true" />
                 </Link>
             </div>
         </section>
