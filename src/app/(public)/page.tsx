@@ -159,31 +159,48 @@ const videoInsights = [
   },
 ];
 
-const marqueeItems = [
-  "RESIDENCIAL PREMIUM",
-  "ESPACIOS COMERCIALES",
-  "PROPIEDADES INDUSTRIALES",
-  "UBICACIONES ESTRATÉGICAS",
-];
-
 export default function HomePage() {
   return (
     <main className="bg-background">
       <section className="relative min-h-[100svh] overflow-hidden border-b border-white/[0.06] pt-24 lg:pt-28">
+        <video
+          src="/hero.webm"
+          poster="/hero-poster.webp"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover opacity-40 motion-reduce:hidden"
+        />
         <Image
           src="/hero-poster.webp"
-          alt="Propiedades e inversión inmobiliaria en Tijuana"
+          alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover opacity-35"
+          aria-hidden="true"
+          className="hidden object-cover opacity-35 motion-reduce:block"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/35" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 mix-blend-screen opacity-30"
+          style={{
+            background:
+              "radial-gradient(ellipse at 82% 18%, rgba(210, 167, 60, 0.55), transparent 55%)",
+          }}
+        />
 
-        <div className="relative z-10 mx-auto grid min-h-[calc(100svh-6rem)] max-w-[90rem] grid-cols-1 items-center px-6 pb-28 pt-10 sm:px-10 sm:pb-32 lg:grid-cols-12 lg:px-16">
+        <div className="relative z-10 mx-auto grid min-h-[calc(100svh-6rem)] max-w-[90rem] grid-cols-1 items-center px-6 pb-32 pt-10 sm:px-10 sm:pb-36 lg:grid-cols-12 lg:px-16">
           <div className="lg:col-span-8">
-            <div className="mb-6 inline-flex items-center gap-2 border border-white/10 bg-black/35 px-3 py-2 text-caption text-white/70">
+            <div className="mb-6 inline-flex items-center gap-2.5 border border-white/10 bg-black/35 px-3 py-2 text-caption text-white/72">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-70" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
+              </span>
               <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" />
               Tijuana, Baja California
             </div>
@@ -192,7 +209,7 @@ export default function HomePage() {
               Residencial, comercial e industrial en ubicaciones estratégicas.
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-7">
               <Link
                 href="/inventario"
                 className="brushed-gold premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none"
@@ -202,30 +219,33 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/contacto"
-                className="premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none border border-white/18 bg-white/[0.04] text-white hover:border-[var(--color-accent)]"
+                className="group inline-flex w-fit items-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"
               >
-                Solicitar asesoría
+                <span className="property-tag-type relative pb-1">
+                  Hablar con un asesor
+                  <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
+                </span>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="absolute inset-x-0 bottom-0 z-20">
-          <div className="flex h-10 items-center overflow-hidden whitespace-nowrap bg-transparent sm:h-12">
-            {[0, 1].map((track) => (
-              <div key={track} className="animate-marquee inline-flex shrink-0">
-                {marqueeItems.map((value, index) => (
-                  <span key={`${track}-${value}-${index}`} className="inline-flex shrink-0 items-center">
-                    <span className="px-5 property-tag-type text-white/72 transition-colors duration-300 hover:text-[var(--color-accent)] sm:px-10">
-                      {value}
-                    </span>
-                    <span className="select-none gold-ink" aria-hidden="true">
-                      ·
-                    </span>
-                  </span>
-                ))}
-              </div>
-            ))}
+        <div className="absolute inset-x-0 bottom-0 z-20 border-t border-white/[0.06] bg-background/45 backdrop-blur-sm">
+          <div className="mx-auto flex max-w-[90rem] flex-wrap items-center justify-center gap-x-6 gap-y-2.5 px-6 py-3.5 text-white/68 sm:flex-nowrap sm:gap-x-10 sm:px-10 sm:py-4 lg:px-16">
+            <span className="property-tag-type inline-flex items-center gap-2.5">
+              <span className="inline-block h-1 w-1 rounded-full bg-[var(--color-accent)]" />
+              Tijuana · Baja California
+            </span>
+            <span className="hidden h-3 w-px bg-[var(--color-accent)]/40 sm:block" />
+            <span className="property-tag-type">
+              Residencial · Comercial · Industrial
+            </span>
+            <span className="hidden h-3 w-px bg-[var(--color-accent)]/40 sm:block" />
+            <span className="property-tag-type inline-flex items-baseline gap-2">
+              <span className="gold-ink text-base font-extrabold leading-none">08</span>
+              Años operando
+            </span>
           </div>
         </div>
       </section>
