@@ -11,6 +11,7 @@ import {
 import { JsonLd } from "@/components/seo/JsonLd";
 import { HomeCounters } from "@/components/home/HomeCounters";
 import { HomeHeroHeadline } from "@/components/home/HomeHeroHeadline";
+import { Testimonials } from "@/components/home/Testimonials";
 import { WhyBlackCapitalTimeline } from "@/components/home/WhyBlackCapitalTimeline";
 
 export const metadata: Metadata = {
@@ -375,6 +376,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <Testimonials />
 
       <section className="border-y border-white/[0.06] bg-white/[0.02]">
         <div className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
