@@ -68,6 +68,8 @@ export function Logo({
 }: LogoProps) {
   const height = sizeMap[size];
 
+  const capitalGradientId = "black-capital-logo-gold-ink";
+
   // Color tokens per tone.
   const colors = (() => {
     switch (tone) {
@@ -111,6 +113,15 @@ export function Logo({
       width={width}
       className={cn("flex-shrink-0", className)}
     >
+      <defs>
+        <linearGradient id={capitalGradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#c89625" />
+          <stop offset="24%" stopColor="#d2a73c" />
+          <stop offset="58%" stopColor="#f1e292" />
+          <stop offset="72%" stopColor="#e4c76a" />
+          <stop offset="100%" stopColor="#d0a539" />
+        </linearGradient>
+      </defs>
       {/* Vertical accent bar — 1:12 aspect, vertically centered. */}
       <rect
         x="2"
@@ -132,7 +143,7 @@ export function Logo({
       >
         BLACK
       </text>
-      {/* "CAPITAL" — light, wide tracking, gold. */}
+      {/* "CAPITAL" — light, wide tracking, gold-ink gradient. */}
       <text
         x="14"
         y="62"
@@ -140,7 +151,7 @@ export function Logo({
         fontSize={capitalSize}
         fontWeight="400"
         letterSpacing="3"
-        fill={colors.capital}
+        fill={tone === "mono" ? colors.capital : `url(#${capitalGradientId})`}
       >
         CAPITAL
       </text>
