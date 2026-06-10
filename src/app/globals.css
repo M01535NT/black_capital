@@ -433,6 +433,39 @@ body {
     display: none;
   }
 
+  @media (min-width: 1024px) {
+    .sub-brand-value-rail {
+      align-items: stretch;
+    }
+
+    .sub-brand-value-card-shell {
+      flex: 1 1 0;
+      transition:
+        flex-grow 720ms cubic-bezier(0.22, 1, 0.36, 1),
+        flex-basis 720ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .sub-brand-value-image {
+      aspect-ratio: auto;
+      height: clamp(22rem, 31vw, 30rem);
+    }
+
+    .sub-brand-value-rail:has(.sub-brand-value-card-shell:hover, .sub-brand-value-card-shell:focus-within) .sub-brand-value-card-shell {
+      flex-grow: 1;
+    }
+
+    .sub-brand-value-rail:has(.sub-brand-value-card-shell:hover) .sub-brand-value-card-shell:hover,
+    .sub-brand-value-rail:has(.sub-brand-value-card-shell:focus-within) .sub-brand-value-card-shell:focus-within {
+      flex-grow: 2;
+    }
+  }
+
+  @media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+    .sub-brand-value-card-shell {
+      transition: none;
+    }
+  }
+
   /* ── Gold shimmer (brand stat cards) ── */
   @keyframes gold-shimmer {
     0% { background-position: -200% 0; }

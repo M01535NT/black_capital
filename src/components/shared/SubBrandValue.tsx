@@ -115,21 +115,22 @@ export function SubBrandValue({
                 </p>
             </div>
 
-            <div className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:grid lg:grid-cols-12 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0">
+            <div
+                data-section="sub-brand-value-rail"
+                data-brand={brand}
+                className="sub-brand-value-rail scrollbar-none -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0"
+            >
                 {items.map((item, index) => {
                     const Icon = item.icon;
                     const images = BRAND_IMAGES[brand];
                     const image = images[index % images.length];
-                    const isFeature = index === 0;
                     return (
                         <ScrollReveal
                             key={item.title}
                             delay={index * 0.08}
-                            className={`min-w-[78vw] snap-center sm:min-w-[58vw] lg:min-w-0 ${
-                                isFeature ? "lg:col-span-6" : "lg:col-span-3"
-                            }`}
+                            className="sub-brand-value-card-shell min-w-[78vw] snap-center sm:min-w-[58vw] lg:min-w-0"
                         >
-                            <article className="group relative flex h-full flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-colors duration-500 hover:border-[var(--color-accent)]/38">
+                            <article className="group relative flex h-full min-w-0 flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-colors duration-500 hover:border-[var(--color-accent)]/38">
                                 <span
                                     aria-hidden="true"
                                     className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
@@ -138,12 +139,12 @@ export function SubBrandValue({
                                             "linear-gradient(140deg, transparent 20%, rgba(210,167,60,0.12) 72%, transparent 100%)",
                                     }}
                                 />
-                                <div className={`relative overflow-hidden bg-white/[0.03] ${isFeature ? "aspect-[16/10] lg:aspect-[16/9]" : "aspect-[16/10] lg:aspect-[4/5]"}`}>
+                                <div className="sub-brand-value-image relative aspect-[16/10] overflow-hidden bg-white/[0.03]">
                                     <Image
                                         src={image.src}
                                         alt={image.alt}
                                         fill
-                                        sizes={isFeature ? "(max-width: 1024px) 100vw, 50vw" : "(max-width: 1024px) 100vw, 25vw"}
+                                        sizes="(max-width: 1024px) 100vw, 50vw"
                                         className={`object-cover motion-safe:transition-transform motion-safe:duration-[1100ms] motion-safe:ease-out motion-safe:group-hover:scale-105 ${image.imageClassName ?? ""}`}
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/86 via-black/28 to-black/5 transition-opacity duration-700 group-hover:opacity-90" />
@@ -156,7 +157,7 @@ export function SubBrandValue({
                                             <span className="gold-gradient flex h-9 w-9 shrink-0 items-center justify-center text-black">
                                                 <Icon className="h-4 w-4" aria-hidden="true" />
                                             </span>
-                                            <h3 className="text-display-3 text-white">{item.title}</h3>
+                                            <h3 className="min-w-0 break-words text-display-3 text-white">{item.title}</h3>
                                         </div>
                                     </div>
                                 </div>
