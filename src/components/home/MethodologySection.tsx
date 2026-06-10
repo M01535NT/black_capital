@@ -9,34 +9,34 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const steps = [
   {
     step: "01",
-    title: "Conocimiento local",
+    title: "Diagnóstico del activo",
     text:
-      "Leemos zonas, usos y demanda real antes de proponer una ruta. La opinión empieza con datos del terreno.",
-    signal: "Ventaja local",
+      "Revisamos ubicación, uso, estado, documentos y comparables antes de definir precio o ruta.",
+    signal: "Base real",
     image: "/hero-luxury.webp",
   },
   {
     step: "02",
-    title: "Diagnóstico del activo",
+    title: "Valor y estrategia",
     text:
-      "Tipología, ocupación, contexto legal y comparables. Lo que el activo es, y lo que el mercado pagará por él.",
-    signal: "Ruta clara",
+      "Definimos valor de salida, perfil de comprador y narrativa comercial según el tipo de propiedad.",
+    signal: "Precio claro",
     image: "/hero-business.webp",
   },
   {
     step: "03",
-    title: "Estrategia y negociación",
+    title: "Exposición y filtro",
     text:
-      "Marketing dirigido, contraparte calibrada y mapa de decisiones. Cierre por criterio, no por desgaste.",
-    signal: "Sin ruido",
+      "Mostramos el activo donde corresponde, filtramos prospectos y ordenamos visitas, dudas y ofertas.",
+    signal: "Demanda útil",
     image: "/industrial-hero.webp",
   },
   {
     step: "04",
-    title: "Cierre con respaldo",
+    title: "Negociación y cierre",
     text:
-      "Documentación, asesoría notarial y criterio comercial hasta la firma. La operación termina cuando todo está limpio.",
-    signal: "Criterio",
+      "Acompañamos contrapropuestas, condiciones, documentación y coordinación notarial hasta la firma.",
+    signal: "Firma limpia",
     image: "/hero-industrial.webp",
   },
 ];
@@ -47,25 +47,56 @@ export function MethodologySection() {
   const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
 
   useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-    stepRefs.current.forEach((node, idx) => {
-      if (!node) return;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveIndex(idx);
-        },
-        { threshold: 0.6, rootMargin: "-30% 0px -30% 0px" },
-      );
-      observer.observe(node);
-      observers.push(observer);
-    });
-    return () => observers.forEach((o) => o.disconnect());
+    let frame = 0;
+
+    const updateActiveStep = () => {
+      frame = 0;
+      const targetY = window.innerHeight * 0.52;
+      let nextIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      stepRefs.current.forEach((node, idx) => {
+        if (!node) return;
+        const rect = node.getBoundingClientRect();
+        const stepCenter = rect.top + rect.height * 0.42;
+        const distance = Math.abs(stepCenter - targetY);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          nextIndex = idx;
+        }
+      });
+
+      setActiveIndex((current) => (current === nextIndex ? current : nextIndex));
+    };
+
+    const scheduleUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateActiveStep);
+    };
+
+    updateActiveStep();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+    };
   }, []);
 
   const activeStep = steps[activeIndex];
+  const stepReveal = shouldReduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 44, filter: "blur(8px)" },
+        whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+        viewport: { amount: 0.42, margin: "-8% 0px -18% 0px" },
+      };
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative">
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/35 to-transparent"
@@ -77,13 +108,13 @@ export function MethodologySection() {
               Metodología Black Capital
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
-              Información, criterio, cierre.
+              Diagnosticar, preparar, negociar, cerrar.
             </h2>
           </div>
           <div className="lg:col-span-5 lg:flex lg:justify-end">
             <p className="max-w-md text-body text-white/58">
-              Cuatro pasos que convierten una opinión inicial en una operación
-              firmada — sin pasos perdidos en el camino.
+              Una operación inmobiliaria empieza antes de publicar: activo,
+              precio, mercado y documentos deben hablar el mismo idioma.
             </p>
           </div>
         </div>
@@ -98,12 +129,18 @@ export function MethodologySection() {
             {steps.map((item, idx) => {
               const isActive = idx === activeIndex;
               return (
-                <li
+                <motion.li
                   key={item.step}
                   ref={(el) => {
                     stepRefs.current[idx] = el;
                   }}
-                  className="relative pl-8 pb-12 last:pb-0 sm:pl-10"
+                  {...stepReveal}
+                  transition={{
+                    duration: 0.78,
+                    delay: idx * 0.035,
+                    ease: EASE,
+                  }}
+                  className="relative pl-8 pb-12 last:pb-0 sm:pl-10 lg:min-h-[34vh] lg:pb-16"
                 >
                   <span
                     aria-hidden="true"
@@ -155,15 +192,16 @@ export function MethodologySection() {
                   >
                     {item.text}
                   </p>
-                </li>
+                </motion.li>
               );
             })}
+            <li aria-hidden="true" className="hidden lg:block h-[42vh]" />
           </ol>
 
           {/* Right: sticky image synced with active step (desktop only) */}
           <div className="hidden lg:col-span-7 lg:block">
             <div className="sticky top-28">
-              <div className="relative aspect-[4/5] overflow-hidden border border-white/[0.08]">
+              <div className="relative h-[min(38rem,calc(100svh-10rem))] overflow-hidden border border-white/[0.08]">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
                     key={activeStep.image}

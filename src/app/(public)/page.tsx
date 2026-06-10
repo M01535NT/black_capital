@@ -79,10 +79,10 @@ const segments = [
 ];
 
 const intentCtas = [
-  { label: "Quiero vender una propiedad", href: "/contacto?objetivo=vender" },
-  { label: "Busco comprar", href: "/contacto?objetivo=comprar" },
-  { label: "Necesito opinión de valor", href: "/contacto?objetivo=opinion-de-valor" },
-  { label: "Quiero evaluar una propiedad", href: "/contacto?objetivo=evaluar" },
+  { label: "Vender", href: "/contacto?objetivo=vender" },
+  { label: "Comprar", href: "/contacto?objetivo=comprar" },
+  { label: "Rentar", href: "/inventario?tipo=Renta" },
+  { label: "Invertir", href: "/contacto?objetivo=invertir" },
 ];
 const rotatingInventoryWords = ["Residencial", "Comercial", "Industrial"];
 const MARQUEE_ROTATE_INTERVAL_MS = 3000;
@@ -160,8 +160,8 @@ function SegmentCard({
       : "";
   const showZones = true;
   const cardHeight = isMobile
-    ? "min-h-[470px] lg:min-h-[420px]"
-    : "min-h-[420px]";
+    ? "min-h-[min(470px,54svh)] sm:min-h-[min(560px,56svh)] md:min-h-[min(620px,58svh)]"
+    : "min-h-[clamp(28rem,35vw,32rem)]";
   const articleTransition = isMosaicLike
     ? `group relative flex h-full ${cardHeight} flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-all duration-500 lg:hover:-translate-y-1 lg:hover:border-[var(--color-accent)]/45 lg:focus-within:-translate-y-1 lg:focus-within:border-[var(--color-accent)]/45 lg:hover:shadow-[0_24px_55px_-28px_rgba(0,0,0,0.95)]`
     : "group relative flex h-full flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-colors duration-500 lg:hover:border-[var(--color-accent)]/40";
@@ -169,17 +169,21 @@ function SegmentCard({
     ? "lg:opacity-0 lg:translate-y-2 lg:transition-all lg:duration-500 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 lg:focus-within:opacity-100 lg:focus-within:translate-y-0"
     : "";
   const imageScale = isMosaicLike
-    ? "lg:group-hover:scale-[1.09]"
+    ? "group-focus-within:scale-[1.05] lg:group-hover:scale-[1.09]"
     : "lg:group-hover:scale-[1.06]";
   const detailsReveal = isMosaicLike
-    ? "max-h-0 overflow-hidden opacity-0 translate-y-2 transition-all duration-500 lg:group-hover:max-h-80 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 lg:focus-within:max-h-80 lg:focus-within:opacity-100 lg:focus-within:translate-y-0"
+    ? "max-h-0 overflow-hidden opacity-0 translate-y-2 transition-all duration-500 group-focus-within:max-h-80 group-focus-within:opacity-100 group-focus-within:translate-y-0 lg:group-hover:max-h-80 lg:group-hover:opacity-100 lg:group-hover:translate-y-0"
     : "";
   const mosaicImageOverlay = isMosaicLike
-    ? "from-black/35 via-black/40 to-black/75 transition-all duration-500 lg:group-hover:from-black/55 lg:group-hover:via-black/60 lg:group-hover:to-black/85"
+    ? "from-black/35 via-black/40 to-black/75 transition-all duration-500 group-focus-within:from-black/55 group-focus-within:via-black/60 group-focus-within:to-black/85 lg:group-hover:from-black/55 lg:group-hover:via-black/60 lg:group-hover:to-black/85"
     : "from-black/90 via-black/30 to-transparent transition-all duration-500 lg:group-hover:from-black/95 lg:group-hover:via-black/50";
 
   return (
-    <article className={articleTransition}>
+    <article
+      className={articleTransition}
+      tabIndex={isMosaicLike ? 0 : undefined}
+      aria-label={isMosaicLike ? `Mostrar detalles de ${segment.title}` : undefined}
+    >
       {isMosaicLike ? (
         <>
           <Image
@@ -378,24 +382,24 @@ export default function HomePage() {
 
       <HomeCounters />
 
-      <section className="mx-auto mt-10 max-w-[90rem] overflow-hidden px-6 py-20 sm:mt-8 sm:px-10 lg:mt-0 lg:px-16 lg:py-24">
-        <div className="mb-5 flex flex-col gap-1.5 sm:flex-row sm:items-end sm:justify-between lg:mb-10">
+      <section className="mx-auto mt-8 max-w-[90rem] overflow-hidden px-6 py-12 sm:mt-8 sm:px-10 sm:py-14 md:py-16 lg:mt-0 lg:px-16 lg:py-14">
+        <div className="mb-4 flex flex-col gap-1.5 sm:flex-row sm:items-end sm:justify-between md:mb-5 lg:mb-6">
           <div>
             <p className="mb-1.5 property-tag-type gold-ink">
               Tres líneas de negocio
             </p>
-            <h2 className="text-display-2 leading-tight tracking-headline text-white">
+            <h2 className="mb-0 text-display-2 leading-tight tracking-headline text-white">
               Explora por categoría.
             </h2>
           </div>
-          <p className="max-w-xl text-body leading-snug text-white/58">
+          <p className="mb-0 max-w-xl text-body leading-snug text-white/58">
             Tres líneas inmobiliarias, un mismo criterio de inversión.
           </p>
         </div>
 
         <div className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-1 sm:-mx-10 sm:px-10 lg:hidden">
           {segments.map((segment) => (
-            <div key={`mobile-${segment.title}`} className="min-w-[82vw] snap-center sm:min-w-[68vw]">
+            <div key={`mobile-${segment.title}`} className="min-w-[82vw] snap-center sm:min-w-[54vw] md:min-w-[48vw]">
               <SegmentCard segment={segment} variant="mobile" />
             </div>
           ))}
@@ -417,42 +421,56 @@ export default function HomePage() {
           aria-hidden="true"
           className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/35 to-transparent"
         />
-        <div className="mx-auto max-w-[90rem] px-6 py-20 sm:px-10 lg:px-16 lg:py-28">
-          <div className="mx-auto max-w-4xl text-center">
-            <p className="mb-4 property-tag-type gold-ink">Manifiesto</p>
-            <p className="text-display-2 leading-display tracking-headline text-white/90">
-              No vendemos metros cuadrados.{" "}
-              <span className="gold-ink">Acompañamos decisiones</span> que
-              sostienen el tiempo.
-            </p>
-          </div>
-
-          <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden border border-white/[0.08] bg-white/[0.04] sm:grid-cols-2 lg:grid-cols-4">
-            {intentCtas.map((cta, index) => (
-              <Link
-                key={cta.label}
-                href={cta.href}
-                className="group relative flex min-h-[170px] flex-col justify-between gap-6 bg-background/85 p-6 transition-colors duration-500 hover:bg-background/55 lg:p-7"
-              >
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                  style={{
-                    background:
-                      "linear-gradient(160deg, transparent 30%, rgba(210, 167, 60, 0.12) 100%)",
-                  }}
-                />
-                <p className="relative property-tag-type gold-ink">
-                  0{index + 1}
-                </p>
-                <div className="relative flex items-end justify-between gap-4">
-                  <p className="max-w-[16ch] text-display-4 leading-tight text-white transition-colors duration-500 group-hover:text-[var(--color-accent)]">
-                    {cta.label}
-                  </p>
-                  <ArrowRight className="h-5 w-5 shrink-0 text-[var(--color-accent)] transition-transform duration-500 group-hover:translate-x-1" />
+        <div className="mx-auto max-w-[90rem] px-6 py-10 sm:px-10 sm:py-12 lg:px-16 lg:py-16">
+          <div className="relative overflow-hidden border border-white/[0.08] bg-background/70">
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/45 to-transparent"
+            />
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_22rem]">
+              <div className="px-5 py-7 sm:px-7 sm:py-8 lg:px-9 lg:py-10">
+                <div className="flex items-center justify-between gap-4">
+                  <p className="property-tag-type gold-ink">Manifiesto</p>
+                  <span className="h-px flex-1 bg-white/[0.08]" aria-hidden="true" />
                 </div>
-              </Link>
-            ))}
+                <p className="mt-5 mb-0 max-w-4xl text-[clamp(1.8rem,7vw,2.65rem)] font-extrabold leading-[1.02] tracking-headline text-white/92 lg:text-display-2">
+                  Menos ruido.{" "}
+                  <span className="gold-ink">Más claridad para decidir</span>.
+                </p>
+                <p className="mt-4 mb-0 max-w-2xl text-body leading-snug text-white/58">
+                  Compra, venta, renta e inversión con criterio comercial desde
+                  el primer paso.
+                </p>
+              </div>
+
+              <div className="border-t border-white/[0.08] bg-white/[0.025] lg:border-l lg:border-t-0">
+                <div className="grid grid-cols-2 lg:grid-cols-1">
+                  {intentCtas.map((cta, index) => (
+                    <Link
+                      key={cta.label}
+                      href={cta.href}
+                      className="group flex min-h-[68px] items-center justify-between gap-3 border-white/[0.08] px-4 py-3 transition-colors duration-500 hover:bg-white/[0.04] odd:border-r lg:min-h-[76px] lg:border-b lg:odd:border-r-0 lg:last:border-b-0"
+                    >
+                      <span className="flex items-baseline gap-3">
+                        <span className="property-tag-type gold-ink">
+                          0{index + 1}
+                        </span>
+                        <span className="text-[0.95rem] font-semibold leading-none text-white transition-colors duration-500 group-hover:text-[var(--color-accent)] sm:text-[1rem]">
+                          {cta.label}
+                        </span>
+                      </span>
+                      <ArrowRight className="h-4 w-4 shrink-0 text-[var(--color-accent)] transition-transform duration-500 group-hover:translate-x-1" />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="border-t border-white/[0.08] px-5 py-3 sm:px-7 lg:px-9">
+              <p className="mb-0 text-[0.72rem] font-semibold uppercase leading-tight tracking-[0.1em] text-white/45">
+                Cada ruta empieza con una lectura clara del activo, del mercado y
+                del objetivo.
+              </p>
+            </div>
           </div>
         </div>
       </section>

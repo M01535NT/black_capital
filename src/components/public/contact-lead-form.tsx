@@ -1,19 +1,38 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const interestOptions = [
-  "Residencial",
-  "Comercial",
-  "Industrial",
-  "Vender propiedad",
+  "Comprar",
+  "Vender",
+  "Rentar",
+  "Opinión de valor",
+  "Dictamen de factibilidad",
+  "Plan de comercialización",
+  "Fotografía y video",
 ] as const;
 
 export function ContactLeadForm() {
+  const searchParams = useSearchParams();
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const defaultInterest =
+    searchParams.get("servicio") === "opinion-de-valor"
+      ? "Opinión de valor"
+      : searchParams.get("servicio") === "dictamen-factibilidad"
+        ? "Dictamen de factibilidad"
+        : searchParams.get("servicio") === "plan-comercializacion"
+          ? "Plan de comercialización"
+          : searchParams.get("servicio") === "fotografia-video"
+            ? "Fotografía y video"
+            : searchParams.get("objetivo") === "vender"
+              ? "Vender"
+              : searchParams.get("objetivo") === "comprar"
+                ? "Comprar"
+                : "Comprar";
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -100,7 +119,7 @@ export function ContactLeadForm() {
         <select
           name="interest"
           className="h-11 border border-white/12 bg-[#0b0b0b] px-3 text-body-sm text-white/75 outline-none focus:border-[var(--color-accent)] sm:h-12 sm:text-body"
-          defaultValue="Residencial"
+          defaultValue={defaultInterest}
         >
           {interestOptions.map((option) => (
             <option key={option} value={option}>
@@ -113,7 +132,7 @@ export function ContactLeadForm() {
       <textarea
         name="message"
         rows={3}
-        placeholder="Zona, presupuesto u operación."
+        placeholder="Zona, tipo de inmueble o servicio."
         className="w-full resize-none border border-white/12 bg-white/[0.035] px-3 py-3 text-body-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)] sm:text-body"
       />
 
