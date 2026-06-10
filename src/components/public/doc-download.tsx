@@ -37,9 +37,9 @@ function getDocIcon(label: string) {
 function getDocColor(label: string): string {
     const type = getDocType(label);
     const colors: Record<string, string> = {
-        escrituras: "text-blue-400 bg-blue-500/10 border-blue-500/20",
-        avaluo: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
-        planos: "text-purple-400 bg-purple-500/10 border-purple-500/20",
+        escrituras: "text-white/70 bg-white/[0.04] border-white/[0.08]",
+        avaluo: "text-[var(--color-accent)] bg-[var(--color-accent)]/10 border-[var(--color-accent)]/20",
+        planos: "text-white/60 bg-white/[0.035] border-white/[0.08]",
         brochure: "text-[var(--color-accent)] bg-[var(--color-accent)]/10 border-[var(--color-accent)]/20",
     };
     return colors[type] || colors.brochure;
@@ -64,9 +64,9 @@ export function DocDownload({ documents, propertyId, propertyName }: DocDownload
                     return (
                         <div
                             key={i}
-                            className="group flex items-center gap-4 p-4 rounded-2xl border border-foreground/5 bg-card hover:border-[var(--color-accent)]/30 hover:shadow-[0_0_32px_-8px_rgba(210,167,60,0.12)] transition-all duration-300"
+                            className="group flex items-center gap-4 border border-white/[0.08] bg-white/[0.025] p-4 transition-colors duration-300 hover:border-[var(--color-accent)]/30"
                         >
-                            <div className={`size-11 rounded-xl flex items-center justify-center shrink-0 border transition-colors duration-300 ${colorClasses}`}>
+                            <div className={`flex size-11 shrink-0 items-center justify-center border transition-colors duration-300 ${colorClasses}`}>
                                 <Icon className="size-5" />
                             </div>
                             <div className="flex-1 min-w-0">

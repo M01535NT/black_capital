@@ -46,7 +46,7 @@ export function AdminPublicLinksMenu() {
           aria-haspopup="menu"
           aria-expanded={isOpen}
           onClick={() => setIsOpen((current) => !current)}
-          className="flex h-10 cursor-pointer items-center gap-2 border border-white/[0.08] bg-white/[0.025] px-4 text-[11px] font-bold uppercase tracking-[0.16em] text-white/55 transition-colors hover:border-[var(--color-accent)]/45 hover:bg-white/[0.04] focus:border-[var(--color-accent)]/45 focus:bg-white/[0.04] focus:outline-none"
+          className="flex h-10 cursor-pointer items-center gap-2 border border-white/[0.08] bg-white/[0.025] px-4 text-[11px] font-bold uppercase tracking-[0.16em] text-white/55 transition-colors hover:border-white/[0.16] hover:bg-white/[0.04] hover:text-white focus:border-white/[0.16] focus:bg-white/[0.04] focus:text-white focus:outline-none"
         >
           Ir al sitio
           <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isOpen ? "rotate-180" : ""}`} />

@@ -12,8 +12,9 @@ export function IndustrialStats() {
     return (
         <SubBrandStats
             brand="industrial"
-            eyebrow="Indicadores de ejemplo"
-            title="Muestra visual para portafolio industrial."
+            eyebrow="Criterios operativos"
+            title="La escala se mide antes de agendar visita."
+            description="Superficie, maniobra, conectividad y uso permitido se ordenan para decidir con precisión logística."
             accent="steel"
             stats={SUB_BRAND_CONFIGS.industrial.stats}
         />

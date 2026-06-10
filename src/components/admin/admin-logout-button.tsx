@@ -20,7 +20,7 @@ export function AdminLogoutButton({ compact = false }: { compact?: boolean }) {
       onClick={logout}
       aria-label="Cerrar sesión"
       className={cn(
-        "flex items-center gap-3 border border-transparent px-3 py-3 font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45 transition-colors hover:border-red-500/20 hover:bg-red-500/10 hover:text-red-300",
+        "flex items-center gap-3 border border-transparent px-3 py-3 font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-white/45 transition-colors hover:border-white/[0.1] hover:bg-white/[0.025] hover:text-[var(--color-accent)]",
         compact ? "h-11 w-11 justify-center border-white/[0.08] px-0 text-white/70" : "w-full"
       )}
     >

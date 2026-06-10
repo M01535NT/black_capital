@@ -64,11 +64,11 @@ export default async function AdminDashboard() {
     });
 
     const funnelStages = [
-        { key: "new", label: "Nuevo", color: "bg-sky-400", count: statusCounts.new || 0 },
+        { key: "new", label: "Nuevo", color: "bg-[var(--color-accent)]", count: statusCounts.new || 0 },
         { key: "contacted", label: "Contactado", color: "bg-[var(--color-accent)]", count: statusCounts.contacted || 0 },
         { key: "qualified", label: "Calificado", color: "bg-white/70", count: statusCounts.qualified || 0 },
-        { key: "won", label: "Ganado", color: "bg-emerald-400", count: statusCounts.won || 0 },
-        { key: "lost", label: "Perdido", color: "bg-red-400", count: statusCounts.lost || 0 },
+        { key: "won", label: "Ganado", color: "bg-white/45", count: statusCounts.won || 0 },
+        { key: "lost", label: "Perdido", color: "bg-white/25", count: statusCounts.lost || 0 },
     ];
 
     const todayStr = new Date().toLocaleDateString("es-MX", {
@@ -125,8 +125,8 @@ export default async function AdminDashboard() {
             <div className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 <AdminStatCard href="/admin/properties" icon={Building2} label="Propiedades" value={totalProperties || 0} note="Inventario registrado" />
                 <AdminStatCard href="/admin/agents" icon={UserCircle} label="Agentes activos" value={totalAgents || 0} note="Equipo disponible" accent="muted" />
-                <AdminStatCard href="/admin/leads" icon={Users} label="Leads totales" value={totalLeads || 0} note="Solicitudes capturadas" accent="blue" />
-                <AdminStatCard href="/admin/leads?status=new" icon={Mail} label="Sin revisar" value={newLeads || 0} note="Requieren primer contacto" accent="green" />
+                <AdminStatCard href="/admin/leads" icon={Users} label="Leads totales" value={totalLeads || 0} note="Solicitudes capturadas" accent="muted" />
+                <AdminStatCard href="/admin/leads?status=new" icon={Mail} label="Sin revisar" value={newLeads || 0} note="Requieren primer contacto" />
             </div>
 
             <div className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">

@@ -16,10 +16,10 @@ export default function AdminError({
                     <AlertTriangle className="h-8 w-8 text-red-500" />
                 </div>
                 <div className="space-y-2">
-                    <h2 className="text-xl font-semibold text-foreground">
+                    <h2 className="text-xl font-semibold text-white">
                         Error en el panel
                     </h2>
-                    <p className="text-foreground/50 text-sm">
+                    <p className="text-sm text-white/50">
                         Ocurrio un error al cargar el panel de administracion.
                         Intenta nuevamente.
                     </p>

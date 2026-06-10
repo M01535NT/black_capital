@@ -128,7 +128,7 @@ export function MobileDrawer({ pathname }: MobileDrawerProps) {
                       href={link.href}
                       className={cn(
                       "font-display flex items-center justify-center border border-white/[0.08] px-3 py-3 text-center hero-mobile-main-link transition-colors",
-                      isActive(link.href) ? "border-[var(--color-accent)]/45 gold-ink" : "text-foreground hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)]",
+                      isActive(link.href) ? "border-white/20 bg-white/[0.035] gold-ink" : "text-foreground hover:border-white/18 hover:text-[var(--color-accent)]",
                     )}
                     onClick={handleClose}
                     style={{ lineHeight: "normal" }}

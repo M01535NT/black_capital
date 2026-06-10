@@ -2,7 +2,7 @@ export type SubBrand = "luxury" | "business" | "industrial";
 export type Accent = "gold" | "steel";
 
 export interface StatItem {
-    value: number;
+    value: number | string;
     label: string;
     suffix?: string;
     prefix?: string;
@@ -12,6 +12,7 @@ interface SubBrandStatsProps {
     brand: SubBrand;
     eyebrow?: string;
     title?: string;
+    description?: string;
     stats: StatItem[];
     accent: Accent;
     spacing?: "default" | "tight" | "loose" | "none";
@@ -26,8 +27,9 @@ const SPACING = {
 
 export function SubBrandStats({
     brand,
-    eyebrow = "Indicadores de ejemplo",
-    title = "Muestra visual editable desde el panel.",
+    eyebrow = "Criterios de selección",
+    title = "Lectura clara antes de visitar.",
+    description = "Cada activo se ordena por uso, ubicación y señales comerciales para comparar con menos ruido.",
     stats,
     spacing = "default",
 }: SubBrandStatsProps) {
@@ -46,7 +48,7 @@ export function SubBrandStats({
                         {title}
                     </h2>
                     <p className="mt-5 max-w-md text-body text-white/58">
-                        Estos números son placeholders para validar jerarquía visual. Se reemplazarán por datos reales desde administración.
+                        {description}
                     </p>
                 </div>
 
@@ -60,9 +62,9 @@ export function SubBrandStats({
                                 0{index + 1}
                             </span>
                             <div>
-                                <p className="text-display-3 text-white">
+                                <p className="text-display-4 leading-tight text-white">
                                     {stat.prefix ?? ""}
-                                    {stat.value.toLocaleString()}
+                                    {typeof stat.value === "number" ? stat.value.toLocaleString() : stat.value}
                                     {stat.suffix ?? ""}
                                 </p>
                                 <p className="mt-3 text-body-sm text-white/62">{stat.label}</p>

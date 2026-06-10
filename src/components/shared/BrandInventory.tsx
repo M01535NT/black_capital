@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ArrowRight, MapPin, Maximize2 } from "lucide-react";
 import { getPropertyPlaceholderImage } from "@/lib/property-placeholder-image";
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
 
 interface BrandProperty {
     id: string;
@@ -69,7 +70,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 320,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Precio de ejemplo",
+            priceLabel: "Precio bajo consulta",
         },
         {
             id: "placeholder-residencial-2",
@@ -82,7 +83,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 260,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Editable desde admin",
+            priceLabel: "Asesoría por zona",
         },
         {
             id: "placeholder-residencial-3",
@@ -95,7 +96,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 210,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Contenido temporal",
+            priceLabel: "Disponibilidad a confirmar",
         },
     ],
     Comercial: [
@@ -110,7 +111,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 140,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Precio de ejemplo",
+            priceLabel: "Precio bajo consulta",
         },
         {
             id: "placeholder-comercial-2",
@@ -123,7 +124,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 180,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Editable desde admin",
+            priceLabel: "Asesoría por zona",
         },
         {
             id: "placeholder-comercial-3",
@@ -136,7 +137,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 95,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Contenido temporal",
+            priceLabel: "Disponibilidad a confirmar",
         },
     ],
     Industrial: [
@@ -151,7 +152,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 2500,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Precio de ejemplo",
+            priceLabel: "Precio bajo consulta",
         },
         {
             id: "placeholder-industrial-2",
@@ -164,7 +165,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 1800,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Editable desde admin",
+            priceLabel: "Asesoría por zona",
         },
         {
             id: "placeholder-industrial-3",
@@ -177,7 +178,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             m2_construction: 4200,
             cover_image: null,
             isPlaceholder: true,
-            priceLabel: "Contenido temporal",
+            priceLabel: "Disponibilidad a confirmar",
         },
     ],
 };
@@ -189,7 +190,7 @@ export async function BrandInventory({
     highlight,
     subtitle,
     ctaText,
-    eyebrow = "Inventario ejemplo",
+    eyebrow = "Inventario seleccionado",
     limit = 3,
     useLiveData = false,
 }: BrandInventoryProps) {
@@ -219,8 +220,8 @@ export async function BrandInventory({
                 </p>
             </div>
 
-            <div data-section="brand-inventory-rail" className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0 lg:pb-0">
-                {displayProperties.map((prop) => {
+            <div data-section="brand-inventory-rail" className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:grid lg:grid-cols-12 lg:overflow-visible lg:px-0 lg:pb-0">
+                {displayProperties.map((prop, index) => {
                     const href = prop.isPlaceholder
                         ? `/contacto?interes=${encodeURIComponent(propertyUse)}`
                         : `/inventario/${prop.slug || prop.id}`;
@@ -228,61 +229,81 @@ export async function BrandInventory({
                     const fallbackImage = getPropertyPlaceholderImage(propertyUse);
                     const imageSrc = prop.cover_image || fallbackImage.src;
                     const imageAlt = hasCoverImage ? prop.title : fallbackImage.alt;
+                    const isFeature = index === 0;
+                    const cardSpan = displayProperties.length === 1
+                        ? "lg:col-span-12"
+                        : displayProperties.length === 2
+                        ? "lg:col-span-6"
+                        : isFeature
+                        ? "lg:col-span-6"
+                        : "lg:col-span-3";
+                    const imageAspect = displayProperties.length <= 2 || isFeature
+                        ? "aspect-[16/10] lg:aspect-[16/9]"
+                        : "aspect-[16/10] lg:aspect-[4/5]";
 
                     return (
-                        <article
+                        <ScrollReveal
                             key={prop.id}
-                            className="group flex min-w-[82vw] snap-center flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] sm:min-w-[62vw] lg:min-w-0"
+                            delay={index * 0.08}
+                            className={`min-w-[82vw] snap-center sm:min-w-[62vw] lg:min-w-0 ${cardSpan}`}
                         >
-                            <div className="relative aspect-[16/10] overflow-hidden bg-white/[0.02]">
-                                <Image
-                                    src={imageSrc}
-                                    alt={imageAlt}
-                                    fill
-                                    sizes="(max-width: 1024px) 100vw, 33vw"
-                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/18 to-transparent" />
-                                <div className="absolute left-4 top-4 rounded-full border border-[var(--color-accent)]/30 bg-background/85 px-3 py-1 property-tag-type gold-ink">
-                                    {prop.isPlaceholder ? "Ejemplo" : prop.property_type}
+                            <article className="group relative flex h-full flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-colors duration-500 hover:border-[var(--color-accent)]/35">
+                                <div className={`relative overflow-hidden bg-white/[0.02] ${imageAspect}`}>
+                                    <Image
+                                        src={imageSrc}
+                                        alt={imageAlt}
+                                        fill
+                                        sizes={isFeature ? "(max-width: 1024px) 100vw, 50vw" : "(max-width: 1024px) 100vw, 25vw"}
+                                        className="object-cover motion-safe:transition-transform motion-safe:duration-[1100ms] motion-safe:ease-out motion-safe:group-hover:scale-105"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/84 via-black/22 to-transparent transition-opacity duration-700 group-hover:opacity-88" />
+                                    <div className="grain-overlay opacity-[0.12]" aria-hidden="true" />
+                                    <div className="absolute left-4 top-4 border border-[var(--color-accent)]/30 bg-background/85 px-3 py-1 property-tag-type gold-ink">
+                                        {prop.property_type}
+                                    </div>
+                                    <div className="absolute bottom-4 left-4 right-4">
+                                        <div className="mb-4 h-px w-12 bg-[var(--color-accent)]/50 transition-all duration-700 group-hover:w-24" />
+                                        <h3 className="text-display-3 text-white">{prop.title}</h3>
+                                    </div>
                                 </div>
-                                <div className="absolute bottom-4 left-4 right-4">
-                                    <h3 className="text-xl font-semibold text-white">{prop.title}</h3>
-                                </div>
-                            </div>
 
-                            <div className="flex flex-1 flex-col space-y-5 p-5">
-                                <div className="flex flex-wrap gap-4 text-body-sm text-white/55">
-                                    <span className="inline-flex items-center gap-1.5">
-                                        <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
-                                        {prop.business_type}
-                                    </span>
-                                {prop.m2_construction && (
-                                    <span className="inline-flex items-center gap-1.5">
-                                        <Maximize2 className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
-                                        {prop.m2_construction.toLocaleString()} m²
-                                    </span>
-                                )}
-                            </div>
-                                <p className="property-tag-type text-white/42">
-                                    {prop.priceLabel ?? formatPrice(prop.price, prop.currency)}
-                                </p>
-                                <div className="mt-auto flex flex-col gap-2 sm:flex-row">
-                                    <Link
-                                        href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
-                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-[var(--color-accent)]/45 px-4 py-2.5 property-tag-type gold-ink transition-colors hover:border-[var(--color-accent)]"
-                                    >
-                                        Inventario
-                                    </Link>
-                                    <Link
-                                        href={href}
-                                        className="inline-flex flex-1 items-center justify-center gap-2 border border-white/10 px-4 py-2.5 property-tag-type text-white/75 transition-colors hover:border-white/30"
-                                    >
-                                        Solicitar
-                                    </Link>
+                                <div className="flex flex-1 flex-col space-y-5 p-5">
+                                    <div className="flex flex-wrap gap-4 text-body-sm text-white/55">
+                                        <span className="inline-flex items-center gap-1.5">
+                                            <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
+                                            {prop.business_type}
+                                        </span>
+                                        {prop.m2_construction && (
+                                            <span className="inline-flex items-center gap-1.5">
+                                                <Maximize2 className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
+                                                {prop.m2_construction.toLocaleString()} m²
+                                            </span>
+                                        )}
+                                    </div>
+                                    <p className="property-tag-type text-white/42">
+                                        {prop.priceLabel ?? formatPrice(prop.price, prop.currency)}
+                                    </p>
+                                    <div className="mt-auto flex flex-col gap-2 sm:flex-row">
+                                        <Link
+                                            href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
+                                            className="group/cta inline-flex flex-1 items-center justify-center gap-2 px-2 py-2.5 text-white/82 transition-colors duration-300 hover:text-[var(--color-accent)]"
+                                        >
+                                            <span className="property-tag-type relative pb-1">
+                                                Inventario
+                                                <span className="absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-current opacity-60 transition-transform duration-500 group-hover/cta:scale-x-100" />
+                                            </span>
+                                            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 motion-safe:group-hover/cta:translate-x-1" aria-hidden="true" />
+                                        </Link>
+                                        <Link
+                                            href={href}
+                                            className="inline-flex flex-1 items-center justify-center gap-2 border border-white/10 px-4 py-2.5 property-tag-type text-white/75 transition-colors hover:border-[var(--color-accent)]/30 hover:text-white"
+                                        >
+                                            Solicitar
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                        </article>
+                            </article>
+                        </ScrollReveal>
                     );
                 })}
             </div>
@@ -290,10 +311,13 @@ export async function BrandInventory({
             <div className="mt-10 text-center">
                 <Link
                     href={`/inventario?uso=${encodeURIComponent(propertyUse)}`}
-                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-6 property-tag-type text-white transition-colors hover:border-[var(--color-accent)]"
+                    className="group inline-flex min-h-11 items-center justify-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"
                 >
-                    {ctaText}
-                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span className="property-tag-type relative pb-1">
+                        {ctaText}
+                        <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
+                    </span>
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 motion-safe:group-hover:translate-x-1" aria-hidden="true" />
                 </Link>
             </div>
         </section>

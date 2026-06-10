@@ -16,10 +16,10 @@ export default function SettingsError({
                     <AlertTriangle className="h-8 w-8 text-red-500" />
                 </div>
                 <div className="space-y-2">
-                    <h2 className="text-xl font-semibold text-foreground">
+                    <h2 className="text-xl font-semibold text-white">
                         Error al cargar configuración
                     </h2>
-                    <p className="text-foreground/50 text-sm">
+                    <p className="text-sm text-white/50">
                         No se pudo acceder a la configuración del sitio.
                         Intenta nuevamente.
                     </p>

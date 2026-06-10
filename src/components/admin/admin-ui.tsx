@@ -6,6 +6,18 @@ import { cn } from "@/lib/utils";
 export const adminCardClass =
     "min-w-0 max-w-full border border-white/[0.08] bg-white/[0.025] shadow-[0_18px_70px_rgba(0,0,0,0.24)]";
 
+export const adminBadgeClass =
+    "border border-white/[0.08] bg-white/[0.035] text-white/62";
+
+export const adminBadgeAccentClass =
+    "border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 text-[var(--color-accent)]";
+
+export const adminBadgeMutedClass =
+    "border border-white/[0.06] bg-white/[0.025] text-white/45";
+
+export const adminNoticeClass =
+    "border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 px-3 py-2 text-body-sm text-[var(--color-accent)]";
+
 export function AdminPageHeader({
     eyebrow,
     title,
@@ -62,7 +74,7 @@ export function AdminStatCard({
     label: string;
     value: string | number;
     note?: string;
-    accent?: "gold" | "green" | "blue" | "muted";
+    accent?: "gold" | "muted";
 }) {
     const content = (
         <div className={cn(adminCardClass, "group p-5 transition-colors hover:border-[var(--color-accent)]/30")}>
@@ -71,8 +83,6 @@ export function AdminStatCard({
                     className={cn(
                         "flex h-10 w-10 items-center justify-center border",
                         accent === "gold" && "gold-gradient border-[var(--color-accent)]/25 text-black",
-                        accent === "green" && "border-emerald-500/20 bg-emerald-500/10 text-emerald-400",
-                        accent === "blue" && "border-sky-500/20 bg-sky-500/10 text-sky-400",
                         accent === "muted" && "border-white/[0.08] bg-white/[0.035] text-white/60",
                     )}
                 >

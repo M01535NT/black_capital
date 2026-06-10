@@ -15,6 +15,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { adminBadgeAccentClass, adminBadgeClass, adminBadgeMutedClass } from "@/components/admin/admin-ui";
 
 export type PropertyRow = {
     id: string;
@@ -68,7 +69,7 @@ export const columns: ColumnDef<PropertyRow>[] = [
         cell: ({ row }) => (
             <Link
                 href={`/admin/properties/${row.original.id}/edit`}
-                className="text-body-sm font-medium text-foreground hover:text-[var(--color-accent)] transition-colors"
+                className="text-body-sm font-medium text-white transition-colors hover:text-[var(--color-accent)]"
             >
                 {row.getValue("title")}
             </Link>
@@ -80,12 +81,12 @@ export const columns: ColumnDef<PropertyRow>[] = [
         cell: ({ row }) => {
             const use = row.getValue("property_use") as string;
             const colorMap: Record<string, string> = {
-                Residencial: "bg-blue-500/10 text-blue-500 border-blue-500/20",
-                Comercial: "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/20",
-                Industrial: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
-                Habitacional: "bg-purple-500/10 text-purple-500 border-purple-500/20",
+                Residencial: adminBadgeClass,
+                Comercial: adminBadgeAccentClass,
+                Industrial: adminBadgeClass,
+                Habitacional: adminBadgeMutedClass,
             };
-            return <Badge variant="outline" className={colorMap[use] || "border-foreground/10"}>{use}</Badge>;
+            return <Badge variant="outline" className={colorMap[use] || adminBadgeMutedClass}>{use}</Badge>;
         },
     },
     {
@@ -112,13 +113,13 @@ export const columns: ColumnDef<PropertyRow>[] = [
         cell: ({ row }) => {
             const status = row.getValue("status") as string;
             const statusColors: Record<string, string> = {
-                Available: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
-                Under_Offer: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
-                Sold: "bg-red-500/10 text-red-500 border-red-500/20",
-                Rented: "bg-blue-500/10 text-blue-500 border-blue-500/20",
+                Available: adminBadgeAccentClass,
+                Under_Offer: adminBadgeClass,
+                Sold: adminBadgeMutedClass,
+                Rented: adminBadgeClass,
             };
             return (
-                <Badge variant="outline" className={statusColors[status] || "border-foreground/10"}>
+                <Badge variant="outline" className={statusColors[status] || adminBadgeMutedClass}>
                     {status === "Available" ? "Disponible"
                         : status === "Under_Offer" ? "Bajo Oferta"
                         : status === "Sold" ? "Vendido"
@@ -134,7 +135,7 @@ export const columns: ColumnDef<PropertyRow>[] = [
         cell: ({ row }) => {
             const value = row.original.updated_at;
             return (
-                <span className="text-body-sm text-foreground/50">
+                <span className="text-body-sm text-white/50">
                     {value ? new Intl.DateTimeFormat("es-MX", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(value)) : "—"}
                 </span>
             );

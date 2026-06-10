@@ -14,6 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { AgentRow } from "@/lib/validations/agent";
+import { adminBadgeAccentClass, adminBadgeMutedClass } from "@/components/admin/admin-ui";
 
 export const columns: ColumnDef<AgentRow>[] = [
     {
@@ -21,27 +22,27 @@ export const columns: ColumnDef<AgentRow>[] = [
         header: "Nombre",
         cell: ({ row }) => (
             <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[var(--color-accent)]/20 flex items-center justify-center text-[var(--color-accent)] text-caption">
+                <div className="flex h-8 w-8 items-center justify-center border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 text-caption text-[var(--color-accent)]">
                     {row.getValue<string>("full_name").charAt(0)}
                 </div>
-                <span className="text-body-sm font-medium text-foreground">{row.getValue("full_name")}</span>
+                <span className="text-body-sm font-medium text-white">{row.getValue("full_name")}</span>
             </div>
         ),
     },
     {
         accessorKey: "email",
         header: "Correo",
-        cell: ({ row }) => <span className="text-foreground/70">{row.getValue("email") || "—"}</span>,
+        cell: ({ row }) => <span className="text-white/70">{row.getValue("email") || "—"}</span>,
     },
     {
         accessorKey: "phone",
         header: "Teléfono",
-        cell: ({ row }) => <span className="text-foreground/70">{row.getValue("phone") || "—"}</span>,
+        cell: ({ row }) => <span className="text-white/70">{row.getValue("phone") || "—"}</span>,
     },
     {
         accessorKey: "license_number",
         header: "Cédula",
-        cell: ({ row }) => <span className="text-foreground/70">{row.getValue("license_number") || "—"}</span>,
+        cell: ({ row }) => <span className="text-white/70">{row.getValue("license_number") || "—"}</span>,
     },
     {
         accessorKey: "is_active",
@@ -50,11 +51,8 @@ export const columns: ColumnDef<AgentRow>[] = [
             const active = row.getValue("is_active") as boolean;
             return (
                 <Badge
-                    variant="secondary"
-                    className={active
-                        ? "bg-emerald-500/10 text-emerald-500"
-                        : "bg-foreground/5 text-foreground/50"
-                    }
+                    variant="outline"
+                    className={active ? adminBadgeAccentClass : adminBadgeMutedClass}
                 >
                     {active ? "Activo" : "Inactivo"}
                 </Badge>

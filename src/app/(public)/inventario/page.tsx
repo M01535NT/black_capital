@@ -7,8 +7,8 @@ import type { PropertyCardData } from "@/components/property/PropertyCard";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-    title: "Inventario de Propiedades en Tijuana | Casas, Comercial e Industrial",
-    description: "Explora nuestro catálogo de propiedades en Tijuana: casas residenciales, centros comerciales y naves industriales. Análisis financiero incluido. Venta y renta.",
+    title: "Inventario en Tijuana | Black Capital",
+    description: "Explora residencias, locales, oficinas y naves en Tijuana con filtros por uso, zona, precio y superficie.",
 };
 
 const PLACEHOLDER_PROPERTIES: PropertyCardData[] = [

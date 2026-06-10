@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { adminBadgeAccentClass, adminBadgeClass, adminBadgeMutedClass } from "@/components/admin/admin-ui";
 
 const STATUS_OPTIONS = [
-    { value: "new", label: "Nuevo", color: "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20" },
-    { value: "contacted", label: "Contactado", color: "bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20" },
-    { value: "qualified", label: "Calificado", color: "bg-purple-500/10 text-purple-500 hover:bg-purple-500/20" },
-    { value: "lost", label: "Perdido", color: "bg-red-500/10 text-red-500 hover:bg-red-500/20" },
-    { value: "won", label: "Ganado", color: "bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20" },
+    { value: "new", label: "Nuevo", color: adminBadgeAccentClass, dot: "bg-[var(--color-accent)]" },
+    { value: "contacted", label: "Contactado", color: adminBadgeClass, dot: "bg-white/60" },
+    { value: "qualified", label: "Calificado", color: adminBadgeClass, dot: "bg-white/60" },
+    { value: "lost", label: "Perdido", color: adminBadgeMutedClass, dot: "bg-white/28" },
+    { value: "won", label: "Ganado", color: adminBadgeAccentClass, dot: "bg-[var(--color-accent)]" },
 ];
 
 interface LeadActionsProps {
@@ -88,10 +89,10 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
                             onClick={() => changeStatus(opt.value)}
                             disabled={saving || opt.value === status}
                             className={cn(
-                                "px-3 py-1.5 rounded-lg text-xs font-medium transition-all border",
+                                "border px-3 py-1.5 text-xs font-medium transition-all",
                                 opt.value === status
-                                    ? `${opt.color} border-current`
-                                    : "bg-transparent text-foreground/50 border-foreground/10 hover:border-foreground/30"
+                                    ? opt.color
+                                    : "border-white/[0.08] bg-transparent text-white/50 hover:border-white/[0.18] hover:text-white"
                             )}
                         >
                             {opt.label}
@@ -99,7 +100,7 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
                     ))}
                 </div>
 
-                <div className="space-y-2 pt-2 border-t border-foreground/5">
+                <div className="space-y-2 border-t border-white/[0.06] pt-2">
                     <Textarea
                         placeholder="Agregar nota de seguimiento..."
                         value={notes}
@@ -107,7 +108,7 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
                         className="h-20 text-sm"
                     />
                     <div className="flex items-center justify-between">
-                        {message && <span className="text-xs text-emerald-500">{message}</span>}
+                        {message && <span className="text-xs text-[var(--color-accent)]">{message}</span>}
                         <Button
                             size="sm"
                             onClick={saveNotes}
@@ -134,7 +135,7 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
             {open && (
                 <>
                     <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-                    <div className="absolute top-full mt-1 right-0 z-20 min-w-[180px] bg-card border border-foreground/10 rounded-xl shadow-2xl py-1 overflow-hidden">
+                    <div className="absolute top-full mt-1 right-0 z-20 min-w-[180px] overflow-hidden border border-white/[0.08] bg-[#050505] py-1 shadow-2xl">
                         {STATUS_OPTIONS.map((opt) => (
                             <button
                                 key={opt.value}
@@ -144,10 +145,10 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
                                     "w-full text-left px-3 py-2 text-sm transition-colors flex items-center gap-2",
                                     opt.value === status
                                         ? "text-[var(--color-accent)] font-medium bg-[var(--color-accent)]/5"
-                                        : "text-foreground/70 hover:bg-muted/50"
+                                        : "text-white/70 hover:bg-white/[0.04]"
                                 )}
                             >
-                                <span className={cn("w-2 h-2 rounded-full", opt.color.split(" ")[0])} />
+                                <span className={cn("h-2 w-2", opt.dot)} />
                                 {opt.label}
                                 {opt.value === status && <Check className="w-3.5 h-3.5 ml-auto" />}
                             </button>
@@ -155,7 +156,7 @@ export function LeadActions({ leadId, currentStatus, showInline }: LeadActionsPr
                     </div>
                 </>
             )}
-            {message && <span className="text-xs text-emerald-500 ml-2">{message}</span>}
+            {message && <span className="ml-2 text-xs text-[var(--color-accent)]">{message}</span>}
         </div>
     );
 }

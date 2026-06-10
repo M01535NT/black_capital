@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Save, Image as ImageIcon, Type, Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import { AdminPageHeader } from "@/components/admin/admin-ui";
+import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 interface AppSettings {
     heroVideoUrl: string;
@@ -35,9 +36,9 @@ const DEFAULTS: AppSettings = {
     businessHeroSubtitle: "Espacios comerciales",
     industrialHeroTitle: "Black Industrial",
     industrialHeroSubtitle: "Naves y bodegas",
-    contactPhone: "+52 (664) 000 0000",
-    contactEmail: "contacto@blackmx.vercel.app",
-    contactAddress: "Tijuana, Baja California, México",
+    contactPhone: CONTACT_CONFIG.phone,
+    contactEmail: CONTACT_CONFIG.email,
+    contactAddress: CONTACT_CONFIG.address,
     whatsAppTemplate: "Hola, estoy interesado en sus servicios.",
 };
 
@@ -262,7 +263,7 @@ export default function SettingsPage() {
                     Guardar Configuración
                 </Button>
                 {saved && (
-                    <span className="text-caption text-emerald-500">Configuración guardada correctamente.</span>
+                    <span className="text-caption text-[var(--color-accent)]">Configuración guardada correctamente.</span>
                 )}
             </div>
         </div>

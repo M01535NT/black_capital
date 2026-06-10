@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
-import { AdminEmptyState, AdminPageHeader, adminCardClass } from "@/components/admin/admin-ui";
+import { AdminEmptyState, AdminPageHeader, adminBadgeAccentClass, adminBadgeClass, adminBadgeMutedClass, adminCardClass } from "@/components/admin/admin-ui";
 
 interface Lead {
     id: string;
@@ -40,11 +40,11 @@ interface LeadsPageClientProps {
 }
 
 const STATUS_OPTIONS = [
-    { value: "new", label: "Nuevo", color: "bg-sky-500/10 text-sky-400 border-sky-500/20" },
-    { value: "contacted", label: "Contactado", color: "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/20" },
-    { value: "qualified", label: "Calificado", color: "bg-white/[0.06] text-white/75 border-white/[0.12]" },
-    { value: "lost", label: "Perdido", color: "bg-red-500/10 text-red-400 border-red-500/20" },
-    { value: "won", label: "Ganado", color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
+    { value: "new", label: "Nuevo", color: adminBadgeAccentClass, dot: "bg-[var(--color-accent)]" },
+    { value: "contacted", label: "Contactado", color: adminBadgeClass, dot: "bg-white/60" },
+    { value: "qualified", label: "Calificado", color: adminBadgeClass, dot: "bg-white/60" },
+    { value: "lost", label: "Perdido", color: adminBadgeMutedClass, dot: "bg-white/28" },
+    { value: "won", label: "Ganado", color: adminBadgeAccentClass, dot: "bg-[var(--color-accent)]" },
 ];
 
 const sourceLabels: Record<string, string> = {
@@ -79,7 +79,7 @@ function StatusCell({ lead, onChange }: { lead: Lead; onChange: (id: string, sta
             <button
                 onClick={() => setOpen(!open)}
                 className={cn(
-                    "flex items-center gap-1.5 px-2 py-1 rounded-lg text-body-sm font-medium border transition-all",
+                    "flex items-center gap-1.5 border px-2 py-1 text-body-sm font-medium transition-all",
                     current.color
                 )}
             >
@@ -104,7 +104,7 @@ function StatusCell({ lead, onChange }: { lead: Lead; onChange: (id: string, sta
                                         : "text-white/70 hover:bg-white/[0.04]"
                                 )}
                             >
-                                <span className={cn("w-2 h-2 rounded-full", opt.color.split(" ")[0])} />
+                                <span className={cn("h-2 w-2", opt.dot)} />
                                 {opt.label}
                                 {opt.value === lead.status && <Check className="w-3 h-3 ml-auto" />}
                             </button>
@@ -125,7 +125,7 @@ function AgentCell({ lead, agents, onChange }: { lead: Lead; agents: Agent[]; on
             <button
                 onClick={() => setOpen(!open)}
                 className={cn(
-                    "flex items-center gap-1.5 px-2 py-1 rounded-lg text-body-sm font-medium border transition-all",
+                    "flex items-center gap-1.5 border px-2 py-1 text-body-sm font-medium transition-all",
                     assigned
                         ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/20"
                         : "bg-white/[0.03] text-white/50 border-white/[0.08]"
@@ -1036,7 +1036,7 @@ function LeadKanban({
                     <section id={`lead-column-${status.value}`} key={status.value} className={`${adminCardClass} min-h-[360px] overflow-hidden [scroll-snap-align:start]`}>
                         <div className="flex items-center justify-between border-b border-white/[0.08] px-4 py-3">
                             <div className="flex items-center gap-2">
-                                <span className={cn("h-2.5 w-2.5", status.color.split(" ")[0])} />
+                                <span className={cn("h-2.5 w-2.5", status.dot)} />
                                 <h2 className="text-caption text-white/70">{status.label}</h2>
                             </div>
                             <span className="text-xs text-white/45">{items.length}</span>

@@ -274,9 +274,9 @@ export function GatedBrochure({
                         </Form>
                     </>
                 ) : (
-                    <div className="py-8 flex flex-col items-center justify-center text-center">
-                        <div className="size-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-5 border border-emerald-500/20">
-                            <CheckCircle2 className="size-8 text-emerald-500" />
+                    <div className="flex flex-col items-center justify-center py-8 text-center">
+                        <div className="gold-gradient mb-5 flex size-16 items-center justify-center border border-[var(--color-accent)]/25">
+                            <CheckCircle2 className="size-8 text-black" />
                         </div>
                         <h3 className="font-display text-xl font-semibold text-foreground mb-2 uppercase tracking-wider">
                             Documento Enviado

@@ -15,6 +15,7 @@
 
 "use client";
 
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { useState, useId } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -98,9 +99,31 @@ const SECTION_SPACING = {
     loose: "py-20 lg:py-28",
 } as const;
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const staggerGroup: Variants = {
+    hidden: {},
+    show: {
+        transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.08,
+        },
+    },
+};
+
+const revealItem: Variants = {
+    hidden: { opacity: 0, y: 22 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.68, ease: EASE },
+    },
+};
+
 export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const shouldReduceMotion = useReducedMotion();
     const schema = buildSchema(config.companyRequired);
 
     const {
@@ -173,14 +196,32 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
         <section
             id={config.sectionId}
             aria-label={`Solicitud de acceso ${config.brand}`}
-            className={`w-full bg-white/[0.02] relative border-t border-b border-white/[0.06] ${SECTION_SPACING[config.spacing ?? "default"]}`}
+            className={`relative w-full overflow-hidden border-y border-white/[0.06] bg-white/[0.02] ${SECTION_SPACING[config.spacing ?? "default"]}`}
         >
+            <div
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/40 to-transparent"
+            />
+            <div
+                aria-hidden="true"
+                className="absolute inset-0 opacity-45"
+                style={{
+                    background:
+                        "radial-gradient(ellipse at 14% 18%, rgba(210,167,60,0.16), transparent 38%), radial-gradient(ellipse at 86% 72%, rgba(255,255,255,0.045), transparent 45%)",
+                }}
+            />
             <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16">
                 {!isSuccess ? (
                     <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
                         {/* Left — Copy */}
-                        <div className="space-y-6 lg:col-span-5">
-                            <div className="flex items-center gap-3">
+                        <motion.div
+                            className="space-y-6 lg:col-span-5"
+                            variants={staggerGroup}
+                            initial={shouldReduceMotion ? false : "hidden"}
+                            whileInView="show"
+                            viewport={{ once: true, margin: "-12% 0px -12% 0px" }}
+                        >
+                            <motion.div variants={revealItem} className="flex items-center gap-3">
                                 {config.eyebrowIcon === "lock" ? (
                                     <Lock className="w-4 h-4 text-[var(--color-accent)]" aria-hidden="true" />
                                 ) : (
@@ -189,32 +230,40 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                                 <span className="text-caption text-white/70">
                                     {config.eyebrow}
                                 </span>
-                            </div>
+                            </motion.div>
 
-                            <h2 className="text-display-2 text-white text-balance">
+                            <motion.h2 variants={revealItem} className="text-display-2 text-white text-balance">
                                 {config.title}
                                 <br />
                                 <span className="metallic-gold-static">{config.titleHighlight}</span>
-                            </h2>
+                            </motion.h2>
 
-                            <p className="text-body text-white/65 leading-relaxed max-w-md">
+                            <motion.p variants={revealItem} className="text-body text-white/65 leading-relaxed max-w-md">
                                 {config.description}
-                            </p>
+                            </motion.p>
 
                             {config.indicator && (
-                                <div className="flex items-center gap-3 pt-2 footer-legal-type text-white/55">
+                                <motion.div variants={revealItem} className="flex items-center gap-3 pt-2 footer-legal-type text-white/55">
                                     <span className="w-2 h-2 rounded-full bg-[var(--color-accent)]" aria-hidden="true" />
                                     {config.indicator}
-                                </div>
+                                </motion.div>
                             )}
-                        </div>
+                        </motion.div>
 
                         {/* Right — Form */}
-                        <form
+                        <motion.form
                             onSubmit={handleSubmit(onSubmit)}
-                            className="space-y-6 border border-white/[0.08] bg-background/70 p-5 sm:p-6 lg:col-span-7"
+                            className="relative space-y-6 border border-white/[0.08] bg-background/76 p-5 shadow-2xl shadow-black/30 sm:p-6 lg:col-span-7"
                             noValidate
+                            initial={shouldReduceMotion ? false : { opacity: 0, y: 28, clipPath: "inset(8% 0% 0% 0%)" }}
+                            whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
+                            viewport={{ once: true, margin: "-12% 0px -12% 0px" }}
+                            transition={{ duration: 0.78, delay: 0.16, ease: EASE }}
                         >
+                            <span
+                                aria-hidden="true"
+                                className="absolute -left-px top-6 hidden h-[calc(100%-3rem)] w-px bg-gradient-to-b from-transparent via-[var(--color-accent)]/55 to-transparent lg:block"
+                            />
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
                                 <div className="space-y-1">
                                     <Input
@@ -328,16 +377,19 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                                     )}
                                 </Button>
                             </div>
-                        </form>
+                        </motion.form>
                     </div>
                 ) : (
-                    <div
+                    <motion.div
                         className="text-center max-w-xl mx-auto py-12"
                         role="status"
                         aria-live="polite"
+                        initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.56, ease: EASE }}
                     >
-                        <div className="w-20 h-20 rounded-full border border-[var(--color-accent)]/40 flex items-center justify-center mx-auto mb-6">
-                            <CheckCircle2 className="w-10 h-10 text-[var(--color-accent)]" aria-hidden="true" />
+                        <div className="gold-gradient mx-auto mb-6 flex h-20 w-20 items-center justify-center border border-[var(--color-accent)]/40">
+                            <CheckCircle2 className="w-10 h-10 text-black" aria-hidden="true" />
                         </div>
                         <h3 className="text-display-3 text-white mb-4">
                             {config.successTitle}
@@ -345,7 +397,7 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                         <p className="text-body text-white/65 leading-relaxed">
                             {config.successMessage}
                         </p>
-                    </div>
+                    </motion.div>
                 )}
             </div>
         </section>

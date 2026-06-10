@@ -100,9 +100,13 @@ export default function ContactoPage() {
                                 href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, me gustaría recibir información sobre propiedades de inversión.")}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none border border-white/18 bg-white/[0.04] premium-cta text-white transition-colors hover:border-[var(--color-accent)]"
+                                className="group inline-flex min-h-[50px] w-fit items-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"
                             >
-                                WhatsApp directo
+                                <span className="property-tag-type relative pb-1">
+                                    WhatsApp directo
+                                    <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
+                                </span>
+                                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 motion-safe:group-hover:translate-x-1" aria-hidden="true" />
                             </a>
                         </div>
                     </div>
@@ -181,10 +185,13 @@ export default function ContactoPage() {
                                         href={card.action.href}
                                         target={card.action.external ? "_blank" : undefined}
                                         rel={card.action.external ? "noopener noreferrer" : undefined}
-                                        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-5 property-tag-type text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                                        className="group inline-flex min-h-10 w-fit items-center gap-2 text-white/78 transition-colors duration-300 hover:text-[var(--color-accent)]"
                                     >
-                                        <span>{card.action.label}</span>
-                                        <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                                        <span className="property-tag-type relative pb-1">
+                                            {card.action.label}
+                                            <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
+                                        </span>
+                                        <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 motion-safe:group-hover:translate-x-1" aria-hidden="true" />
                                     </a>
                                 )}
                             </div>
@@ -237,9 +244,13 @@ export default function ContactoPage() {
                             href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, me gustaría recibir información sobre propiedades de inversión.")}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none border border-white/18 bg-white/[0.04] premium-cta text-white transition-colors hover:border-[var(--color-accent)]"
+                            className="group inline-flex min-h-[50px] items-center justify-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"
                         >
-                            <span>WhatsApp directo</span>
+                            <span className="property-tag-type relative pb-1">
+                                WhatsApp directo
+                                <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
+                            </span>
+                            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 motion-safe:group-hover:translate-x-1" aria-hidden="true" />
                         </a>
                     </div>
                 </div>

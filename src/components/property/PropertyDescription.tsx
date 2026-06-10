@@ -33,9 +33,12 @@ export function PropertyDescription({ description }: { description: string }) {
             {isLong && (
                 <button
                     onClick={() => setExpanded(!expanded)}
-                    className="group mt-3 inline-flex items-center gap-2 rounded-full border border-[var(--color-accent)]/35 px-5 py-2 property-tag-type text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
+                    className="group mt-3 inline-flex items-center gap-2 text-white/78 transition-colors duration-300 hover:text-[var(--color-accent)]"
                 >
-                    {expanded ? "Leer menos" : "Leer más"}
+                    <span className="property-tag-type relative pb-1">
+                        {expanded ? "Leer menos" : "Leer más"}
+                        <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
+                    </span>
                     <ChevronDown 
                         className={cn(
                             "size-4 transition-transform duration-300",

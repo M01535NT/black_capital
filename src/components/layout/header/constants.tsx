@@ -26,9 +26,9 @@ export const herramientasDropdown = [
 ];
 
 export const verticales = [
-  { name: "Black Luxury", href: "/black-luxury", desc: "Casas en fraccionamientos privados" },
-  { name: "Black Business", href: "/black-business", desc: "Centros comerciales y oficinas" },
-  { name: "Black Industrial", href: "/black-industrial", desc: "Naves y parques industriales" },
+  { name: "Black Luxury", href: "/black-luxury", desc: "Residencias por privacidad y zona" },
+  { name: "Black Business", href: "/black-business", desc: "Locales, oficinas y plazas" },
+  { name: "Black Industrial", href: "/black-industrial", desc: "Naves, bodegas y operación" },
 ];
 
 export const corporativoLinks = [

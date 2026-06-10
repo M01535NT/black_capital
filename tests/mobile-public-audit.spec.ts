@@ -70,8 +70,10 @@ test.describe("mobile public pages audit", () => {
   for (const route of ["/black-luxury", "/black-business", "/black-industrial"] as const) {
     test(`${route} brand inventory is horizontal on mobile`, async ({ page }) => {
       await page.goto(route);
+      await page.waitForLoadState("networkidle");
 
       const rail = page.locator("[data-section='brand-inventory-rail']");
+      await expect(rail).toHaveCount(1);
       await rail.scrollIntoViewIfNeeded();
       await page.waitForTimeout(200);
 
