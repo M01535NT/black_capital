@@ -324,6 +324,53 @@ body {
   .animate-marquee {
     animation: marquee 20s linear infinite;
   }
+  .hero-marquee-rotate-wrap {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    min-height: 1em;
+    width: 11.5ch;
+    vertical-align: baseline;
+  }
+  .hero-marquee-word {
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    animation: hero-marquee-word-rotate 9s linear infinite;
+  }
+  @keyframes hero-marquee-word-rotate {
+    0%,
+    8% {
+      opacity: 0;
+      transform: translateY(0.18em);
+    }
+    13%,
+    27% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    35%,
+    100% {
+      opacity: 0;
+      transform: translateY(-0.18em);
+    }
+  }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-marquee-rotate-wrap {
+    width: auto;
+  }
+  .hero-marquee-word {
+    position: static;
+    animation: none !important;
+    opacity: 1 !important;
+  }
+  .hero-marquee-word:not(:first-child) {
+    display: none;
+  }
+}
 
   /* ── Premium gold treatment — all brand accents come from the same token set. */
   .metallic-gold,

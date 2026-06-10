@@ -5,7 +5,6 @@ import {
   ArrowRight,
   Building2,
   Home,
-  MapPin,
   Warehouse,
 } from "lucide-react";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -85,9 +84,45 @@ const intentCtas = [
   { label: "Necesito opinión de valor", href: "/contacto?objetivo=opinion-de-valor" },
   { label: "Quiero evaluar una propiedad", href: "/contacto?objetivo=evaluar" },
 ];
+const rotatingInventoryWords = ["Residencial", "Comercial", "Industrial"];
+const MARQUEE_ROTATE_INTERVAL_MS = 3000;
 
 type Segment = (typeof segments)[number];
-type SegmentVariant = "hero" | "compact" | "mobile";
+type SegmentVariant = "hero" | "compact" | "mobile" | "mosaic";
+
+function HeroMarqueeStrip({ duplicate = false }: { duplicate?: boolean }) {
+  return (
+    <div
+      className="animate-marquee inline-flex min-w-full shrink-0 items-center justify-around gap-x-5 px-6 sm:gap-x-10 sm:px-10 lg:px-16"
+      aria-hidden={duplicate ? "true" : undefined}
+    >
+      <span className="property-tag-type inline-flex shrink-0 items-center gap-2.5 whitespace-nowrap">
+        <span className="inline-block h-1 w-1 rounded-full bg-[var(--color-accent)]" />
+        Tijuana · Baja California
+      </span>
+      <span className="h-3 w-px shrink-0 bg-[var(--color-accent)]/40" />
+      <span className="property-tag-type inline-flex shrink-0 items-baseline gap-2 whitespace-nowrap">
+        Encuentra inventario
+        <span className="hero-marquee-rotate-wrap" aria-hidden="true">
+          {rotatingInventoryWords.map((word, index) => (
+            <span
+              key={word}
+              className="hero-marquee-word property-tag-type normal-case"
+              style={{ animationDelay: `${index * (MARQUEE_ROTATE_INTERVAL_MS / 1000)}s` }}
+            >
+              {index === rotatingInventoryWords.length - 1 ? word : `${word},`}
+            </span>
+          ))}
+        </span>
+      </span>
+      <span className="h-3 w-px shrink-0 bg-[var(--color-accent)]/40" />
+      <span className="property-tag-type inline-flex shrink-0 items-baseline gap-2 whitespace-nowrap">
+        <span className="gold-ink text-base font-extrabold leading-none">08</span>
+        Años operando
+      </span>
+    </div>
+  );
+}
 
 function SegmentCard({
   segment,
@@ -99,81 +134,172 @@ function SegmentCard({
   const Icon = segment.icon;
   const isHero = variant === "hero";
   const isMobile = variant === "mobile";
+  const isMosaic = variant === "mosaic";
+  const isMosaicLike = isMosaic || isMobile;
   const imageAspect = isHero
     ? "aspect-[4/3] lg:aspect-[16/11]"
-    : isMobile
-      ? "aspect-[16/11]"
-      : "aspect-[16/9] lg:aspect-[16/10]";
+    : isMosaicLike
+    ? "aspect-[16/11]"
+    : "aspect-[16/9] lg:aspect-[16/10]";
+  const imageSizes =
+    isMosaicLike
+      ? "(max-width: 768px) 100vw, 32vw"
+      : isHero
+        ? "(max-width: 768px) 100vw, 58vw"
+        : "(max-width: 768px) 100vw, 42vw";
+  const titleClass = isHero
+    ? "mt-1 text-display-2 font-extrabold leading-none text-white"
+    : isMosaicLike
+      ? "mt-1 text-display-4 leading-tight text-white"
+      : "mt-1 text-display-3 font-semibold leading-tight text-white";
+  const panelPadding = isHero ? "lg:p-7" : isMosaicLike ? "lg:p-6" : "";
+  const bodyTextClass = isHero
+    ? "lg:text-body-lg"
+    : isMosaicLike
+      ? "text-sm"
+      : "";
+  const showZones = true;
+  const cardHeight = isMobile
+    ? "min-h-[470px] lg:min-h-[420px]"
+    : "min-h-[420px]";
+  const articleTransition = isMosaicLike
+    ? `group relative flex h-full ${cardHeight} flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-all duration-500 lg:hover:-translate-y-1 lg:hover:border-[var(--color-accent)]/45 lg:focus-within:-translate-y-1 lg:focus-within:border-[var(--color-accent)]/45 lg:hover:shadow-[0_24px_55px_-28px_rgba(0,0,0,0.95)]`
+    : "group relative flex h-full flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-colors duration-500 lg:hover:border-[var(--color-accent)]/40";
+  const hoverReveal = isMosaic
+    ? "lg:opacity-0 lg:translate-y-2 lg:transition-all lg:duration-500 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 lg:focus-within:opacity-100 lg:focus-within:translate-y-0"
+    : "";
+  const imageScale = isMosaicLike
+    ? "lg:group-hover:scale-[1.09]"
+    : "lg:group-hover:scale-[1.06]";
+  const detailsReveal = isMosaicLike
+    ? "max-h-0 overflow-hidden opacity-0 translate-y-2 transition-all duration-500 lg:group-hover:max-h-80 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 lg:focus-within:max-h-80 lg:focus-within:opacity-100 lg:focus-within:translate-y-0"
+    : "";
+  const mosaicImageOverlay = isMosaicLike
+    ? "from-black/35 via-black/40 to-black/75 transition-all duration-500 lg:group-hover:from-black/55 lg:group-hover:via-black/60 lg:group-hover:to-black/85"
+    : "from-black/90 via-black/30 to-transparent transition-all duration-500 lg:group-hover:from-black/95 lg:group-hover:via-black/50";
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-colors duration-500 hover:border-[var(--color-accent)]/40">
-      <div className={`relative overflow-hidden ${imageAspect}`}>
-        <Image
-          src={segment.image}
-          alt={`Línea inmobiliaria ${segment.title} en Tijuana`}
-          fill
-          sizes={
-            isHero
-              ? "(max-width: 768px) 100vw, 58vw"
-              : "(max-width: 768px) 100vw, 42vw"
-          }
-          className="object-cover transition-transform duration-[1100ms] ease-out group-hover:scale-[1.06]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-        <div className="absolute inset-x-5 bottom-5 flex items-end justify-between gap-3">
-          <div>
-            <p className="property-tag-type gold-ink">{segment.category}</p>
-            <h3
-              className={
-                isHero
-                  ? "mt-1 text-display-2 font-extrabold leading-none text-white"
-                  : "mt-1 text-display-3 font-semibold leading-tight text-white"
-              }
-            >
-              {segment.title}
-            </h3>
+    <article className={articleTransition}>
+      {isMosaicLike ? (
+        <>
+          <Image
+            src={segment.image}
+            alt={`Línea inmobiliaria ${segment.title} en Tijuana`}
+            fill
+            sizes={imageSizes}
+            className={`absolute inset-0 object-cover transition-transform duration-[1100ms] ease-out ${imageScale}`}
+          />
+          <div
+            className={`absolute inset-0 bg-gradient-to-t ${mosaicImageOverlay}`}
+          />
+          <span className="pointer-events-none absolute right-[-36%] top-0 h-full w-[58%] rotate-6 bg-[linear-gradient(115deg,rgba(210,167,60,0.22),transparent_68%)] opacity-35" />
+          <div className="absolute inset-0 flex flex-col p-4 sm:p-5 lg:p-6">
+            <div className="flex flex-col gap-1">
+              <p className="property-tag-type gold-ink">{segment.category}</p>
+              <h3 className={titleClass}>{segment.title}</h3>
+            </div>
+
+            <div className={`mt-5 flex flex-1 flex-col gap-4 min-h-0 ${detailsReveal}`}>
+              <p className={`text-body text-white/68 ${bodyTextClass}`}>
+                {segment.copy}
+              </p>
+
+              {showZones ? (
+                <ul className="flex flex-wrap gap-1.5">
+                  {segment.zones.map((zone) => (
+                    <li
+                      key={zone}
+                      className="border border-white/12 px-2.5 py-1 property-tag-type text-white/65"
+                    >
+                      {zone}
+                    </li>
+                ))}
+              </ul>
+              ) : null}
+
+              <p className="text-body-sm leading-relaxed text-white/58">
+                {segment.metric}
+              </p>
           </div>
-          <span className="gold-gradient flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-black">
-            <Icon className="h-4 w-4" />
-          </span>
-        </div>
-      </div>
+            <div className="mt-auto pt-1">
+              <Link
+                href={segment.href}
+                className="group/cta inline-flex items-center gap-2 text-[var(--color-accent)] transition-colors duration-300 hover:text-[var(--color-accent)]"
+              >
+                <span className="property-tag-type relative pb-1">
+                  Ver línea
+                  <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover/cta:opacity-100" />
+                </span>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/cta:translate-x-1" />
+              </Link>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className={`relative overflow-hidden ${imageAspect}`}>
+            <Image
+              src={segment.image}
+              alt={`Línea inmobiliaria ${segment.title} en Tijuana`}
+              fill
+              sizes={imageSizes}
+              className={`object-cover transition-transform duration-[1100ms] ease-out ${imageScale}`}
+            />
+            <div className={`absolute inset-0 bg-gradient-to-t ${mosaicImageOverlay}`} />
+            <div className={`absolute inset-x-5 bottom-5 flex items-end justify-between gap-3 ${hoverReveal}`}>
+              <div className={hoverReveal}>
+                <p className={`property-tag-type gold-ink ${hoverReveal}`}>{segment.category}</p>
+                <h3 className={`${titleClass} ${hoverReveal}`}>
+                  {segment.title}
+                </h3>
+              </div>
+              <span className={`gold-gradient flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-black transition-all duration-500 ${hoverReveal} group-hover:rotate-[-8deg]`}>
+                <Icon className="h-4 w-4" />
+              </span>
+            </div>
+          </div>
 
-      <div
-        className={`flex flex-1 flex-col gap-4 p-4 sm:p-5 ${isHero ? "lg:p-7" : ""}`}
-      >
-        <p className={`text-body text-white/68 ${isHero ? "lg:text-body-lg" : ""}`}>
-          {segment.copy}
-        </p>
-
-        <ul className="flex flex-wrap gap-1.5">
-          {segment.zones.map((zone) => (
-            <li
-              key={zone}
-              className="border border-white/12 px-2.5 py-1 property-tag-type text-white/65"
-            >
-              {zone}
-            </li>
-          ))}
-        </ul>
-
-        <p className="hidden text-body-sm leading-relaxed text-white/55 transition-all duration-500 md:block md:max-h-0 md:translate-y-1 md:overflow-hidden md:opacity-0 md:group-hover:max-h-32 md:group-hover:translate-y-0 md:group-hover:opacity-100">
-          {segment.metric}
-        </p>
-
-        <div className="mt-auto pt-1">
-          <Link
-            href={segment.href}
-            className="group/cta inline-flex items-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"
+          <div
+            className={`flex flex-1 flex-col gap-4 p-4 sm:p-5 ${panelPadding} ${hoverReveal}`}
           >
-            <span className="property-tag-type relative pb-1">
-              Ver línea
-              <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover/cta:opacity-100" />
-            </span>
-            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/cta:translate-x-1" />
-          </Link>
-        </div>
-      </div>
+            <p className={`text-body text-white/68 ${bodyTextClass} ${hoverReveal}`}>
+              {segment.copy}
+            </p>
+
+            {showZones ? (
+              <ul className={`flex flex-wrap gap-1.5 ${hoverReveal}`}>
+                {segment.zones.map((zone) => (
+                  <li
+                    key={zone}
+                    className="border border-white/12 px-2.5 py-1 property-tag-type text-white/65"
+                  >
+                    {zone}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+
+            <p className="hidden text-body-sm leading-relaxed text-white/55 transition-all duration-500 md:block md:max-h-0 md:translate-y-1 md:overflow-hidden md:opacity-0 md:group-hover:max-h-32 md:group-hover:translate-y-0 md:group-hover:opacity-100">
+              {segment.metric}
+            </p>
+
+            <div className="mt-auto pt-1">
+            <Link
+                href={segment.href}
+                className={`group/cta inline-flex items-center gap-2 transition-colors duration-300 ${hoverReveal} ${
+                  isMosaicLike ? "text-[var(--color-accent)]" : "text-white/85"
+                } hover:text-[var(--color-accent)]`}
+              >
+                <span className="property-tag-type relative pb-1">
+                  Ver línea
+                  <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover/cta:opacity-100" />
+                </span>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/cta:translate-x-1" />
+              </Link>
+            </div>
+          </div>
+        </>
+      )}
     </article>
   );
 }
@@ -215,14 +341,6 @@ export default function HomePage() {
 
         <div className="relative z-10 mx-auto grid min-h-[calc(100svh-6rem)] max-w-[90rem] grid-cols-1 items-center px-6 pb-32 pt-10 sm:px-10 sm:pb-36 lg:grid-cols-12 lg:px-16">
           <div className="lg:col-span-8">
-            <div className="mb-6 inline-flex items-center gap-2.5 border border-white/10 bg-black/35 px-3 py-2 text-caption text-white/72">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-70" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
-              </span>
-              <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" />
-              Tijuana, Baja California
-            </div>
             <HomeHeroHeadline />
             <p className="mt-6 max-w-xl text-body text-white/66">
               Residencial, comercial e industrial en ubicaciones estratégicas.
@@ -250,43 +368,32 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="absolute inset-x-0 bottom-0 z-20 border-t border-white/[0.06] bg-background/45 backdrop-blur-sm">
-          <div className="mx-auto flex max-w-[90rem] flex-wrap items-center justify-center gap-x-6 gap-y-2.5 px-6 py-3.5 text-white/68 sm:flex-nowrap sm:gap-x-10 sm:px-10 sm:py-4 lg:px-16">
-            <span className="property-tag-type inline-flex items-center gap-2.5">
-              <span className="inline-block h-1 w-1 rounded-full bg-[var(--color-accent)]" />
-              Tijuana · Baja California
-            </span>
-            <span className="hidden h-3 w-px bg-[var(--color-accent)]/40 sm:block" />
-            <span className="property-tag-type">
-              Residencial · Comercial · Industrial
-            </span>
-            <span className="hidden h-3 w-px bg-[var(--color-accent)]/40 sm:block" />
-            <span className="property-tag-type inline-flex items-baseline gap-2">
-              <span className="gold-ink text-base font-extrabold leading-none">08</span>
-              Años operando
-            </span>
+        <div className="absolute inset-x-0 bottom-5 z-20 border-t border-white/[0.06] bg-background/45 backdrop-blur-sm sm:bottom-6 lg:bottom-8">
+          <div className="mx-auto flex max-w-[90rem] overflow-hidden py-3.5 text-white/68 sm:py-4">
+            <HeroMarqueeStrip />
+            <HeroMarqueeStrip duplicate />
           </div>
         </div>
       </section>
 
       <HomeCounters />
 
-      <section className="mx-auto max-w-[90rem] overflow-hidden px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
-        <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <section className="mx-auto mt-10 max-w-[90rem] overflow-hidden px-6 py-20 sm:mt-8 sm:px-10 lg:mt-0 lg:px-16 lg:py-24">
+        <div className="mb-5 flex flex-col gap-1.5 sm:flex-row sm:items-end sm:justify-between lg:mb-10">
           <div>
-            <p className="mb-3 property-tag-type gold-ink">
+            <p className="mb-1.5 property-tag-type gold-ink">
               Tres líneas de negocio
             </p>
-            <h2 className="text-display-2 leading-display tracking-headline text-white">
+            <h2 className="text-display-2 leading-tight tracking-headline text-white">
               Explora por categoría.
             </h2>
           </div>
-          <p className="max-w-xl text-body text-white/58">
+          <p className="max-w-xl text-body leading-snug text-white/58">
             Tres líneas inmobiliarias, un mismo criterio de inversión.
           </p>
         </div>
 
-        <div className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-1 sm:-mx-10 sm:px-10 md:hidden">
+        <div className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-1 sm:-mx-10 sm:px-10 lg:hidden">
           {segments.map((segment) => (
             <div key={`mobile-${segment.title}`} className="min-w-[82vw] snap-center sm:min-w-[68vw]">
               <SegmentCard segment={segment} variant="mobile" />
@@ -294,14 +401,10 @@ export default function HomePage() {
           ))}
         </div>
 
-        <div className="hidden md:grid md:grid-cols-12 md:gap-5 lg:gap-6">
-          <div className="md:col-span-7">
-            <SegmentCard segment={segments[0]} variant="hero" />
-          </div>
-          <div className="flex flex-col gap-5 md:col-span-5 lg:gap-6">
-            <SegmentCard segment={segments[1]} variant="compact" />
-            <SegmentCard segment={segments[2]} variant="compact" />
-          </div>
+        <div className="hidden lg:grid lg:grid-cols-3 lg:gap-6">
+          {segments.map((segment) => (
+            <SegmentCard key={`desktop-${segment.title}`} segment={segment} variant="mosaic" />
+          ))}
         </div>
       </section>
 
