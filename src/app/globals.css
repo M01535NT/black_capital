@@ -350,6 +350,7 @@ body {
   .brushed-gold,
   .gold-gradient {
     background: var(--gradient-gold-premium);
+    background-size: 220% 220%;
     color: #050505;
     position: relative;
     overflow: hidden;
@@ -358,6 +359,11 @@ body {
   .brushed-gold:hover,
   .gold-gradient:hover {
     filter: brightness(1.08);
+    animation: gold-surface-sweep 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes gold-surface-sweep {
+    from { background-position: 100% 45%; }
+    to { background-position: 0% 55%; }
   }
 
   /* ── Gold glow (text-shadow ambient para palabras clave) ── */

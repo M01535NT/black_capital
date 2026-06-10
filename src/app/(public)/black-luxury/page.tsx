@@ -3,6 +3,7 @@ import { SubBrandHero } from "@/components/shared/SubBrandHero";
 import { LuxuryValue } from "@/components/luxury/LuxuryValue";
 import { LuxuryStats } from "@/components/luxury/LuxuryStats";
 import { LuxuryCTA } from "@/components/luxury/LuxuryCTA";
+import { LuxuryManifesto } from "@/components/luxury/LuxuryManifesto";
 import { BrandInventory } from "@/components/shared/BrandInventory";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { SUB_BRAND_CONFIGS } from "@/lib/sub-brand-config";
@@ -27,6 +28,7 @@ export default function BlackLuxuryPage() {
                 highlights={config.hero.highlights}
                 gridLines={config.hero.gridLines}
             />
+            <LuxuryManifesto />
             <LuxuryValue />
             <LuxuryStats />
             <BrandInventory

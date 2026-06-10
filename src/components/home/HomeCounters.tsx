@@ -1,5 +1,6 @@
 "use client";
 
+import { useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const counters = [
@@ -34,28 +35,46 @@ function formatCount(value: number) {
 }
 
 function useCountUp(target: number, durationMs = 2200) {
-  const [value, setValue] = useState(0);
+  const shouldReduceMotion = useReducedMotion();
+  const [value, setValue] = useState(target);
   const [started, setStarted] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const node = ref.current;
     if (!node || started) return;
+    if (shouldReduceMotion || typeof IntersectionObserver === "undefined") {
+      return;
+    }
+
+    const fallback = window.setTimeout(() => {
+      setValue(target);
+      setShouldAnimate(false);
+      setStarted(true);
+    }, 1800);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
+        window.clearTimeout(fallback);
+        setValue(0);
+        setShouldAnimate(true);
         setStarted(true);
       },
       { threshold: 0.35 },
     );
 
     observer.observe(node);
-    return () => observer.disconnect();
-  }, [started]);
+
+    return () => {
+      window.clearTimeout(fallback);
+      observer.disconnect();
+    };
+  }, [shouldReduceMotion, started, target]);
 
   useEffect(() => {
-    if (!started) return;
+    if (!started || !shouldAnimate || shouldReduceMotion) return;
 
     let frame = 0;
     const start = performance.now();
@@ -72,7 +91,7 @@ function useCountUp(target: number, durationMs = 2200) {
 
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [durationMs, started, target]);
+  }, [durationMs, shouldAnimate, shouldReduceMotion, started, target]);
 
   return [ref, value] as const;
 }
