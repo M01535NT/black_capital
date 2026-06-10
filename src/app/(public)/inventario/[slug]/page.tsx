@@ -16,6 +16,7 @@ import { FavoriteButton } from "@/components/property/favorite-button";
 import { FadeIn } from "@/components/ui/motion";
 
 import { CONTACT_CONFIG } from "@/lib/contact-config";
+import { getPropertyDocuments, toVisibleDocuments } from "@/lib/document-access";
 import Link from "next/link";
 
 export const revalidate = 60;
@@ -140,18 +141,7 @@ export default async function PropertyDetailPage({
         if (agentData) agents = agentData as AgentInfo[];
     }
 
-    const documents: { label: string; url: string }[] = [];
-    if (property.documents && Array.isArray(property.documents)) {
-        for (const d of property.documents) {
-            if (d && typeof d === "object" && d.url) {
-                documents.push({ label: d.label || "Documento", url: d.url });
-            }
-        }
-    }
-    if (property.brochure_path) {
-        const alreadyInDocs = documents.some((d) => d.url === property.brochure_path);
-        if (!alreadyInDocs) documents.push({ label: "Brochure Ejecutivo", url: property.brochure_path });
-    }
+    const documents = toVisibleDocuments(getPropertyDocuments(property));
 
     const customAttrs: Record<string, string> = {};
     if (property.custom_attributes && typeof property.custom_attributes === "object") {
@@ -299,6 +289,7 @@ export default async function PropertyDetailPage({
                                         agents={agents}
                                         property={{
                                             id: property.id,
+                                            title: property.title,
                                             m2_terrain: property.m2_terrain,
                                             m2_construction: property.m2_construction,
                                             property_type: property.property_type,

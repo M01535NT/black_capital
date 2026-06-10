@@ -6,7 +6,7 @@
  *   - src/components/business/BusinessCTA.tsx
  *   - src/components/industrial/IndustrialCTA.tsx
  *
- * Premium Estilo A: layout 50/50 (copy a la izquierda, form a la
+ * Estilo A: layout 50/50 (copy a la izquierda, form a la
  * derecha), separados por una vline dorada. Sin glass panel, sin
  * chrome steel/industrial. Inputs con underline (border-b) y submit
  * brushed-gold. La única diferenciación entre marcas es el campo

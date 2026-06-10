@@ -48,9 +48,7 @@
   --text-display-4: clamp(1.125rem, 1.6vw, 1.5rem);     /* h3 alias */
 
   /* ── Stat scale (numbers / counters) ── */
-  --text-stat-mega: clamp(3.5rem, 7vw, 6.5rem);          /* TrackRecord counters */
-  --text-stat-lg: clamp(2.5rem, 5vw, 4rem);              /* InvestmentTabs giant numbers */
-  --text-stat-md: clamp(1.25rem, 2vw, 1.5rem);           /* InvestmentTabs metric values */
+  --text-stat-lg: clamp(2.5rem, 5vw, 4rem);              /* Home counters */
 
   /* ── Body scale ── */
   --text-body-xl: 1.125rem;                              /* legacy fixed (kept) */

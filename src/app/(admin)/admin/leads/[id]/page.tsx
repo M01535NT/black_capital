@@ -3,11 +3,12 @@ import { canAccessAgentScopedResource, requireAdminSession } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, Mail, Phone, Calendar, Globe, Tag, FileText, Clock, ListChecks } from "lucide-react";
+import { ChevronLeft, Mail, Phone, Calendar, Globe, Tag, FileText, Clock, ListChecks, LockKeyhole, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { LeadActions } from "./lead-actions";
 import { LeadTasks } from "./lead-tasks";
 import { adminBadgeAccentClass, adminBadgeClass, adminBadgeMutedClass, adminCardClass } from "@/components/admin/admin-ui";
+import { isPlaceholderEmail } from "@/lib/document-access";
 
 export const revalidate = 0;
 
@@ -44,7 +45,7 @@ export default async function LeadDetailPage({
         if (prop) propertyTitle = prop.title;
     }
 
-    const [{ data: activities }, { data: tasks }] = await Promise.all([
+    const [{ data: activities }, { data: tasks }, { data: documentRequests }] = await Promise.all([
         supabase
             .from("lead_activities")
             .select("id, type, title, body, metadata, created_at, actor_profile_id")
@@ -56,6 +57,12 @@ export default async function LeadDetailPage({
             .select("id, title, description, due_at, priority, status, completed_at, created_at")
             .eq("lead_id", id)
             .order("created_at", { ascending: false }),
+        supabase
+            .from("document_access_requests")
+            .select("id, property_id, document_label, document_type, status, created_at, verified_at, delivered_at, properties(title, slug)")
+            .eq("lead_id", id)
+            .order("created_at", { ascending: false })
+            .limit(20),
     ]);
 
     const statusMap: Record<string, { label: string; color: string }> = {
@@ -71,10 +78,15 @@ export default async function LeadDetailPage({
         campaign: "Campaña",
         referral: "Referido",
         other: "Otro",
+        brochure: "Documentos",
         landing_luxury: "Landing Luxury",
         landing_business: "Landing Business",
         landing_industrial: "Landing Industrial",
     };
+
+    const hasEmail = !isPlaceholderEmail(lead.email);
+    const phoneDigits = (lead.phone || "").replace(/[^0-9]/g, "");
+    const whatsappHref = phoneDigits ? `https://wa.me/${phoneDigits}` : null;
 
     return (
         <div className="mx-auto w-full max-w-4xl space-y-6">
@@ -103,25 +115,45 @@ export default async function LeadDetailPage({
                     <div className={`${adminCardClass} space-y-4 p-6`}>
                         <h3 className="text-caption text-white/50">Información de Contacto</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <a href={`mailto:${lead.email}`}
-                                className="group flex items-center gap-3 border border-white/[0.06] bg-white/[0.025] p-3 transition-colors hover:border-[var(--color-accent)]/25"
-                            >
+                            {hasEmail ? (
+                                <a href={`mailto:${lead.email}`}
+                                    className="group flex items-center gap-3 border border-white/[0.06] bg-white/[0.025] p-3 transition-colors hover:border-[var(--color-accent)]/25"
+                                >
+                                    <Mail className="w-5 h-5 text-[var(--color-accent)] shrink-0" />
+                                    <div>
+                                    <p className="text-caption text-white/50">Correo</p>
+                                        <p className="text-body-sm font-medium group-hover:text-[var(--color-accent)] transition-colors">{lead.email}</p>
+                                    </div>
+                                </a>
+                            ) : (
+                                <div className="flex items-center gap-3 border border-white/[0.06] bg-white/[0.025] p-3">
                                 <Mail className="w-5 h-5 text-[var(--color-accent)] shrink-0" />
                                 <div>
                                 <p className="text-caption text-white/50">Correo</p>
-                                    <p className="text-body-sm font-medium group-hover:text-[var(--color-accent)] transition-colors">{lead.email}</p>
+                                    <p className="text-body-sm font-medium text-white/45">Sin correo registrado</p>
                                 </div>
-                            </a>
-                            <a href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, "")}`}
-                                target="_blank" rel="noopener noreferrer"
-                                className="group flex items-center gap-3 border border-white/[0.06] bg-white/[0.025] p-3 transition-colors hover:border-[var(--color-accent)]/25"
-                            >
+                                </div>
+                            )}
+                            {whatsappHref ? (
+                                <a href={whatsappHref}
+                                    target="_blank" rel="noopener noreferrer"
+                                    className="group flex items-center gap-3 border border-white/[0.06] bg-white/[0.025] p-3 transition-colors hover:border-[var(--color-accent)]/25"
+                                >
+                                    <Phone className="w-5 h-5 text-[var(--color-accent)] shrink-0" />
+                                    <div>
+                                    <p className="text-caption text-white/50">Teléfono / WhatsApp</p>
+                                    <p className="text-body-sm font-medium group-hover:text-[var(--color-accent)] transition-colors">{lead.phone}</p>
+                                    </div>
+                                </a>
+                            ) : (
+                                <div className="flex items-center gap-3 border border-white/[0.06] bg-white/[0.025] p-3">
                                 <Phone className="w-5 h-5 text-[var(--color-accent)] shrink-0" />
                                 <div>
                                 <p className="text-caption text-white/50">Teléfono / WhatsApp</p>
-                                <p className="text-body-sm font-medium group-hover:text-[var(--color-accent)] transition-colors">{lead.phone}</p>
+                                <p className="text-body-sm font-medium text-white/45">Sin teléfono</p>
                                 </div>
-                            </a>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -178,6 +210,84 @@ export default async function LeadDetailPage({
                         </div>
                     )}
 
+                    <div className={`${adminCardClass} space-y-4 p-6`}>
+                        <div className="flex items-center gap-2">
+                            <ShieldCheck className="h-4 w-4 text-[var(--color-accent)]" />
+                            <h3 className="text-caption text-white/50">Acceso Documental</h3>
+                        </div>
+                        <div className="grid gap-3 sm:grid-cols-3">
+                            <div className="border border-white/[0.06] bg-white/[0.025] p-3">
+                                <p className="text-caption text-white/45">WhatsApp</p>
+                                <p className="mt-2 text-body-sm text-white">
+                                    {lead.whatsapp_verified_at ? "Verificado" : "Pendiente"}
+                                </p>
+                                {lead.whatsapp_verified_at && (
+                                    <p className="mt-1 text-xs text-white/42">
+                                        {new Date(lead.whatsapp_verified_at).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" })}
+                                    </p>
+                                )}
+                            </div>
+                            <div className="border border-white/[0.06] bg-white/[0.025] p-3">
+                                <p className="text-caption text-white/45">NDA</p>
+                                <p className="mt-2 text-body-sm text-white">
+                                    {lead.nda_accepted_at ? "Aceptado" : "Sin aceptación"}
+                                </p>
+                                {lead.nda_version && <p className="mt-1 text-xs text-white/42">{lead.nda_version}</p>}
+                            </div>
+                            <div className="border border-white/[0.06] bg-white/[0.025] p-3">
+                                <p className="text-caption text-white/45">Aviso</p>
+                                <p className="mt-2 text-body-sm text-white">
+                                    {lead.privacy_accepted ? "Aceptado" : "Sin aceptación"}
+                                </p>
+                                {lead.privacy_notice_version && <p className="mt-1 text-xs text-white/42">{lead.privacy_notice_version}</p>}
+                            </div>
+                        </div>
+                    </div>
+
+                    {documentRequests && documentRequests.length > 0 && (
+                        <div className={`${adminCardClass} space-y-4 p-6`}>
+                            <div className="flex items-center gap-2">
+                                <LockKeyhole className="h-4 w-4 text-[var(--color-accent)]" />
+                                <h3 className="text-caption text-white/50">Documentos Solicitados</h3>
+                            </div>
+                            <div className="space-y-3">
+                                {documentRequests.map((request) => {
+                                    const requestProperty = Array.isArray(request.properties)
+                                        ? request.properties[0]
+                                        : request.properties;
+                                    const requestPropertyTitle = requestProperty?.title || "Propiedad";
+
+                                    return (
+                                        <div key={request.id} className="border border-white/[0.06] bg-white/[0.025] p-4">
+                                            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                                <div className="min-w-0">
+                                                    <p className="text-body-sm font-medium text-white">{request.document_label}</p>
+                                                    <p className="mt-1 text-xs uppercase tracking-[0.14em] text-white/40">
+                                                        {request.document_type} · {requestPropertyTitle}
+                                                    </p>
+                                                </div>
+                                                <Badge variant="outline" className={request.status === "delivered" ? adminBadgeAccentClass : adminBadgeClass}>
+                                                    {request.status === "pending_verification"
+                                                        ? "Pendiente"
+                                                        : request.status === "verified"
+                                                            ? "Verificado"
+                                                            : request.status === "delivered"
+                                                                ? "Entregado"
+                                                                : request.status}
+                                                </Badge>
+                                            </div>
+                                            <div className="mt-3 grid gap-2 text-xs text-white/42 sm:grid-cols-3">
+                                                <span>Solicitud: {new Date(request.created_at).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" })}</span>
+                                                <span>{request.verified_at ? `Validado: ${new Date(request.verified_at).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" })}` : "Sin validar"}</span>
+                                                <span>{request.delivered_at ? `Abierto: ${new Date(request.delivered_at).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" })}` : "Sin apertura"}</span>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+
                     {/* Notes */}
                     <div className={`${adminCardClass} space-y-4 p-6`}>
                         <h3 className="text-caption text-white/50">Notas Internas</h3>
@@ -218,17 +328,21 @@ export default async function LeadDetailPage({
                     {/* Quick Actions */}
                     <div className={`${adminCardClass} space-y-3 p-5`}>
                         <h3 className="text-caption text-white/50">Acciones Rápidas</h3>
-                        <a href={`mailto:${lead.email}`}
-                            className="flex w-full items-center justify-center gap-2 border border-white/[0.1] px-4 py-2.5 text-body-sm font-medium transition-colors hover:border-[var(--color-accent)]/25"
-                        >
-                            <Mail className="w-4 h-4" /> Enviar Correo
-                        </a>
-                        <a href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, "")}`}
-                            target="_blank" rel="noopener noreferrer"
-                            className="flex w-full items-center justify-center gap-2 bg-[var(--color-accent)] px-4 py-2.5 text-sm font-bold text-black transition-colors hover:bg-[var(--color-gold-dark)]"
-                        >
-                            <Phone className="w-4 h-4" /> Abrir WhatsApp
-                        </a>
+                        {hasEmail && (
+                            <a href={`mailto:${lead.email}`}
+                                className="flex w-full items-center justify-center gap-2 border border-white/[0.1] px-4 py-2.5 text-body-sm font-medium transition-colors hover:border-[var(--color-accent)]/25"
+                            >
+                                <Mail className="w-4 h-4" /> Enviar Correo
+                            </a>
+                        )}
+                        {whatsappHref && (
+                            <a href={whatsappHref}
+                                target="_blank" rel="noopener noreferrer"
+                                className="flex w-full items-center justify-center gap-2 bg-[var(--color-accent)] px-4 py-2.5 text-sm font-bold text-black transition-colors hover:bg-[var(--color-gold-dark)]"
+                            >
+                                <Phone className="w-4 h-4" /> Abrir WhatsApp
+                            </a>
+                        )}
                     </div>
 
                     {/* Status Change Widget */}

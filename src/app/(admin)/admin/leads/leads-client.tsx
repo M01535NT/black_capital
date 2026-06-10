@@ -52,6 +52,7 @@ const sourceLabels: Record<string, string> = {
     campaign: "Campaña",
     referral: "Referido",
     other: "Otro",
+    brochure: "Documentos",
     landing_luxury: "Luxury",
     landing_business: "Business",
     landing_industrial: "Industrial",

@@ -3,7 +3,7 @@ import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isAdmin, requireApiProfile } from "@/lib/auth";
 
-const ALLOWED_BUCKETS = new Set(["public"]);
+const ALLOWED_BUCKETS = new Set(["public", "secure-brochures"]);
 
 export async function POST(req: NextRequest) {
   try {
@@ -67,10 +67,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // Get public URL
-    const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(fileName);
+    const publicUrlData = bucket === "public"
+      ? supabase.storage.from(bucket).getPublicUrl(fileName).data
+      : null;
 
-    return NextResponse.json({ url: publicUrlData.publicUrl, path: data.path });
+    return NextResponse.json({
+      url: publicUrlData?.publicUrl || null,
+      bucket,
+      path: data.path,
+    });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Error interno del servidor";
     logger.error("API/upload", "[Upload] Unexpected error:", err);

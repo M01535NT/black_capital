@@ -14,13 +14,13 @@ import { MethodologySection } from "@/components/home/MethodologySection";
 import { Testimonials } from "@/components/home/Testimonials";
 
 export const metadata: Metadata = {
-  title: "Inmobiliaria Premium en Tijuana",
+  title: "Inmobiliaria en Tijuana",
   description:
-    "Compra, venta y renta de casas en zona dorada de Tijuana, plazas comerciales y naves industriales con opinión de valor, dictamen comercial y plan de marketing.",
+    "Compra, venta y renta de inmuebles residenciales, comerciales e industriales en Tijuana con valor comercial, revisión documental y ruta de cierre.",
   openGraph: {
-    title: "Black Capital | Inmobiliaria Premium en Tijuana",
+    title: "Black Capital | Inmobiliaria en Tijuana",
     description:
-      "Representación inmobiliaria para vender, comprar o rentar activos residenciales, comerciales e industriales en Tijuana.",
+      "Representación inmobiliaria para comprar, vender, rentar o conocer el valor comercial de un inmueble en Tijuana.",
     type: "website",
     locale: "es_MX",
     siteName: "Black Capital",
@@ -52,9 +52,9 @@ const segments = [
     href: "/black-luxury",
     image: "/brand-luxury.webp",
     icon: Home,
-    copy: "Residencias seleccionadas por ubicación, plusvalía y narrativa de vida. Para propietarios y familias que compran para quedarse.",
+    copy: "Casas y residencias filtradas por zona, privacidad, presupuesto y etapa de compra.",
     zones: ["Chapultepec", "Zona Río", "Playas"],
-    metric: "Acompañamiento dedicado en cada operación residencial.",
+    metric: "Acompañamiento para comprar, vender o conocer valor residencial.",
   },
   {
     title: "Black Business",
@@ -62,9 +62,9 @@ const segments = [
     href: "/black-business",
     image: "/brand-business.webp",
     icon: Building2,
-    copy: "Locales, oficinas y plazas evaluadas por flujo, visibilidad y rentabilidad operativa antes de salir al mercado.",
+    copy: "Locales, oficinas y plazas analizadas por flujo, visibilidad, uso permitido y potencial de renta.",
     zones: ["Zona Río", "Otay", "Díaz Ordaz"],
-    metric: "Lectura comercial del activo antes de la primera visita.",
+    metric: "Criterios comerciales antes de agendar recorridos.",
   },
   {
     title: "Black Industrial",
@@ -72,9 +72,9 @@ const segments = [
     href: "/black-industrial",
     image: "/brand-industrial.webp",
     icon: Warehouse,
-    copy: "Naves, bodegas y parques industriales conectados a los corredores logísticos de Tijuana.",
+    copy: "Naves y bodegas filtradas por superficie, accesos, maniobra, uso y zona industrial.",
     zones: ["Otay", "Pacífico", "El Florido"],
-    metric: "Criterio operativo y expansión por encima del metraje.",
+    metric: "Capacidad operativa antes de comparar precio por metro.",
   },
 ];
 
@@ -347,7 +347,7 @@ export default function HomePage() {
           <div className="lg:col-span-8">
             <HomeHeroHeadline />
             <p className="mt-6 max-w-xl text-body text-white/66">
-              Residencial, comercial e industrial en ubicaciones estratégicas.
+              Ayudamos a comprar, vender, rentar y valorar inmuebles con información clara antes de avanzar.
             </p>
 
             <div className="mt-9 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-7">
@@ -388,12 +388,12 @@ export default function HomePage() {
             <p className="mb-1.5 property-tag-type gold-ink">
               Tres líneas de negocio
             </p>
-            <h2 className="mb-0 text-display-2 leading-tight tracking-headline text-white">
-              Explora por categoría.
+              <h2 className="mb-0 text-display-2 leading-tight tracking-headline text-white">
+              Elige el tipo de inmueble.
             </h2>
           </div>
           <p className="mb-0 max-w-xl text-body leading-snug text-white/58">
-            Tres líneas inmobiliarias, un mismo criterio de inversión.
+            Home presenta las tres áreas de Black Capital: residencial, comercial e industrial.
           </p>
         </div>
 
@@ -434,12 +434,11 @@ export default function HomePage() {
                   <span className="h-px flex-1 bg-white/[0.08]" aria-hidden="true" />
                 </div>
                 <p className="mt-5 mb-0 max-w-4xl text-[clamp(1.8rem,7vw,2.65rem)] font-extrabold leading-[1.02] tracking-headline text-white/92 lg:text-display-2">
-                  Menos ruido.{" "}
-                  <span className="gold-ink">Más claridad para decidir</span>.
+                  Primero el activo.{" "}
+                  <span className="gold-ink">Luego la operación</span>.
                 </p>
                 <p className="mt-4 mb-0 max-w-2xl text-body leading-snug text-white/58">
-                  Compra, venta, renta e inversión con criterio comercial desde
-                  el primer paso.
+                  Ordenamos precio, zona, documentos y ruta antes de avanzar.
                 </p>
               </div>
 
@@ -467,8 +466,7 @@ export default function HomePage() {
             </div>
             <div className="border-t border-white/[0.08] px-5 py-3 sm:px-7 lg:px-9">
               <p className="mb-0 text-[0.72rem] font-semibold uppercase leading-tight tracking-[0.1em] text-white/45">
-                Cada ruta empieza con una lectura clara del activo, del mercado y
-                del objetivo.
+                Compra, venta, renta e inversión inmobiliaria en Tijuana.
               </p>
             </div>
           </div>

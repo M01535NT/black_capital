@@ -16,7 +16,7 @@ import {
 export const metadata: Metadata = {
     title: "Herramientas Inmobiliarias | Black Capital",
     description:
-        "Calculadoras y recursos para clientes inmobiliarios: hipoteca, impuestos, gastos de cierre, ROI, cap rate y análisis de inversión.",
+        "Herramientas para estimar hipoteca, impuestos, gastos de cierre, retorno y capacidad de compra.",
 };
 
 const primaryTools = [
@@ -69,7 +69,7 @@ export default function HerramientasPage() {
                                 Black tools
                             </p>
                             <h1 className="mt-3 max-w-56 text-4xl font-semibold leading-[0.95] tracking-normal text-white sm:text-6xl lg:mt-4 lg:text-5xl">
-                                Centro de cálculo.
+                                Cálculos para preparar una operación.
                             </h1>
                         </div>
 
@@ -86,7 +86,7 @@ export default function HerramientasPage() {
 
                         <div className="hidden p-5 lg:block">
                                     <p className="property-tag-type text-[var(--color-accent)]/75">
-                                        Próxima construcción
+                                        En desarrollo
                                     </p>
                             <ol className="mt-5 space-y-4 text-body text-white/58">
                                 <li className="flex gap-3">
@@ -114,10 +114,10 @@ export default function HerramientasPage() {
                                 Herramientas inmobiliarias para clientes
                             </p>
                             <h2 className="mt-4 text-display-2 text-white lg:mt-6">
-                                Calcula antes de decidir.
+                                Estima antes de avanzar.
                             </h2>
                             <p className="mt-3 max-w-2xl text-body text-white/58 lg:mt-6">
-                                Estimaciones rápidas para decidir con más contexto.
+                                Números orientativos para preparar compra, venta, renta o inversión.
                             </p>
                                 </div>
                             </header>
@@ -192,7 +192,7 @@ export default function HerramientasPage() {
                             <footer className="grid grid-cols-1 border-t border-white/[0.08] bg-black/30 lg:grid-cols-[1fr_auto]">
                                 <div className="p-4 sm:p-8">
                             <p className="max-w-2xl text-body text-white/56">
-                                Resultados orientativos. Confirma operaciones reales con asesoría fiscal, legal y comercial.
+                                Resultados orientativos. Confirma cifras finales con asesoría fiscal, legal e inmobiliaria.
                             </p>
                                 </div>
                                 <div className="flex border-t border-white/[0.08] lg:border-l lg:border-t-0">

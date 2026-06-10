@@ -1,19 +1,19 @@
 const defaultTestimonials = [
   {
     quote:
-      "Nos guiaron de la visita a la firma. Cada decisión tuvo datos, no intuición.",
+      "Nos explicaron precio, zona y condiciones antes de hacer oferta.",
     attribution: "M. R.",
     role: "Propietario, Chapultepec",
   },
   {
     quote:
-      "Revisaron un activo industrial que habíamos descartado. Su lectura cambió la operación.",
+      "Revisaron superficie, accesos y maniobra antes de descartar la nave.",
     attribution: "L. F.",
     role: "Inversionista, Otay",
   },
   {
     quote:
-      "Vendimos en el tiempo previsto y al valor definido desde la opinión inicial.",
+      "Definimos valor comercial, preparamos la venta y cerramos en el tiempo previsto.",
     attribution: "A. G.",
     role: "Familia compradora, Zona Río",
   },
@@ -41,8 +41,7 @@ export function Testimonials({
               Operaciones que nos confiaron.
             </h2>
             <p className="mt-4 mb-0 max-w-md text-body leading-snug text-white/58 lg:mt-6">
-              Propietarios, familias e inversionistas que eligieron criterio
-              antes que prisa.
+              Personas que necesitaban comprar, vender o evaluar un inmueble con mejor información.
             </p>
           </div>
 

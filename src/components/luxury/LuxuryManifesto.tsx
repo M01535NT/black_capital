@@ -22,20 +22,17 @@ export function LuxuryManifesto() {
         <div className="relative z-10 mx-auto flex min-h-[72svh] max-w-[90rem] items-end px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
           <div className="max-w-5xl">
             <ScrollReveal>
-              <p className="mb-5 property-tag-type gold-ink">Manifiesto residencial</p>
+              <p className="mb-5 property-tag-type gold-ink">Residencial</p>
               <span
                 aria-hidden="true"
                 className="mb-8 block h-px w-44 origin-left bg-gradient-to-r from-[var(--color-accent)] via-[var(--color-gold-light)] to-transparent"
               />
-              <blockquote className="text-display-2 leading-display tracking-headline text-white/92">
-                La residencia correcta no se mide primero.{" "}
-                <span className="gold-ink">Se reconoce</span> por la calma que
-                permite imaginar.
+              <blockquote className="max-w-3xl text-display-2 leading-display tracking-headline text-white/92">
+                Casas privadas.{" "}
+                <span className="gold-ink">Decisiones claras.</span>
               </blockquote>
-              <p className="mt-7 max-w-xl text-body text-white/62">
-                Black Luxury debe sentirse como entrar a una habitación oscura
-                donde la luz revela solo lo necesario: privacidad, proporción y
-                una vida posible.
+              <p className="mt-5 max-w-md text-body text-white/62">
+                Zona, privacidad, precio y documentos antes de visitar.
               </p>
             </ScrollReveal>
           </div>

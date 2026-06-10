@@ -8,11 +8,11 @@ import { ContactLeadForm } from "@/components/public/contact-lead-form";
 export const metadata: Metadata = {
     title: "Contacto | Black Capital",
     description:
-        "Contacta a Black Capital. Oficinas en Tijuana, WhatsApp directo y asesoría personalizada para compradores e inversionistas en Baja California.",
+        "Contacta a Black Capital para comprar, vender, rentar, invertir o conocer el valor comercial de un inmueble en Tijuana.",
     openGraph: {
         title: "Contacto | Black Capital",
         description:
-            "Consulta directa con nuestros asesores inmobiliarios. Oficinas en Tijuana, Baja California. Atención personalizada para compradores, vendedores e inversionistas.",
+            "Consulta directa para propietarios, compradores, arrendatarios e inversionistas en Tijuana.",
         type: "website",
         locale: "es_MX",
         siteName: "Black Capital",
@@ -26,7 +26,7 @@ const contactCards = [
         lines: [CONTACT_CONFIG.phone],
         action: {
             label: "Enviar",
-            href: `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, me gustaría recibir información sobre propiedades de inversión.")}`,
+            href: `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, quiero recibir información sobre un inmueble.")}`,
             external: true,
         },
     },
@@ -83,10 +83,10 @@ export default function ContactoPage() {
                 Contacto directo
             </p>
                         <h1 className="max-w-4xl text-display-1 leading-hero tracking-tight text-white text-balance">
-                            Hablemos de tu siguiente operación.
+                            Cuéntanos qué necesitas hacer con un inmueble.
                         </h1>
                         <p className="mt-4 max-w-2xl text-body-fluid leading-relaxed text-white/72 lg:mt-5">
-                            Comparte tu búsqueda. Te damos seguimiento con una ruta clara.
+                            Comprar, vender, rentar, invertir o conocer su valor comercial: empezamos por entender el objetivo.
                         </p>
                         <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-7">
                             <Link
@@ -97,7 +97,7 @@ export default function ContactoPage() {
                                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
                             </Link>
                             <a
-                                href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, me gustaría recibir información sobre propiedades de inversión.")}`}
+                                href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, quiero recibir información sobre un inmueble.")}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="group inline-flex min-h-[50px] w-fit items-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"
@@ -118,7 +118,7 @@ export default function ContactoPage() {
                                     <MessageCircle className="h-5 w-5" aria-hidden="true" />
                                 </div>
                                 <div>
-                                    <p className="text-body-lg text-white">Respuesta comercial</p>
+                                    <p className="text-body-lg text-white">Respuesta directa</p>
                                     <p className="text-body-sm text-white/50">Formulario y WhatsApp disponibles</p>
                                 </div>
                             </div>
@@ -149,11 +149,11 @@ export default function ContactoPage() {
                             Canales
                         </p>
                         <h2 className="text-display-2 leading-display tracking-headline text-white">
-                            Cuatro formas de empezar.
+                            Elige cómo contactarnos.
                         </h2>
                     </div>
                     <p className="max-w-xl text-body text-white/58 sm:text-right">
-                        Elige el canal más directo. La información se usará para seguimiento comercial.
+                        Te respondemos por el canal que elijas para entender tu objetivo y proponer el siguiente paso.
                     </p>
                 </div>
 
@@ -204,13 +204,13 @@ export default function ContactoPage() {
                 <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-6 px-6 sm:px-10 lg:grid-cols-12 lg:gap-16 lg:px-16">
                     <div className="lg:col-span-5">
                         <p className="mb-3 property-tag-type text-[var(--color-accent)]">
-                            Captura de lead
+                            Solicitud de contacto
                         </p>
                         <h2 className="text-display-2 text-white leading-display tracking-headline">
-                            Deja tus datos y el contexto de búsqueda.
+                            Déjanos tus datos y el contexto del inmueble.
                         </h2>
                         <p className="mt-4 max-w-md text-body text-white/58 lg:mt-6">
-                            Déjanos tu contexto y preparamos el siguiente paso comercial.
+                            Revisamos tu mensaje y te contactamos para ordenar necesidad, zona, presupuesto o valor comercial.
                         </p>
                     </div>
                     <div className="lg:col-span-7">
@@ -227,10 +227,10 @@ export default function ContactoPage() {
                             Próximo paso
                         </p>
                     <h2 className="mb-5 text-display-2 leading-display tracking-headline text-white">
-                        Continúa por inventario o WhatsApp.
+                        También puedes empezar por inventario o WhatsApp.
                     </h2>
                     <p className="mb-10 text-body text-white/58">
-                        Si todavía no tienes claro el tipo de activo, WhatsApp es la ruta más rápida.
+                        Si todavía no tienes claro el tipo de inmueble, WhatsApp es la ruta más rápida.
                     </p>
                     <div className="flex flex-col justify-center gap-3 sm:flex-row">
                         <Link
@@ -241,7 +241,7 @@ export default function ContactoPage() {
                             <ArrowRight className="h-4 w-4" aria-hidden="true" />
                         </Link>
                         <a
-                            href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, me gustaría recibir información sobre propiedades de inversión.")}`}
+                            href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, quiero recibir información sobre un inmueble.")}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="group inline-flex min-h-[50px] items-center justify-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"

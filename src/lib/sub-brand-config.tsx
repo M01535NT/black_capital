@@ -106,22 +106,22 @@ const baseJsonLd = {
 } as const;
 
 const LUXURY_STATS: StatItem[] = [
-    { value: "Privacidad", label: "Acceso, entorno y ritmo de vida evaluados antes de visitar." },
-    { value: "Zona", label: "Ubicaciones con servicios, conectividad y plusvalía residencial." },
-    { value: "Diseño", label: "Distribución, luz y acabados leídos con criterio familiar." },
-    { value: "Plusvalía", label: "Perspectiva patrimonial para comprar con intención de largo plazo." },
+    { value: "Privacidad", label: "Acceso, entorno y condiciones de uso antes de visitar." },
+    { value: "Zona", label: "Servicios, conectividad y plusvalía residencial." },
+    { value: "Diseño", label: "Distribución, luz, acabados y mantenimiento visible." },
+    { value: "Valor", label: "Comparables para comprar o vender con mejor contexto." },
 ];
 
 const BUSINESS_STATS: StatItem[] = [
     { value: "Zona Río", label: "Corredor corporativo con servicios, oficinas y alta exposición." },
-    { value: "Otay", label: "Conectividad binacional para operación, comercio y logística ligera." },
+    { value: "Otay", label: "Conectividad para comercio, servicios y atención empresarial." },
     { value: "Díaz Ordaz", label: "Eje comercial denso para atención local, retail y servicios." },
-    { value: "Renta", label: "Lectura de flujo, visibilidad y permanencia del giro antes de ofertar." },
+    { value: "Renta", label: "Flujo peatonal, visibilidad y permanencia del giro antes de ofertar." },
 ];
 
 const INDUSTRIAL_STATS: StatItem[] = [
     { value: "m²", label: "Superficie útil, expansión posible y relación entre nave, patio y oficinas." },
-    { value: "Andenes", label: "Altura, carga, rampas y accesos para el flujo diario de operación." },
+    { value: "Andenes", label: "Altura, carga, rampas y accesos para operación diaria." },
     { value: "Patio", label: "Maniobra, radios de giro y capacidad para unidades de carga." },
     { value: "Garitas", label: "Conexión con corredores industriales y rutas de exportación." },
 ];
@@ -134,45 +134,45 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             brand: "Black Luxury",
             backgroundImage: "/hero-luxury.webp",
             backgroundImageWebp: "/hero-luxury.webp",
-            backgroundAlt: "Casa residencial premium en fraccionamiento privado",
+            backgroundAlt: "Casa residencial en fraccionamiento privado",
             accent: "gold",
             headline: (
                 <>
-                    Casas en Tijuana.
+                    Residencial selecto.
                 </>
             ),
             subtitle:
-                "Residencias seleccionadas por privacidad, zona y plusvalía.",
+                "Tijuana y Rosarito. Zonas privadas, precio claro y valor comercial.",
             primaryCta: { label: "Ver residencias", href: "/inventario?brand=luxury" },
             secondaryCta: { label: "Hablar con asesor", href: "#luxury-cta" },
         },
         value: {
-            eyebrow: "Residencial premium",
+            eyebrow: "Residencial",
             title: (
                 <>
-                    Residencias con criterio, no solo metros.
+                    Casas revisadas antes de visitar.
                 </>
             ),
             description:
-                "Curamos opciones por privacidad, ubicación y potencial patrimonial.",
+                "Filtramos opciones por zona, precio, estado visible y etapa de compra o venta.",
             items: [
                 {
                     icon: Crown,
                     title: "Fraccionamientos Privados",
                     description:
-                        "Entornos con acceso controlado, privacidad y vida familiar cerca de servicios clave.",
+                        "Entornos con acceso controlado, privacidad y servicios cercanos.",
                 },
                 {
                     icon: Building2,
                     title: "Residencial Plus",
                     description:
-                        "Casas con distribución, acabados y escala para habitar con intención.",
+                        "Casas con distribución, acabados y mantenimiento acordes al presupuesto.",
                 },
                 {
                     icon: Gem,
                     title: "Pre-Venta y Estreno",
                     description:
-                        "Oportunidades nuevas con lectura de zona, entrega y valor futuro.",
+                        "Opciones nuevas revisadas por zona, entrega, precio y disponibilidad.",
                 },
             ],
         },
@@ -181,9 +181,9 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             brandSlug: "luxury",
             propertyUse: "Residencial",
             title: "Residencias en",
-            highlight: "Tijuana",
+            highlight: "zonas privadas",
             subtitle:
-                "Explora una muestra residencial y solicita opciones alineadas a zona, presupuesto y etapa de compra.",
+                "Revisa una muestra residencial y solicita opciones alineadas a zona, presupuesto y etapa de compra.",
             ctaText: "Ver inventario residencial",
             accentColor: "gold",
         },
@@ -195,10 +195,10 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             sectionId: "luxury-cta",
             eyebrowIcon: "lock",
             eyebrow: "Asesoría residencial",
-            title: "Solicita una lectura",
-            titleHighlight: "residencial privada",
+            title: "Solicita opciones",
+            titleHighlight: "residenciales",
             description:
-                "Cuéntanos qué zona y tipo de residencia buscas. Te contactaremos con opciones curadas para tu decisión.",
+                "Cuéntanos zona, presupuesto y tipo de casa. Te contactamos con opciones residenciales compatibles.",
             indicator: "Respuesta en menos de 24h",
             companyLabel: "Empresa (opcional)",
             companyPlaceholder: "Empresa o particular",
@@ -207,26 +207,28 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             submitLabel: "Solicitar opciones residenciales",
             successTitle: "Solicitud recibida",
             successMessage:
-                "Tu solicitud ha sido registrada. Nuestro equipo se pondrá en contacto contigo con una lectura residencial personalizada.",
+                "Recibimos tu solicitud. Nuestro equipo te contactará con opciones residenciales compatibles.",
         },
         jsonLd: {
             ...baseJsonLd,
             "@type": "ItemList",
-            name: "Black Luxury · Casas Residenciales Premium en Tijuana",
+            name: "Black Luxury · Residencias en Tijuana y Rosarito",
             description:
-                "Residencias seleccionadas por privacidad, ubicación y plusvalía en Tijuana, Baja California.",
+                "Casas y residencias filtradas por zona, privacidad, presupuesto y valor comercial en Tijuana y Rosarito.",
         },
         metadata: {
-            title: "Casas en Tijuana | Black Capital",
+            title: "Residencias en Tijuana y Rosarito | Black Capital",
             description:
-                "Residencias seleccionadas en Tijuana por privacidad, ubicación y plusvalía. Asesoría residencial premium con criterio patrimonial.",
+                "Casas y residencias en zonas seleccionadas de Tijuana y Rosarito, filtradas por privacidad, presupuesto y valor comercial.",
             keywords: [
-                "casas en Tijuana",
+                "residencias en Tijuana",
+                "residencias en Rosarito",
                 "fraccionamientos privados Tijuana",
+                "fraccionamientos privados Rosarito",
                 "residencial plus Tijuana",
                 "Chapultepec Tijuana",
                 "Playas de Tijuana",
-                "casas en venta Tijuana",
+                "casas en venta Rosarito",
                 "Black Capital",
             ],
             robots: "index, follow",
@@ -234,9 +236,9 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 canonical: "https://blackmx.vercel.app/black-luxury",
             },
             openGraph: {
-                title: "Casas en Tijuana | Black Capital",
+                title: "Residencias en Tijuana y Rosarito | Black Capital",
                 description:
-                    "Residencias seleccionadas en Tijuana por privacidad, ubicación y plusvalía.",
+                    "Residencias seleccionadas por privacidad, zona y valor comercial en Tijuana y Rosarito.",
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Capital",
@@ -246,15 +248,15 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                         url: "https://blackmx.vercel.app/hero-luxury.webp",
                         width: 1200,
                         height: 630,
-                        alt: "Casa residencial premium en Tijuana",
+                        alt: "Residencia en zona seleccionada",
                     },
                 ],
             },
             twitter: {
                 card: "summary_large_image",
-                title: "Casas en Tijuana | Black Capital",
+                title: "Residencias en Tijuana y Rosarito | Black Capital",
                 description:
-                    "Residencias seleccionadas en Tijuana por privacidad, ubicación y plusvalía.",
+                    "Residencias seleccionadas por privacidad, zona y valor comercial en Tijuana y Rosarito.",
                 images: ["https://blackmx.vercel.app/hero-luxury.webp"],
             },
         },
@@ -275,19 +277,19 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 </>
             ),
             subtitle:
-                "Locales, oficinas y plazas evaluadas por flujo, visibilidad y retorno.",
+                "Locales, oficinas y plazas revisadas por flujo, visibilidad, uso permitido y renta.",
             primaryCta: { label: "Ver activos comerciales", href: "/inventario?brand=business" },
             secondaryCta: { label: "Solicitar análisis", href: "#business-cta" },
         },
         value: {
-            eyebrow: "Criterio comercial",
+            eyebrow: "Comercial",
             title: (
                 <>
                     Decide por corredor, giro y rendimiento.
                 </>
             ),
             description:
-                "Priorizamos activos por demanda, exposición y claridad operativa.",
+                "Comparamos opciones por zona, formato, superficie, visibilidad y condiciones de renta o venta.",
             items: [
                 {
                     icon: Briefcase,
@@ -299,7 +301,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                     icon: Building,
                     title: "Otay",
                     description:
-                        "Punto de cruce entre comercio, operación y conectividad binacional.",
+                        "Zona útil para comercio, servicios y atención empresarial.",
                 },
                 {
                     icon: TrendingUp,
@@ -328,10 +330,10 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             sectionId: "business-cta",
             eyebrowIcon: "lock",
             eyebrow: "Asesoría comercial",
-            title: "Solicita una lectura",
+            title: "Solicita opciones",
             titleHighlight: "de operación",
             description:
-                "Cuéntanos el giro, zona y formato que buscas. Te ayudamos a comparar opciones con criterio comercial.",
+                "Cuéntanos giro, zona y formato. Te ayudamos a comparar opciones comerciales compatibles.",
             indicator: "Respuesta en menos de 24h",
             companyLabel: "Empresa",
             companyPlaceholder: "Empresa",
@@ -340,7 +342,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             submitLabel: "Solicitar análisis comercial",
             successTitle: "Solicitud recibida",
             successMessage:
-                "Tu solicitud ha sido registrada. Nuestro equipo se pondrá en contacto contigo con opciones comerciales alineadas a tu operación.",
+                "Recibimos tu solicitud. Nuestro equipo te contactará con opciones comerciales compatibles.",
         },
         jsonLd: {
             ...baseJsonLd,
@@ -352,7 +354,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         metadata: {
             title: "Locales Comerciales en Tijuana | Black Capital",
             description:
-                "Locales, oficinas y plazas en Tijuana evaluadas por flujo, visibilidad y operación. Asesoría comercial con lectura de zona.",
+                "Locales, oficinas y plazas en Tijuana evaluadas por flujo, visibilidad, uso permitido y condiciones comerciales.",
             keywords: [
                 "centros comerciales Tijuana",
                 "locales comerciales Tijuana",
@@ -409,14 +411,9 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 </>
             ),
             subtitle:
-                "Naves, bodegas y suelo para decisiones de escala operativa.",
+                "Naves y bodegas revisadas por superficie, accesos, maniobra, uso y conectividad.",
             primaryCta: { label: "Ver activos industriales", href: "/inventario?brand=industrial" },
             secondaryCta: { label: "Solicitar portafolio", href: "#industrial-cta" },
-            highlights: [
-                { value: "m²", label: "Superficie" },
-                { value: "Otay", label: "Corredor" },
-                { value: "Carga", label: "Operación" },
-            ],
             gridLines: true,
             cursorGlow: false,
         },
@@ -424,11 +421,11 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             eyebrow: "Activos industriales",
             title: (
                 <>
-                    La operación manda sobre la ficha.
+                    La nave debe funcionar antes de cerrar.
                 </>
             ),
             description:
-                "Ordenamos opciones por capacidad, conectividad y restricciones de uso.",
+                "Comparamos activos industriales por capacidad real de operación, conectividad y restricciones de uso.",
             items: [
                 {
                     icon: Factory,
@@ -468,10 +465,10 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             notesFormat: "always",
             eyebrowIcon: "download",
             eyebrow: "Portafolio industrial",
-            title: "Solicita una lectura",
+            title: "Solicita opciones",
             titleHighlight: "operativa",
             description:
-                "Comparte superficie, uso y zona objetivo. Te ayudamos a filtrar activos por capacidad real de operación.",
+                "Comparte superficie, uso y zona objetivo. Te ayudamos a filtrar naves y bodegas por capacidad real.",
             companyLabel: "Empresa",
             companyPlaceholder: "Empresa *",
             companyRequired: true,
@@ -479,7 +476,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             submitLabel: "Solicitar análisis industrial",
             successTitle: "Solicitud Registrada",
             successMessage:
-                "Nuestro equipo se pondrá en contacto contigo con una lectura industrial alineada a tu operación.",
+                "Recibimos tu solicitud. Nuestro equipo te contactará con opciones industriales compatibles.",
         },
         jsonLd: {
             ...baseJsonLd,

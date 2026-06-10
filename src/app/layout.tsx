@@ -17,11 +17,11 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Inmobiliaria Premium en Tijuana | Casas, Comercial e Industrial | Black Capital",
+    default: "Inmobiliaria en Tijuana | Residencial, Comercial e Industrial | Black Capital",
     template: "%s | Black Capital",
   },
   description:
-    "Encuentra casas residenciales, centros comerciales y naves industriales en Tijuana. Análisis financiero estructurado para familias, empresarios e inversionistas en Baja California.",
+    "Compra, venta, renta y valor comercial de inmuebles residenciales, comerciales e industriales en Tijuana.",
   keywords: [
     "inmobiliaria Tijuana",
     "casas en Tijuana",
@@ -41,14 +41,14 @@ export const metadata: Metadata = {
     locale: "es_MX",
     url: SITE_URL,
     siteName: "Black Capital",
-    title: "Inmobiliaria Premium en Tijuana | Black Capital",
+    title: "Inmobiliaria en Tijuana | Black Capital",
     description:
-      "Casas residenciales, centros comerciales y naves industriales en Tijuana con análisis financiero estructurado.",
+      "Inmuebles residenciales, comerciales e industriales en Tijuana con revisión de precio, zona y documentos.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Inmobiliaria Premium en Tijuana | Black Capital",
-    description: "Casas, centros comerciales y naves industriales en Tijuana, Baja California.",
+    title: "Inmobiliaria en Tijuana | Black Capital",
+    description: "Casas, locales, oficinas, naves y bodegas en Tijuana.",
     images: ["/og-image.jpg"],
   },
   robots: {

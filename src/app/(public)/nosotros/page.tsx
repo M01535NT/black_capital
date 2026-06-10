@@ -7,7 +7,7 @@ import { Shield, Users, TrendingUp, Award, ArrowRight } from "lucide-react";
 export const metadata: Metadata = {
     title: "Nosotros | Black Capital",
     description:
-        "Inmobiliaria premium en Tijuana especializada en casas residenciales, centros comerciales y naves industriales. Transparencia, análisis y resultados en cada operación.",
+        "Black Capital es una inmobiliaria en Tijuana enfocada en operaciones residenciales, comerciales e industriales.",
     alternates: {
         canonical: "https://blackmx.vercel.app/nosotros",
     },
@@ -16,23 +16,23 @@ export const metadata: Metadata = {
 const pillars = [
     {
         icon: Shield,
-        title: "Due Diligence",
-        description: "Verificación legal, financiera y técnica.",
+        title: "Revisión",
+        description: "Documentos, precio, estado y condiciones antes de avanzar.",
     },
     {
         icon: Users,
-        title: "Confianza",
-        description: "Relaciones claras con compradores, vendedores e inversionistas.",
+        title: "Trato directo",
+        description: "Comunicación clara con propietarios, compradores e inversionistas.",
     },
     {
         icon: TrendingUp,
-        title: "Análisis",
-        description: "Comparables, flujos y lectura de mercado.",
+        title: "Comparables",
+        description: "Precio, zona y referencias de mercado para decidir mejor.",
     },
     {
         icon: Award,
         title: "Especialización",
-        description: "Luxury, Business e Industrial con enfoque propio.",
+        description: "Residencial, comercial e industrial con enfoque propio.",
     },
 ];
 
@@ -45,12 +45,12 @@ const subpaginas = [
     {
         href: "/nosotros/historia",
         titulo: "Historia",
-        descripcion: "De Tijuana para inversionistas: nuestra trayectoria.",
+        descripcion: "Nuestra evolución en el mercado inmobiliario de Tijuana.",
     },
     {
         href: "/nosotros/valores",
         titulo: "Valores",
-        descripcion: "Los principios que guían cada operación.",
+        descripcion: "Cómo trabajamos antes, durante y después de una operación.",
     },
 ];
 
@@ -68,11 +68,11 @@ export default function NosotrosPage() {
                         <div className="lg:col-span-8">
                             <Eyebrow label="Acerca de nosotros" />
                             <h1 className="text-display-1 text-white leading-hero tracking-tight text-balance">
-                                Plataforma inmobiliaria con{" "}
-                                <span className="metallic-gold-static gold-glow">criterio</span>.
+                                Inmobiliaria local para operaciones{" "}
+                                <span className="metallic-gold-static gold-glow">bien preparadas</span>.
                             </h1>
                             <p className="text-body-fluid text-white/70 leading-relaxed max-w-2xl mt-6 sm:mt-10">
-                                Plataforma premium en Tijuana para activos residenciales, comerciales e industriales.
+                                Trabajamos con propietarios, compradores e inversionistas en residencial, comercial e industrial.
                             </p>
                         </div>
                     </div>
@@ -85,7 +85,7 @@ export default function NosotrosPage() {
                             <div className="max-w-2xl">
                                 <Eyebrow label="Profundiza" />
                                 <h2 className="text-display-2 text-white leading-display tracking-headline">
-                                    Conoce más sobre nosotros.
+                                    Qué hay detrás de Black Capital.
                                 </h2>
                     </div>
                 </div>
@@ -122,18 +122,18 @@ export default function NosotrosPage() {
                 </ul>
             </Section>
 
-            {/* Pilares — 2×2 con vlines y hairline horizontal (mismo patrón que TrackRecord) */}
+            {/* Pilares — 2×2 con líneas divisorias para lectura rápida. */}
             <Section id="pilares" label="Pilares" spacing="default" containerWidth="wide">
                 <div className="flex items-end justify-between gap-8 mb-14 sm:mb-20">
                                 <div className="max-w-2xl">
                         <Eyebrow label="Pilares" />
                         <h2 className="text-display-2 text-white leading-display tracking-headline">
-                            Cuatro principios.{" "}
-                            <span className="text-white/45">Cero excepciones.</span>
+                            Cómo trabajamos.{" "}
+                            <span className="text-white/45">Sin adornos.</span>
                         </h2>
                     </div>
                     <p className="text-body-fluid-sm text-white/55 leading-relaxed max-w-md sm:text-right hidden sm:block">
-                        Lo que audita cada activo antes de salir al mercado, y lo que firma cada operación antes de cerrar.
+                        Revisamos el inmueble, ordenamos la información y acompañamos el cierre.
                     </p>
                 </div>
 

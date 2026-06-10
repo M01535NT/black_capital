@@ -72,7 +72,7 @@ export function ContactLeadForm() {
         <CheckCircle2 className="mb-5 h-9 w-9 text-[var(--color-accent)]" />
         <h3 className="mb-3 text-display-3 text-white">Solicitud registrada</h3>
         <p className="text-body text-white/65 leading-relaxed">
-          Recibimos tus datos. El siguiente paso es validar tu necesidad y preparar opciones para seguimiento comercial.
+          Recibimos tus datos. El siguiente paso es entender tu necesidad y preparar una respuesta útil.
         </p>
       </div>
     );
@@ -132,7 +132,7 @@ export function ContactLeadForm() {
       <textarea
         name="message"
         rows={3}
-        placeholder="Zona, tipo de inmueble o servicio."
+        placeholder="Zona, tipo de inmueble y objetivo."
         className="w-full resize-none border border-white/12 bg-white/[0.035] px-3 py-3 text-body-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)] sm:text-body"
       />
 
@@ -143,7 +143,7 @@ export function ContactLeadForm() {
           required
           className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
         />
-        Acepto el aviso de privacidad y autorizo que me contacten para seguimiento comercial.
+        Acepto el aviso de privacidad y autorizo que me contacten sobre mi solicitud.
       </label>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

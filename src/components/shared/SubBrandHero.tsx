@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { FormEvent, ReactNode } from "react";
 import { useMemo, useRef, useState } from "react";
-import { ArrowRight, MapPin, Search } from "lucide-react";
+import { ArrowRight, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export type Accent = "gold" | "steel";
@@ -56,11 +56,11 @@ const QUICK_SEARCH_CONFIG: Record<string, QuickSearchConfig> = {
             { label: "Preventa", value: "Preventa" },
         ],
         zoneLabel: "Zona residencial",
-        zonePlaceholder: "Toda Tijuana",
+        zonePlaceholder: "Tijuana o Rosarito",
         zoneOptions: [
             { label: "Zona Río", value: "Zona Río" },
             { label: "Chapultepec", value: "Chapultepec" },
-            { label: "Playas", value: "Playas" },
+            { label: "Rosarito", value: "Rosarito" },
         ],
         areaLabel: "Construcción mínima",
         areaOptions: [
@@ -342,10 +342,6 @@ export function SubBrandHero({
                     initial={shouldReduceMotion ? false : "hidden"}
                     animate="show"
                 >
-                    <motion.div variants={heroChild} className="mb-4 inline-flex items-center gap-2 border border-white/10 bg-black/35 px-3 py-2 text-caption text-white/70 lg:mb-6">
-                        <MapPin className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
-                        Tijuana, Baja California
-                    </motion.div>
                     <motion.p variants={heroChild} className="mb-3 text-caption gold-ink">
                         {brand}
                     </motion.p>

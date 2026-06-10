@@ -64,6 +64,7 @@ function createMockAdminClient(): SupabaseClient {
             from: () => ({
                 upload: noop,
                 getPublicUrl: () => ({ data: { publicUrl: '' } }),
+                createSignedUrl: noop,
                 remove: noop,
                 list: noop,
             }),

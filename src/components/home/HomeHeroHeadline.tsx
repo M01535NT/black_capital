@@ -28,7 +28,7 @@ export function HomeHeroHeadline() {
   return (
     <h1 className="max-w-5xl text-balance text-white">
       <span className="block text-display-3 font-semibold uppercase text-white/88">
-        Encuentra inventario
+        Inmobiliaria en Tijuana
       </span>
       <span className="relative mt-2 block min-h-[1.18em] pb-3 text-display-1 font-extrabold leading-none">
         <AnimatePresence mode="wait" initial={false}>

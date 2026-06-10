@@ -12,6 +12,7 @@ interface PropertySidebarProps {
     agents: AgentInfo[];
     property: {
         id: string;
+        title: string;
         m2_terrain: number | null;
         m2_construction: number | null;
         property_type: string | null;
@@ -70,8 +71,13 @@ export function PropertySidebar({ agents, property, documents }: PropertySidebar
                 <div className={CARD_CLASS}>
                     <h3 className={SECTION_CARD_TITLE}>Documentos</h3>
                     <div className="space-y-2">
-                        {documents.map((doc, i) => (
-                            <DocumentCard key={i} doc={doc} />
+                        {documents.map((doc) => (
+                            <DocumentCard
+                                key={doc.id}
+                                doc={doc}
+                                propertyId={property.id}
+                                propertyTitle={property.title}
+                            />
                         ))}
                     </div>
                 </div>

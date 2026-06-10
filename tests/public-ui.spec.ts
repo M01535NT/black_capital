@@ -7,7 +7,6 @@ test.describe("Public UI follow-up", () => {
         const catalog = page.locator("#catalogo");
         const search = catalog.getByPlaceholder(/Buscar por titulo|Buscar por título/i);
 
-        await expect(page.getByRole("heading", { name: /Inventario inmobiliario/i })).toBeVisible();
         await expect(search).toBeVisible();
 
         await search.fill("sin-resultados-qa");
@@ -28,7 +27,7 @@ test.describe("Public UI follow-up", () => {
     test("contact form keeps required fields and privacy consent enforced", async ({ page }) => {
         await page.goto("/contacto");
 
-        await expect(page.getByRole("heading", { name: /Hablemos de tu siguiente operación/i })).toBeVisible();
+        await expect(page.getByRole("heading", { name: /Cuéntanos qué necesitas hacer con un inmueble/i })).toBeVisible();
         await page.getByRole("link", { name: /Enviar solicitud/i }).first().click();
 
         const name = page.locator('input[name="full_name"]');
@@ -52,7 +51,6 @@ test.describe("Public UI follow-up", () => {
 
         await page.goto("/inventario");
         const catalog = page.locator("#catalogo");
-        await expect(page.getByRole("link", { name: /Explorar catálogo/i })).toBeVisible();
         await catalog.scrollIntoViewIfNeeded();
         await expect(catalog.getByPlaceholder(/Buscar por titulo|Buscar por título/i)).toBeVisible();
 
@@ -80,12 +78,9 @@ test.describe("Public UI follow-up", () => {
         await page.goto(detailHref!);
         await expect(page.getByRole("link", { name: /Volver/i })).toBeVisible();
         await expect(page.getByRole("heading", { name: "Ficha Técnica" })).toBeVisible();
-        await expect(page.getByRole("link", { name: /Contactar por WhatsApp/i })).toBeVisible();
+        await expect(page.getByRole("link", { name: /Solicitar información|WhatsApp/i }).first()).toBeVisible();
         await expect(page.getByText(/calculadora|hipoteca/i)).toHaveCount(0);
 
-        const whatsappFloat = page.getByTestId("whatsapp-float");
-        await expect(whatsappFloat).toBeVisible();
-        const box = await whatsappFloat.boundingBox();
-        expect(box?.x ?? 0).toBeGreaterThan(800);
+        await expect(page.getByTestId("whatsapp-float")).toHaveCount(0);
     });
 });

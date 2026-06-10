@@ -4,7 +4,7 @@ import { FadeIn } from "@/components/ui/motion";
 export const metadata: Metadata = {
     title: "Nuestra Historia | Black Capital",
     description:
-        "La historia de Black Capital: de operar en el mercado inmobiliario de Tijuana a construir una plataforma premium de inversión con presencia en Baja California.",
+        "La historia de Black Capital en el mercado inmobiliario de Tijuana: residencial, comercial e industrial.",
     alternates: {
         canonical: "https://blackmx.vercel.app/nosotros/historia",
     },
@@ -28,13 +28,13 @@ const hitos = [
     },
     {
         anio: "2024",
-        titulo: "Datos",
-        descripcion: "Estructuramos análisis financiero por activo.",
+        titulo: "Proceso",
+        descripcion: "Ordenamos valor comercial, documentos y ruta de seguimiento.",
     },
     {
         anio: "2026",
         titulo: "Hoy",
-        descripcion: "Tres verticales, un mismo criterio comercial.",
+        descripcion: "Residencial, comercial e industrial con equipos y filtros propios.",
     },
 ];
 
@@ -49,11 +49,11 @@ export default function HistoriaPage() {
                             Nuestra Trayectoria
                         </span>
                         <h1 className="text-display-1 uppercase text-foreground mb-4 text-balance">
-                            De Tijuana para{" "}
-                            <span className="metallic-gold-static">Inversionistas</span>
+                            Una inmobiliaria hecha en{" "}
+                            <span className="metallic-gold-static">Tijuana</span>
                         </h1>
                         <p className="text-body text-foreground/58 max-w-2xl mx-auto">
-                            Crecimiento local, datos y criterio inmobiliario.
+                            Crecimiento local, especialización y seguimiento directo.
                         </p>
                     </FadeIn>
                 </div>

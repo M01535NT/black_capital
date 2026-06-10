@@ -53,57 +53,171 @@ export type Database = {
         }
         Relationships: []
       }
+      document_access_requests: {
+        Row: {
+          accepted_nda: boolean
+          accepted_privacy: boolean
+          created_at: string
+          delivered_at: string | null
+          document_id: string
+          document_label: string
+          document_type: string
+          id: string
+          ip: string | null
+          lead_id: string
+          nda_version: string | null
+          privacy_notice_version: string | null
+          property_id: string
+          signed_url_expires_at: string | null
+          status: string
+          updated_at: string
+          user_agent: string | null
+          verification_code_hash: string | null
+          verification_expires_at: string | null
+          verified_at: string | null
+          whatsapp_normalized: string
+        }
+        Insert: {
+          accepted_nda?: boolean
+          accepted_privacy?: boolean
+          created_at?: string
+          delivered_at?: string | null
+          document_id: string
+          document_label: string
+          document_type: string
+          id?: string
+          ip?: string | null
+          lead_id: string
+          nda_version?: string | null
+          privacy_notice_version?: string | null
+          property_id: string
+          signed_url_expires_at?: string | null
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+          verification_code_hash?: string | null
+          verification_expires_at?: string | null
+          verified_at?: string | null
+          whatsapp_normalized: string
+        }
+        Update: {
+          accepted_nda?: boolean
+          accepted_privacy?: boolean
+          created_at?: string
+          delivered_at?: string | null
+          document_id?: string
+          document_label?: string
+          document_type?: string
+          id?: string
+          ip?: string | null
+          lead_id?: string
+          nda_version?: string | null
+          privacy_notice_version?: string | null
+          property_id?: string
+          signed_url_expires_at?: string | null
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+          verification_code_hash?: string | null
+          verification_expires_at?: string | null
+          verified_at?: string | null
+          whatsapp_normalized?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_access_requests_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "document_access_requests_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           assigned_agent_id: string | null
           company: string | null
           created_at: string | null
           downloaded_at: string
+          document_access_expires_at: string | null
+          document_access_session_token_hash: string | null
           email: string
           full_name: string
           id: string
+          legal_acceptance_ip: string | null
+          legal_acceptance_user_agent: string | null
           name: string | null
+          nda_accepted_at: string | null
+          nda_version: string | null
           notes: string | null
           phone: string | null
           privacy_accepted: boolean
+          privacy_notice_version: string | null
           property_id: string | null
           source: string | null
           status: string | null
           updated_at: string | null
+          whatsapp_normalized: string | null
+          whatsapp_verified_at: string | null
         }
         Insert: {
           assigned_agent_id?: string | null
           company?: string | null
           created_at?: string | null
           downloaded_at?: string
+          document_access_expires_at?: string | null
+          document_access_session_token_hash?: string | null
           email: string
           full_name: string
           id?: string
+          legal_acceptance_ip?: string | null
+          legal_acceptance_user_agent?: string | null
           name?: string | null
+          nda_accepted_at?: string | null
+          nda_version?: string | null
           notes?: string | null
           phone?: string | null
           privacy_accepted?: boolean
+          privacy_notice_version?: string | null
           property_id?: string | null
           source?: string | null
           status?: string | null
           updated_at?: string | null
+          whatsapp_normalized?: string | null
+          whatsapp_verified_at?: string | null
         }
         Update: {
           assigned_agent_id?: string | null
           company?: string | null
           created_at?: string | null
           downloaded_at?: string
+          document_access_expires_at?: string | null
+          document_access_session_token_hash?: string | null
           email?: string
           full_name?: string
           id?: string
+          legal_acceptance_ip?: string | null
+          legal_acceptance_user_agent?: string | null
           name?: string | null
+          nda_accepted_at?: string | null
+          nda_version?: string | null
           notes?: string | null
           phone?: string | null
           privacy_accepted?: boolean
+          privacy_notice_version?: string | null
           property_id?: string | null
           source?: string | null
           status?: string | null
           updated_at?: string | null
+          whatsapp_normalized?: string | null
+          whatsapp_verified_at?: string | null
         }
         Relationships: [
           {

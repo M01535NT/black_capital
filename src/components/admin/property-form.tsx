@@ -36,6 +36,20 @@ interface PdfEntry {
     label: string;
 }
 
+type UploadResult = {
+    url: string | null;
+    bucket: string;
+    path: string;
+};
+
+type RestrictedDocument = {
+    label: string;
+    type: string;
+    bucket: string;
+    path: string;
+    access: "restricted";
+};
+
 function FormSection({
     icon: Icon,
     title,
@@ -143,7 +157,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
     };
 
     // ── Upload functions ──
-    const uploadFile = async (propertyId: string, file: File, bucket: string = "public"): Promise<string | null> => {
+    const uploadFile = async (propertyId: string, file: File, bucket: string = "public"): Promise<UploadResult | null> => {
         try {
             const formData = new FormData();
             formData.append("file", file);
@@ -157,7 +171,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
 
             if (res.ok) {
                 const json = await res.json();
-                return json.url as string;
+                return json as UploadResult;
             }
             const json = await res.json().catch(() => ({}));
             throw new Error(json.error || "Error al subir archivo");
@@ -177,8 +191,8 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     useWebWorker: true,
                     fileType: "image/webp",
                 });
-                const url = await uploadFile(propertyId, compressedFile);
-                if (url) urls.push(url);
+                const uploaded = await uploadFile(propertyId, compressedFile);
+                if (uploaded?.url) urls.push(uploaded.url);
             } catch (err) {
                 errors.push(`${file.name}: ${err instanceof Error ? err.message : "Error desconocido"}`);
             }
@@ -193,11 +207,19 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
     };
 
     const uploadDocuments = async (propertyId: string) => {
-        const docs: { label: string; url: string }[] = [];
+        const docs: RestrictedDocument[] = [];
         for (const entry of pdfEntries) {
             try {
-                const url = await uploadFile(propertyId, entry.file);
-                if (url) docs.push({ label: entry.label, url });
+                const uploaded = await uploadFile(propertyId, entry.file, "secure-brochures");
+                if (uploaded?.path) {
+                    docs.push({
+                        label: entry.label,
+                        type: "PDF",
+                        bucket: uploaded.bucket,
+                        path: uploaded.path,
+                        access: "restricted",
+                    });
+                }
             } catch (err) {
                 console.warn("Document upload failed:", entry.file.name, err);
             }
@@ -246,7 +268,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             }
 
             // Step 2: Upload documents (multiple PDFs)
-            let documents: { label: string; url: string }[] = [];
+            let documents: RestrictedDocument[] = [];
             const uploadWarnings: string[] = [];
             if (pdfEntries.length > 0 && propertyData) {
                 try {
@@ -725,7 +747,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 <FormSection
                     icon={FileText}
                     title="Documentos"
-                    description="Agrega PDFs internos o públicos con una etiqueta clara antes de guardarlos."
+                    description="Agrega PDFs visibles en la ficha pública, pero protegidos antes de abrirlos."
                 >
                 <div className="flex flex-col gap-4">
                     <FormLabel>Documentos (PDF) — Ficha técnica, escrituras, avalúos, etc.</FormLabel>
@@ -737,7 +759,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         className="cursor-pointer border-white/[0.1] bg-background/70 text-white file:mr-4 file:border-none file:bg-white file:px-4 file:py-1 file:text-black hover:file:brightness-95"
                     />
                     <FormDescription>
-                        Puedes subir varios archivos. Asígnales una etiqueta para identificarlos.
+                        Los nombres serán visibles para el prospecto. El archivo se entrega solo después de NDA, aviso y validación por WhatsApp.
                     </FormDescription>
 
                     {/* PDF entries list with editable labels */}

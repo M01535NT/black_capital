@@ -48,7 +48,7 @@ const BRAND_IMAGES: Record<SubBrandValueProps["brand"], BrandCardImage[]> = {
         },
         {
             src: "/brand-luxury.webp",
-            alt: "Detalle residencial premium con terraza y amenidades",
+            alt: "Detalle residencial con terraza y amenidades",
             imageClassName: "object-[72%_50%]",
         },
     ],

@@ -14,12 +14,12 @@ const miembros = [
     {
         nombre: "Moisés Núñez",
         cargo: "Director General",
-        descripcion: "Estructura operaciones y análisis para inversionistas.",
+        descripcion: "Estructura operaciones, valor comercial y seguimiento con propietarios e inversionistas.",
     },
     {
         nombre: "Omar Medina Yañez",
         cargo: "Asesor Senior",
-        descripcion: "Residencial premium y fraccionamientos privados.",
+        descripcion: "Especialista en residencial y fraccionamientos privados.",
     },
 ];
 
@@ -38,7 +38,7 @@ export default function EquipoPage() {
                             <span className="metallic-gold-static">Black Capital</span>
                         </h1>
                         <p className="text-body text-foreground/58 max-w-2xl mx-auto">
-                            Equipo local, análisis claro y seguimiento directo.
+                            Equipo local, información clara y seguimiento directo.
                         </p>
                     </FadeIn>
                 </div>

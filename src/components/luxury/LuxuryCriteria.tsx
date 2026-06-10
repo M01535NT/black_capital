@@ -9,7 +9,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const criteria = [
   {
     value: "Privacidad",
-    label: "Acceso, entorno y ritmo de vida evaluados antes de visitar.",
+    label: "Acceso, entorno y condiciones de uso antes de visitar.",
     image: "/brand-luxury.webp",
     position: "object-[48%_50%]",
   },
@@ -21,13 +21,13 @@ const criteria = [
   },
   {
     value: "Diseño",
-    label: "Distribución, luz y acabados leídos con criterio familiar.",
+    label: "Distribución, luz, acabados y mantenimiento visible.",
     image: "/brand-luxury.webp",
     position: "object-[72%_50%]",
   },
   {
-    value: "Plusvalía",
-    label: "Perspectiva patrimonial para comprar con intención de largo plazo.",
+    value: "Valor",
+    label: "Comparables para comprar o vender con mejor contexto.",
     image: "/hero-luxury.webp",
     position: "object-[43%_50%]",
   },
@@ -77,8 +77,8 @@ export function LuxuryCriteria() {
             <h2 className="text-display-2 text-white">Menos recorrido. Mejor decisión.</h2>
           </div>
           <p className="max-w-md text-body text-white/58 lg:col-span-5 lg:ml-auto">
-            Cada opción se lee por privacidad, zona, arquitectura y potencial
-            patrimonial antes de recomendar una visita.
+            Cada opción se revisa por privacidad, zona, estado y valor comercial
+            antes de recomendar una visita.
           </p>
         </div>
 
@@ -108,7 +108,7 @@ export function LuxuryCriteria() {
                 <div className="absolute inset-0 bg-gradient-to-r from-black/22 via-transparent to-transparent" />
                 <div className="grain-overlay opacity-[0.08]" aria-hidden="true" />
                 <div className="absolute inset-x-6 bottom-6">
-                  <p className="property-tag-type gold-ink">Lectura activa</p>
+                  <p className="property-tag-type gold-ink">Criterio activo</p>
                   <p className="mt-2 text-display-3 text-white">{active.value}</p>
                 </div>
               </div>

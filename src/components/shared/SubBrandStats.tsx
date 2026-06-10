@@ -28,8 +28,8 @@ const SPACING = {
 export function SubBrandStats({
     brand,
     eyebrow = "Criterios de selección",
-    title = "Lectura clara antes de visitar.",
-    description = "Cada activo se ordena por uso, ubicación y señales comerciales para comparar con menos ruido.",
+    title = "Datos útiles antes de visitar.",
+    description = "Cada activo se compara por uso, ubicación, precio y condiciones reales.",
     stats,
     spacing = "default",
 }: SubBrandStatsProps) {

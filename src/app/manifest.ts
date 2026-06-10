@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
     return {
         name: 'Black Capital',
         short_name: 'Black Capital',
-        description: 'Plataforma Inmobiliaria de Alto Nivel - Comercial, Industrial y Residencial.',
+        description: 'Inmobiliaria en Tijuana para activos residenciales, comerciales e industriales.',
         id: '/',
         start_url: '/',
         scope: '/',

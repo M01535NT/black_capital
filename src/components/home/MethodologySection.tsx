@@ -19,7 +19,7 @@ const steps = [
     step: "02",
     title: "Valor y estrategia",
     text:
-      "Definimos valor de salida, perfil de comprador y narrativa comercial según el tipo de propiedad.",
+      "Definimos valor de salida, perfil de comprador y argumentos de venta o renta según el tipo de propiedad.",
     signal: "Precio claro",
     image: "/hero-business.webp",
   },
@@ -27,7 +27,7 @@ const steps = [
     step: "03",
     title: "Exposición y filtro",
     text:
-      "Mostramos el activo donde corresponde, filtramos prospectos y ordenamos visitas, dudas y ofertas.",
+      "Mostramos el activo donde corresponde, filtramos prospectos y ordenamos visitas, consultas y ofertas.",
     signal: "Demanda útil",
     image: "/industrial-hero.webp",
   },
@@ -108,13 +108,12 @@ export function MethodologySection() {
               Metodología Black Capital
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
-              Diagnosticar, preparar, negociar, cerrar.
+              De valor estimado a cierre.
             </h2>
           </div>
           <div className="lg:col-span-5 lg:flex lg:justify-end">
             <p className="max-w-md text-body text-white/58">
-              Una operación inmobiliaria empieza antes de publicar: activo,
-              precio, mercado y documentos deben hablar el mismo idioma.
+              Antes de publicar o visitar, revisamos activo, precio, mercado y documentos.
             </p>
           </div>
         </div>

@@ -34,5 +34,8 @@ export interface DbPropertyAgent {
 
 export type DocumentRecord = {
     label?: string;
-    url: string;
+    type?: string;
+    bucket?: string;
+    path?: string;
+    url?: string;
 };

@@ -43,7 +43,7 @@ export default function TermsPage() {
                                 2. Descripción del Servicio
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Black Capital es una plataforma inmobiliaria premium que proporciona información sobre propiedades residenciales, comerciales e industriales en Tijuana, Baja California. La Plataforma incluye listados de propiedades, análisis financieros, herramientas y servicios de contacto con asesores inmobiliarios.
+                                Black Capital es una plataforma inmobiliaria que proporciona información sobre propiedades residenciales, comerciales e industriales en Tijuana, Baja California. La Plataforma incluye listados de propiedades, herramientas de cálculo y servicios de contacto con asesores inmobiliarios.
                             </p>
                         </section>
 

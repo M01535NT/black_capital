@@ -25,17 +25,17 @@ const valores = [
     {
         icon: Target,
         titulo: "Resultados",
-        descripcion: "Operaciones cerradas con criterio.",
+        descripcion: "Seguimiento hasta firma o decisión final.",
     },
     {
         icon: Shield,
         titulo: "Patrimonio",
-        descripcion: "Cuidamos cada decisión.",
+        descripcion: "Cuidamos información, precio y condiciones.",
     },
     {
         icon: Scale,
-        titulo: "Due diligence",
-        descripcion: "Verificación legal, fiscal y técnica.",
+        titulo: "Revisión",
+        descripcion: "Verificación legal, fiscal y técnica cuando aplica.",
     },
     {
         icon: Zap,
@@ -58,7 +58,7 @@ export default function ValoresPage() {
                             Lo Que <span className="metallic-gold-static">Nos Define</span>
                         </h1>
                         <p className="text-body text-foreground/58 max-w-2xl mx-auto">
-                            Claridad, disciplina y cierre.
+                            Información clara, seguimiento y cierre.
                         </p>
                     </FadeIn>
                 </div>

@@ -62,7 +62,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
         {
             id: "placeholder-residencial-1",
             slug: null,
-            title: "Casa premium en fraccionamiento privado",
+            title: "Casa en fraccionamiento privado",
             property_type: "Residencial",
             business_type: "Zona residencial",
             price: 0,

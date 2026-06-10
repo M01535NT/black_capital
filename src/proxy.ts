@@ -12,8 +12,8 @@ const PUBLIC_ADMIN_PATHS = [
   "/api/admin/login",
 ];
 
-// API routes that are public (lead capture, brochure send)
-const PUBLIC_API_PATHS = ["/api/send-brochure", "/api/public-leads"];
+// API routes that are public (lead capture, protected document request)
+const PUBLIC_API_PATHS = ["/api/public-leads", "/api/document-access"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

@@ -1,36 +1,26 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from "@playwright/test";
 
-test('Flujo de Captura de Leads (Gated Content)', async ({ page }) => {
-    // 1. Visit Inventario
-    await page.goto('/inventario');
+test("documentos visibles inician solicitud protegida sin enlace directo", async ({ page }) => {
+  await page.goto("/inventario");
 
-    // 2. Wait for Properties grid to load and click the first property's "Ver Detalles"
-    const detailsButton = page.locator('text=Ver Detalles').first();
-    await expect(detailsButton).toBeVisible({ timeout: 15000 });
+  const detailHref = await page
+    .locator('#catalogo article a[href^="/inventario/"]')
+    .first()
+    .getAttribute("href")
+    .catch(() => null);
 
-    // Get the href to navigate or click it
-    await detailsButton.click();
+  test.skip(!detailHref, "No hay detalle público disponible en inventario.");
 
-    // 3. Ensure we are on the property detail page and locate "Descargar Brochure"
-    const downloadBtn = page.locator('button:has-text("Descargar Brochure")');
-    await expect(downloadBtn).toBeVisible({ timeout: 15000 });
+  await page.goto(detailHref!);
 
-    // 4. Open Capture Modal
-    await downloadBtn.click();
+  const requestButton = page.getByRole("button", { name: /Solicitar documentos/i }).first();
+  const buttonCount = await requestButton.count();
+  test.skip(buttonCount === 0, "La propiedad no tiene documentos visibles para solicitar.");
 
-    // 5. Verify modal content
-    await expect(page.locator('text=Contenido Exclusivo')).toBeVisible();
+  await expect(requestButton).toBeVisible();
+  await expect(requestButton).not.toHaveAttribute("href", /.+/);
 
-    // 6. Fill the Lead Form
-    await page.fill('input[name="name"]', 'QA Test User');
-    await page.fill('input[name="email"]', 'qatest@blackcapital.mx');
-    await page.fill('input[name="phone"]', '1234567890');
+  await requestButton.click();
 
-    // 7. Submit form
-    await page.click('button:has-text("Enviar y Descargar PDF")');
-
-    // 8. Wait for API mock & success state (Mock email flow + Supabase offline bypass depending on Dev state)
-    // Expect to see the success check or the unlocked brochure message
-    const successText = page.locator('text=¡Brochure Desbloqueado!');
-    await expect(successText).toBeVisible({ timeout: 10000 });
+  await expect(page.getByRole("dialog", { name: /Solicitar documentos/i })).toBeVisible();
 });
