@@ -62,6 +62,10 @@ tsconfig.tsbuildinfo
 # Hermes project context
 .hermes/
 
+# Graphify local/cache artifacts
+/graphify-out/.graphify_*
+/graphify-out/cache/
+
 # Temporary files
 *.tmp
 *.temp
