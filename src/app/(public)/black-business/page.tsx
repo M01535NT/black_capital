@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { SubBrandHero } from "@/components/shared/SubBrandHero";
 import { BusinessValue } from "@/components/business/BusinessValue";
-import { BusinessStats } from "@/components/business/BusinessStats";
 import { BusinessCTA } from "@/components/business/BusinessCTA";
 import { BrandInventory } from "@/components/shared/BrandInventory";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -28,7 +27,6 @@ export default function BlackBusinessPage() {
                 gridLines={config.hero.gridLines}
             />
             <BusinessValue />
-            <BusinessStats />
             <BrandInventory
                 brandSlug={config.inventory.brandSlug}
                 propertyUse={config.inventory.propertyUse}

@@ -1,3 +1,5 @@
+import { ScrollReveal } from "@/components/motion/ScrollReveal";
+
 export type SubBrand = "luxury" | "business" | "industrial";
 export type Accent = "gold" | "steel";
 
@@ -37,39 +39,45 @@ export function SubBrandStats({
         <section
             id={`${brand}-stats`}
             aria-label={`Indicadores de ${brand}`}
-            className={`border-y border-white/[0.06] bg-white/[0.02] ${SPACING[spacing]}`}
+            className={`relative border-y border-white/[0.06] bg-white/[0.02] ${SPACING[spacing]}`}
         >
-            <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 sm:px-10 lg:grid-cols-12 lg:px-16">
+            <div
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent"
+            />
+
+            <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-10 px-6 sm:px-10 lg:grid-cols-12 lg:gap-12 lg:px-16">
                 <div className="lg:col-span-5">
-                    <p className="mb-3 text-caption gold-ink">
-                        {eyebrow}
-                    </p>
-                    <h2 className="text-display-2 text-white">
-                        {title}
-                    </h2>
-                    <p className="mt-5 max-w-md text-body text-white/58">
-                        {description}
-                    </p>
+                    <p className="mb-3 text-caption gold-ink">{eyebrow}</p>
+                    <h2 className="text-display-2 text-white">{title}</h2>
+                    <span
+                        aria-hidden="true"
+                        className="mt-6 block h-px w-28 bg-gradient-to-r from-[var(--color-accent)] to-transparent"
+                    />
+                    <p className="mt-6 max-w-md text-body text-white/58">{description}</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 lg:col-span-7 lg:gap-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-7 lg:gap-5">
                     {stats.map((stat, index) => (
-                        <div
-                            key={stat.label}
-                            className="flex min-h-[150px] flex-col justify-between border border-white/[0.08] bg-background/70 p-4 sm:min-h-[160px] sm:p-5"
-                        >
-                            <span className="property-tag-type gold-ink">
-                                0{index + 1}
-                            </span>
-                            <div>
-                                <p className="text-display-4 leading-tight text-white">
-                                    {stat.prefix ?? ""}
-                                    {typeof stat.value === "number" ? stat.value.toLocaleString() : stat.value}
-                                    {stat.suffix ?? ""}
-                                </p>
-                                <p className="mt-3 text-body-sm text-white/62">{stat.label}</p>
-                            </div>
-                        </div>
+                        <ScrollReveal key={stat.label} delay={index * 0.07} className="h-full">
+                            <article className="group flex h-full min-h-[180px] flex-col justify-between border border-white/[0.08] bg-background/60 p-6 transition-colors duration-500 hover:border-[var(--color-accent)]/35">
+                                <span className="property-tag-type gold-ink">
+                                    {String(index + 1).padStart(2, "0")}
+                                </span>
+                                <div>
+                                    <p className="text-display-3 leading-tight text-white">
+                                        {stat.prefix ?? ""}
+                                        {typeof stat.value === "number" ? stat.value.toLocaleString() : stat.value}
+                                        {stat.suffix ?? ""}
+                                    </p>
+                                    <span
+                                        aria-hidden="true"
+                                        className="mt-4 block h-px w-10 origin-left bg-[var(--color-accent)]/45 transition-all duration-500 group-hover:w-16"
+                                    />
+                                    <p className="mt-4 text-body-sm leading-relaxed text-white/60">{stat.label}</p>
+                                </div>
+                            </article>
+                        </ScrollReveal>
                     ))}
                 </div>
             </div>

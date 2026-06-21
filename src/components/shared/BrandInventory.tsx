@@ -220,7 +220,16 @@ export async function BrandInventory({
                 </p>
             </div>
 
-            <div data-section="brand-inventory-rail" className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:grid lg:grid-cols-12 lg:overflow-visible lg:px-0 lg:pb-0">
+            <div
+                data-section="brand-inventory-rail"
+                className={`scrollbar-none -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:grid lg:overflow-visible lg:px-0 lg:pb-0 ${
+                    displayProperties.length === 1
+                        ? "lg:grid-cols-1"
+                        : displayProperties.length === 2
+                        ? "lg:grid-cols-2"
+                        : "lg:grid-cols-3"
+                }`}
+            >
                 {displayProperties.map((prop, index) => {
                     const href = prop.isPlaceholder
                         ? `/contacto?interes=${encodeURIComponent(propertyUse)}`
@@ -229,31 +238,20 @@ export async function BrandInventory({
                     const fallbackImage = getPropertyPlaceholderImage(propertyUse);
                     const imageSrc = prop.cover_image || fallbackImage.src;
                     const imageAlt = hasCoverImage ? prop.title : fallbackImage.alt;
-                    const isFeature = index === 0;
-                    const cardSpan = displayProperties.length === 1
-                        ? "lg:col-span-12"
-                        : displayProperties.length === 2
-                        ? "lg:col-span-6"
-                        : isFeature
-                        ? "lg:col-span-6"
-                        : "lg:col-span-3";
-                    const imageAspect = displayProperties.length <= 2 || isFeature
-                        ? "aspect-[16/10] lg:aspect-[16/9]"
-                        : "aspect-[16/10] lg:aspect-[4/5]";
 
                     return (
                         <ScrollReveal
                             key={prop.id}
                             delay={index * 0.08}
-                            className={`min-w-[82vw] snap-center sm:min-w-[62vw] lg:min-w-0 ${cardSpan}`}
+                            className="min-w-[82vw] snap-center sm:min-w-[62vw] lg:min-w-0"
                         >
                             <article className="group relative flex h-full flex-col overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-colors duration-500 hover:border-[var(--color-accent)]/35">
-                                <div className={`relative overflow-hidden bg-white/[0.02] ${imageAspect}`}>
+                                <div className="relative aspect-[4/3] overflow-hidden bg-white/[0.02]">
                                     <Image
                                         src={imageSrc}
                                         alt={imageAlt}
                                         fill
-                                        sizes={isFeature ? "(max-width: 1024px) 100vw, 50vw" : "(max-width: 1024px) 100vw, 25vw"}
+                                        sizes="(max-width: 1024px) 100vw, 33vw"
                                         className="object-cover motion-safe:transition-transform motion-safe:duration-[1100ms] motion-safe:ease-out motion-safe:group-hover:scale-105"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/84 via-black/22 to-transparent transition-opacity duration-700 group-hover:opacity-88" />
