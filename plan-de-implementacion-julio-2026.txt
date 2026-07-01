@@ -493,6 +493,26 @@ para que el flujo funcione en producción se deben cargar en Vercel las variable
 de WhatsApp Cloud API y `RESEND_API_KEY` (entrega por email). El esquema ya está
 aplicado; falta esta configuración de entorno.
 
+### [2026-07-01] Smoke-test de producción parametrizable (deploy)  ✅ ENTREGADO
+
+**Zona:** deploy / verificación post-deploy
+**Contexto:** el "smoke test del panel contra Supabase real" no se puede correr
+desde el sandbox (egress a Supabase/Vercel bloqueado por política). Para no dejar
+esa verificación como una tarea manual irrepetible, se entregó como artefacto de
+código: `tests/production-smoke.spec.ts`.
+
+**Qué valida (sin depender de datos):** 12 rutas públicas → 200; artefactos SEO
+(`robots.txt`, `sitemap.xml`, `/opengraph-image` con content-type imagen); gate
+de seguridad admin (rutas `/admin/*` → redirect a login sin sesión); cabeceras de
+seguridad (CSP con `default-src 'self'` y `*.supabase.co`, `X-Content-Type-Options:
+nosniff`).
+
+**Uso post-deploy:**
+`SMOKE_BASE_URL=https://blackmx.vercel.app npx playwright test tests/production-smoke.spec.ts --project=chromium`
+
+**Verificación local del propio test:** 15/15 en verde contra el dev server;
+lint 0, typecheck 0.
+
 **Nota:** el archivo de migración del repo ya era correcto; el defecto era de
 despliegue (drift schema repo↔prod). Recomendado: asegurar que el pipeline
 aplique migraciones pendientes en cada deploy (Vercel + Supabase) para evitar
