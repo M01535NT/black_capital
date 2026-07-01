@@ -15,6 +15,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 import { adminBadgeAccentClass, adminBadgeClass, adminBadgeMutedClass } from "@/components/admin/admin-ui";
 
 export type PropertyRow = {
@@ -44,7 +45,7 @@ function DeleteButton({ propertyId }: { propertyId: string }) {
             }
             router.refresh();
         } catch (err) {
-            alert(err instanceof Error ? err.message : "Error al eliminar");
+            toast.error(err instanceof Error ? err.message : "Error al eliminar");
         } finally {
             setLoading(false);
         }

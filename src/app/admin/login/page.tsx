@@ -82,7 +82,7 @@ function LoginForm() {
             autoComplete="email"
             autoFocus
             disabled={loading}
-            className="border-white/[0.1] bg-background/70 pl-10 text-white"
+            className="h-11 border-white/[0.1] bg-background/70 pl-10 text-white sm:h-9"
           />
         </div>
       </div>
@@ -98,7 +98,7 @@ function LoginForm() {
             placeholder="••••••••"
             autoComplete="current-password"
             disabled={loading}
-            className="border-white/[0.1] bg-background/70 pr-12 text-white"
+            className="h-11 border-white/[0.1] bg-background/70 pr-12 text-white sm:h-9"
           />
           <button
             type="button"
@@ -112,9 +112,9 @@ function LoginForm() {
         </div>
       </div>
 
-      {error && <p className="bg-red-500/10 px-3 py-2 text-sm text-red-400">{error}</p>}
+      {error && <p role="alert" className="bg-red-500/10 px-3 py-2 text-sm text-red-400">{error}</p>}
 
-      <Button type="submit" disabled={loading || !email || !password} className="brushed-gold w-full rounded-full font-bold">
+      <Button type="submit" disabled={loading || !email || !password} className="brushed-gold min-h-11 w-full rounded-full font-bold sm:min-h-9">
         {loading ? "Verificando..." : "Acceder"}
       </Button>
 

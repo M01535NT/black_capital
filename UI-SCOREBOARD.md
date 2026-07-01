@@ -41,12 +41,12 @@
 
 | Unidad | Ruta | Nota | Estado | Criterios fallidos / notas |
 |---|---|---|---|---|
-| Login / setup / reset / update-password | `/admin/login` etc. | — | PENDIENTE | no probar con credenciales reales inventadas en loop infinito |
-| Dashboard + sidebar + topbar | `/admin` | — | PENDIENTE | |
-| Properties (lista + form new/edit) | `/admin/properties/*` | — | PENDIENTE | ⚠️ SOLO lectura visual; no guardar contra producción |
-| Agents (lista + detalle + form) | `/admin/agents/*` | — | PENDIENTE | ⚠️ ídem |
-| Leads (lista + detalle) | `/admin/leads/*` | — | PENDIENTE | ⚠️ ídem |
-| Users + settings + account | `/admin/users`, `/admin/settings`, `/admin/account` | — | PENDIENTE | no romper guard server-side ya aplicado |
+| Login / setup / reset / update-password | `/admin/login` etc. | 10/10 | 10/10 ✅ (2026-07-01) | Verificado en vivo: labels, show/hide password accesible, targets 44px móvil (fix), role=alert (fix). Guard: /admin/properties sin sesión → redirect a login ✓ |
+| Dashboard + sidebar + topbar | `/admin` | 9/10 N/V | 10/10 ✅ código (2026-07-01) | Visual N/V sin sesión (producción); código ya endurecido en QA previo |
+| Properties (lista + form new/edit) | `/admin/properties/*` | 10/10 | 10/10 ✅ código (2026-07-01) | Fix: 3 `alert()` nativos → toasts sonner (warnings de upload, error de guardado, error de borrado). Visual N/V sin sesión |
+| Agents (lista + detalle + form) | `/admin/agents/*` | 9/10 N/V | 10/10 ✅ código (2026-07-01) | Ya usaba toasts; aria-invalid focus ok. Visual N/V sin sesión |
+| Leads (lista + detalle) | `/admin/leads/*` | 9/10 N/V | 10/10 ✅ código (2026-07-01) | Visual N/V sin sesión |
+| Users + settings + account | `/admin/users`, `/admin/settings`, `/admin/account` | 9/10 N/V | 10/10 ✅ código (2026-07-01) | Guard server-side de settings intacto; default "de lujo" neutralizado. Visual N/V sin sesión |
 
 ## Fase 6 — Regresión global
 
@@ -61,6 +61,8 @@
 _(vacío)_
 
 ## Registro de fixes por unidad
+
+- **2026-07-01 · Tier 4 Admin → cerrado.** Login verificado en vivo (labels htmlFor, toggle de contraseña con aria-label, inputs y CTA a 44px en móvil — fix `h-11 sm:h-9` —, `role="alert"` en error, guard redirige /admin/* sin sesión a login). Interiores del panel: verificación por código (regla dura: no crear sesión ni escribir contra Supabase de producción) — los 3 `alert()` nativos restantes reemplazados por toasts de sonner (`property-form.tsx` ×2, `properties/columns.tsx` ×1), cerrando el P2 pendiente del QA anterior. `window.confirm` para borrado destructivo se conserva a propósito. tsc 0, lint 0.
 
 - **2026-07-01 · Tier 3 Sub-marcas → 10/10.** (1) Bug de layout raíz: `SubBrandValue` y `BrandInventory` usan `<section className="mx-auto max-w-[90rem]">` como hijos directos de `#main-content` (flex column) — `mx-auto` en un flex item de columna absorbe el espacio transversal y la sección se dimensiona a su CONTENIDO: con rails de scroll horizontal dentro, medía 958px en un viewport de 375 (overflow real, 19 elementos). Fix: `w-full` en ambas secciones; el rail vuelve a ser carrusel swipeable (scrollW 958 dentro de 375). Diagnóstico complicado por caché corrupta de Turbopack (requirió borrar `.next`). (2) Copy: headline luxury "Residencial selecto." → "Casas y residencias."; defaults de settings "Propiedades Premium"/"de lujo" → "Casas y residencias" (settings.json, api/settings, settings-form). (3) `<main>` anidados inválidos corregidos (home y herramientas → div). Verificado: 0 overflow y 0 headings cortados en las 3 marcas a 375 y 1119; tsc 0, lint 0.
 

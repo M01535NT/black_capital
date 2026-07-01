@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FileText, ImageIcon, Loader2, MapPin, Settings2, Star, UploadCloud, UserRoundCheck, X } from "lucide-react";
+import { toast } from "sonner";
 import { AgentSelect } from "./agent-select";
 import { adminCardClass } from "./admin-ui";
 
@@ -314,7 +315,10 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             }
 
             if (uploadWarnings.length > 0) {
-                alert(`Propiedad guardada, pero con advertencias:\n${uploadWarnings.join('\n')}`);
+                toast.warning("Propiedad guardada, pero con advertencias", {
+                    description: uploadWarnings.join(" · "),
+                    duration: 8000,
+                });
                 if (propertyData?.id) {
                     router.push(`/admin/properties/${propertyData.id}/edit`);
                 } else {
@@ -325,8 +329,9 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             }
             router.refresh();
         } catch (error) {
-            // Submit error silently handled
-            alert(`Error al guardar: ${error instanceof Error ? error.message : 'Error desconocido'}`);
+            toast.error("Error al guardar", {
+                description: error instanceof Error ? error.message : "Error desconocido",
+            });
         } finally {
             setIsSubmitting(false);
         }
