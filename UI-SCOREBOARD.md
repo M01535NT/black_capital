@@ -13,7 +13,7 @@
 | Sistema de botones/inputs/forms | `ui/button.tsx`, `ui/input.tsx`, `ui/form.tsx`, `ui/select.tsx`, `ui/textarea.tsx`, `public/contact-lead-form.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | ui/* shadcn stock OK; fixes en contact-lead-form: bug currentTarget post-await (P1), grid móvil 1 col, aria-labels, role=alert |
 | Cards y badges | `ui/card.tsx`, `ui/badge.tsx`, `property/PropertyCard.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | Fixes: traslape badges/botones (right-28), targets 44px móvil, CTA 44px. ⚠️ DATO CLIENTE: existe "CASA EN VENTA DE PRUEBA" en inventario de producción |
 | Overlays (dialog/drawer/dropdown/tooltip) | `ui/dialog.tsx`, `ui/drawer.tsx`, `ui/dropdown-menu.tsx`, `admin/admin-tooltip.tsx`, `property/DocumentCard.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | drawer ya corregido en u.1; role=alert en errores de DocumentCard; ModeToggle (dead code) eliminado. Flujo de documentos verificado por código (API de producción, no ejecutable) |
-| Motion (transiciones/reveals) | `motion/*`, `ui/motion.tsx`, `ui/reveal-text.tsx`, `layout/PageTransition.tsx`, `layout/ScrollProgress.tsx` | — | PENDIENTE | respetar `prefers-reduced-motion` |
+| Motion (transiciones/reveals) | `motion/*`, `ui/motion.tsx`, `ui/reveal-text.tsx`, `layout/ScrollProgress.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | Doble transición de ruta eliminada (PageTransition borrado, queda RouteTransition en template.tsx); ScrollProgress respeta reduced-motion; el resto ya lo respetaba |
 | WhatsAppFloat + toasts | `layout/WhatsAppFloat.tsx`, `ui/sonner.tsx` | — | PENDIENTE | |
 | Shared section primitives | `shared/SectionHeader.tsx`, `shared/PageHero.tsx`, `shared/eyebrow.tsx`, `layout/Section.tsx` | — | PENDIENTE | |
 
@@ -61,6 +61,8 @@
 _(vacío)_
 
 ## Registro de fixes por unidad
+
+- **2026-07-01 · Motion → 10/10.** Cada navegación ejecutaba DOS animaciones de ruta encadenadas: `RouteTransition` (app/template.tsx, clip+fade 0.46s) y `PageTransition` ((public)/layout.tsx, fade+y 0.35s con AnimatePresence que en App Router ni siquiera puede animar exit). Eliminado `PageTransition.tsx` y su wrapper; queda solo RouteTransition. `ScrollProgress` ahora usa el progreso crudo sin spring bajo reduced-motion. ScrollReveal/RevealText/FadeIn/Stagger/ScaleOnHover ya respetaban reduced-motion. Verificado: navegación SPA home→inventario con una sola transición, consola limpia, tsc 0, lint 0.
 
 - **2026-07-01 · Overlays → 10/10.** `role="alert"` en los 3 mensajes de error de `DocumentCard.tsx` (dialog de solicitud de documentos); eliminado `mode-toggle.tsx` (dead code: sin imports y el público es dark-only vía ThemeGuard). Dialog/dropdown-menu shadcn stock OK; AdminTooltip ya tenía nombre accesible; drawer corregido en unidad 1. El flujo de documentos se verificó por lectura de código: `FormData(event.currentTarget)` se lee antes del await (sin el bug del contact form); no ejecutable en vivo porque hasta abrir el dialog dispara POST a producción. tsc 0, lint 0.
 

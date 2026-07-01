@@ -1,6 +1,5 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { PageTransition } from "@/components/layout/PageTransition";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
@@ -19,7 +18,8 @@ export default function PublicLayout({
             <div className="flex flex-col min-h-screen">
                 <Header />
                 <main id="main-content" className="flex-1 flex flex-col" tabIndex={-1}>
-                    <ErrorBoundary><PageTransition>{children}</PageTransition></ErrorBoundary>
+                    {/* La transición de ruta vive en app/template.tsx (RouteTransition); aquí iba una segunda animación duplicada */}
+                    <ErrorBoundary>{children}</ErrorBoundary>
                 </main>
                 <Footer />
             </div>

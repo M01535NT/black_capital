@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 
 /**
  * Editorial scroll-progress bar. Fixed at the top of the viewport, 2px
@@ -12,11 +12,14 @@ import { motion, useScroll, useSpring } from "framer-motion";
  */
 export function ScrollProgress() {
     const { scrollYProgress } = useScroll();
-    const scaleX = useSpring(scrollYProgress, {
+    const shouldReduceMotion = useReducedMotion();
+    const smoothed = useSpring(scrollYProgress, {
         stiffness: 140,
         damping: 28,
         restDelta: 0.001,
     });
+    // Con reduced-motion la barra sigue el scroll sin el rebote del spring.
+    const scaleX = shouldReduceMotion ? scrollYProgress : smoothed;
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
