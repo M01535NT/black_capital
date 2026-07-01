@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { HomeCounters } from "@/components/home/HomeCounters";
-import { HomeHeroHeadline } from "@/components/home/HomeHeroHeadline";
 import { HomeLines } from "@/components/home/HomeLines";
 import { HomeFeatured } from "@/components/home/HomeFeatured";
 import { HomeZones } from "@/components/home/HomeZones";
@@ -94,48 +93,22 @@ function HeroMarqueeStrip({ duplicate = false }: { duplicate?: boolean }) {
 export default function HomePage() {
   return (
     <main className="bg-background">
-      <section className="relative min-h-[100svh] overflow-hidden border-b border-white/[0.06] pt-24 lg:pt-28">
-        <video
-          src="/hero.webm"
-          poster="/hero-poster.webp"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover opacity-40 motion-reduce:hidden"
-        />
-        <Image
-          src="/hero-poster.webp"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          aria-hidden="true"
-          className="hidden object-cover opacity-35 motion-reduce:block"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/88 to-background/35" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 mix-blend-screen opacity-30"
-          style={{
-            background:
-              "radial-gradient(ellipse at 82% 18%, rgba(210, 167, 60, 0.55), transparent 55%)",
-          }}
-        />
-
-        <div className="relative z-10 mx-auto grid min-h-[calc(100svh-6rem)] max-w-[90rem] grid-cols-1 items-center px-6 pb-32 pt-10 sm:px-10 sm:pb-36 lg:grid-cols-12 lg:px-16">
-          <div className="lg:col-span-8">
-            <div className="mb-6 flex items-center gap-3">
+      <section className="relative border-b border-white/[0.08]">
+        <div className="mx-auto grid max-w-[90rem] grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]">
+          {/* Text column */}
+          <div className="flex flex-col justify-center px-6 pb-14 pt-28 sm:px-10 lg:px-16 lg:py-32">
+            <div className="mb-7 flex items-center gap-3">
               <span className="h-px w-6 bg-[var(--color-accent)]" aria-hidden="true" />
               <span className="property-tag-type gold-ink">
                 Inmobiliaria en Tijuana · B.C.
               </span>
             </div>
-            <HomeHeroHeadline />
-            <p className="mt-6 max-w-xl text-body text-white/66">
+            <h1 className="font-display text-display-1 font-extrabold uppercase leading-[1.02] tracking-tight text-white">
+              Representación<br />
+              inmobiliaria<br />
+              <span className="gold-ink">con criterio.</span>
+            </h1>
+            <p className="mt-6 max-w-md text-body text-white/60">
               Ordenamos precio, zona, documentos y ruta de cierre antes de que
               avances. Residencial, comercial e industrial.
             </p>
@@ -160,9 +133,40 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
+
+          {/* Media column */}
+          <div
+            className="relative min-h-[340px] overflow-hidden border-t border-[var(--color-accent)]/15 sm:min-h-[440px] lg:min-h-0 lg:border-l lg:border-t-0"
+            style={{
+              background:
+                "repeating-linear-gradient(135deg,#151310 0 11px,#100e0c 11px 22px)",
+            }}
+          >
+            <video
+              src="/hero.webm"
+              poster="/hero-poster.webp"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+            />
+            <Image
+              src="/hero-poster.webp"
+              alt="Residencia en Tijuana representada por Black Capital"
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 48vw"
+              className="hidden object-cover motion-reduce:block"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/10 to-background/30" />
+          </div>
         </div>
 
-        <div className="absolute inset-x-0 bottom-5 z-20 border-t border-white/[0.06] bg-background/45 backdrop-blur-sm sm:bottom-6 lg:bottom-8">
+        {/* Marquee strip */}
+        <div className="overflow-hidden border-t border-[var(--color-accent)]/15 bg-white/[0.02]">
           <div className="mx-auto flex max-w-[90rem] overflow-hidden py-3.5 text-white/68 sm:py-4">
             <HeroMarqueeStrip />
             <HeroMarqueeStrip duplicate />

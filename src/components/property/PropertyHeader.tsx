@@ -13,6 +13,8 @@ interface PropertyHeaderProps {
     price: number;
     currency: string;
     priceMxn?: number | null;
+    /** When false, hides the eyebrow + H1 title (used when a full-bleed hero already carries them). */
+    showTitle?: boolean;
 }
 
 const currencyMXN = new Intl.NumberFormat("es-MX", {
@@ -54,6 +56,7 @@ export function PropertyHeader({
     price,
     currency,
     priceMxn,
+    showTitle = true,
 }: PropertyHeaderProps) {
     const statusClass = STATUS_CLASSES[status] || "text-foreground/50 border-foreground/15";
     const statusLabel = STATUS_LABELS[status] || status;
@@ -62,12 +65,14 @@ export function PropertyHeader({
     return (
         <div className="grid gap-6 border-b border-white/[0.06] pb-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
             <div className="space-y-5">
-                <div className="flex items-center gap-3">
-                    <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
-                    <span className="property-tag-type text-white/68">
-                        {businessType} · {propertyUse}
-                    </span>
-                </div>
+                {showTitle && (
+                    <div className="flex items-center gap-3">
+                        <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
+                        <span className="property-tag-type text-white/68">
+                            {businessType} · {propertyUse}
+                        </span>
+                    </div>
+                )}
 
                 <div className="flex flex-wrap items-center gap-2">
                     <span className="border border-white/15 px-2.5 py-1 property-tag-type text-white/68">
@@ -85,9 +90,11 @@ export function PropertyHeader({
                     </span>
                 </div>
 
-                <h1 className="max-w-3xl text-display-2 text-white">
-                    {displayTitle}
-                </h1>
+                {showTitle && (
+                    <h1 className="max-w-3xl text-display-2 text-white">
+                        {displayTitle}
+                    </h1>
+                )}
 
                 {address && (
                     <div className="flex items-start gap-2.5 property-location-type text-white/56">

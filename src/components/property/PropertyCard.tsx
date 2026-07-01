@@ -87,7 +87,7 @@ export function PropertyCard({
     const imageAlt = hasCoverImage ? `Fotografía de ${property.title}` : fallbackImage.alt;
 
     const card = (
-        <article className="group relative overflow-hidden border border-white/[0.08] bg-white/[0.025] transition-colors duration-300 hover:border-[var(--color-accent)]/35">
+        <article className="group relative overflow-hidden rounded-lg border border-white/[0.08] bg-white/[0.025] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent)]/40">
             <Link href={href} aria-label={`Ver detalles de ${property.title}`} className="block">
                 <div className={cn("relative overflow-hidden bg-white/[0.02]", ASPECT[variant])}>
                     <Image

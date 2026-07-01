@@ -19,6 +19,9 @@ import { FadeIn } from "@/components/ui/motion";
 
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 import { getPropertyDocuments, toVisibleDocuments } from "@/lib/document-access";
+import { formatPrice, formatArea } from "@/lib/format";
+import { STATUS_LABELS } from "@/lib/property-constants";
+import Image from "next/image";
 import Link from "next/link";
 
 export const revalidate = 60;
@@ -190,6 +193,8 @@ export default async function PropertyDetailPage({
 
     const hasMedia = Boolean(property.video_urls?.length || property.tour_embeds?.length);
     const isForSale = property.business_type === "Venta";
+    const heroImage: string | null =
+        property.cover_image || (property.images?.length ? property.images[0] : null);
 
     // Editorial chapter index (matches the reference "capítulos 01–08").
     const chapters: Chapter[] = [
@@ -222,8 +227,79 @@ export default async function PropertyDetailPage({
             />
             
             <div className="min-h-screen w-full overflow-x-hidden bg-background">
-                <section id="galeria" className="w-full overflow-x-clip border-b border-white/[0.06] pt-20 scroll-mt-24 lg:pt-28">
-                    <div className="mx-auto max-w-[90rem] min-w-0 px-4 pb-8 pt-4 sm:px-10 sm:pt-6 lg:px-16">
+                {/* Full-bleed hero */}
+                <section
+                    className="relative flex h-[70svh] min-h-[460px] w-full items-end overflow-hidden"
+                    style={{
+                        background:
+                            "repeating-linear-gradient(135deg,#151310 0 12px,#100e0c 12px 24px)",
+                    }}
+                >
+                    {heroImage && (
+                        <Image
+                            src={heroImage}
+                            alt={property.title}
+                            fill
+                            priority
+                            sizes="100vw"
+                            className="object-cover"
+                        />
+                    )}
+                    <div
+                        className="absolute inset-0"
+                        style={{
+                            background:
+                                "linear-gradient(180deg,rgba(5,5,5,.55) 0%,rgba(5,5,5,.1) 30%,rgba(5,5,5,.4) 62%,rgba(5,5,5,.96) 100%)",
+                        }}
+                    />
+                    <div className="relative w-full">
+                        <div className="mx-auto max-w-[90rem] px-6 pb-9 pt-24 sm:px-10 lg:px-16">
+                            <div className="mb-5 flex flex-wrap items-center gap-2">
+                                <span className="gold-gradient px-2.5 py-1 property-tag-type text-black">
+                                    {property.business_type}
+                                </span>
+                                <span className="border border-white/40 px-2.5 py-1 property-tag-type text-white">
+                                    {STATUS_LABELS[property.status] || property.status}
+                                </span>
+                                {property.address && (
+                                    <span className="property-tag-type text-white/75">
+                                        {property.address}
+                                    </span>
+                                )}
+                            </div>
+                            <h1 className="font-display text-[clamp(2.5rem,7vw,5.5rem)] font-black uppercase leading-[0.9] tracking-tight text-white">
+                                {property.title}
+                            </h1>
+                            <div className="mt-7 flex flex-wrap items-end gap-x-10 gap-y-4 border-t border-white/15 pt-6">
+                                <div>
+                                    <p className="mb-1.5 property-tag-type text-white/55">Precio</p>
+                                    <p className="property-price-type gold-ink">
+                                        {formatPrice(property.price, property.currency)}
+                                    </p>
+                                </div>
+                                {property.m2_terrain ? (
+                                    <div>
+                                        <p className="mb-1.5 property-tag-type text-white/55">Terreno</p>
+                                        <p className="font-display text-display-3 font-bold text-white">
+                                            {formatArea(property.m2_terrain, "")}
+                                        </p>
+                                    </div>
+                                ) : null}
+                                {property.m2_construction ? (
+                                    <div>
+                                        <p className="mb-1.5 property-tag-type text-white/55">Construcción</p>
+                                        <p className="font-display text-display-3 font-bold text-white">
+                                            {formatArea(property.m2_construction, "")}
+                                        </p>
+                                    </div>
+                                ) : null}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="galeria" className="w-full overflow-x-clip border-y border-white/[0.06] scroll-mt-24">
+                    <div className="mx-auto max-w-[90rem] min-w-0 px-4 pb-8 pt-10 sm:px-10 lg:px-16">
                         <ChapterLabel number={chapterNumber("galeria")} title="Galería" />
                         <ImageGallery
                             images={property.images || []}
@@ -274,6 +350,7 @@ export default async function PropertyDetailPage({
                                         price={property.price}
                                         currency={property.currency}
                                         priceMxn={property.price_mxn}
+                                        showTitle={false}
                                     />
                                 </FadeIn>
 

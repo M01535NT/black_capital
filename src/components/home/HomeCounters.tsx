@@ -5,28 +5,24 @@ import { useEffect, useRef, useState } from "react";
 
 const counters = [
   {
-    label: "Propiedades",
     value: 24,
     suffix: "+",
-    verb: "Custodiadas",
+    label: "Propiedades en custodia",
   },
   {
-    label: "Superficie",
     value: 18000,
-    suffix: "M²",
-    verb: "Comercializados",
+    suffix: " m²",
+    label: "Superficie comercializada",
   },
   {
-    label: "Clientes",
     value: 70,
     suffix: "+",
-    verb: "Acompañados",
+    label: "Clientes acompañados",
   },
   {
-    label: "Años",
     value: 8,
     suffix: "",
-    verb: "Operando",
+    label: "Años operando",
   },
 ];
 
@@ -100,13 +96,11 @@ function CounterItem({
   label,
   value,
   suffix,
-  verb,
   index,
 }: {
   label: string;
   value: number;
   suffix: string;
-  verb: string;
   index: number;
 }) {
   const [counterRef, count] = useCountUp(value);
@@ -115,31 +109,21 @@ function CounterItem({
   return (
     <div
       ref={counterRef}
-      className="relative flex min-w-0 flex-col items-center justify-center px-5 py-7 text-center sm:py-8 lg:px-8"
+      className={`relative min-w-0 border-white/[0.08] px-6 py-9 sm:px-8 ${
+        index % 2 === 0 ? "border-r" : ""
+      } ${index < 2 ? "border-b lg:border-b-0" : ""} lg:border-r lg:last:border-r-0`}
     >
-      {index > 0 ? (
-        <span className="absolute left-0 top-1/2 hidden h-14 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-[var(--color-accent)]/30 to-transparent lg:block" />
-      ) : null}
-      {index % 2 === 1 ? (
-        <span className="absolute left-0 top-1/2 h-14 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-[var(--color-accent)]/25 to-transparent lg:hidden" />
-      ) : null}
-      {index > 1 ? (
-        <span className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/20 to-transparent lg:hidden" />
-      ) : null}
-
-      <p className="flex items-baseline justify-center gap-1.5">
-        <span className="metallic-gold-static gold-glow font-display text-stat-lg font-extrabold uppercase leading-none tabular-nums tracking-[0.02em]">
+      <p className="flex items-baseline gap-0.5">
+        <span className="font-display text-[clamp(2rem,4.5vw,2.75rem)] font-extrabold leading-none tabular-nums text-white">
           {formatted}
         </span>
         {suffix ? (
-          <span className="metallic-gold-static font-display text-caption font-extrabold uppercase leading-none">
+          <span className="font-display text-[clamp(1.5rem,3vw,2rem)] font-extrabold leading-none gold-ink">
             {suffix}
           </span>
         ) : null}
       </p>
-      <p className="mt-3 property-tag-type text-white/55">
-        {label} <span className="text-white/85">/ {verb}</span>
-      </p>
+      <p className="mt-3 property-tag-type text-white/50">{label}</p>
     </div>
   );
 }
@@ -148,21 +132,13 @@ export function HomeCounters() {
   return (
     <section
       aria-label="Indicadores comerciales Black Capital"
-      className="relative border-y border-white/[0.04] bg-white/[0.015]"
+      className="border-b border-white/[0.08] bg-white/[0.015]"
     >
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/40 to-transparent"
-      />
       <div className="mx-auto grid max-w-[90rem] grid-cols-2 lg:grid-cols-4">
         {counters.map((counter, index) => (
           <CounterItem key={counter.label} {...counter} index={index} />
         ))}
       </div>
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/40 to-transparent"
-      />
     </section>
   );
 }
