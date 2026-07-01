@@ -315,8 +315,13 @@ fuerza `agent_id=NULL` para evitar vínculos obsoletos.
   Integridad: 5/5 perfiles ligados a auth.users, 0 leads/property_agents
   huérfanos, app_settings=1.
 
-**Pendiente de decisión del cliente (datos en producción, NO mutados):**
-- (A) Perfil `role=agent` con `agent_id=NULL` (login a panel vacío): vincular a un
-  agente válido, convertir a admin, o desactivar.
-- (B) Agente "Moises Nuñez" con 3 leads asignados pero 0 perfil de login
-  vinculado: crear/asociar su acceso o reasignar esos leads.
+**Remediación de datos en producción (aplicada con autorización del cliente):**
+- (A) ✅ RESUELTO — el perfil huérfano `hugui_94@hotmail.com` (role=agent,
+  agent_id=NULL) se vinculó al agente "Claudia Nallely"
+  (`0a4caa06-effc-440c-8e2d-cf38c87e58ac`) vía UPDATE idempotente por MCP.
+  Post-verificación: 0 perfiles agente sin agent_id, 0 vínculos a agentes
+  inexistentes.
+- (B) ✅ SIN ACCIÓN (por diseño) — "Moises Nuñez" es el administrador del sitio
+  (perfil `tonala.mn`, role=admin) y además figura como agente público; sus 3
+  leads son visibles porque un admin ve todo el inventario de leads. No requiere
+  perfil agente separado.
