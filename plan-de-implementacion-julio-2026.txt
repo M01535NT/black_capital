@@ -552,6 +552,21 @@ Offer (price/priceCurrency/availability) ya era correcto.
 structured data (Organization/WebSite en home y sub-marcas, BreadcrumbList,
 tipo de residencia, floorSize/landSize, broker) ya estaba correcto.
 
+### [2026-07-01] P2 — Botones de solo-icono del admin sin nombre accesible  ✅ RESUELTO
+
+**Zona:** accesibilidad (panel admin) — la a11y pública ya estaba en 0 issues.
+**Brecha:** `AdminTooltip` era un tooltip puramente visual (un `<span>` que
+aparece en hover/focus) que NO asociaba su label al trigger por ARIA. Los botones
+de solo-icono que lo usan (campana de notificaciones en el topbar, etc.) quedaban
+**sin nombre accesible**: un lector de pantalla los anunciaba como "button" a
+secas. Un tooltip aporta descripción, no nombre.
+**Corrección:** `AdminTooltip` ahora inyecta `aria-label={label}` en el hijo vía
+`cloneElement` (respetando un `aria-label` propio si ya lo trae) y marca el span
+visual como `aria-hidden`. Arregla todos los icon-buttons que lo usan en un solo
+punto.
+**Evidencia:** lint 0, typecheck 0, build exit 0. Patrón estándar de React
+(cloneElement) para nombrar el trigger.
+
 **Nota:** el archivo de migración del repo ya era correcto; el defecto era de
 despliegue (drift schema repo↔prod). Recomendado: asegurar que el pipeline
 aplique migraciones pendientes en cada deploy (Vercel + Supabase) para evitar
