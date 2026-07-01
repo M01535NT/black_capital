@@ -96,10 +96,12 @@ export function SubBrandValue({
     items,
 }: SubBrandValueProps) {
     return (
+        // w-full es necesario: como flex item de #main-content (columna), mx-auto sin
+        // ancho explícito dimensiona la sección a su contenido y el rail desborda el viewport.
         <section
             id={`${brand}-value`}
             aria-label={`Propuesta de valor ${brand}`}
-            className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24"
+            className="w-full mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24"
         >
             <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div className="max-w-3xl">

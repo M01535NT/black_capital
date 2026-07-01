@@ -33,9 +33,9 @@
 
 | Unidad | Ruta | Nota | Estado | Criterios fallidos / notas |
 |---|---|---|---|---|
-| Black Business (home + inventario + contacto) | `/black-business/*` | — | PENDIENTE | |
-| Black Luxury (home + inventario + contacto + manifesto/criteria) | `/black-luxury/*` | — | PENDIENTE | |
-| Black Industrial (home + inventario + contacto) | `/black-industrial/*` | — | PENDIENTE | |
+| Black Business (home + inventario + contacto) | `/black-business/*` | 10/10 | 10/10 ✅ (2026-07-01) | Sin jerga; overflow resuelto vía fix compartido; subrutas redirigen a páginas generales ya cerradas |
+| Black Luxury (home + inventario + contacto + manifesto/criteria) | `/black-luxury/*` | 10/10 | 10/10 ✅ (2026-07-01) | Fix mayor: secciones `mx-auto` sin `w-full` como flex items colapsaban a ancho de contenido (958px en viewport de 375). Copy "Residencial selecto"→"Casas y residencias"; settings "Premium/de lujo" neutralizados |
+| Black Industrial (home + inventario + contacto) | `/black-industrial/*` | 10/10 | 10/10 ✅ (2026-07-01) | Limpio tras fix compartido |
 
 ## Tier 4 — Admin
 
@@ -61,6 +61,8 @@
 _(vacío)_
 
 ## Registro de fixes por unidad
+
+- **2026-07-01 · Tier 3 Sub-marcas → 10/10.** (1) Bug de layout raíz: `SubBrandValue` y `BrandInventory` usan `<section className="mx-auto max-w-[90rem]">` como hijos directos de `#main-content` (flex column) — `mx-auto` en un flex item de columna absorbe el espacio transversal y la sección se dimensiona a su CONTENIDO: con rails de scroll horizontal dentro, medía 958px en un viewport de 375 (overflow real, 19 elementos). Fix: `w-full` en ambas secciones; el rail vuelve a ser carrusel swipeable (scrollW 958 dentro de 375). Diagnóstico complicado por caché corrupta de Turbopack (requirió borrar `.next`). (2) Copy: headline luxury "Residencial selecto." → "Casas y residencias."; defaults de settings "Propiedades Premium"/"de lujo" → "Casas y residencias" (settings.json, api/settings, settings-form). (3) `<main>` anidados inválidos corregidos (home y herramientas → div). Verificado: 0 overflow y 0 headings cortados en las 3 marcas a 375 y 1119; tsc 0, lint 0.
 
 - **2026-07-01 · Nosotros×4 + Legales → 10/10 + FIX TRANSVERSAL MAYOR.** `.text-display-1` tenía `max-width: 11ch` pero "REPRESENTACIÓN" mide ~20ch en Archivo: **el titular principal del sitio llevaba cortado desde el redesign en TODOS los viewports** (móvil y desktop), igual que "Inmobiliaria..." en /nosotros. Fix: sin max-width en el token (el ancho lo dan los contenedores de página y los <br>), mínimo del clamp 2.75rem→2rem y tracking 0.02em en <640px (override fuera de @layer porque Tailwind v4 reordena las reglas dentro de @layer utilities). Verificado sin clipping en home/nosotros/valores/historia/equipo/contacto a 375 y 1119. Además: `NextStepCTA` compartido añadido a valores/historia/equipo (terminaban sin CTA). Lección de protocolo: el overflow de texto inline no se detecta con getBoundingClientRect — revisar `scrollWidth > clientWidth` de headings.
 

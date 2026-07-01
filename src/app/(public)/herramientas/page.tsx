@@ -124,7 +124,8 @@ export default function HerramientasPage() {
                             </header>
 
                             <div className="grid grid-cols-1 xl:grid-cols-[1fr_22rem]">
-                                <main className="border-b border-white/[0.08] xl:border-b-0 xl:border-r">
+                                {/* div, no <main>: el main semántico es #main-content del layout */}
+                                <div className="border-b border-white/[0.08] xl:border-b-0 xl:border-r">
                                     <div className="border-b border-white/[0.08] p-4 sm:p-6 lg:p-8">
                                         <p className="property-tag-type text-[var(--color-accent)]/80">
                                             Calculadoras en línea
@@ -171,7 +172,7 @@ export default function HerramientasPage() {
                                             );
                                         })}
                                     </div>
-                                </main>
+                                </div>
 
                                 <aside className="bg-[#070707]/85 p-4 sm:p-8">
                                     <p className="property-tag-type text-white/35">

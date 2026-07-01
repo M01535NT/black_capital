@@ -138,7 +138,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             accent: "gold",
             headline: (
                 <>
-                    Residencial selecto.
+                    Casas y residencias.
                 </>
             ),
             subtitle:

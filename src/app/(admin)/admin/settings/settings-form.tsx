@@ -31,7 +31,7 @@ const DEFAULTS: AppSettings = {
     heroVideoUrl: "",
     heroImageUrl: "",
     luxuryHeroTitle: "Black Luxury",
-    luxuryHeroSubtitle: "Propiedades de lujo",
+    luxuryHeroSubtitle: "Casas y residencias",
     businessHeroTitle: "Black Business",
     businessHeroSubtitle: "Espacios comerciales",
     industrialHeroTitle: "Black Industrial",

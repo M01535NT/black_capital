@@ -95,7 +95,8 @@ function HeroMarqueeStrip({ duplicate = false }: { duplicate?: boolean }) {
 
 export default function HomePage() {
   return (
-    <main className="bg-background">
+    // El <main> semántico vive en el layout público (#main-content); aquí un div evita <main> anidados.
+    <div className="bg-background">
       <section className="relative border-b border-white/[0.08]">
         <div className="mx-auto grid max-w-[90rem] grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]">
           {/* Text column */}
@@ -250,6 +251,6 @@ export default function HomePage() {
         </div>
       </section>
       <JsonLd id="ld-org" data={ORGANIZATION_SCHEMA} />
-    </main>
+    </div>
   );
 }

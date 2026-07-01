@@ -203,7 +203,7 @@ export async function BrandInventory({
         <section
             id={`${brandSlug}-inventory`}
             aria-label={`Inventario ${propertyUse}`}
-            className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24"
+            className="w-full mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24"
         >
             <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div className="max-w-3xl">
