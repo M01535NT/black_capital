@@ -36,9 +36,12 @@ export function ContactLeadForm() {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    // Capturar el form antes del await: React anula currentTarget al terminar
+    // el dispatch y el reset() posterior lanzaría, marcando error un envío exitoso.
+    const form = event.currentTarget;
     setStatus("submitting");
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(form);
     const payload = {
       company_honeypot: formData.get("company_honeypot"),
       full_name: formData.get("full_name"),
@@ -59,7 +62,7 @@ export function ContactLeadForm() {
 
       if (!response.ok) throw new Error("No se pudo registrar");
 
-      event.currentTarget.reset();
+      form.reset();
       setStatus("success");
     } catch {
       setStatus("error");
@@ -89,12 +92,13 @@ export function ContactLeadForm() {
         aria-hidden="true"
       />
 
-      <div className="grid grid-cols-2 gap-3 sm:gap-5">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
         <Input
           name="full_name"
           required
           minLength={2}
           placeholder="Nombre completo"
+          aria-label="Nombre completo"
           autoComplete="name"
           className="h-11 rounded-none border-white/12 bg-white/[0.035] sm:h-12"
         />
@@ -103,21 +107,24 @@ export function ContactLeadForm() {
           required
           type="email"
           placeholder="Correo"
+          aria-label="Correo electrónico"
           autoComplete="email"
           className="h-11 rounded-none border-white/12 bg-white/[0.035] sm:h-12"
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:gap-5">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
         <Input
           name="phone"
           type="tel"
           placeholder="WhatsApp / teléfono"
+          aria-label="WhatsApp o teléfono"
           autoComplete="tel"
           className="h-11 rounded-none border-white/12 bg-white/[0.035] sm:h-12"
         />
         <select
           name="interest"
+          aria-label="Interés principal"
           className="h-11 border border-white/12 bg-[#0b0b0b] px-3 text-body-sm text-white/75 outline-none focus:border-[var(--color-accent)] sm:h-12 sm:text-body"
           defaultValue={defaultInterest}
         >
@@ -133,6 +140,7 @@ export function ContactLeadForm() {
         name="message"
         rows={3}
         placeholder="Zona, tipo de inmueble y objetivo."
+        aria-label="Mensaje: zona, tipo de inmueble y objetivo"
         className="w-full resize-none border border-white/12 bg-white/[0.035] px-3 py-3 text-body-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)] sm:text-body"
       />
 
@@ -147,7 +155,7 @@ export function ContactLeadForm() {
       </label>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button
+        <Button
           type="submit"
           disabled={status === "submitting"}
           className="brushed-gold min-h-11 w-full rounded-full px-7 text-body-sm font-bold sm:min-h-[48px] sm:w-auto sm:text-body"
@@ -159,7 +167,7 @@ export function ContactLeadForm() {
           {status !== "submitting" ? <ArrowRight className="ml-2 h-4 w-4" /> : null}
         </Button>
         {status === "error" ? (
-          <p className="text-body text-red-400">No se pudo enviar. Revisa los campos e intenta de nuevo.</p>
+          <p role="alert" className="text-body text-red-400">No se pudo enviar. Revisa los campos e intenta de nuevo.</p>
         ) : null}
       </div>
     </form>

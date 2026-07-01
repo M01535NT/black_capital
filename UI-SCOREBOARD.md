@@ -10,7 +10,7 @@
 |---|---|---|---|---|
 | Header + nav (desktop/mobile) | `layout/header/*`, `Header.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | Fixes: wrapper 72px>64px eliminado; focus-visible underline; dedupe dropdowns; dead code fuera; warning Radix drawer silenciado |
 | Footer | `layout/Footer.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | Fixes: targets sociales 44px en móvil; indentación. ⚠️ DATO CLIENTE: email `contacto@blackmx.vercel.app` y URLs de redes son placeholders (contact-config.ts) |
-| Sistema de botones/inputs/forms | `ui/button.tsx`, `ui/input.tsx`, `ui/form.tsx`, `ui/select.tsx`, `ui/textarea.tsx` | — | PENDIENTE | |
+| Sistema de botones/inputs/forms | `ui/button.tsx`, `ui/input.tsx`, `ui/form.tsx`, `ui/select.tsx`, `ui/textarea.tsx`, `public/contact-lead-form.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | ui/* shadcn stock OK; fixes en contact-lead-form: bug currentTarget post-await (P1), grid móvil 1 col, aria-labels, role=alert |
 | Cards y badges | `ui/card.tsx`, `ui/badge.tsx`, `property/PropertyCard` (en `shared/BrandInventory`) | — | PENDIENTE | |
 | Overlays (dialog/drawer/dropdown/tooltip) | `ui/dialog.tsx`, `ui/drawer.tsx`, `ui/dropdown-menu.tsx`, `admin/admin-tooltip.tsx` | — | PENDIENTE | |
 | Motion (transiciones/reveals) | `motion/*`, `ui/motion.tsx`, `ui/reveal-text.tsx`, `layout/PageTransition.tsx`, `layout/ScrollProgress.tsx` | — | PENDIENTE | respetar `prefers-reduced-motion` |
@@ -61,6 +61,8 @@
 _(vacío)_
 
 ## Registro de fixes por unidad
+
+- **2026-07-01 · Sistema forms → 10/10.** Bug P1 en `contact-lead-form.tsx`: `event.currentTarget.reset()` tras el `await` lanzaba TypeError (React anula currentTarget) → todo envío EXITOSO mostraba "No se pudo enviar" aunque el lead sí se creaba; capturado `form` antes del await. Además: grid 1 col en móvil (antes 2 cols apretadas en 375px), `aria-label` en los 5 campos (solo tenían placeholder), `role="alert"` en el mensaje de error, indentación del Button. Verificado: móvil 1 col campos 285px, tablet 2 cols, validación nativa bloquea submit vacío sin tocar red, tsc 0, lint 0. NO se envió ningún lead real (Supabase producción).
 
 - **2026-07-01 · Footer → 10/10.** Targets táctiles de redes sociales a 44×44px en móvil (`w-11 h-11 sm:w-9 sm:h-9`); indentación rota del `<li>` de horarios. Verificado: móvil (sin overflow, 44px), tablet (4 cols una fila), desktop (grid 12), tsc 0, lint 0. Pendiente de DATOS del cliente: email real y URLs reales de redes en `src/lib/contact-config.ts`.
 
