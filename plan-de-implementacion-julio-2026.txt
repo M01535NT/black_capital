@@ -538,6 +538,20 @@ NONE**, 0 errores de consola. lint 0, typecheck 0, build exit 0.
 Con esto queda cubierto también el punto del audit sobre persistencia de
 favoritos entre sesiones (funciona vía `localStorage` con clave `bc_favorites`).
 
+### [2026-07-01] P2 — `businessFunction` inválido en JSON-LD de propiedad (SEO)  ✅ RESUELTO
+
+**Zona:** SEO / datos estructurados
+**Brecha:** `PropertyJsonLd` emitía `offers.businessFunction: businessType` con
+texto libre en español ("Venta"/"Renta"). schema.org espera un valor GoodRelations
+(URL enum); los crawlers ignoran el texto libre, así que la señal venta-vs-renta
+no era legible por máquina en los rich results.
+**Corrección:** mapeo a GoodRelations — Venta → `#Sell`, Renta → `#LeaseOut`; si
+el tipo no mapea, se omite la propiedad (evita un valor inválido). El resto del
+Offer (price/priceCurrency/availability) ya era correcto.
+**Evidencia:** lint 0, typecheck 0, build exit 0. El resto del catálogo de
+structured data (Organization/WebSite en home y sub-marcas, BreadcrumbList,
+tipo de residencia, floorSize/landSize, broker) ya estaba correcto.
+
 **Nota:** el archivo de migración del repo ya era correcto; el defecto era de
 despliegue (drift schema repo↔prod). Recomendado: asegurar que el pipeline
 aplique migraciones pendientes en cada deploy (Vercel + Supabase) para evitar
