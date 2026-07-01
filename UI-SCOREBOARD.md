@@ -14,8 +14,8 @@
 | Cards y badges | `ui/card.tsx`, `ui/badge.tsx`, `property/PropertyCard.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | Fixes: traslape badges/botones (right-28), targets 44px móvil, CTA 44px. ⚠️ DATO CLIENTE: existe "CASA EN VENTA DE PRUEBA" en inventario de producción |
 | Overlays (dialog/drawer/dropdown/tooltip) | `ui/dialog.tsx`, `ui/drawer.tsx`, `ui/dropdown-menu.tsx`, `admin/admin-tooltip.tsx`, `property/DocumentCard.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | drawer ya corregido en u.1; role=alert en errores de DocumentCard; ModeToggle (dead code) eliminado. Flujo de documentos verificado por código (API de producción, no ejecutable) |
 | Motion (transiciones/reveals) | `motion/*`, `ui/motion.tsx`, `ui/reveal-text.tsx`, `layout/ScrollProgress.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | Doble transición de ruta eliminada (PageTransition borrado, queda RouteTransition en template.tsx); ScrollProgress respeta reduced-motion; el resto ya lo respetaba |
-| WhatsAppFloat + toasts | `layout/WhatsAppFloat.tsx`, `ui/sonner.tsx` | — | PENDIENTE | |
-| Shared section primitives | `shared/SectionHeader.tsx`, `shared/PageHero.tsx`, `shared/eyebrow.tsx`, `layout/Section.tsx` | — | PENDIENTE | |
+| WhatsAppFloat + toasts | `layout/WhatsAppFloat.tsx`, `ui/sonner.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | Sin cambios: target 56px, safe-area insets, aria-label, oculto en ficha (StickyContactBar), Toaster montado en root dark |
+| Shared section primitives | `shared/SectionHeader.tsx`, `shared/PageHero.tsx`, `shared/eyebrow.tsx`, `layout/Section.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | Solo indentación del h1 en PageHero; todo tokenizado, aria-label en Section, h1 único por página |
 
 ## Tier 2 — Páginas públicas core
 

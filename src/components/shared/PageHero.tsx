@@ -81,7 +81,7 @@ export function PageHero({
                         </span>
                     )}
 
-                <h1
+                    <h1
                         id={titleId}
                         className="text-display-3 text-foreground mb-6"
                     >
