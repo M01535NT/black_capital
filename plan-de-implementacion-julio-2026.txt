@@ -1,0 +1,173 @@
+# Plan de Mejora — Black Capital (blackmx.vercel.app)
+**Fecha de auditoría:** 30 de junio de 2026  
+**Versión:** 1.0  
+**Elaborado por:** Auditoría automatizada de QA
+
+---
+
+## Resumen Ejecutivo
+
+El sitio web de Black Capital presenta una base sólida y funcional. La navegación principal,
+el inventario, las fichas de propiedades y las páginas de contacto operan correctamente.
+Las mejoras identificadas se enfocan en cuatro áreas: experiencia táctil, contenido incompleto,
+inventario vacío y accesibilidad general.
+
+---
+
+## 1. Navegación — Menús Dropdown (Prioridad: Alta)
+
+### Problema
+Los menús desplegables de **Venta**, **Renta** y **Herramientas** solo se activan con
+**hover (cursor encima)**, no con clic directo. En dispositivos táctiles (móviles y tablets)
+el hover no existe, por lo que estos menús son inaccesibles sin el menú hamburguesa.
+
+### Impacto
+- Usuarios en smartphone o tablet no pueden acceder directamente a los submenús del header.
+- Reduce la usabilidad en dispositivos móviles, que representan una parte significativa del tráfico inmobiliario.
+
+### Acciones recomendadas
+- [ ] Agregar soporte de **clic/tap** además de hover para abrir los dropdowns.
+- [ ] Implementar lógica de **"primer clic abre, segundo clic navega"** (patrón estándar en móvil).
+- [ ] Probar en viewport de 375px, 768px y 1024px para verificar comportamiento responsive.
+- [ ] Considerar convertir los dropdowns en acordeones dentro del menú hamburguesa en móvil.
+
+---
+
+## 2. Páginas en Construcción (Prioridad: Alta)
+
+### Problema
+Las siguientes rutas cargan con título correcto pero el contenido visible es mínimo o inexistente:
+
+| Ruta | Título detectado | Estado |
+|------|-----------------|--------|
+| `/nosotros/equipo` | Equipo \| Black Capital | Sin contenido visible |
+| `/nosotros/historia` | Nuestra Historia \| Black Capital | Sin contenido visible |
+| `/nosotros/valores` | Nuestros Valores \| Black Capital | Sin contenido visible |
+
+### Impacto
+- Generan expectativas que no se cumplen (el menú hamburguesa enlaza a estas páginas).
+- Afectan el SEO al no tener contenido indexable.
+- Dañan la credibilidad de la marca ante posibles clientes.
+
+### Acciones recomendadas
+- [ ] **Opción A (Corto plazo):** Agregar contenido provisional o un mensaje "Próximamente".
+- [ ] **Opción B (Recomendada):** Redactar y publicar el contenido real de cada sección.
+  - **Equipo:** Perfiles de asesores con foto, nombre, especialidad y contacto.
+  - **Historia:** Línea de tiempo de la empresa desde su fundación (8 años operando).
+  - **Valores:** Listado de valores institucionales con descripción breve.
+- [ ] Mientras no tengan contenido, **ocultar o deshabilitar** los enlaces en el menú hamburguesa.
+
+---
+
+## 3. Inventario de Renta Vacío (Prioridad: Media)
+
+### Problema
+El filtro de **Renta** en el inventario devuelve **0 resultados**. El menú ofrece tres
+subcategorías (Residencial, Comercial, Industrial) pero no hay propiedades en renta cargadas.
+
+### Impacto
+- Usuarios que buscan rentar llegan a una pantalla vacía, lo que puede interpretarse como
+  que el servicio no está disponible.
+- Desaprovecha tráfico de búsqueda orientado a renta de inmuebles en Tijuana.
+
+### Acciones recomendadas
+- [ ] Cargar al menos **3–5 propiedades en renta** en el panel admin para validar el flujo completo.
+- [ ] Si no hay inventario de renta activo, mostrar un **mensaje contextual** en lugar de pantalla vacía:
+  _"Por el momento no contamos con inventario en renta disponible. Contáctanos para recibir opciones personalizadas."_
+- [ ] Agregar un botón de CTA (llamada a la acción) en la pantalla de 0 resultados que lleve a `/contacto`.
+
+---
+
+## 4. Botón "Compartir Propiedad" (Prioridad: Media)
+
+### Problema
+El botón de compartir usa la **Web Share API nativa** del navegador. En escritorio, la mayoría
+de navegadores no la soportan o muestran un comportamiento inconsistente (sin feedback visual
+para el usuario).
+
+### Impacto
+- En desktop, el usuario hace clic y no ocurre nada visible → experiencia confusa.
+- Solo funciona correctamente en Chrome/Edge móvil.
+
+### Acciones recomendadas
+- [ ] Implementar un **fallback**: si `navigator.share` no está disponible, mostrar un pequeño
+  popover con opciones de compartir (WhatsApp, copiar enlace, X/Twitter).
+- [ ] Agregar feedback visual al botón cuando la acción se ejecuta exitosamente (ej. cambio de
+  ícono a un ✓ por 2 segundos).
+
+---
+
+## 5. Accesibilidad y SEO (Prioridad: Media)
+
+### Problema
+Durante la auditoría se detectaron algunos elementos sin texto visible (solo íconos),
+lo que puede afectar lectores de pantalla y el SEO.
+
+### Acciones recomendadas
+- [ ] Verificar que todos los botones de íconos tengan `aria-label` descriptivo (WhatsApp,
+  LinkedIn, Instagram, X, compartir, favoritos).
+- [ ] Agregar metadatos `og:image` y `og:description` únicos por página de propiedad para
+  mejorar la previsualización al compartir en redes sociales.
+- [ ] Verificar que las imágenes de propiedades incluyan atributo `alt` con descripción relevante.
+- [ ] Revisar contraste de texto dorado sobre negro — asegurarse de cumplir WCAG AA (ratio mínimo 4.5:1).
+
+---
+
+## 6. Panel de Administración (Prioridad: Baja)
+
+### Problema
+El enlace al **Panel Admin** es visible en el footer público del sitio, lo que expone
+la existencia del panel a cualquier visitante.
+
+### Impacto
+- Aumenta la superficie de ataque ante intentos de acceso no autorizado.
+- No es una práctica recomendada en producción.
+
+### Acciones recomendadas
+- [ ] **Ocultar el enlace de Panel Admin** del footer en el entorno de producción.
+- [ ] Acceder al panel únicamente mediante URL directa conocida por el equipo interno.
+- [ ] Asegurarse de que el panel tenga protección adicional (rate limiting en intentos de login,
+  2FA opcional).
+
+---
+
+## 7. UX General — Mejoras Menores (Prioridad: Baja)
+
+### Acciones recomendadas
+- [ ] **Animación de entrada en páginas:** Algunas páginas muestran pantalla negra durante
+  ~1–2 segundos antes de mostrar el contenido. Reducir la duración de la animación de entrada
+  o agregar un skeleton/placeholder mejora la percepción de velocidad.
+- [ ] **0 resultados en filtros:** Al aplicar filtros sin resultados, mostrar un mensaje amigable
+  con sugerencias de acción (limpiar filtros, contactar asesor).
+- [ ] **Botón "Agregar a favoritos":** Verificar que persista entre sesiones (localStorage o
+  cuenta de usuario). Si no persiste, no genera valor real.
+- [ ] **Campo de búsqueda en inventario:** Considerar agregar búsqueda por colonia/fraccionamiento
+  para usuarios que conocen la zona pero no el nombre del proyecto.
+
+---
+
+## Resumen de Prioridades
+
+| # | Mejora | Prioridad | Esfuerzo estimado |
+|---|--------|-----------|------------------|
+| 1 | Dropdowns accesibles en táctil | 🔴 Alta | Medio (2–4 hrs) |
+| 2 | Completar páginas de Nosotros | 🔴 Alta | Alto (contenido + diseño) |
+| 3 | Gestionar inventario de Renta vacío | 🟡 Media | Bajo (1–2 hrs) |
+| 4 | Fallback para botón Compartir | 🟡 Media | Medio (2–3 hrs) |
+| 5 | Accesibilidad y SEO por página | 🟡 Media | Medio (3–5 hrs) |
+| 6 | Ocultar enlace Admin del footer | 🟢 Baja | Muy bajo (30 min) |
+| 7 | Mejoras UX menores | 🟢 Baja | Variable |
+
+---
+
+## Próximos Pasos Sugeridos
+
+1. **Semana 1:** Resolver prioridades altas — dropdowns táctiles y ocultamiento del link de admin.
+2. **Semana 2–3:** Redactar contenido para páginas de Equipo, Historia y Valores.
+3. **Semana 3–4:** Cargar propiedades de renta y mejorar el fallback del botón compartir.
+4. **Mes 2:** Auditoría de accesibilidad (WCAG) y optimización SEO por página de propiedad.
+
+---
+
+*Documento generado tras auditoría funcional automatizada del sitio web Black Capital.*  
+*Para dudas o seguimiento, revisar el reporte completo de QA adjunto.*

@@ -1,446 +1,512 @@
-# Graph Report - .  (2026-06-17)
+# Graph Report - black_capital  (2026-06-18)
 
 ## Corpus Check
-- cluster-only mode — file stats not available
+- 299 files · ~140,063 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1253 nodes · 2224 edges · 156 communities (123 shown, 33 thin omitted)
+- 1426 nodes · 2393 edges · 169 communities (136 shown, 33 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 45 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9831d8bb`
+- Built from commit: `9b6ca325`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Admin Dashboard & Forms|Admin Dashboard & Forms]]
-- [[_COMMUNITY_API Utilities & Validation|API Utilities & Validation]]
-- [[_COMMUNITY_Database Schema & Types|Database Schema & Types]]
-- [[_COMMUNITY_UI Components & Controls|UI Components & Controls]]
-- [[_COMMUNITY_Database Migrations & Schema|Database Migrations & Schema]]
-- [[_COMMUNITY_Frontend Dependencies|Frontend Dependencies]]
-- [[_COMMUNITY_Form Components & Uploads|Form Components & Uploads]]
-- [[_COMMUNITY_Admin & Public Features|Admin & Public Features]]
-- [[_COMMUNITY_Tech Stack & Analytics|Tech Stack & Analytics]]
-- [[_COMMUNITY_Admin Navigation & UI|Admin Navigation & UI]]
-- [[_COMMUNITY_Account Settings Forms|Account Settings Forms]]
-- [[_COMMUNITY_Error Handling & Buttons|Error Handling & Buttons]]
-- [[_COMMUNITY_Property Display Components|Property Display Components]]
-- [[_COMMUNITY_Component Library Structure|Component Library Structure]]
-- [[_COMMUNITY_TypeScript Configuration|TypeScript Configuration]]
-- [[_COMMUNITY_Team Page & Animations|Team Page & Animations]]
-- [[_COMMUNITY_Admin Authentication Pages|Admin Authentication Pages]]
-- [[_COMMUNITY_Featured Property Display|Featured Property Display]]
-- [[_COMMUNITY_Navigation & Dropdowns|Navigation & Dropdowns]]
-- [[_COMMUNITY_Lead Management Client|Lead Management Client]]
-- [[_COMMUNITY_Property Catalog Filters|Property Catalog Filters]]
-- [[_COMMUNITY_Sitemap & Inventory Pages|Sitemap & Inventory Pages]]
-- [[_COMMUNITY_Mobile Navigation Drawer|Mobile Navigation Drawer]]
-- [[_COMMUNITY_Property Document & Contact|Property Document & Contact]]
-- [[_COMMUNITY_Sub-Brand Configuration|Sub-Brand Configuration]]
-- [[_COMMUNITY_Document Card & Dialog|Document Card & Dialog]]
-- [[_COMMUNITY_Data Table Components|Data Table Components]]
-- [[_COMMUNITY_Layout & Theme Providers|Layout & Theme Providers]]
-- [[_COMMUNITY_Privacy & Contact Pages|Privacy & Contact Pages]]
-- [[_COMMUNITY_Homepage & Testimonials|Homepage & Testimonials]]
-- [[_COMMUNITY_Metric Display & Formatting|Metric Display & Formatting]]
-- [[_COMMUNITY_Luxury Brand & Reveal|Luxury Brand & Reveal]]
-- [[_COMMUNITY_Carousel Component|Carousel Component]]
-- [[_COMMUNITY_App Settings Page|App Settings Page]]
-- [[_COMMUNITY_Vercel Deployment Config|Vercel Deployment Config]]
-- [[_COMMUNITY_About Us Page Sections|About Us Page Sections]]
-- [[_COMMUNITY_Development Dependencies|Development Dependencies]]
-- [[_COMMUNITY_Supabase & Validation|Supabase & Validation]]
-- [[_COMMUNITY_Agent Select & Lead Actions|Agent Select & Lead Actions]]
-- [[_COMMUNITY_Homepage Hero & UI|Homepage Hero & UI]]
-- [[_COMMUNITY_Property Media & Tours|Property Media & Tours]]
-- [[_COMMUNITY_Sub-Brand Hero & Search|Sub-Brand Hero & Search]]
-- [[_COMMUNITY_Industrial Brand Page|Industrial Brand Page]]
-- [[_COMMUNITY_React Error Boundary|React Error Boundary]]
-- [[_COMMUNITY_Footer & Logo|Footer & Logo]]
-- [[_COMMUNITY_Animation Hooks & Components|Animation Hooks & Components]]
-- [[_COMMUNITY_Package Scripts & Info|Package Scripts & Info]]
-- [[_COMMUNITY_Component Folder Structure|Component Folder Structure]]
-- [[_COMMUNITY_Sub-Brand Call to Action|Sub-Brand Call to Action]]
-- [[_COMMUNITY_Sub-Brand Statistics|Sub-Brand Statistics]]
-- [[_COMMUNITY_Sub-Brand Value Proposition|Sub-Brand Value Proposition]]
-- [[_COMMUNITY_History Page & Hero|History Page & Hero]]
-- [[_COMMUNITY_Property Header & Formatting|Property Header & Formatting]]
-- [[_COMMUNITY_Agent Card & Property Sidebar|Agent Card & Property Sidebar]]
-- [[_COMMUNITY_SEO & Property JSON-LD|SEO & Property JSON-LD]]
-- [[_COMMUNITY_Business Brand Page|Business Brand Page]]
-- [[_COMMUNITY_Contact Page & Form|Contact Page & Form]]
-- [[_COMMUNITY_Favorite Properties Hook|Favorite Properties Hook]]
-- [[_COMMUNITY_Public Layout & Transitions|Public Layout & Transitions]]
-- [[_COMMUNITY_Luxury Brand Page|Luxury Brand Page]]
-- [[_COMMUNITY_Tools Page & Metrics|Tools Page & Metrics]]
-- [[_COMMUNITY_Homepage Counters|Homepage Counters]]
-- [[_COMMUNITY_Lead Tasks & Actions|Lead Tasks & Actions]]
-- [[_COMMUNITY_Property Image Gallery|Property Image Gallery]]
-- [[_COMMUNITY_Luxury Criteria & Stats|Luxury Criteria & Stats]]
-- [[_COMMUNITY_Next.js App Router Structure|Next.js App Router Structure]]
-- [[_COMMUNITY_App Template & Transitions|App Template & Transitions]]
-- [[_COMMUNITY_API Proxy Configuration|API Proxy Configuration]]
-- [[_COMMUNITY_Methodology Section|Methodology Section]]
-- [[_COMMUNITY_Black Capital Brands|Black Capital Brands]]
-- [[_COMMUNITY_Responsive Audit Script|Responsive Audit Script]]
-- [[_COMMUNITY_Database Seeding|Database Seeding]]
-- [[_COMMUNITY_Sub-Brand Value Test|Sub-Brand Value Test]]
-- [[_COMMUNITY_Open Graph Image|Open Graph Image]]
-- [[_COMMUNITY_Next.js PWA Config|Next.js PWA Config]]
-- [[_COMMUNITY_PostHog Configuration|PostHog Configuration]]
-- [[_COMMUNITY_Mortgage Calculator|Mortgage Calculator]]
-- [[_COMMUNITY_ESLint Configuration|ESLint Configuration]]
-- [[_COMMUNITY_Admin Placeholder Fields|Admin Placeholder Fields]]
-- [[_COMMUNITY_PostCSS Configuration|PostCSS Configuration]]
-- [[_COMMUNITY_Playwright Test Framework|Playwright Test Framework]]
-- [[_COMMUNITY_Resend API Integration|Resend API Integration]]
-- [[_COMMUNITY_Mobile Public Audit|Mobile Public Audit]]
-- [[_COMMUNITY_Mobile Section Height Audit|Mobile Section Height Audit]]
-- [[_COMMUNITY_Image Assets|Image Assets]]
-- [[_COMMUNITY_Image Assets|Image Assets]]
-- [[_COMMUNITY_Image Assets|Image Assets]]
-- [[_COMMUNITY_Image Assets|Image Assets]]
-- [[_COMMUNITY_Default Attribute Icon|Default Attribute Icon]]
-- [[_COMMUNITY_User Interface Elements|User Interface Elements]]
-- [[_COMMUNITY_Hero Poster Image|Hero Poster Image]]
-- [[_COMMUNITY_Icon 192x192|Icon 192x192]]
-- [[_COMMUNITY_Icon 512x512|Icon 512x512]]
-- [[_COMMUNITY_Industrial Hero Image|Industrial Hero Image]]
-- [[_COMMUNITY_Next.js Logo|Next.js Logo]]
-- [[_COMMUNITY_Admin Password|Admin Password]]
-- [[_COMMUNITY_Framer Motion Library|Framer Motion Library]]
-- [[_COMMUNITY_WhatsApp Number Public|WhatsApp Number Public]]
-- [[_COMMUNITY_Next.js PWA Plugin|Next.js PWA Plugin]]
-- [[_COMMUNITY_Vercel Platform|Vercel Platform]]
-- [[_COMMUNITY_Vercel Logo|Vercel Logo]]
-- [[_COMMUNITY_Window Icon|Window Icon]]
+- [[_COMMUNITY_Community 0|Community 0]]
+- [[_COMMUNITY_Community 1|Community 1]]
+- [[_COMMUNITY_Community 2|Community 2]]
+- [[_COMMUNITY_Community 3|Community 3]]
+- [[_COMMUNITY_Community 4|Community 4]]
+- [[_COMMUNITY_Community 5|Community 5]]
+- [[_COMMUNITY_Community 6|Community 6]]
+- [[_COMMUNITY_Community 7|Community 7]]
+- [[_COMMUNITY_Community 8|Community 8]]
+- [[_COMMUNITY_Community 9|Community 9]]
+- [[_COMMUNITY_Community 10|Community 10]]
+- [[_COMMUNITY_Community 11|Community 11]]
+- [[_COMMUNITY_Community 12|Community 12]]
+- [[_COMMUNITY_Community 13|Community 13]]
+- [[_COMMUNITY_Community 14|Community 14]]
+- [[_COMMUNITY_Community 15|Community 15]]
+- [[_COMMUNITY_Community 16|Community 16]]
+- [[_COMMUNITY_Community 17|Community 17]]
+- [[_COMMUNITY_Community 18|Community 18]]
+- [[_COMMUNITY_Community 19|Community 19]]
+- [[_COMMUNITY_Community 20|Community 20]]
+- [[_COMMUNITY_Community 21|Community 21]]
+- [[_COMMUNITY_Community 22|Community 22]]
+- [[_COMMUNITY_Community 23|Community 23]]
+- [[_COMMUNITY_Community 24|Community 24]]
+- [[_COMMUNITY_Community 25|Community 25]]
+- [[_COMMUNITY_Community 26|Community 26]]
+- [[_COMMUNITY_Community 27|Community 27]]
+- [[_COMMUNITY_Community 28|Community 28]]
+- [[_COMMUNITY_Community 29|Community 29]]
+- [[_COMMUNITY_Community 30|Community 30]]
+- [[_COMMUNITY_Community 31|Community 31]]
+- [[_COMMUNITY_Community 32|Community 32]]
+- [[_COMMUNITY_Community 33|Community 33]]
+- [[_COMMUNITY_Community 34|Community 34]]
+- [[_COMMUNITY_Community 35|Community 35]]
+- [[_COMMUNITY_Community 36|Community 36]]
+- [[_COMMUNITY_Community 37|Community 37]]
+- [[_COMMUNITY_Community 38|Community 38]]
+- [[_COMMUNITY_Community 39|Community 39]]
+- [[_COMMUNITY_Community 40|Community 40]]
+- [[_COMMUNITY_Community 41|Community 41]]
+- [[_COMMUNITY_Community 42|Community 42]]
+- [[_COMMUNITY_Community 43|Community 43]]
+- [[_COMMUNITY_Community 44|Community 44]]
+- [[_COMMUNITY_Community 45|Community 45]]
+- [[_COMMUNITY_Community 46|Community 46]]
+- [[_COMMUNITY_Community 47|Community 47]]
+- [[_COMMUNITY_Community 48|Community 48]]
+- [[_COMMUNITY_Community 49|Community 49]]
+- [[_COMMUNITY_Community 50|Community 50]]
+- [[_COMMUNITY_Community 51|Community 51]]
+- [[_COMMUNITY_Community 52|Community 52]]
+- [[_COMMUNITY_Community 53|Community 53]]
+- [[_COMMUNITY_Community 54|Community 54]]
+- [[_COMMUNITY_Community 55|Community 55]]
+- [[_COMMUNITY_Community 56|Community 56]]
+- [[_COMMUNITY_Community 57|Community 57]]
+- [[_COMMUNITY_Community 58|Community 58]]
+- [[_COMMUNITY_Community 59|Community 59]]
+- [[_COMMUNITY_Community 60|Community 60]]
+- [[_COMMUNITY_Community 61|Community 61]]
+- [[_COMMUNITY_Community 62|Community 62]]
+- [[_COMMUNITY_Community 63|Community 63]]
+- [[_COMMUNITY_Community 64|Community 64]]
+- [[_COMMUNITY_Community 65|Community 65]]
+- [[_COMMUNITY_Community 66|Community 66]]
+- [[_COMMUNITY_Community 68|Community 68]]
+- [[_COMMUNITY_Community 69|Community 69]]
+- [[_COMMUNITY_Community 70|Community 70]]
+- [[_COMMUNITY_Community 71|Community 71]]
+- [[_COMMUNITY_Community 72|Community 72]]
+- [[_COMMUNITY_Community 73|Community 73]]
+- [[_COMMUNITY_Community 74|Community 74]]
+- [[_COMMUNITY_Community 75|Community 75]]
+- [[_COMMUNITY_Community 76|Community 76]]
+- [[_COMMUNITY_Community 77|Community 77]]
+- [[_COMMUNITY_Community 85|Community 85]]
+- [[_COMMUNITY_Community 93|Community 93]]
+- [[_COMMUNITY_Community 96|Community 96]]
+- [[_COMMUNITY_Community 100|Community 100]]
+- [[_COMMUNITY_Community 101|Community 101]]
+- [[_COMMUNITY_Community 105|Community 105]]
+- [[_COMMUNITY_Community 106|Community 106]]
+- [[_COMMUNITY_Community 128|Community 128]]
+- [[_COMMUNITY_Community 131|Community 131]]
+- [[_COMMUNITY_Community 132|Community 132]]
+- [[_COMMUNITY_Community 133|Community 133]]
+- [[_COMMUNITY_Community 135|Community 135]]
+- [[_COMMUNITY_Community 137|Community 137]]
+- [[_COMMUNITY_Community 139|Community 139]]
+- [[_COMMUNITY_Community 140|Community 140]]
+- [[_COMMUNITY_Community 141|Community 141]]
+- [[_COMMUNITY_Community 142|Community 142]]
+- [[_COMMUNITY_Community 143|Community 143]]
+- [[_COMMUNITY_Community 145|Community 145]]
+- [[_COMMUNITY_Community 146|Community 146]]
+- [[_COMMUNITY_Community 147|Community 147]]
+- [[_COMMUNITY_Community 148|Community 148]]
+- [[_COMMUNITY_Community 149|Community 149]]
+- [[_COMMUNITY_Community 154|Community 154]]
+- [[_COMMUNITY_Community 155|Community 155]]
+- [[_COMMUNITY_Community 156|Community 156]]
+- [[_COMMUNITY_Community 157|Community 157]]
+- [[_COMMUNITY_Community 158|Community 158]]
+- [[_COMMUNITY_Community 159|Community 159]]
+- [[_COMMUNITY_Community 160|Community 160]]
+- [[_COMMUNITY_Community 161|Community 161]]
+- [[_COMMUNITY_Community 162|Community 162]]
+- [[_COMMUNITY_Community 163|Community 163]]
+- [[_COMMUNITY_Community 164|Community 164]]
+- [[_COMMUNITY_Community 165|Community 165]]
+- [[_COMMUNITY_Community 166|Community 166]]
+- [[_COMMUNITY_Community 167|Community 167]]
+- [[_COMMUNITY_Community 168|Community 168]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 112 edges
 2. `createAdminClient()` - 91 edges
 3. `Button()` - 46 edges
 4. `requireApiProfile()` - 44 edges
-5. `SCHEMA DRIFT` - 31 edges
-6. `isAdmin()` - 30 edges
-7. `Black Capital` - 27 edges
+5. `isAdmin()` - 30 edges
+6. `Black Capital` - 27 edges
+7. `PRD Actual del Proyecto` - 21 edges
 8. `logger` - 20 edges
 9. `Input()` - 19 edges
 10. `useReducedMotion()` - 18 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `UI` --references--> `Plan — Elevar la Home de Black Capital a Clase Mundial`  [INFERRED]
-  public/brand-business.webp → docs/HOME_REDESIGN_PLAN.md
-- `UI` --references--> `Plan — Elevar la Home de Black Capital a Clase Mundial`  [INFERRED]
-  public/brand-industrial.webp → docs/HOME_REDESIGN_PLAN.md
 - `Frontend Application` --uses--> `Tailwind CSS v4`  [EXTRACTED]
   testsprite_tests/tmp/code_summary.yaml → README.md
+- `EditAgentPage()` --calls--> `createAdminClient()`  [INFERRED]
+  src/app/(admin)/admin/agents/[id]/edit/page.tsx → src/lib/supabase/admin.ts
+- `AgentDetailPage()` --calls--> `createAdminClient()`  [INFERRED]
+  src/app/(admin)/admin/agents/[id]/page.tsx → src/lib/supabase/admin.ts
 - `NewAgentPage()` --calls--> `requireAdminRole()`  [INFERRED]
   src/app/(admin)/admin/agents/new/page.tsx → src/lib/auth.ts
-- `LeadDetailPage()` --calls--> `isPlaceholderEmail()`  [INFERRED]
-  src/app/(admin)/admin/leads/[id]/page.tsx → src/lib/document-access.ts
+- `LeadDetailPage()` --calls--> `requireAdminSession()`  [INFERRED]
+  src/app/(admin)/admin/leads/[id]/page.tsx → src/lib/auth.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (156 total, 33 thin omitted)
+## Communities (169 total, 33 thin omitted)
 
-### Community 0 - "Admin Dashboard & Forms"
-Cohesion: 0.05
-Nodes (92): AccountPage(), AdminPageHeader(), AdminStatCard(), AgentForm(), AdminDashboard(), PropertyForm(), countAgentAssignments(), DELETE() (+84 more)
+### Community 0 - "Community 0"
+Cohesion: 0.16
+Nodes (23): GET(), GET(), POST(), isAdmin(), requireApiProfile(), GET(), PATCH(), ALLOWED_COLUMNS (+15 more)
 
-### Community 1 - "API Utilities & Validation"
+### Community 1 - "Community 1"
 Cohesion: 0.09
-Nodes (34): GET(), createSessionToken(), createVerificationCode(), hashSecret(), isoFromNow(), isPlaceholderEmail(), isValidWhatsappPhone(), JsonRecord (+26 more)
+Nodes (33): GET(), createSessionToken(), createVerificationCode(), hashSecret(), isoFromNow(), isValidWhatsappPhone(), JsonRecord, normalizeWhatsappPhone() (+25 more)
 
-### Community 2 - "Database Schema & Types"
+### Community 2 - "Community 2"
 Cohesion: 0.06
-Nodes (32): CompositeTypes, Constants, Database, DatabaseWithoutInternals, DefaultSchema, Enums, Json, Tables (+24 more)
+Nodes (31): CompositeTypes, Constants, DatabaseWithoutInternals, DefaultSchema, Enums, Json, Tables, TablesInsert (+23 more)
 
-### Community 3 - "UI Components & Controls"
-Cohesion: 0.12
-Nodes (20): columns, columns, LeadRow, columns, PropertyRow, Badge(), badgeVariants, DropdownMenu() (+12 more)
+### Community 3 - "Community 3"
+Cohesion: 0.05
+Nodes (29): AccountEmailForm(), columns, AssignPropertiesButton(), AssignPropertiesButtonProps, LeadActions(), LeadActionsProps, STATUS_OPTIONS, LeadTasks() (+21 more)
 
-### Community 4 - "Database Migrations & Schema"
-Cohesion: 0.07
-Nodes (32): add_cover_image.sql, 20260605_add_updated_at_triggers.sql, agents table, create_agents.sql, create_properties.sql, src/types/database.types.ts, document_leads.sql, 20260605_drop_system_logs.sql (+24 more)
+### Community 4 - "Community 4"
+Cohesion: 0.05
+Nodes (43): add_cover_image.sql, 20260605_add_updated_at_triggers.sql, agents table, create_agents.sql, create_properties.sql, src/types/database.types.ts, document_leads.sql, 20260605_drop_system_logs.sql (+35 more)
 
-### Community 5 - "Frontend Dependencies"
+### Community 5 - "Community 5"
 Cohesion: 0.06
 Nodes (32): dependencies, browser-image-compression, class-variance-authority, clsx, @ducanh2912/next-pwa, embla-carousel-react, framer-motion, @hookform/resolvers (+24 more)
 
-### Community 6 - "Form Components & Uploads"
-Cohesion: 0.12
-Nodes (21): AgentFormProps, PdfEntry, RestrictedDocument, UploadResult, Checkbox(), FormControl(), FormDescription(), FormField() (+13 more)
+### Community 6 - "Community 6"
+Cohesion: 0.19
+Nodes (15): AgentFormProps, FormControl(), FormDescription(), FormField(), FormFieldContext, FormFieldContextValue, FormItem(), FormItemContext (+7 more)
 
-### Community 7 - "Admin & Public Features"
+### Community 7 - "Community 7"
 Cohesion: 0.08
 Nodes (30): Admin Leads Management, Admin Properties CRUD Feature, Admin Properties Management, Admin Properties New Page, /api/send-brochure endpoint, Browse Property Catalog Feature, Catalog Filter Component, Frontend Application (+22 more)
 
-### Community 8 - "Tech Stack & Analytics"
+### Community 8 - "Community 8"
 Cohesion: 0.07
 Nodes (28): Black Business, Black Capital, Black Industrial, Black Luxury, GA4, Google Antigravity, Next.js 16, Next.js Route Groups (+20 more)
 
-### Community 9 - "Admin Navigation & UI"
-Cohesion: 0.13
-Nodes (18): AdminBackButton(), AdminLogoutButton(), AdminPublicLinksMenu(), PUBLIC_SITE_ITEMS, AdminTooltip(), ADMIN_NAV_ITEMS, ADMIN_ONLY_ITEMS, AdminLayout() (+10 more)
+### Community 9 - "Community 9"
+Cohesion: 0.05
+Nodes (43): AdminBackButton(), AdminLogoutButton(), AdminPublicLinksMenu(), PUBLIC_SITE_ITEMS, AdminTooltip(), ADMIN_NAV_ITEMS, ADMIN_ONLY_ITEMS, AdminLayout() (+35 more)
 
-### Community 10 - "Account Settings Forms"
-Cohesion: 0.13
-Nodes (13): AccountEmailForm(), AccountPreferencesForm(), DEFAULTS, Preferences, AccountProfileForm(), AccountProfileFormProps, AdminEmptyState(), AdminSectionCard() (+5 more)
+### Community 10 - "Community 10"
+Cohesion: 0.10
+Nodes (27): AccountPage(), AccountPreferencesForm(), DEFAULTS, Preferences, AdminPageHeader(), AdminSectionCard(), AdminStatCard(), AgentDeleteButton() (+19 more)
 
-### Community 11 - "Error Handling & Buttons"
-Cohesion: 0.13
-Nodes (4): AssignPropertiesButton(), AssignPropertiesButtonProps, Button(), buttonVariants
+### Community 11 - "Community 11"
+Cohesion: 0.04
+Nodes (45): 10.1 June 2026 Overhaul — What changed, 10. Concrete Next Steps (from the audit), 11. Useful Commands, 12. When in Doubt, 1. Design Tokens, 2. Component Library, 3. Typography Discipline, 4. Spacing & Layout (+37 more)
 
-### Community 12 - "Property Display Components"
-Cohesion: 0.15
-Nodes (15): cn(), PropertyDescription(), SectionHeader(), SectionHeaderProps, ScrollArea(), ScrollBar(), Select(), SelectContent() (+7 more)
+### Community 12 - "Community 12"
+Cohesion: 0.14
+Nodes (18): cn(), PropertyDescription(), DropdownMenuCheckboxItem(), DropdownMenuRadioItem(), DropdownMenuShortcut(), DropdownMenuSubContent(), DropdownMenuSubTrigger(), Label() (+10 more)
 
-### Community 13 - "Component Library Structure"
+### Community 13 - "Community 13"
 Cohesion: 0.10
 Nodes (19): aliases, components, hooks, lib, ui, utils, iconLibrary, registries (+11 more)
 
-### Community 14 - "TypeScript Configuration"
+### Community 14 - "Community 14"
 Cohesion: 0.10
 Nodes (19): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+11 more)
 
-### Community 15 - "Team Page & Animations"
-Cohesion: 0.13
-Nodes (14): metadata, miembros, containerVariants(), Direction, directionMap, FadeInProps, ScaleOnHoverProps, StaggerChildren() (+6 more)
+### Community 15 - "Community 15"
+Cohesion: 0.12
+Nodes (16): metadata, miembros, PageHeroProps, containerVariants(), Direction, directionMap, FadeIn(), FadeInProps (+8 more)
 
-### Community 16 - "Admin Authentication Pages"
-Cohesion: 0.20
-Nodes (6): createClient(), createMockClient(), supabase, Input(), AdminUser, UsersClient()
+### Community 16 - "Community 16"
+Cohesion: 0.23
+Nodes (17): AdminDashboard(), LeadDetailPage(), canAccessLead(), POST(), canAccessLead(), PATCH(), POST(), canAccessAgentScopedResource() (+9 more)
 
-### Community 17 - "Featured Property Display"
+### Community 17 - "Community 17"
 Cohesion: 0.14
-Nodes (13): FeaturedInventoryResult, FeaturedProperty, getFeaturedProperties(), ASPECT, PropertyCardData, PropertyCardProps, SIZES, STATUS_LABELS (+5 more)
+Nodes (15): formatShortPrice(), getPropertyPlaceholderImage(), PROPERTY_PLACEHOLDER_IMAGES, ASPECT, PropertyCard(), PropertyCardProps, SIZES, STATUS_LABELS (+7 more)
 
-### Community 18 - "Navigation & Dropdowns"
-Cohesion: 0.18
-Nodes (11): baseLinks, corporativoLinks, DESKTOP_DROPDOWNS, DropdownDef, DropdownKey, herramientasDropdown, rentaDropdown, ventaDropdown (+3 more)
-
-### Community 19 - "Lead Management Client"
-Cohesion: 0.13
-Nodes (11): Agent, AgentCell(), AttentionSummary(), getLeadAttention(), Lead, LeadAttentionBadges(), LeadsPageClient(), LeadsPageClientProps (+3 more)
-
-### Community 20 - "Property Catalog Filters"
-Cohesion: 0.15
-Nodes (13): ATTRIBUTE_ICONS, BRAND_TO_USE, BUSINESS_TYPES, BusinessType, PropertyStatus, PropertyUse, STATUS_VARIANTS, StatusVariant (+5 more)
-
-### Community 21 - "Sitemap & Inventory Pages"
-Cohesion: 0.19
-Nodes (8): sitemap(), metadata, PLACEHOLDER_PROPERTIES, POST(), CatalogFilter(), generateMetadata(), createClient(), createMockClient()
-
-### Community 22 - "Mobile Navigation Drawer"
+### Community 18 - "Community 18"
 Cohesion: 0.17
-Nodes (11): verticales, MobileDrawer(), MobileDrawerProps, useIsActive(), DrawerContent(), DrawerDescription(), DrawerFooter(), DrawerHeader() (+3 more)
+Nodes (12): PUT(), sendOperationalEmail(), logger, cleanString(), PATCH(), POST(), PropertyRow, seedProperties (+4 more)
 
-### Community 23 - "Property Document & Contact"
-Cohesion: 0.18
-Nodes (11): getPropertyDocuments(), toVisibleDocuments(), PropertyLocation(), StickyContactBar(), StickyContactBarProps, BreadcrumbItem, Breadcrumbs(), BreadcrumbsProps (+3 more)
+### Community 19 - "Community 19"
+Cohesion: 0.10
+Nodes (15): AccountProfileForm(), AccountProfileFormProps, AdminEmptyState(), DataTable(), Agent, AgentCell(), AttentionSummary(), getLeadAttention() (+7 more)
 
-### Community 24 - "Sub-Brand Configuration"
+### Community 20 - "Community 20"
+Cohesion: 0.15
+Nodes (14): formatPrice(), ATTRIBUTE_ICONS, BRAND_TO_USE, BusinessType, PropertyStatus, PropertyUse, STATUS_CLASSES, STATUS_LABELS (+6 more)
+
+### Community 21 - "Community 21"
+Cohesion: 0.29
+Nodes (8): sitemap(), normalizeEmail(), PATCH(), DELETE(), POST(), generateMetadata(), createClient(), createMockClient()
+
+### Community 22 - "Community 22"
+Cohesion: 0.12
+Nodes (13): metadata, PLACEHOLDER_PROPERTIES, FeaturedInventoryResult, FeaturedProperty, getFeaturedProperties(), BUSINESS_TYPES, USES, PropertyCardData (+5 more)
+
+### Community 23 - "Community 23"
+Cohesion: 0.14
+Nodes (14): getPropertyDocuments(), toVisibleDocuments(), AgentInfo, PropertyJsonLd(), PropertyJsonLdProps, PropertyLocation(), StickyContactBar(), StickyContactBarProps (+6 more)
+
+### Community 24 - "Community 24"
 Cohesion: 0.18
 Nodes (14): baseJsonLd, BUSINESS_STATS, INDUSTRIAL_STATS, LUXURY_STATS, PropertyUse, SubBrandConfig, SubBrandHeroConfig, SubBrandInventoryConfig (+6 more)
 
-### Community 25 - "Document Card & Dialog"
+### Community 25 - "Community 25"
 Cohesion: 0.18
 Nodes (10): DocumentCard(), DocumentCardProps, Step, Dialog(), DialogContent(), DialogDescription(), DialogFooter(), DialogHeader() (+2 more)
 
-### Community 26 - "Data Table Components"
-Cohesion: 0.21
-Nodes (12): DataTable(), DataTableProps, FilterConfig, FilterDropdown(), Table(), TableBody(), TableCaption(), TableCell() (+4 more)
+### Community 26 - "Community 26"
+Cohesion: 0.23
+Nodes (11): DataTableProps, FilterConfig, FilterDropdown(), Table(), TableBody(), TableCaption(), TableCell(), TableFooter() (+3 more)
 
-### Community 27 - "Layout & Theme Providers"
-Cohesion: 0.20
+### Community 27 - "Community 27"
+Cohesion: 0.15
 Nodes (7): manrope, metadata, ThemeGuard(), ThemeProvider(), PostHogProvider(), usePostHog(), Toaster()
 
-### Community 28 - "Privacy & Contact Pages"
-Cohesion: 0.19
-Nodes (7): metadata, CONTACT_CONFIG, ContactConfig, getSocialStats(), SocialStats, ZERO_STATS, metadata
+### Community 28 - "Community 28"
+Cohesion: 0.14
+Nodes (9): metadata, contactCards, metadata, CONTACT_CONFIG, ContactConfig, getSocialStats(), SocialStats, ZERO_STATS (+1 more)
 
-### Community 29 - "Homepage & Testimonials"
+### Community 29 - "Community 29"
 Cohesion: 0.15
 Nodes (9): defaultTestimonials, Testimonials(), intentCtas, metadata, ORGANIZATION_SCHEMA, rotatingInventoryWords, Segment, segments (+1 more)
 
-### Community 30 - "Metric Display & Formatting"
-Cohesion: 0.21
-Nodes (11): compact, formatArea(), formatShortDate(), formatShortPrice(), fullEsMX, MetricCard(), MetricCardProps, PropertyCard() (+3 more)
+### Community 30 - "Community 30"
+Cohesion: 0.24
+Nodes (9): compact, formatArea(), formatShortDate(), fullEsMX, MetricCard(), MetricCardProps, PropertyMetrics(), PropertyMetricsProps (+1 more)
 
-### Community 31 - "Luxury Brand & Reveal"
+### Community 31 - "Community 31"
 Cohesion: 0.18
 Nodes (10): LuxuryManifesto(), EASE, fadeUp, imageMask, ScrollReveal(), BrandInventory(), BrandInventoryProps, BrandProperty (+2 more)
 
-### Community 32 - "Carousel Component"
+### Community 32 - "Community 32"
 Cohesion: 0.19
 Nodes (13): Carousel(), CarouselApi, CarouselContent(), CarouselContext, CarouselContextProps, CarouselItem(), CarouselNext(), CarouselOptions (+5 more)
 
-### Community 33 - "App Settings Page"
+### Community 33 - "Community 33"
 Cohesion: 0.21
 Nodes (8): AppSettings, DEFAULTS, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle
 
-### Community 34 - "Vercel Deployment Config"
+### Community 34 - "Community 34"
 Cohesion: 0.15
 Nodes (12): buildCommand, main, devCommand, framework, git, deploymentEnabled, github, autoJobCancelation (+4 more)
 
-### Community 35 - "About Us Page Sections"
-Cohesion: 0.20
-Nodes (8): CONTAINER, Section, SectionProps, SPACING, metadata, pillars, subpaginas, Eyebrow()
+### Community 35 - "Community 35"
+Cohesion: 0.16
+Nodes (10): CONTAINER, Section, SectionProps, SPACING, metadata, pillars, subpaginas, Eyebrow() (+2 more)
 
-### Community 36 - "Development Dependencies"
+### Community 36 - "Community 36"
 Cohesion: 0.17
 Nodes (12): devDependencies, eslint, eslint-config-next, @playwright/test, shadcn, tailwindcss, @tailwindcss/postcss, tw-animate-css (+4 more)
 
-### Community 37 - "Supabase & Validation"
+### Community 37 - "Community 37"
 Cohesion: 0.17
 Nodes (12): NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, NEXT_PUBLIC_SUPABASE_URL, PostgreSQL, React Hook Form, RLS (Row Level Security), src/lib/, src/lib/supabase/, src/lib/validations/ (+4 more)
 
-### Community 38 - "Agent Select & Lead Actions"
-Cohesion: 0.24
-Nodes (6): AgentOption, AgentSelect(), AgentSelectProps, LeadActionsProps, STATUS_OPTIONS, Textarea()
+### Community 38 - "Community 38"
+Cohesion: 0.14
+Nodes (11): AgentOption, AgentSelect(), AgentSelectProps, PdfEntry, RestrictedDocument, UploadResult, Checkbox(), Select() (+3 more)
 
-### Community 39 - "Homepage Hero & UI"
-Cohesion: 0.20
-Nodes (6): Plan — Elevar la Home de Black Capital a Clase Mundial, EASE, HomeHeroHeadline(), words, UI, UI
+### Community 39 - "Community 39"
+Cohesion: 0.22
+Nodes (5): EASE, HomeHeroHeadline(), words, UI, UI
 
-### Community 40 - "Property Media & Tours"
+### Community 40 - "Community 40"
 Cohesion: 0.24
 Nodes (5): PropertyMedia(), TourEmbed(), TourEmbedProps, VideoEmbed(), VideoEmbedProps
 
-### Community 41 - "Sub-Brand Hero & Search"
+### Community 41 - "Community 41"
 Cohesion: 0.20
 Nodes (9): Accent, EASE, heroChild, heroGroup, QUICK_SEARCH_CONFIG, QuickSearchConfig, QuickSearchOption, SubBrandHero() (+1 more)
 
-### Community 42 - "Industrial Brand Page"
+### Community 42 - "Community 42"
 Cohesion: 0.39
 Nodes (4): IndustrialCTA(), IndustrialStats(), IndustrialValue(), SUB_BRAND_CONFIGS
 
-### Community 43 - "React Error Boundary"
+### Community 43 - "Community 43"
 Cohesion: 0.22
 Nodes (3): ErrorBoundary, Props, State
 
-### Community 44 - "Footer & Logo"
-Cohesion: 0.25
-Nodes (7): brandLinks, corpLinks, Footer(), socialLinks, Logo(), LogoProps, sizeMap
+### Community 44 - "Community 44"
+Cohesion: 0.11
+Nodes (17): **10\. Cronograma y Fases de Desarrollo (Milestones \- 8 Días)**, **11\. Directrices de Implementación para IA (Implementation Details)**, **1\. Resumen Ejecutivo y Visión del Producto**, **2\. Público Objetivo (Buyer Personas y Stakeholders)**, **3\. Objetivos y Resultados Clave (OKRs)**, **4\. Alcance del Proyecto (Scope Detallado)**, **5\. Flujo de Usuario y Arquitectura de la Información**, **6\. Historias de Usuario Detalladas y Criterios de Aceptación (CA)** (+9 more)
 
-### Community 45 - "Animation Hooks & Components"
+### Community 45 - "Community 45"
 Cohesion: 0.25
 Nodes (6): AnimateIfAllowed(), AnimateIfAllowedProps, useReducedMotion(), Counter(), ScaleOnHover(), RevealText()
 
-### Community 46 - "Package Scripts & Info"
+### Community 46 - "Community 46"
 Cohesion: 0.22
 Nodes (8): name, private, scripts, build, dev, lint, start, version
 
-### Community 47 - "Component Folder Structure"
+### Community 47 - "Community 47"
 Cohesion: 0.22
 Nodes (9): src/components/, src/components/admin/, src/components/business/, src/components/home/, src/components/industrial/, src/components/layout/, src/components/luxury/, src/components/public/ (+1 more)
 
-### Community 48 - "Sub-Brand Call to Action"
+### Community 48 - "Community 48"
 Cohesion: 0.25
 Nodes (8): buildSchema(), CTAFormValues, EASE, revealItem, SECTION_SPACING, staggerGroup, SubBrand, SubBrandCTA()
 
-### Community 49 - "Sub-Brand Statistics"
+### Community 49 - "Community 49"
 Cohesion: 0.29
 Nodes (6): BusinessStats(), Accent, SPACING, SubBrand, SubBrandStats(), SubBrandStatsProps
 
-### Community 50 - "Sub-Brand Value Proposition"
-Cohesion: 0.29
-Nodes (6): BusinessValue(), BRAND_HREF, BRAND_IMAGES, BrandCardImage, SubBrandValue(), SubBrandValueProps
+### Community 50 - "Community 50"
+Cohesion: 0.24
+Nodes (7): BusinessValue(), LuxuryValue(), BRAND_HREF, BRAND_IMAGES, BrandCardImage, SubBrandValue(), SubBrandValueProps
 
-### Community 51 - "History Page & Hero"
-Cohesion: 0.25
-Nodes (4): hitos, metadata, PageHeroProps, FadeIn()
+### Community 52 - "Community 52"
+Cohesion: 0.30
+Nodes (12): countAgentAssignments(), DELETE(), normalizeEmail(), parseUserByEmail(), PATCH(), POST(), PUT(), translateError() (+4 more)
 
-### Community 52 - "Property Header & Formatting"
-Cohesion: 0.32
-Nodes (7): formatPrice(), STATUS_CLASSES, STATUS_LABELS, currencyMXN, formatDisplayTitle(), PropertyHeader(), PropertyHeaderProps
-
-### Community 53 - "Agent Card & Property Sidebar"
+### Community 53 - "Community 53"
 Cohesion: 0.43
 Nodes (5): AgentCard(), AgentInfo, DocumentLink, PropertySidebarProps, SpecRow()
 
-### Community 54 - "SEO & Property JSON-LD"
-Cohesion: 0.29
-Nodes (3): AgentInfo, PropertyJsonLd(), PropertyJsonLdProps
+### Community 54 - "Community 54"
+Cohesion: 0.20
+Nodes (9): 16. Riesgos, 17. Recomendaciones iniciales, 18. Preguntas pendientes para el dueno del proyecto, 1. Resumen ejecutivo, 4. Mapa de paginas y rutas, 5. Inventario de componentes, 9. Funcionalidades actuales, Indice (+1 more)
 
-### Community 55 - "Business Brand Page"
+### Community 55 - "Community 55"
 Cohesion: 0.38
 Nodes (3): BusinessCTA(), JsonLd(), JsonLdProps
 
-### Community 56 - "Contact Page & Form"
-Cohesion: 0.33
-Nodes (4): contactCards, metadata, ContactLeadForm(), interestOptions
+### Community 56 - "Community 56"
+Cohesion: 0.20
+Nodes (9): 1️⃣ Document Metadata, 2️⃣ Requirement Validation Summary, 3️⃣ Coverage & Matching Metrics, 4️⃣ Key Gaps / Risks, Test TC008 Search term change updates from no-results back to results, Test TC010 Successful lead submission shows success confirmation in UI, Test TC016 Create a new property successfully and verify it appears in the Admin Table, Test TC021 Numeric fields reject non-numeric input (m2 or price) (+1 more)
 
-### Community 57 - "Favorite Properties Hook"
+### Community 57 - "Community 57"
 Cohesion: 0.38
 Nodes (4): useFavorites(), UseFavoritesReturn, FavoriteButton(), FavoriteButtonProps
 
-### Community 58 - "Public Layout & Transitions"
-Cohesion: 0.38
-Nodes (3): PageTransition(), ScrollProgress(), WhatsAppFloat()
+### Community 58 - "Community 58"
+Cohesion: 0.21
+Nodes (7): brandLinks, corpLinks, Footer(), socialLinks, PageTransition(), ScrollProgress(), WhatsAppFloat()
 
-### Community 60 - "Tools Page & Metrics"
+### Community 59 - "Community 59"
+Cohesion: 0.22
+Nodes (9): 19. Anexos tecnicos, Arbol resumido, Clasificacion solicitada, Dependencias relevantes, Lo que esta planeado o insinuado por el codigo, Lo que parece incompleto, Lo que recomiendo cambiar, Lo que ya existe (+1 more)
+
+### Community 60 - "Community 60"
 Cohesion: 0.33
 Nodes (4): metadata, metrics, primaryTools, secondaryTools
 
-### Community 61 - "Homepage Counters"
+### Community 61 - "Community 61"
 Cohesion: 0.47
 Nodes (5): CounterItem(), counters, formatCount(), HomeCounters(), useCountUp()
 
-### Community 62 - "Lead Tasks & Actions"
-Cohesion: 0.40
-Nodes (3): LeadActions(), LeadTasks(), Task
+### Community 62 - "Community 62"
+Cohesion: 0.25
+Nodes (8): 1. Hero cinemático, 2. Banda de credibilidad (Counters), 3. Tres líneas de negocio, 4. Testimonios / Voces  *(SECCIÓN NUEVA)*, 5. Metodología unificada, 6. Manifiesto + Intent CTAs, 7. Footer, Detalle por sección
 
-### Community 63 - "Property Image Gallery"
-Cohesion: 0.47
-Nodes (4): getPropertyPlaceholderImage(), PROPERTY_PLACEHOLDER_IMAGES, ImageGallery(), ImageGalleryProps
+### Community 63 - "Community 63"
+Cohesion: 0.25
+Nodes (8): Archivos críticos a modificar, Cambios de microinteracción (transversales), Contexto, Nueva narrativa de la home (orden propuesto), Orden de implementación sugerido, Plan — Elevar la Home de Black Capital a Clase Mundial, Sistema de botones unificado (regla transversal), Verificación
 
-### Community 64 - "Luxury Criteria & Stats"
-Cohesion: 0.40
-Nodes (4): criteria, EASE, LuxuryCriteria(), LuxuryStats()
+### Community 64 - "Community 64"
+Cohesion: 0.27
+Nodes (5): criteria, EASE, LuxuryCriteria(), LuxuryCTA(), LuxuryStats()
 
-### Community 65 - "Next.js App Router Structure"
+### Community 65 - "Community 65"
 Cohesion: 0.33
 Nodes (6): Next.js 16 (App Router), src/app/, src/app/(admin)/, src/app/admin/login/, src/app/api/, src/app/(public)/
 
-### Community 68 - "API Proxy Configuration"
+### Community 68 - "Community 68"
 Cohesion: 0.40
 Nodes (3): config, PUBLIC_ADMIN_PATHS, PUBLIC_API_PATHS
 
-### Community 69 - "Methodology Section"
+### Community 69 - "Community 69"
 Cohesion: 0.50
 Nodes (3): EASE, MethodologySection(), steps
 
-### Community 70 - "Black Capital Brands"
-Cohesion: 0.50
-Nodes (4): Black Business, Black Capital, Black Industrial, Black Luxury
+### Community 70 - "Community 70"
+Cohesion: 0.17
+Nodes (11): Black Business, Black Capital, Black Industrial, Black Luxury, Deploy, Desarrollo, Estructura, Licencia (+3 more)
 
-### Community 76 - "PostHog Configuration"
+### Community 76 - "Community 76"
 Cohesion: 0.67
 Nodes (3): NEXT_PUBLIC_POSTHOG_HOST, NEXT_PUBLIC_POSTHOG_KEY, PostHog
 
+### Community 156 - "Community 156"
+Cohesion: 0.32
+Nodes (6): LeadsPageClient(), LeadsPage(), DbAgent, DbLead, DbPropertyAgent, DocumentRecord
+
+### Community 157 - "Community 157"
+Cohesion: 0.38
+Nodes (6): ALLOWED_KEYS, AppSettings, DEFAULTS, GET(), POST(), readSettings()
+
+### Community 158 - "Community 158"
+Cohesion: 0.33
+Nodes (6): 10. Datos e integraciones, APIs principales, Base de datos, Datos locales/hardcodeados, Integraciones externas, Variables de entorno esperadas
+
+### Community 159 - "Community 159"
+Cohesion: 0.40
+Nodes (5): 12. Responsividad, Desktop, Mobile, No verificado, Tablet
+
+### Community 160 - "Community 160"
+Cohesion: 0.40
+Nodes (5): 6. Diseno visual actual, Coherencia, Colores, Sistema visual, Tipografias
+
+### Community 161 - "Community 161"
+Cohesion: 0.40
+Nodes (5): 8. Contenido actual, CTAs actuales, Dudas de contenido, Mensajes principales observados, Secciones con texto fuerte
+
+### Community 162 - "Community 162"
+Cohesion: 0.50
+Nodes (4): 15. Estado tecnico del proyecto, Fragil o incompleto, Puede mantenerse, Solido
+
+### Community 163 - "Community 163"
+Cohesion: 0.50
+Nodes (4): 3. Arquitectura general, Estructura de carpetas, Framework y lenguaje, Partes criticas
+
+### Community 164 - "Community 164"
+Cohesion: 0.50
+Nodes (4): 7. UX actual, Flujo publico, Fricciones, Puntos fuertes
+
+### Community 165 - "Community 165"
+Cohesion: 0.67
+Nodes (3): 11. SEO y metadata, Implementado, Problemas o riesgos
+
+### Community 166 - "Community 166"
+Cohesion: 0.67
+Nodes (3): 13. Accesibilidad, Fortalezas, Riesgos
+
+### Community 167 - "Community 167"
+Cohesion: 0.67
+Nodes (3): 14. Performance, Fortalezas, Riesgos
+
+### Community 168 - "Community 168"
+Cohesion: 0.67
+Nodes (3): 2. Alcance actual del sistema, Incluye actualmente, No se comprobo completamente
+
 ## Knowledge Gaps
-- **471 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+466 more)
+- **609 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+604 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **33 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `Property Display Components` to `Admin Dashboard & Forms`, `UI Components & Controls`, `Form Components & Uploads`, `Admin Navigation & UI`, `Account Settings Forms`, `Error Handling & Buttons`, `Admin Authentication Pages`, `Featured Property Display`, `Navigation & Dropdowns`, `Lead Management Client`, `Mobile Navigation Drawer`, `Document Card & Dialog`, `Data Table Components`, `Metric Display & Formatting`, `Carousel Component`, `App Settings Page`, `About Us Page Sections`, `Agent Select & Lead Actions`, `Footer & Logo`, `Favorite Properties Hook`, `Property Image Gallery`?**
-  _High betweenness centrality (0.132) - this node is a cross-community bridge._
-- **Why does `createAdminClient()` connect `Admin Dashboard & Forms` to `API Utilities & Validation`, `Account Settings Forms`, `Featured Property Display`, `Privacy & Contact Pages`, `Lead Tasks & Actions`, `Luxury Brand & Reveal`?**
-  _High betweenness centrality (0.073) - this node is a cross-community bridge._
-- **Why does `Button()` connect `Error Handling & Buttons` to `Admin Dashboard & Forms`, `App Settings Page`, `Carousel Component`, `UI Components & Controls`, `Form Components & Uploads`, `Agent Select & Lead Actions`, `Admin Navigation & UI`, `Account Settings Forms`, `Sub-Brand Hero & Search`, `Property Display Components`, `Admin Authentication Pages`, `Sub-Brand Call to Action`, `Lead Management Client`, `Mobile Navigation Drawer`, `Contact Page & Form`, `Document Card & Dialog`, `Data Table Components`, `Lead Tasks & Actions`?**
-  _High betweenness centrality (0.055) - this node is a cross-community bridge._
+- **Why does `cn()` connect `Community 12` to `Community 32`, `Community 33`, `Community 3`, `Community 35`, `Community 38`, `Community 6`, `Community 9`, `Community 10`, `Community 17`, `Community 19`, `Community 57`, `Community 26`, `Community 156`, `Community 25`?**
+  _High betweenness centrality (0.098) - this node is a cross-community bridge._
+- **Why does `createAdminClient()` connect `Community 16` to `Community 0`, `Community 1`, `Community 3`, `Community 10`, `Community 28`, `Community 18`, `Community 52`, `Community 21`, `Community 22`, `Community 156`, `Community 157`, `Community 31`?**
+  _High betweenness centrality (0.058) - this node is a cross-community bridge._
+- **Why does `Button()` connect `Community 3` to `Community 32`, `Community 33`, `Community 6`, `Community 38`, `Community 9`, `Community 10`, `Community 41`, `Community 12`, `Community 48`, `Community 19`, `Community 25`, `Community 26`?**
+  _High betweenness centrality (0.042) - this node is a cross-community bridge._
 - **Are the 5 inferred relationships involving `createAdminClient()` (e.g. with `AdminDashboard()` and `EditAgentPage()`) actually correct?**
   _`createAdminClient()` has 5 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `style`, `rsc` to the rest of the system?**
-  _474 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Admin Dashboard & Forms` be split into smaller, more focused modules?**
-  _Cohesion score 0.053107789142407553 - nodes in this community are weakly interconnected._
-- **Should `API Utilities & Validation` be split into smaller, more focused modules?**
-  _Cohesion score 0.08599033816425121 - nodes in this community are weakly interconnected._
+  _612 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Community 1` be split into smaller, more focused modules?**
+  _Cohesion score 0.08888888888888889 - nodes in this community are weakly interconnected._
+- **Should `Community 2` be split into smaller, more focused modules?**
+  _Cohesion score 0.058823529411764705 - nodes in this community are weakly interconnected._
