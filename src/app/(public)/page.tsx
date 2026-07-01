@@ -103,7 +103,7 @@ export default function HomePage() {
                 Inmobiliaria en Tijuana · B.C.
               </span>
             </div>
-            <h1 className="font-display text-display-1 font-extrabold uppercase leading-[1.02] tracking-tight text-white">
+            <h1 className="font-display text-[clamp(1.75rem,6vw,5.75rem)] font-extrabold uppercase leading-[1.02] tracking-tight text-white">
               Representación<br />
               inmobiliaria<br />
               <span className="gold-ink">con criterio.</span>
