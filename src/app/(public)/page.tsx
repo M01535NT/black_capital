@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { CONTACT_CONFIG } from "@/lib/contact-config";
 import { HomeCounters } from "@/components/home/HomeCounters";
 import { HomeLines } from "@/components/home/HomeLines";
 import { HomeFeatured } from "@/components/home/HomeFeatured";
@@ -83,7 +84,9 @@ function HeroMarqueeStrip({ duplicate = false }: { duplicate?: boolean }) {
       </span>
       <span className="h-3 w-px shrink-0 bg-[var(--color-accent)]/40" />
       <span className="property-tag-type inline-flex shrink-0 items-baseline gap-2 whitespace-nowrap">
-        <span className="gold-ink text-base font-extrabold leading-none">08</span>
+        <span className="gold-ink text-base font-extrabold leading-none">
+          {String(CONTACT_CONFIG.business.yearsInBusiness).padStart(2, "0")}
+        </span>
         Años operando
       </span>
     </div>

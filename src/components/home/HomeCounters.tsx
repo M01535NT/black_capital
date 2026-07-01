@@ -2,6 +2,7 @@
 
 import { useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 const counters = [
   {
@@ -20,7 +21,7 @@ const counters = [
     label: "Clientes acompañados",
   },
   {
-    value: 8,
+    value: CONTACT_CONFIG.business.yearsInBusiness,
     suffix: "",
     label: "Años operando",
   },
@@ -44,16 +45,13 @@ function useCountUp(target: number, durationMs = 2200) {
       return;
     }
 
-    const fallback = window.setTimeout(() => {
-      setValue(target);
-      setShouldAnimate(false);
-      setStarted(true);
-    }, 1800);
-
+    // Sin timeout de respaldo: el estado inicial ya es el valor final, así que
+    // si el observer nunca dispara el número correcto queda visible. El antiguo
+    // fallback de 1.8s fijaba el total antes de que el usuario llegara a la
+    // sección y anulaba la animación 0→total en navegación real.
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
-        window.clearTimeout(fallback);
         setValue(0);
         setShouldAnimate(true);
         setStarted(true);
@@ -63,10 +61,7 @@ function useCountUp(target: number, durationMs = 2200) {
 
     observer.observe(node);
 
-    return () => {
-      window.clearTimeout(fallback);
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, [shouldReduceMotion, started, target]);
 
   useEffect(() => {

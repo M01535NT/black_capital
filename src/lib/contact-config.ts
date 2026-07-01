@@ -26,7 +26,8 @@ export const CONTACT_CONFIG = {
     ],
     /** Business-level facts (not stored in DB). Edit here when the company grows. */
     business: {
-        yearsInBusiness: 12,
+        // TODO(cliente): confirmar el dato real; el sitio publicaba 8 y esta config decía 12.
+        yearsInBusiness: 8,
     },
 } as const;
 

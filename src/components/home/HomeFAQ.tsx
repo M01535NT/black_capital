@@ -62,12 +62,14 @@ export function HomeFAQ() {
         <div className="border-b border-white/[0.08]">
           {FAQS.map((faq, index) => {
             const isOpen = open === index;
+            const panelId = `faq-panel-${index}`;
             return (
               <div key={faq.q} className="border-t border-white/[0.08]">
                 <button
                   type="button"
                   onClick={() => setOpen(isOpen ? -1 : index)}
                   aria-expanded={isOpen}
+                  aria-controls={panelId}
                   className="flex w-full items-center justify-between gap-6 py-5 text-left transition-colors hover:text-[var(--color-accent)]"
                 >
                   <span className="font-display text-display-4 font-bold leading-snug text-white">
@@ -81,6 +83,9 @@ export function HomeFAQ() {
                   </span>
                 </button>
                 <div
+                  id={panelId}
+                  role="region"
+                  aria-hidden={!isOpen}
                   className={`grid transition-all duration-300 ${
                     isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                   }`}

@@ -21,7 +21,7 @@
 
 | Unidad | Ruta | Nota | Estado | Criterios fallidos / notas |
 |---|---|---|---|---|
-| Home (todas sus secciones: hero, lines, featured, zones, methodology, testimonials, FAQ, tools) | `/` | — | PENDIENTE | |
+| Home (todas sus secciones: hero, lines, featured, zones, methodology, testimonials, FAQ, tools) | `/` | 10/10 | 10/10 ✅ (2026-07-01) | Counters restaurados a 0→total (fallback 1.8s los mataba); años operando unificados en CONTACT_CONFIG (⚠️ confirmar 8 vs 12 con cliente); aria-controls en FAQ; dead code fuera (HomeHeroHeadline, lib/stats.ts) |
 | Inventario (catálogo + filtros + empty state) | `/inventario` | — | PENDIENTE | |
 | Ficha de propiedad (galería, métricas, specs, agente, sticky bar, docs, mapa) | `/inventario/[slug]` | — | PENDIENTE | |
 | Contacto (form de leads) | `/contacto` | — | PENDIENTE | form: verificar solo validación client-side, NO enviar leads reales |
@@ -61,6 +61,8 @@
 _(vacío)_
 
 ## Registro de fixes por unidad
+
+- **2026-07-01 · Home → 10/10.** (1) INVARIANTE contadores: un fallback de 1.8s fijaba el total antes de que el usuario llegara a la sección, anulando la animación 0→total en navegación real; eliminado (el estado inicial ya garantiza el valor sin JS). Verificado: 6→17→24 al entrar al viewport aun llegando tarde. (2) "Años operando" estaba hardcodeado (8 en marquee y counters) e inconsistente con config (12); unificado a `CONTACT_CONFIG.business.yearsInBusiness = 8` — ⚠️ confirmar dato real con cliente. (3) FAQ: `aria-controls`/`role=region`/`aria-hidden` en paneles. (4) Dead code: `HomeHeroHeadline.tsx` y `lib/stats.ts` (query a Supabase jamás importada) eliminados. Overflow 0 en 375/768/1119; h1 único; marquee y video con reduced-motion ok; tsc 0, lint 0.
 
 - **2026-07-01 · Motion → 10/10.** Cada navegación ejecutaba DOS animaciones de ruta encadenadas: `RouteTransition` (app/template.tsx, clip+fade 0.46s) y `PageTransition` ((public)/layout.tsx, fade+y 0.35s con AnimatePresence que en App Router ni siquiera puede animar exit). Eliminado `PageTransition.tsx` y su wrapper; queda solo RouteTransition. `ScrollProgress` ahora usa el progreso crudo sin spring bajo reduced-motion. ScrollReveal/RevealText/FadeIn/Stagger/ScaleOnHover ya respetaban reduced-motion. Verificado: navegación SPA home→inventario con una sola transición, consola limpia, tsc 0, lint 0.
 
