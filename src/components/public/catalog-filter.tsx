@@ -228,6 +228,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                                 setActiveBusiness(null);
                                 updateURL({ tipo: null });
                             }}
+                            aria-pressed={!activeBusiness}
                             className={`${pillBase} ${!activeBusiness ? pillActive : pillInactive}`}
                         >
                             Todo
@@ -241,6 +242,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                                     setActiveBusiness(next);
                                     updateURL({ tipo: next });
                                 }}
+                                aria-pressed={activeBusiness === bt}
                                 className={`${pillBase} ${activeBusiness === bt ? pillActive : pillInactive}`}
                             >
                                 {bt}
@@ -258,6 +260,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                                     setActiveUse(next);
                                     updateURL({ uso: next });
                                 }}
+                                aria-pressed={activeUse === use}
                                 className={`${pillBase} ${activeUse === use ? pillActive : pillInactive}`}
                             >
                                 {use}
@@ -274,6 +277,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                                 setActiveStatus(null);
                                 updateURL({ estatus: null });
                             }}
+                            aria-pressed={!activeStatus}
                             className={`${pillBase} ${!activeStatus ? pillActive : pillInactive}`}
                         >
                             Estatus
@@ -287,6 +291,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                                     setActiveStatus(next);
                                     updateURL({ estatus: next });
                                 }}
+                                aria-pressed={activeStatus === status.value}
                                 className={`${pillBase} ${activeStatus === status.value ? pillActive : pillInactive}`}
                             >
                                 {status.label}
@@ -304,6 +309,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                                     setActiveCurrency(next);
                                     updateURL({ moneda: next });
                                 }}
+                                aria-pressed={activeCurrency === currency}
                                 className={`${pillBase} ${activeCurrency === currency ? pillActive : pillInactive}`}
                             >
                                 {currency}
@@ -317,6 +323,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             min="0"
                             inputMode="numeric"
                             placeholder="Precio mínimo"
+                            aria-label="Precio mínimo"
                             value={minPrice}
                             onChange={(e) => {
                                 setMinPrice(e.target.value);
@@ -329,6 +336,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             min="0"
                             inputMode="numeric"
                             placeholder="Precio máximo"
+                            aria-label="Precio máximo"
                             value={maxPrice}
                             onChange={(e) => {
                                 setMaxPrice(e.target.value);
@@ -341,6 +349,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             min="0"
                             inputMode="numeric"
                             placeholder="m² mínimo"
+                            aria-label="Metros cuadrados mínimos"
                             value={minArea}
                             onChange={(e) => {
                                 setMinArea(e.target.value);

@@ -22,7 +22,7 @@
 | Unidad | Ruta | Nota | Estado | Criterios fallidos / notas |
 |---|---|---|---|---|
 | Home (todas sus secciones: hero, lines, featured, zones, methodology, testimonials, FAQ, tools) | `/` | 10/10 | 10/10 ✅ (2026-07-01) | Counters restaurados a 0→total (fallback 1.8s los mataba); años operando unificados en CONTACT_CONFIG (⚠️ confirmar 8 vs 12 con cliente); aria-controls en FAQ; dead code fuera (HomeHeroHeadline, lib/stats.ts) |
-| Inventario (catálogo + filtros + empty state) | `/inventario` | — | PENDIENTE | |
+| Inventario (catálogo + filtros + empty state) | `/inventario` | 10/10 | 10/10 ✅ (2026-07-01) | Comportamiento ya sólido (URL sync, empty state+CTA, limpiar, buscar); fixes: aria-pressed en 14 chips, aria-label en 3 inputs numéricos |
 | Ficha de propiedad (galería, métricas, specs, agente, sticky bar, docs, mapa) | `/inventario/[slug]` | — | PENDIENTE | |
 | Contacto (form de leads) | `/contacto` | — | PENDIENTE | form: verificar solo validación client-side, NO enviar leads reales |
 | Herramientas (calculadora hipotecaria) | `/herramientas` | — | PENDIENTE | |
@@ -61,6 +61,8 @@
 _(vacío)_
 
 ## Registro de fixes por unidad
+
+- **2026-07-01 · /inventario → 10/10.** Comportamiento verificado en vivo: filtro Renta → 0 resultados con empty state "No encontramos coincidencias" + CTA a asesor; Limpiar restaura; búsqueda "prueba" → 1 resultado; todo sincronizado a URL (`?tipo=`, `?q=`). Fixes a11y: `aria-pressed` en los 14 chips de filtro, `aria-label` en inputs de precio/m². tsc 0, lint 0.
 
 - **2026-07-01 · Home → 10/10.** (1) INVARIANTE contadores: un fallback de 1.8s fijaba el total antes de que el usuario llegara a la sección, anulando la animación 0→total en navegación real; eliminado (el estado inicial ya garantiza el valor sin JS). Verificado: 6→17→24 al entrar al viewport aun llegando tarde. (2) "Años operando" estaba hardcodeado (8 en marquee y counters) e inconsistente con config (12); unificado a `CONTACT_CONFIG.business.yearsInBusiness = 8` — ⚠️ confirmar dato real con cliente. (3) FAQ: `aria-controls`/`role=region`/`aria-hidden` en paneles. (4) Dead code: `HomeHeroHeadline.tsx` y `lib/stats.ts` (query a Supabase jamás importada) eliminados. Overflow 0 en 375/768/1119; h1 único; marquee y video con reduced-motion ok; tsc 0, lint 0.
 
