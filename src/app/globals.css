@@ -116,6 +116,15 @@ html {
   }
 }
 
+/* "Operaciones que nos confiaron." vive en una columna de 4/12 en lg;
+   a tamaño display-2 la palabra "Operaciones" desborda la columna.
+   (Sin capa por la misma razón que el bloque anterior.) */
+@media (min-width: 1024px) {
+  .testimonials-heading {
+    font-size: clamp(1.6rem, 2.3vw, 2.2rem);
+  }
+}
+
 body {
   background-color: #050505;
   color: #FFFFFF;

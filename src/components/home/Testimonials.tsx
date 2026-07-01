@@ -37,7 +37,8 @@ export function Testimonials({
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start lg:gap-12">
           <div className="lg:col-span-4">
             <p className="mb-2 property-tag-type gold-ink lg:mb-3">Voces</p>
-            <h2 className="mb-0 text-display-2 leading-display tracking-headline text-white">
+            {/* .testimonials-heading (globals, sin capa): "Operaciones" a display-2 no cabe en la columna 4/12 */}
+            <h2 className="testimonials-heading mb-0 text-display-2 leading-display tracking-headline text-white">
               Operaciones que nos confiaron.
             </h2>
             <p className="mt-4 mb-0 max-w-md text-body leading-snug text-white/58 lg:mt-6">

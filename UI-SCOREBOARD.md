@@ -52,9 +52,11 @@
 
 | Chequeo | Estado |
 |---|---|
-| Recorrido 375/768/1280 de Tier 2 completo | PENDIENTE |
-| Consola limpia en navegación completa | PENDIENTE |
-| typecheck + lint + build finales en 0 | PENDIENTE |
+| Recorrido 375/768/1280 de Tier 2 completo | ✅ (2026-07-01) home/inventario/ficha/contacto a 375 y 1119: 0 overflow, 0 headings cortados, main único |
+| Consola limpia en navegación completa | ✅ sin errores |
+| typecheck + lint + build finales en 0 | ✅ tsc 0, lint 0, `next build` exit 0 |
+
+Hallazgo de regresión corregido: h2 "Operaciones que nos confiaron." (Testimonials) cortado en desktop — columna 4/12 no cabe display-2 → `.testimonials-heading` con tamaño propio en lg (override sin capa).
 
 ## Bloqueadas / N/V
 
