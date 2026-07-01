@@ -42,7 +42,9 @@
   --font-mono: "Archivo", ui-monospace, monospace;
 
   /* ── Display scale (fluid) ── */
-  --text-display-1: clamp(2.75rem, 6vw, 5.75rem);       /* hero h1 */
+  /* Mínimo 2rem: con 2.75rem, "REPRESENTACIÓN" (14 chars uppercase) e
+     "Inmobiliaria" se cortaban en viewports de 375px. */
+  --text-display-1: clamp(2rem, 6vw, 5.75rem);          /* hero h1 */
   --text-display-2: clamp(1.75rem, 3.8vw, 3.5rem);      /* section h2 */
   --text-display-3: clamp(1.125rem, 1.6vw, 1.5rem);     /* h3 / subheading */
   --text-display-4: clamp(1.125rem, 1.6vw, 1.5rem);     /* h3 alias */
@@ -104,6 +106,16 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Fuera de @layer a propósito: Tailwind v4 reordena las reglas dentro de
+   @layer utilities y el override móvil quedaba antes que la regla base.
+   Sin capa, este bloque siempre gana. Tracking reducido para que palabras
+   largas ("REPRESENTACIÓN") quepan en 375px. */
+@media (max-width: 640px) {
+  .text-display-1 {
+    letter-spacing: 0.02em;
+  }
+}
+
 body {
   background-color: #050505;
   color: #FFFFFF;
@@ -125,7 +137,10 @@ body {
     letter-spacing: 0.045em;
     word-spacing: 0.08em;
     text-transform: uppercase;
-    max-width: 11ch;
+    /* Sin max-width: "REPRESENTACIÓN" mide ~20ch en esta fuente y cualquier
+       tope en ch lo corta en todos los tamaños (con 11ch el titular llevaba
+       cortado desde el redesign). El ancho de línea lo controlan los
+       contenedores de cada página y los <br> manuales. */
   }
 
   .text-display-2 {

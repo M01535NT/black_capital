@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FadeIn, StaggerChildren, StaggerItem } from "@/components/ui/motion";
+import { NextStepCTA } from "@/components/shared/NextStepCTA";
 
 export const metadata: Metadata = {
     title: "Equipo | Black Capital",
@@ -68,6 +69,8 @@ export default function EquipoPage() {
                     ))}
                 </StaggerChildren>
             </div>
+
+            <NextStepCTA description="Habla directo con el equipo: sin intermediarios, respuesta el mismo día hábil." />
         </div>
     );
 }

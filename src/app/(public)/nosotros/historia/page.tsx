@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/ui/motion";
+import { NextStepCTA } from "@/components/shared/NextStepCTA";
 
 export const metadata: Metadata = {
     title: "Nuestra Historia | Black Capital",
@@ -103,6 +104,8 @@ export default function HistoriaPage() {
                     </div>
                 </FadeIn>
             </div>
+
+            <NextStepCTA description="Ocho años operando en Tijuana. Cuéntanos qué necesitas comprar, vender o rentar." />
         </div>
     );
 }

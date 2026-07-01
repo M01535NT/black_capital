@@ -27,6 +27,9 @@
 2. **Verificación visual = preview MCP en :3000** (Playwright no instala en este entorno). Cada fix visual se comprueba con snapshot/inspect/screenshot, no "a ojo de código".
    - ⚠️ **Trampa de medición conocida:** el navegador del preview tiene zoom ≠ 100%, así que `window.innerWidth` y el ancho de elementos `position: fixed` reportan valores inflados (p. ej. 483 en vez de 375) y los screenshots pueden recortar el borde derecho. **Fuente de verdad:** `document.documentElement.clientWidth` para el viewport, `matchMedia` para el breakpoint, y para detectar overflow real escanear elementos **no-fixed** cuyo `right` exceda `clientWidth` sin ancestro con `overflow` clip/hidden/auto. No reportar overflow basado en `innerWidth`/`scrollWidth` a secas.
    - Los clicks por selector pueden fallar por el mismo desfase de coordenadas; si un click "no hace nada", reintentar con `preview_eval` → `el.click()` antes de declararlo bug.
+   - **El texto cortado no aparece en scans de rects:** el overflow inline de un heading no expande su `getBoundingClientRect`. Revisar además `scrollWidth > clientWidth` en h1/h2/h3.
+   - **Tailwind v4 reordena las reglas dentro de `@layer utilities`:** un override con @media dentro del layer puede quedar antes que la regla base; los overrides van fuera de @layer.
+   - Cerrar el drawer/lightbox tras probarlo: vaul transforma el fondo y contamina TODAS las mediciones siguientes.
 3. **Gates técnicos por iteración:** `npm run typecheck` (o `tsc --noEmit`), `npm run lint` y `npm run build` deben salir en 0 antes de calificar una unidad como cerrada.
 4. **Commits:** un commit local por unidad cerrada (mensaje `ui: <unidad> a 10/10 — <resumen>`). Push a `origin/main` solo con autorización explícita del usuario.
 5. **No romper lo ya endurecido:** guards de admin, CSP/headers, metadata OG, cleanup de Storage. Si un cambio de UI toca esas zonas, re-verificar.

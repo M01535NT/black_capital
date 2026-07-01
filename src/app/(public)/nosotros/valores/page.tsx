@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FadeIn, StaggerChildren, StaggerItem } from "@/components/ui/motion";
+import { NextStepCTA } from "@/components/shared/NextStepCTA";
 import { Shield, Eye, Handshake, Target, Scale, Zap } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -86,6 +87,8 @@ export default function ValoresPage() {
                     })}
                 </StaggerChildren>
             </div>
+
+            <NextStepCTA description="Estos principios aplican en cada operación. Cuéntanos la tuya y te respondemos el mismo día hábil." />
         </div>
     );
 }

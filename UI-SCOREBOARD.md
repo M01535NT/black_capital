@@ -26,8 +26,8 @@
 | Ficha de propiedad (galería, métricas, specs, agente, sticky bar, docs, mapa) | `/inventario/[slug]` | 10/10 | 10/10 ✅ (2026-07-01) | h2 "Descripción" duplicado eliminado; lightbox accesible (role=dialog + trigger teclado); guard StickyContactBar sin canales; a11y calculadora (slider + plazos) |
 | Contacto (form de leads) | `/contacto` | 10/10 | 10/10 ✅ (2026-07-01) | Form corregido en unidad forms (bug P1 + a11y); página sin overflow, h1 claro, WA+mail directos |
 | Herramientas (calculadoras) | `/herramientas` | 10/10 | 10/10 ✅ (2026-07-01) | NUEVO: 3 calculadoras funcionales (ROI, Flipping, ISAI) — el nav prometía #roi/#flipping/#isai y la página era solo catálogo estático |
-| Nosotros + historia + valores + equipo | `/nosotros/*` | — | PENDIENTE | |
-| Legales | `/legal/*` | — | PENDIENTE | |
+| Nosotros + historia + valores + equipo | `/nosotros/*` | 10/10 | 10/10 ✅ (2026-07-01) | Fix transversal display-1 (titulares cortados); NextStepCTA en las 3 subpáginas (terminaban sin siguiente paso) |
+| Legales | `/legal/*` | 10/10 | 10/10 ✅ (2026-07-01) | Sin cambios: limpias en móvil/desktop, headings sin clipping. Nota: el aviso de privacidad es breve (~1,575 chars) — revisión de fondo es tema legal del cliente |
 
 ## Tier 3 — Sub-marcas (×3: business, luxury, industrial)
 
@@ -61,6 +61,8 @@
 _(vacío)_
 
 ## Registro de fixes por unidad
+
+- **2026-07-01 · Nosotros×4 + Legales → 10/10 + FIX TRANSVERSAL MAYOR.** `.text-display-1` tenía `max-width: 11ch` pero "REPRESENTACIÓN" mide ~20ch en Archivo: **el titular principal del sitio llevaba cortado desde el redesign en TODOS los viewports** (móvil y desktop), igual que "Inmobiliaria..." en /nosotros. Fix: sin max-width en el token (el ancho lo dan los contenedores de página y los <br>), mínimo del clamp 2.75rem→2rem y tracking 0.02em en <640px (override fuera de @layer porque Tailwind v4 reordena las reglas dentro de @layer utilities). Verificado sin clipping en home/nosotros/valores/historia/equipo/contacto a 375 y 1119. Además: `NextStepCTA` compartido añadido a valores/historia/equipo (terminaban sin CTA). Lección de protocolo: el overflow de texto inline no se detecta con getBoundingClientRect — revisar `scrollWidth > clientWidth` de headings.
 
 - **2026-07-01 · /herramientas → 10/10 (feature nueva).** El menú Herramientas del header linkeaba a `/herramientas#roi`, `#flipping` e `#isai` pero la página era un catálogo estático sin una sola calculadora (se auto-describía "En desarrollo"). Construido `investment-calculators.tsx`: Calculadora ROI (bruto + neto/cap rate), Simulador Flipping (utilidad, ROI proyecto y anualizado, costos de venta parametrizables) y Calculadora ISAI (tasa referencial 2% Tijuana con disclaimer). Verificado en vivo: recálculo reactivo (renta 20k → ROI 14.1%), ISAI $1.7M → $34,000, anchors aterrizan con scroll-mt-28, inputs 44px con label, sin overflow móvil. Sidebar "En desarrollo" → "Disponibles hoy" con links. /contacto también cerrado (fixes en unidad forms). tsc 0, lint 0.
 
