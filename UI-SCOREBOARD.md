@@ -9,7 +9,7 @@
 | Unidad | Archivos clave | Nota | Estado | Criterios fallidos / notas |
 |---|---|---|---|---|
 | Header + nav (desktop/mobile) | `layout/header/*`, `Header.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | Fixes: wrapper 72px>64px eliminado; focus-visible underline; dedupe dropdowns; dead code fuera; warning Radix drawer silenciado |
-| Footer | `layout/Footer.tsx` | — | PENDIENTE | |
+| Footer | `layout/Footer.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | Fixes: targets sociales 44px en móvil; indentación. ⚠️ DATO CLIENTE: email `contacto@blackmx.vercel.app` y URLs de redes son placeholders (contact-config.ts) |
 | Sistema de botones/inputs/forms | `ui/button.tsx`, `ui/input.tsx`, `ui/form.tsx`, `ui/select.tsx`, `ui/textarea.tsx` | — | PENDIENTE | |
 | Cards y badges | `ui/card.tsx`, `ui/badge.tsx`, `property/PropertyCard` (en `shared/BrandInventory`) | — | PENDIENTE | |
 | Overlays (dialog/drawer/dropdown/tooltip) | `ui/dialog.tsx`, `ui/drawer.tsx`, `ui/dropdown-menu.tsx`, `admin/admin-tooltip.tsx` | — | PENDIENTE | |
@@ -61,5 +61,7 @@
 _(vacío)_
 
 ## Registro de fixes por unidad
+
+- **2026-07-01 · Footer → 10/10.** Targets táctiles de redes sociales a 44×44px en móvil (`w-11 h-11 sm:w-9 sm:h-9`); indentación rota del `<li>` de horarios. Verificado: móvil (sin overflow, 44px), tablet (4 cols una fila), desktop (grid 12), tsc 0, lint 0. Pendiente de DATOS del cliente: email real y URLs reales de redes en `src/lib/contact-config.ts`.
 
 - **2026-07-01 · Header + nav → 10/10.** (1) Eliminado div interno redundante `min-h-[72px]` que desbordaba 8px el contenedor `h-16` en móvil. (2) `focus-visible:after:scale-x-100` en navLinkBase: el underline dorado ahora indica foco de teclado. (3) `ventaDropdown`/`rentaDropdown` duplicados → `verticalesDropdown`; eliminado `corporativoLinks` (dead code). (4) `ui/drawer.tsx`: `aria-describedby={undefined}` silencia warning de Radix en consola. (5) `eslint.config.mjs`: ignora `Plantilla-layout/` y artefactos de test (lint pasaba a rojo por la plantilla de referencia). Verificado: móvil/tablet/desktop, drawer 17 links, dropdown con gradiente ok, tsc 0, lint 0.

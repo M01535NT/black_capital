@@ -76,7 +76,7 @@ export function Footer() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         title={`${social.name} · ${handle}`}
-                                        className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 transition-all duration-300 focus-visible:text-[var(--color-accent)] focus-visible:border-[var(--color-accent)]/40 focus-visible:outline-none"
+                                        className="w-11 h-11 sm:w-9 sm:h-9 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 transition-all duration-300 focus-visible:text-[var(--color-accent)] focus-visible:border-[var(--color-accent)]/40 focus-visible:outline-none"
                                         aria-label={`${social.name} (${handle})`}
                                     >
                                         <social.icon className="w-4 h-4" aria-hidden="true" />
@@ -88,7 +88,7 @@ export function Footer() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title={`WhatsApp · ${CONTACT_CONFIG.phone}`}
-                                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 transition-all duration-300 focus-visible:text-[var(--color-accent)] focus-visible:border-[var(--color-accent)]/40 focus-visible:outline-none"
+                                className="w-11 h-11 sm:w-9 sm:h-9 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 transition-all duration-300 focus-visible:text-[var(--color-accent)] focus-visible:border-[var(--color-accent)]/40 focus-visible:outline-none"
                                 aria-label="WhatsApp"
                             >
                                 <MessageCircle className="w-4 h-4" aria-hidden="true" />
@@ -171,10 +171,10 @@ export function Footer() {
                                     <span className="group-hover:underline">{CONTACT_CONFIG.email}</span>
                                 </a>
                             </li>
-                                <li className="pt-1 footer-legal-type text-white/35 leading-relaxed">
-                                    {CONTACT_CONFIG.hours.map((line) => (
-                                        <span key={line} className="block">{line}</span>
-                                    ))}
+                            <li className="pt-1 footer-legal-type text-white/35 leading-relaxed">
+                                {CONTACT_CONFIG.hours.map((line) => (
+                                    <span key={line} className="block">{line}</span>
+                                ))}
                             </li>
                         </ul>
                     </div>
