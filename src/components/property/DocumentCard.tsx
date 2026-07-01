@@ -192,7 +192,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
 
                     {step === "error" && (
                         <div className="space-y-4">
-                            <p className="border border-red-400/20 bg-red-400/10 p-3 text-body-sm text-red-100">{error}</p>
+                            <p role="alert" className="border border-red-400/20 bg-red-400/10 p-3 text-body-sm text-red-100">{error}</p>
                             <Button type="button" onClick={() => setStep("form")} className="brushed-gold rounded-full px-5 text-black">
                                 Intentar de nuevo
                             </Button>
@@ -201,7 +201,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
 
                     {step === "form" && (
                         <form onSubmit={submitProfile} className="space-y-4">
-                            {error && <p className="border border-red-400/20 bg-red-400/10 p-3 text-body-sm text-red-100">{error}</p>}
+                            {error && <p role="alert" className="border border-red-400/20 bg-red-400/10 p-3 text-body-sm text-red-100">{error}</p>}
                             <div className="grid gap-3 sm:grid-cols-2">
                                 <label className="space-y-2 text-body-sm text-white/62">
                                     Nombre completo
@@ -234,7 +234,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
 
                     {step === "code" && (
                         <form onSubmit={submitCode} className="space-y-4">
-                            {error && <p className="border border-red-400/20 bg-red-400/10 p-3 text-body-sm text-red-100">{error}</p>}
+                            {error && <p role="alert" className="border border-red-400/20 bg-red-400/10 p-3 text-body-sm text-red-100">{error}</p>}
                             <div className="border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 p-4">
                                 <div className="flex items-start gap-3">
                                     <ShieldCheck className="mt-0.5 size-5 shrink-0 text-[var(--color-accent)]" />

@@ -12,7 +12,7 @@
 | Footer | `layout/Footer.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | Fixes: targets sociales 44px en móvil; indentación. ⚠️ DATO CLIENTE: email `contacto@blackmx.vercel.app` y URLs de redes son placeholders (contact-config.ts) |
 | Sistema de botones/inputs/forms | `ui/button.tsx`, `ui/input.tsx`, `ui/form.tsx`, `ui/select.tsx`, `ui/textarea.tsx`, `public/contact-lead-form.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | ui/* shadcn stock OK; fixes en contact-lead-form: bug currentTarget post-await (P1), grid móvil 1 col, aria-labels, role=alert |
 | Cards y badges | `ui/card.tsx`, `ui/badge.tsx`, `property/PropertyCard.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | Fixes: traslape badges/botones (right-28), targets 44px móvil, CTA 44px. ⚠️ DATO CLIENTE: existe "CASA EN VENTA DE PRUEBA" en inventario de producción |
-| Overlays (dialog/drawer/dropdown/tooltip) | `ui/dialog.tsx`, `ui/drawer.tsx`, `ui/dropdown-menu.tsx`, `admin/admin-tooltip.tsx` | — | PENDIENTE | |
+| Overlays (dialog/drawer/dropdown/tooltip) | `ui/dialog.tsx`, `ui/drawer.tsx`, `ui/dropdown-menu.tsx`, `admin/admin-tooltip.tsx`, `property/DocumentCard.tsx` | 10/10 | 10/10 ✅ (2026-07-01) | drawer ya corregido en u.1; role=alert en errores de DocumentCard; ModeToggle (dead code) eliminado. Flujo de documentos verificado por código (API de producción, no ejecutable) |
 | Motion (transiciones/reveals) | `motion/*`, `ui/motion.tsx`, `ui/reveal-text.tsx`, `layout/PageTransition.tsx`, `layout/ScrollProgress.tsx` | — | PENDIENTE | respetar `prefers-reduced-motion` |
 | WhatsAppFloat + toasts | `layout/WhatsAppFloat.tsx`, `ui/sonner.tsx` | — | PENDIENTE | |
 | Shared section primitives | `shared/SectionHeader.tsx`, `shared/PageHero.tsx`, `shared/eyebrow.tsx`, `layout/Section.tsx` | — | PENDIENTE | |
@@ -61,6 +61,8 @@
 _(vacío)_
 
 ## Registro de fixes por unidad
+
+- **2026-07-01 · Overlays → 10/10.** `role="alert"` en los 3 mensajes de error de `DocumentCard.tsx` (dialog de solicitud de documentos); eliminado `mode-toggle.tsx` (dead code: sin imports y el público es dark-only vía ThemeGuard). Dialog/dropdown-menu shadcn stock OK; AdminTooltip ya tenía nombre accesible; drawer corregido en unidad 1. El flujo de documentos se verificó por lectura de código: `FormData(event.currentTarget)` se lee antes del await (sin el bug del contact form); no ejecutable en vivo porque hasta abrir el dialog dispara POST a producción. tsc 0, lint 0.
 
 - **2026-07-01 · Cards y badges → 10/10.** En `PropertyCard.tsx`: los badges superiores (RESIDENCIAL/DESTACADA) se traslapaban con favorito/compartir en móvil → contenedor con `right-28` para que envuelvan antes de la zona de botones; favorito/compartir a 44×44 en móvil (`h-11 w-11 sm:h-9 sm:w-9`); CTA "Solicitar información" `min-h-10`→`min-h-11`. `ui/badge.tsx` y `ui/card.tsx` shadcn stock sin cambios. Verificado móvil/tablet/desktop sin traslape, tsc 0, lint 0. Nota cliente: propiedad de prueba visible en producción.
 
