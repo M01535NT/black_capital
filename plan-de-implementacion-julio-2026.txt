@@ -466,6 +466,33 @@ verificación; no se commiteó ningún archivo de mock ni el cambio de CSP. El
 árbol quedó limpio. La verificación contra la Supabase real (no mock) sigue
 correspondiendo al deploy de Vercel.
 
+### [2026-07-01] P2 — Variables de entorno del flujo de documentos sin documentar  ✅ RESUELTO
+
+**Zona:** deploy / documentación (directamente ligada al P0 de documentos)
+**Brecha:** auditoría `process.env` (código) vs `.env.example` reveló 8 variables
+leídas por el código pero NO documentadas. Crítico: las de WhatsApp Cloud API
+(`WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`,
+`WHATSAPP_VERIFICATION_TEMPLATE_NAME`) son REQUERIDAS en producción para el flujo
+de acceso a documentos — sin ellas, `sendWhatsappVerificationCode` devuelve
+"WhatsApp no está configurado" y `/api/document-access/request` responde 502. Un
+deployer que siguiera `.env.example` no las configuraría → la feature (recién
+restaurada a nivel esquema) seguiría inoperante en el paso de envío.
+
+**Corrección:** `.env.example` ahora documenta WHATSAPP_ACCESS_TOKEN,
+WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_VERIFICATION_TEMPLATE_NAME (requeridas),
+WHATSAPP_TEMPLATE_LANGUAGE, WHATSAPP_GRAPH_API_VERSION (opcionales, con default),
+y DOCUMENT_ACCESS_SECRET (opcional, con fallback a SUPABASE_SERVICE_ROLE_KEY),
+con notas de impacto.
+
+**Nota:** `hashSecret` degrada con gracia (`DOCUMENT_ACCESS_SECRET ||
+SUPABASE_SERVICE_ROLE_KEY || literal`); como el service role siempre está en prod,
+el hashing no se rompe, pero se recomienda un secreto dedicado y rotable.
+
+**Dependencia operativa del P0 de documentos (config de deploy, no código):**
+para que el flujo funcione en producción se deben cargar en Vercel las variables
+de WhatsApp Cloud API y `RESEND_API_KEY` (entrega por email). El esquema ya está
+aplicado; falta esta configuración de entorno.
+
 **Nota:** el archivo de migración del repo ya era correcto; el defecto era de
 despliegue (drift schema repo↔prod). Recomendado: asegurar que el pipeline
 aplique migraciones pendientes en cada deploy (Vercel + Supabase) para evitar
