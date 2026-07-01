@@ -429,9 +429,42 @@ depende de Supabase.
 
 **Cobertura del "flujo admin real":** entrada/seguridad verificada en navegador
 (arriba) + operaciones de datos (leads y documentos, ciclo completo) verificadas
-contra la DB de producción por MCP. La única porción no ejecutable aquí es el
-CRUD autenticado en navegador contra Supabase, por el bloqueo de egress ya
-documentado (queda para el deploy de Vercel).
+contra la DB de producción por MCP.
+
+### [2026-07-01] Verificación del FLUJO ADMIN AUTENTICADO en NAVEGADOR (mock local)  ✅ EJECUTADO
+
+**Contexto:** el egress a Supabase está bloqueado por política, por lo que el
+CRUD admin autenticado no se puede probar contra la Supabase real desde el
+sandbox. Para cubrirlo igualmente en navegador, se levantó un mock local de
+Supabase (GoTrue + PostgREST en memoria, en `http://localhost:54321`, sembrado
+con los datos REALES extraídos por MCP: admin, 3 leads, 2 propiedades, 2
+agentes) y se apuntó la app a él. Esto ejercita el código real del cliente y del
+servidor Next (login `@supabase/ssr`, `requireAdminSession`, páginas admin,
+`@/lib/data`), solo con el backend simulado.
+
+**Resultado (Chromium, sesión autenticada, 0 errores de consola de la app):**
+- Login (`signInWithPassword`) → aterriza en `/admin` autenticado.
+- Dashboard: encabezado + leads recientes (Juan Perez/Claudia) + inventario
+  reciente (Villas del Sol/Casa) renderizados con datos.
+- Leads (lista): muestra los leads sembrados.
+- Lead detalle: nombre y correo del prospecto.
+- Propiedades: ambas fichas listadas.
+- Agentes: Moises y Claudia.
+- Configuración: formulario cargado.
+- Evidencia: shots `admin-dashboard.png`, `admin-leads.png`,
+  `admin-lead-detail.png`, `admin-properties.png`, `admin-agents.png`,
+  `admin-settings.png`.
+
+**Hallazgo colateral (positivo):** la app aplica una Content-Security-Policy
+estricta (`connect-src` restringido a `*.supabase.co` y allowlist). El mock local
+solo funcionó tras añadir `http://localhost:54321` a `connect-src` de forma
+**temporal y revertida** (no commiteada). En producción la CSP es correcta y no
+requiere cambios.
+
+**Nota de método:** el mock y el ajuste de CSP fueron exclusivamente de
+verificación; no se commiteó ningún archivo de mock ni el cambio de CSP. El
+árbol quedó limpio. La verificación contra la Supabase real (no mock) sigue
+correspondiendo al deploy de Vercel.
 
 **Nota:** el archivo de migración del repo ya era correcto; el defecto era de
 despliegue (drift schema repo↔prod). Recomendado: asegurar que el pipeline
