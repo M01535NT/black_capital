@@ -23,12 +23,17 @@ function readFavorites(): string[] {
 }
 
 export function useFavorites(): UseFavoritesReturn {
-  // ✅ Lazy initializer reads localStorage once, no setState in effect needed
-  const [favorites, setFavorites] = useState<string[]>(readFavorites);
+  // SSR-safe: start empty to match the server-rendered HTML, then load the
+  // persisted favorites after mount. Reading localStorage in the initializer
+  // would make the first client render differ from the server (the user's
+  // saved favorites vs []), causing a React hydration mismatch for returning
+  // users. Consumers gate their visible state on `hydrated` to avoid a flash.
+  const [favorites, setFavorites] = useState<string[]>([]);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFavorites(readFavorites());
     setHydrated(true);
   }, []);
 

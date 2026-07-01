@@ -513,6 +513,31 @@ nosniff`).
 **Verificación local del propio test:** 15/15 en verde contra el dev server;
 lint 0, typecheck 0.
 
+### [2026-07-01] P2 — Mismatch de hidratación SSR en favoritos  ✅ RESUELTO
+
+**Zona:** responsive/UX + correctness (audit #7 "favoritos persisten entre sesiones")
+**Brecha:** `useFavorites` inicializaba el estado con un initializer lazy que leía
+`localStorage` (`useState(readFavorites)`). En SSR el servidor renderiza con `[]`,
+pero el PRIMER render del cliente leía los favoritos reales → para un usuario que
+regresa con favoritos, `FavoriteButton` producía clases `active` distintas entre
+servidor y cliente = **hydration mismatch** (error de consola en producción y
+posible re-render del subtree). El comentario "no setState in effect needed" era
+la causa, no una optimización válida.
+
+**Corrección:** patrón SSR-safe — el estado arranca en `[]` (igual que el server)
+y los favoritos persistidos se cargan en un `useEffect` tras montar; los
+consumidores ya ocultan el botón con `opacity-0` hasta `hydrated`, así que no hay
+flash.
+
+**Verificación (navegador, con favorito sembrado en localStorage = usuario que
+regresa):** `/inventario` con 2 propiedades — cards renderizan; el botón del
+favorito sembrado muestra estado activo ("Quitar de favoritos") y el otro
+inactivo; `localStorage` persiste el favorito entre cargas; **HYDRATION ISSUES:
+NONE**, 0 errores de consola. lint 0, typecheck 0, build exit 0.
+
+Con esto queda cubierto también el punto del audit sobre persistencia de
+favoritos entre sesiones (funciona vía `localStorage` con clave `bc_favorites`).
+
 **Nota:** el archivo de migración del repo ya era correcto; el defecto era de
 despliegue (drift schema repo↔prod). Recomendado: asegurar que el pipeline
 aplique migraciones pendientes en cada deploy (Vercel + Supabase) para evitar
