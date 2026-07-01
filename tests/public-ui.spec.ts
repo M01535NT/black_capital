@@ -66,15 +66,14 @@ test.describe("Public UI follow-up", () => {
 
     test("property detail follows the public visual system when inventory has live items", async ({ page }) => {
         await page.goto("/inventario");
+        await page.locator("#catalogo").first().waitFor({ state: "visible" }).catch(() => {});
 
-        const detailHref = await page
-            .locator('#catalogo article a[href^="/inventario/"]')
-            .first()
-            .getAttribute("href")
-            .catch(() => null);
+        // count() no auto-espera al timeout: si no hay detalle público (p.ej. sin datos
+        // sembrados), saltamos rápido en lugar de agotar el timeout del test.
+        const detailLinks = page.locator('#catalogo article a[href^="/inventario/"]');
+        test.skip((await detailLinks.count()) === 0, "No live property detail was available in inventory.");
 
-        test.skip(!detailHref, "No live property detail was available in inventory.");
-
+        const detailHref = await detailLinks.first().getAttribute("href");
         await page.goto(detailHref!);
         await expect(page.getByRole("link", { name: /Volver/i })).toBeVisible();
         await expect(page.getByRole("heading", { name: "Ficha Técnica" })).toBeVisible();

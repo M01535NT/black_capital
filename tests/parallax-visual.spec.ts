@@ -6,54 +6,41 @@ test.use({
   isMobile: true,
 });
 
-test("why section mobile parallax is visually active during scroll", async ({ page }) => {
+// El rediseño reemplazó la vieja "why section" por la metodología con reveal
+// por scroll (framer-motion: opacity/translateY/blur al entrar en viewport).
+// Este test protege que ese motion siga activo en móvil.
+test("home methodology reveals steps on scroll (motion active on mobile)", async ({ page }) => {
   await page.goto("/");
 
-  const section = page.getByText("Por qué Black Capital").locator("..").locator("..").locator("..");
-  await section.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(250);
+  // Último paso: queda muy por debajo del fold al cargar, así que aún no se ha revelado.
+  const step = page.locator("[data-section='home-methodology'] ol > li:has(h3)").last();
 
-  await page.screenshot({
-    path: "test-results/parallax-mobile-before.png",
-    fullPage: false,
-  });
+  const read = () =>
+    step.evaluate((el) => {
+      const styles = window.getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+      return {
+        top: Math.round(rect.top),
+        opacity: styles.opacity,
+        transform: styles.transform,
+        filter: styles.filter,
+      };
+    });
 
-  const sample = page.locator(".timeline-mobile-reveal").nth(1);
-  const before = await sample.evaluate((el) => {
-    const styles = window.getComputedStyle(el);
-    const rect = el.getBoundingClientRect();
-    return {
-      top: rect.top,
-      opacity: styles.opacity,
-      transform: styles.transform,
-      filter: styles.filter,
-    };
-  });
+  const before = await read();
 
-  await page.mouse.wheel(0, 260);
-  await page.waitForTimeout(250);
+  await step.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(900); // deja completar la animación de reveal
 
-  await page.screenshot({
-    path: "test-results/parallax-mobile-after.png",
-    fullPage: false,
-  });
+  const after = await read();
 
-  const after = await sample.evaluate((el) => {
-    const styles = window.getComputedStyle(el);
-    const rect = el.getBoundingClientRect();
-    return {
-      top: rect.top,
-      opacity: styles.opacity,
-      transform: styles.transform,
-      filter: styles.filter,
-    };
-  });
+  await page.evaluate(
+    ({ before, after }) => console.info("[parallax-visual]", JSON.stringify({ before, after })),
+    { before, after },
+  );
 
-  await page.evaluate(({ before, after }) => {
-    console.info("[parallax-visual]", JSON.stringify({ before, after }));
-  }, { before, after });
-
-  expect(before.transform).not.toBe(after.transform);
-  expect(before.filter).not.toBe(after.filter);
+  // Antes de entrar al viewport el paso está oculto/desplazado; al revelarse cambia.
   expect(Number(after.opacity)).toBeGreaterThan(Number(before.opacity));
+  expect(after.transform).not.toBe(before.transform);
+  expect(after.filter).not.toBe(before.filter);
 });

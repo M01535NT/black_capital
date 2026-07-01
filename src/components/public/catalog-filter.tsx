@@ -276,7 +276,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             }}
                             className={`${pillBase} ${!activeStatus ? pillActive : pillInactive}`}
                         >
-                            Estatus
+                            Todos
                         </button>
                         {STATUS_OPTIONS.map((status) => (
                             <button
