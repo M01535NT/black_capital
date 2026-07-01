@@ -60,6 +60,31 @@ function filterPayload(data: Record<string, unknown>): Record<string, unknown> {
   return filtered;
 }
 
+const STORAGE_BUCKETS = ["public", "secure-brochures"] as const;
+
+async function deletePropertyFiles(
+  supabase: ReturnType<typeof createAdminClient>,
+  propertyId: string
+): Promise<void> {
+  for (const bucket of STORAGE_BUCKETS) {
+    const { data: files, error: listError } = await supabase.storage
+      .from(bucket)
+      .list(propertyId);
+
+    if (listError) {
+      logger.error("API/properties", `[API /properties DELETE] Error listando storage (${bucket}):`, listError);
+      continue;
+    }
+    if (!files || files.length === 0) continue;
+
+    const paths = files.map((file) => `${propertyId}/${file.name}`);
+    const { error: removeError } = await supabase.storage.from(bucket).remove(paths);
+    if (removeError) {
+      logger.error("API/properties", `[API /properties DELETE] Error borrando storage (${bucket}):`, removeError);
+    }
+  }
+}
+
 async function syncPropertyAgents(
   supabase: ReturnType<typeof createAdminClient>,
   propertyId: string,
@@ -245,6 +270,8 @@ export async function DELETE(req: NextRequest) {
       logger.error("API/properties", "[API /properties DELETE]", error);
       return NextResponse.json({ error: translateError(error) }, { status: 400 });
     }
+
+    await deletePropertyFiles(supabase, id);
 
     return NextResponse.json({ success: true });
   } catch (err) {
