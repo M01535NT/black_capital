@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_MX",
     siteName: "Black Capital",
+    // Al redefinir openGraph aquí se pierde la imagen de convención (opengraph-image.tsx),
+    // así que la referenciamos explícitamente para conservar el preview social.
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Black Capital - Inmobiliaria en Tijuana" }],
   },
 };
 

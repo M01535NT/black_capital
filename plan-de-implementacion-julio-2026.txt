@@ -171,3 +171,82 @@ la existencia del panel a cualquier visitante.
 
 *Documento generado tras auditoría funcional automatizada del sitio web Black Capital.*  
 *Para dudas o seguimiento, revisar el reporte completo de QA adjunto.*
+---
+
+## Registro de correcciones (ciclo QA continuo)
+
+### [2026-06-30] P1 — Guard de rol server-side en /admin/settings  ✅ RESUELTO
+
+**Zona:** settings + seguridad
+**Brecha detectada:** `src/app/(admin)/admin/settings/page.tsx` era un client
+component sin verificación de rol en servidor. El layout `(admin)` solo exige
+sesión (`requireAdminSession`), por lo que un usuario con rol **agent** podía
+navegar por URL directa a `/admin/settings`, ver toda la configuración del sitio
+(contacto, hero URLs, plantillas) y toparse con un formulario que fallaba en
+silencio al guardar (la API `/api/settings` sí bloquea escrituras con `isAdmin`).
+Inconsistencia de defense-in-depth: `agents/page.tsx` y `users/page.tsx` sí
+imponían `requireAdminRole()`.
+
+**Corrección:** se separó la UI a `settings/settings-form.tsx` (client component)
+y `settings/page.tsx` pasó a ser server component que ejecuta `requireAdminRole()`
+antes de renderizar. Mismo patrón que users/agents.
+
+**Evidencia de verificación:**
+- typecheck (tsc --noEmit): 0 errores
+- lint (eslint): 0 errores
+- build (next build): exit 0; ruta `/admin/settings` pasó de estático (○) a
+  server-rendered dinámico (ƒ), confirmando que el guard corre en cada request.
+- navegador: acceso no autenticado a `/admin/settings` redirige a `/admin/login`
+  (cadena requireAdminRole → requireAdminSession → redirect). Login renderiza OK,
+  sin errores de consola.
+
+### [2026-06-30] P2 — Link "Panel Admin" expuesto en footer público  ✅ RESUELTO
+
+**Zona:** seguridad / superficie de ataque (audit #6)
+**Brecha:** el footer público listaba "Panel Admin" → /admin, anunciando el panel
+a cualquier visitante.
+**Corrección:** removido de `corpLinks` en `src/components/layout/Footer.tsx`. El
+equipo interno accede por URL directa. No quedan referencias públicas a /admin
+(grep en src/components y src/app/(public) sin resultados).
+**Evidencia:** typecheck 0, lint 0. Navegador: home (200) ya no contiene
+"Panel Admin" ni href="/admin"; links de footer verificados = [Nosotros,
+Herramientas, Aviso de Privacidad, Términos de Uso].
+
+### [2026-06-30] P2 — Imagen de preview social (OG/Twitter) rota en todo el sitio  ✅ RESUELTO
+
+**Zona:** SEO / marketing (audit #5)
+**Brechas detectadas (3 relacionadas):**
+1. `public/og-image.jpg` existía pero pesaba **0 bytes**; estaba referenciado en
+   `twitter.images` del root layout → preview de X/Twitter roto.
+2. La ruta dinámica `/opengraph-image` devolvía **HTTP 500** en todo el sitio.
+   Causa: Satori (`next/og`) exige `display:flex` en cualquer `<div>` con más de
+   un hijo; el div de "BLACK <span>CAPITAL</span>" tenía nodo de texto + span sin
+   flex → crash. Esto afecta también producción, no solo dev.
+3. Home y Contacto redefinen `openGraph` sin `images`, lo que descarta la imagen
+   de convención (`opengraph-image.tsx`) → ambas páginas quedaban sin og:image.
+
+**Correcciones:**
+- `src/app/layout.tsx`: removida referencia a `/og-image.jpg`; eliminado el archivo vacío.
+- `src/app/opengraph-image.tsx`: div del wordmark reestructurado a `display:flex`
+  con dos `<span>` → la ruta genera PNG 1200×630 válido.
+- `src/app/(public)/page.tsx` y `.../contacto/page.tsx`: `openGraph.images` explícito
+  apuntando a `/opengraph-image` (solo estas dos, que emitían cero tags; sin duplicar
+  en páginas que ya usan la convención).
+
+**Evidencia:** typecheck 0, lint 0, build exit 0 (`/opengraph-image` compila ƒ).
+Navegador: `/opengraph-image` pasó de 500 → 200 `image/png`, imagen carga a 1200×630.
+Home, Contacto y Legal emiten exactamente 1 `og:image` cada una (sin duplicados);
+home/contacto → `https://blackmx.vercel.app/opengraph-image`.
+
+### [2026-06-30] P2 — Overflow horizontal en móvil (skeleton de carga)  ✅ RESUELTO
+
+**Zona:** responsive (audit #1 / UX móvil)
+**Brecha:** `src/app/(public)/loading.tsx` (fallback de Suspense del grupo público)
+tenía un skeleton `w-96` (384px fijo) dentro de un container con `px-4`. En viewport
+de 375px el ancho disponible es ~343px → el skeleton desbordaba y provocaba scroll
+horizontal durante cada carga en móvil.
+**Corrección:** `w-96` → `w-full max-w-sm` (mismo tope de 384px en desktop, pero
+encoge al ancho del container en móvil).
+**Evidencia:** medición DOM en 375px — home tras carga: overflow solo provenía de
+este skeleton (los otros "offenders" eran el header `inset-x-0` = scrollbar, no bug).
+inventario, black-luxury: 0px de overflow. typecheck 0, lint 0, build exit 0.

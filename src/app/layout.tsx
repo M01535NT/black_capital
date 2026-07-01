@@ -49,7 +49,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Inmobiliaria en Tijuana | Black Capital",
     description: "Casas, locales, oficinas, naves y bodegas en Tijuana.",
-    images: ["/og-image.jpg"],
+    // La imagen la aporta el opengraph-image.tsx (convención de Next); evitamos
+    // apuntar a un JPG estático que estaba vacío y rompía el preview en X/Twitter.
   },
   robots: {
     index: true,

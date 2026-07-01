@@ -30,16 +30,18 @@ export default async function Image() {
                 >
                     <div
                         style={{
+                            display: "flex",
+                            gap: "0.28em",
                             fontSize: "clamp(2.75rem, 6vw, 5.75rem)",
                             fontWeight: "bold",
                             color: "#FAFAFA",
                             letterSpacing: "-0.02em",
                             textTransform: "uppercase",
-                            wordSpacing: "0.08em",
                             lineHeight: "0.94",
                         }}
                     >
-                        BLACK <span style={{ color: "#CFB155" }}>CAPITAL</span>
+                        <span>BLACK</span>
+                        <span style={{ color: "#CFB155" }}>CAPITAL</span>
                     </div>
                     <div
                         style={{

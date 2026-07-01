@@ -12,7 +12,7 @@ export default function Loading() {
             {/* Content skeleton */}
             <div className="container mx-auto px-4 py-16 space-y-8">
                 <div className="flex flex-col items-center gap-3 mb-12">
-                    <div className="skeleton-shimmer skeleton-text w-96 h-8" />
+                    <div className="skeleton-shimmer skeleton-text w-full max-w-sm h-8" />
                     <div className="skeleton-shimmer skeleton-text-sm w-64 h-4 mt-2" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
