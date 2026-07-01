@@ -378,3 +378,51 @@ bloqueado: 403 desde el CDN del registro). Conforme al README del proxy
 (`/root/.ccr/README.md`), las denegaciones de política se reportan, no se
 eluden. La verificación en navegador del panel queda para el deploy real
 (Vercel) o una sesión con egress a Supabase habilitado.
+
+### [2026-07-01] P0 — Feature de acceso a documentos ROTA en producción (migración sin aplicar)  ✅ RESUELTO
+
+**Zona:** inventario / leads / seguridad (flujo de descarga de documentos)
+**Brecha (crítica):** la migración `20260610_secure_document_access.sql` existe en
+el repo pero NUNCA se aplicó a la Supabase de producción. En consecuencia, en la
+DB real faltaban por completo:
+  - la tabla `public.document_access_requests` (`to_regclass` = null), y
+  - las 9 columnas de `leads` del acceso protegido (whatsapp_normalized,
+    whatsapp_verified_at, nda_accepted_at, nda_version, privacy_notice_version,
+    legal_acceptance_ip/user_agent, document_access_session_token_hash,
+    document_access_expires_at).
+Las 3 rutas del flujo (`/api/document-access/request|verify|download`) consultan
+esas estructuras, por lo que CUALQUIER intento de descargar un brochure/documento
+protegido fallaba en runtime (500 "relation does not exist"). Feature core de
+conversión (captura de lead + NDA + verificación WhatsApp → entrega de documento)
+completamente inoperante para el cliente.
+
+**Detección:** al preparar un hardening en `verify`, un `information_schema` de
+`document_access_requests` volvió vacío → `to_regclass` confirmó tabla ausente y
+el dump de `leads` confirmó columnas ausentes. Dependencia `set_updated_at()`
+verificada presente antes de aplicar.
+
+**Corrección:** se aplicó la migración `20260610_secure_document_access.sql`
+(idempotente) a producción vía MCP `apply_migration`. Post-verificación:
+tabla creada, 5/5 columnas nuevas de leads presentes, RLS habilitado con política
+"Deny direct access", 3 índices y trigger `updated_at` en su lugar.
+
+**Verificación funcional (flujo real, transacción con ROLLBACK):**
+request (lead + solicitud pending) → verify (código correcto → status `verified`
++ token de sesión en el lead) → download (precondiciones): `req_status=verified`,
+`session_matches=true`, `session_valid=true`, `downloadable=true`. Post-check:
+0 filas persistidas (tabla queda en 0), leads sin cambios (3).
+
+**Nota:** el archivo de migración del repo ya era correcto; el defecto era de
+despliegue (drift schema repo↔prod). Recomendado: asegurar que el pipeline
+aplique migraciones pendientes en cada deploy (Vercel + Supabase) para evitar
+drift futuro.
+
+### [2026-07-01] P2 — Hardening OTP de documentos (defensa en profundidad)  ⏭️ DIFERIDO
+
+**Zona:** seguridad (document-access/verify)
+**Observación:** el código OTP de 6 dígitos se protege por rate-limit por IP
+(8/min) + TTL corto del código; no hay bloqueo por intentos fallidos por-solicitud.
+Ante fuerza bruta distribuida (IPs rotativas) dentro del TTL sería deseable
+invalidar la solicitud tras N fallos (columna `verification_attempts`).
+Riesgo residual BAJO con las defensas actuales; se difiere como mejora futura
+para no acoplar más cambios de esquema en este ciclo.
