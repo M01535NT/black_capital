@@ -349,3 +349,32 @@ consulta real); esos índices se usarán con operación real y NO deben eliminar
 - Advisor de seguridad: "Leaked Password Protection Disabled" — habilitar en
   Auth > Providers la verificación contra HaveIBeenPwned (toggle de configuración
   de Auth; no modificable por SQL/MCP).
+
+### [2026-07-01] Verificación del FLUJO ADMIN REAL (backend, DB de producción)  ✅ EJECUTADO
+
+**Método:** al no poder correr el panel en navegador dentro del sandbox (ver
+"Restricción de entorno" abajo), se ejecutó el ciclo de vida completo de un lead
+—las mismas operaciones que realizan las rutas API del admin— directamente
+contra la Supabase de producción (`tewfdfmicifpdecxcpfy`) por MCP, dentro de una
+transacción con ROLLBACK (cero persistencia).
+
+**Pasos ejercidos y resultado:**
+1. Captura pública (public-leads POST): lead insertado, status `new`,
+   privacy_accepted=true.
+2. Asignación por admin (leads PUT): assigned_agent_id → "Claudia Nallely";
+   actividad `assignment` + notificación al admin.
+3. Nota de seguimiento (lead-activities POST): actividad `note`.
+4. Tarea (lead-tasks POST): 1 tarea `pending`, prioridad `high`, due +1 día.
+5. Cambio de estado (leads PUT): `new` → `contacted`; actividad `status_change`.
+6. Verificación del estado unido: 3 actividades, 1 tarea, 1 notificación,
+   agente = "Claudia Nallely". Todas las FK/enums/NOT NULL satisfechas.
+7. ROLLBACK — post-check: 0 filas QA persistidas; total de leads sin cambios (3).
+
+**Restricción de entorno (documentada, NO sorteada):** el flujo admin en
+navegador end-to-end no es ejecutable en este sandbox porque el egress a
+`supabase.co` está denegado por la política de la organización (403 CONNECT), y
+un stack Supabase local tampoco es posible (el pull de imágenes Docker está
+bloqueado: 403 desde el CDN del registro). Conforme al README del proxy
+(`/root/.ccr/README.md`), las denegaciones de política se reportan, no se
+eluden. La verificación en navegador del panel queda para el deploy real
+(Vercel) o una sesión con egress a Supabase habilitado.
