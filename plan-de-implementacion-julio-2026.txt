@@ -412,6 +412,27 @@ request (lead + solicitud pending) → verify (código correcto → status `veri
 `session_matches=true`, `session_valid=true`, `downloadable=true`. Post-check:
 0 filas persistidas (tabla queda en 0), leads sin cambios (3).
 
+### [2026-07-01] Verificación en NAVEGADOR del gate de seguridad admin  ✅ EJECUTADO
+
+**Zona:** seguridad + flujo admin (nivel UI, Chromium)
+**Método:** con el sitio corriendo, se condujo Chromium (Playwright,
+executablePath al chromium del entorno) sobre la porción del flujo admin que no
+depende de Supabase.
+**Resultados:**
+- Gate de autenticación: las 6 rutas protegidas (`/admin`, `/admin/leads`,
+  `/admin/properties`, `/admin/agents`, `/admin/settings`, `/admin/account`) sin
+  sesión redirigen a `/admin/login` (server-side `requireAdminSession`). Ninguna
+  ruta expone datos sin sesión.
+- UI de login: renderiza campos email/password/submit + wordmark "BLACK CAPITAL".
+- Manejo de error de credenciales: login inválido muestra "Correo o contraseña
+  incorrectos." (evidencia: shots `admin-login.png`, `admin-login-error.png`).
+
+**Cobertura del "flujo admin real":** entrada/seguridad verificada en navegador
+(arriba) + operaciones de datos (leads y documentos, ciclo completo) verificadas
+contra la DB de producción por MCP. La única porción no ejecutable aquí es el
+CRUD autenticado en navegador contra Supabase, por el bloqueo de egress ya
+documentado (queda para el deploy de Vercel).
+
 **Nota:** el archivo de migración del repo ya era correcto; el defecto era de
 despliegue (drift schema repo↔prod). Recomendado: asegurar que el pipeline
 aplique migraciones pendientes en cada deploy (Vercel + Supabase) para evitar
