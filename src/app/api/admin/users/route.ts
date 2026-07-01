@@ -96,6 +96,44 @@ export async function PATCH(req: NextRequest) {
   if (body.is_active !== undefined) update.is_active = Boolean(body.is_active);
 
   const supabase = createAdminClient();
+
+  // Enforce the role ↔ agent_id invariant: an "agent" profile that is not linked
+  // to a valid agent record can never pass canAccessAgentScopedResource, so the
+  // user would log in to an empty panel (no leads / no properties). Resolve the
+  // effective role/agent_id against the current row before persisting.
+  const { data: current, error: currentError } = await supabase
+    .from("admin_profiles")
+    .select("role, agent_id")
+    .eq("id", id)
+    .maybeSingle();
+  if (currentError) return NextResponse.json({ error: currentError.message }, { status: 400 });
+  if (!current) return NextResponse.json({ error: "Usuario no encontrado." }, { status: 404 });
+
+  const effectiveRole = (update.role as string | undefined) ?? current.role;
+  const effectiveAgentId =
+    update.agent_id !== undefined ? (update.agent_id as string | null) : current.agent_id;
+
+  if (effectiveRole === "agent") {
+    if (!effectiveAgentId) {
+      return NextResponse.json(
+        { error: "Un agente debe estar vinculado a un integrante del equipo. Asigna un agente válido." },
+        { status: 400 },
+      );
+    }
+    const { data: linkedAgent } = await supabase
+      .from("agents")
+      .select("id")
+      .eq("id", effectiveAgentId)
+      .maybeSingle();
+    if (!linkedAgent) {
+      return NextResponse.json({ error: "El integrante del equipo vinculado no existe." }, { status: 400 });
+    }
+    update.agent_id = effectiveAgentId;
+  } else if (effectiveRole === "admin") {
+    // Los administradores no están acotados a un agente; evitamos vínculos obsoletos.
+    update.agent_id = null;
+  }
+
   const { error } = await supabase.from("admin_profiles").update(update).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 

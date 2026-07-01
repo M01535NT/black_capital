@@ -285,3 +285,38 @@ root layout resuelve las rutas a URLs absolutas para los crawlers.
 - Flujo admin real end-to-end y carga de inventario de renta requieren
   credenciales de Supabase (no disponibles); el sitio arranca con mock client.
 - Preview social contra los validadores de X/Facebook requiere despliegue público.
+
+### [2026-07-01] P1 — Estado inconsistente rol=agent sin agent_id en gestión de usuarios  ✅ RESUELTO (código)
+
+**Zona:** agentes + seguridad + flujo admin (verificado contra DB real vía MCP)
+**Brecha:** `PATCH /api/admin/users` permitía fijar `role='agent'` y `agent_id`
+de forma independiente, sin validar el vínculo. Un admin podía dejar un usuario
+como `role=agent, agent_id=NULL` (o apuntando a un agente inexistente). Como
+`canAccessAgentScopedResource` exige `!!profile.agent_id`, ese usuario inicia
+sesión pero su panel queda **vacío** (no ve leads ni propiedades) sin ningún
+error visible. El flujo correcto (`POST /api/agents`) sí vincula `agent_id`; la
+inconsistencia solo entraba por el editor de usuarios.
+
+**Detección:** auditoría de integridad por MCP sobre la Supabase real
+(`tewfdfmicifpdecxcpfy`): 1 perfil `role=agent` activo con `agent_id=NULL`.
+
+**Corrección:** el PATCH ahora resuelve rol/agent_id efectivos contra la fila
+actual e impone el invariante: si el rol resultante es `agent`, exige un
+`agent_id` no nulo que exista en `agents` (400 en caso contrario); si es `admin`,
+fuerza `agent_id=NULL` para evitar vínculos obsoletos.
+
+**Evidencia de verificación:**
+- typecheck (tsc --noEmit): 0 errores
+- lint (eslint): 0 errores
+- build (next build): exit 0; `/api/admin/users` compila como ƒ.
+- backend real (MCP): RLS con "Deny direct access" en todas las tablas sensibles
+  (leads, admin_profiles, lead_activities, notifications, audit_logs,
+  app_settings); públicas solo agents/properties/property_agents disponibles.
+  Integridad: 5/5 perfiles ligados a auth.users, 0 leads/property_agents
+  huérfanos, app_settings=1.
+
+**Pendiente de decisión del cliente (datos en producción, NO mutados):**
+- (A) Perfil `role=agent` con `agent_id=NULL` (login a panel vacío): vincular a un
+  agente válido, convertir a admin, o desactivar.
+- (B) Agente "Moises Nuñez" con 3 leads asignados pero 0 perfil de login
+  vinculado: crear/asociar su acceso o reasignar esos leads.
