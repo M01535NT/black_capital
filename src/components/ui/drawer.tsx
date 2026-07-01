@@ -68,8 +68,11 @@ function DrawerContent({
           "data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:w-3/4 data-[vaul-drawer-direction=left]:border-r data-[vaul-drawer-direction=left]:sm:max-w-sm",
           className
         )}
+        // Sin descripción por defecto; silencia el warning de Radix y un caller
+        // puede seguir pasando aria-describedby vía props.
+        aria-describedby={undefined}
         {...props}
-      > 
+      >
         {accessibleTitle ? (
           <VaulDrawer.Title className="sr-only">{accessibleTitle}</VaulDrawer.Title>
         ) : null}

@@ -64,8 +64,7 @@ export function Header() {
       role="banner"
     >
       <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 h-16 lg:h-20 flex items-center justify-between gap-4">
-        <div className="min-h-[72px] flex items-center justify-between gap-4 w-full">
-          <Logo href="/" variant="mark" size="md" tone="gold" className="flex-shrink-0" />
+        <Logo href="/" variant="mark" size="md" tone="gold" className="flex-shrink-0" />
 
         {/* Desktop nav (center) */}
         <nav aria-label="Menu principal" className="hidden lg:flex items-center gap-[clamp(1.25rem,2vw,2.25rem)]">
@@ -101,7 +100,6 @@ export function Header() {
           </Link>
 
           <MobileDrawer pathname={pathname} />
-        </div>
         </div>
       </div>
     </header>
