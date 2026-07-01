@@ -567,6 +567,26 @@ punto.
 **Evidencia:** lint 0, typecheck 0, build exit 0. Patrón estándar de React
 (cloneElement) para nombrar el trigger.
 
+### [2026-07-01] P1 — Bloqueo de disposable emails rechaza a Hotmail (leads perdidos)  ✅ RESUELTO
+
+**Zona:** leads / captura pública (validación Zod)
+**Brecha:** `isDisposableEmail` usaba `domain.includes(blocked)` (substring) y la
+blocklist contiene `"tmail"`. Como **"hotmail.com" contiene "tmail"**
+(`ho-tmail`) — y también "fastmail.com" — el schema rechazaba TODO correo
+@hotmail.com en el formulario público con el mensaje "utiliza un dominio real".
+Hotmail es de los proveedores más usados en México (mercado objetivo): se
+perdían leads reales de forma silenciosa. Impacto directo en operación comercial
+(los datos reales incluso tienen leads @hotmail.com).
+
+**Corrección:** coincidencia por límites de dominio en vez de substring — se
+bloquea si `domain === blocked`, `startsWith(blocked+".")`, `endsWith("."+blocked)`
+o `includes("."+blocked+".")` (cubre subdominios como `sub.mailinator.com`).
+
+**Evidencia:** prueba de la función pura — legítimos (hotmail, fastmail, gmail,
+outlook, yahoo.com.mx, icloud, corporativo) → permitidos; desechables
+(mailinator, tempmail, 10minutemail, grr.la, sub.mailinator.com, temp-mail.org,
+yopmail, 33mail) → bloqueados. lint 0, typecheck 0, build exit 0.
+
 **Nota:** el archivo de migración del repo ya era correcto; el defecto era de
 despliegue (drift schema repo↔prod). Recomendado: asegurar que el pipeline
 aplique migraciones pendientes en cada deploy (Vercel + Supabase) para evitar

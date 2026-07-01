@@ -15,8 +15,16 @@ const DISPOSABLE_EMAIL_DOMAINS = [
 
 function isDisposableEmail(email: string): boolean {
     const domain = email.toLowerCase().split("@")[1] || "";
+    if (!domain) return false;
+    // Match on domain boundaries, NOT substring: a substring check wrongly
+    // blocks legitimate providers (e.g. "hotmail.com" contains "tmail", and
+    // "fastmail.com" too), silently rejecting real leads.
     return DISPOSABLE_EMAIL_DOMAINS.some(
-        (blocked) => domain.includes(blocked)
+        (blocked) =>
+            domain === blocked ||
+            domain.startsWith(`${blocked}.`) ||
+            domain.endsWith(`.${blocked}`) ||
+            domain.includes(`.${blocked}.`)
     );
 }
 
