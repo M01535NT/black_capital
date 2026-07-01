@@ -250,3 +250,354 @@ encoge al ancho del container en móvil).
 **Evidencia:** medición DOM en 375px — home tras carga: overflow solo provenía de
 este skeleton (los otros "offenders" eran el header `inset-x-0` = scrollbar, no bug).
 inventario, black-luxury: 0px de overflow. typecheck 0, lint 0, build exit 0.
+
+### [2026-07-01] P2 — Preview social incompleta en fichas de propiedad  ✅ RESUELTO
+
+**Zona:** SEO / operación cliente (audit #5)
+**Brecha:** `src/app/(public)/inventario/[slug]/page.tsx` (`generateMetadata`)
+emitía la foto de portada solo en `openGraph.images`, sin declarar el bloque
+`twitter`. Compartir un listado individual en X/Twitter (y clientes que leen la
+tarjeta de Twitter) no garantizaba la imagen grande de la propiedad — justo el
+caso de uso central de los asesores al difundir inmuebles por mensajería/redes.
+El OG tampoco fijaba `type/title/description` explícitos por ficha.
+
+**Corrección:** cuando la ficha tiene `cover_image`, se declara ahora tanto
+`openGraph` (type website + title + description + images) como `twitter`
+(`summary_large_image` + title + description + images) apuntando a la portada.
+Sin portada, se omiten las imágenes para heredar la convención global
+`opengraph-image.tsx` (evita duplicar/romper el fallback). `metadataBase` del
+root layout resuelve las rutas a URLs absolutas para los crawlers.
+
+**Evidencia de verificación:**
+- typecheck (tsc --noEmit): 0 errores
+- lint (eslint): 0 errores
+- build (next build): exit 0; `/inventario/[slug]` compila como ƒ (dynamic).
+- navegador (Playwright + chromium, viewport 375px y 1440px): 13 rutas públicas
+  responden 200 sin overflow horizontal; auditoría de nombres accesibles y `alt`
+  = 0 incidencias; contraste dorado/negro ≥ 7.05:1 (supera AA 4.5:1).
+- suite Playwright (public-ui + subbrand-value-hover): 12/13 en verde. El único
+  fallo ("property detail ... when inventory has live items") es dependencia de
+  datos: sin inventario en Supabase el `getAttribute` auto-espera hasta el timeout
+  antes del `test.skip` previsto (línea 76); no lo causa este cambio (solo afecta
+  el `<head>`).
+
+**Limitaciones de entorno (no verificable en este sandbox):**
+- Flujo admin real end-to-end y carga de inventario de renta requieren
+  credenciales de Supabase (no disponibles); el sitio arranca con mock client.
+- Preview social contra los validadores de X/Facebook requiere despliegue público.
+
+### [2026-07-01] P1 — Estado inconsistente rol=agent sin agent_id en gestión de usuarios  ✅ RESUELTO (código)
+
+**Zona:** agentes + seguridad + flujo admin (verificado contra DB real vía MCP)
+**Brecha:** `PATCH /api/admin/users` permitía fijar `role='agent'` y `agent_id`
+de forma independiente, sin validar el vínculo. Un admin podía dejar un usuario
+como `role=agent, agent_id=NULL` (o apuntando a un agente inexistente). Como
+`canAccessAgentScopedResource` exige `!!profile.agent_id`, ese usuario inicia
+sesión pero su panel queda **vacío** (no ve leads ni propiedades) sin ningún
+error visible. El flujo correcto (`POST /api/agents`) sí vincula `agent_id`; la
+inconsistencia solo entraba por el editor de usuarios.
+
+**Detección:** auditoría de integridad por MCP sobre la Supabase real
+(`tewfdfmicifpdecxcpfy`): 1 perfil `role=agent` activo con `agent_id=NULL`.
+
+**Corrección:** el PATCH ahora resuelve rol/agent_id efectivos contra la fila
+actual e impone el invariante: si el rol resultante es `agent`, exige un
+`agent_id` no nulo que exista en `agents` (400 en caso contrario); si es `admin`,
+fuerza `agent_id=NULL` para evitar vínculos obsoletos.
+
+**Evidencia de verificación:**
+- typecheck (tsc --noEmit): 0 errores
+- lint (eslint): 0 errores
+- build (next build): exit 0; `/api/admin/users` compila como ƒ.
+- backend real (MCP): RLS con "Deny direct access" en todas las tablas sensibles
+  (leads, admin_profiles, lead_activities, notifications, audit_logs,
+  app_settings); públicas solo agents/properties/property_agents disponibles.
+  Integridad: 5/5 perfiles ligados a auth.users, 0 leads/property_agents
+  huérfanos, app_settings=1.
+
+**Remediación de datos en producción (aplicada con autorización del cliente):**
+- (A) ✅ RESUELTO — el perfil huérfano `hugui_94@hotmail.com` (role=agent,
+  agent_id=NULL) se vinculó al agente "Claudia Nallely"
+  (`0a4caa06-effc-440c-8e2d-cf38c87e58ac`) vía UPDATE idempotente por MCP.
+  Post-verificación: 0 perfiles agente sin agent_id, 0 vínculos a agentes
+  inexistentes.
+- (B) ✅ SIN ACCIÓN (por diseño) — "Moises Nuñez" es el administrador del sitio
+  (perfil `tonala.mn`, role=admin) y además figura como agente público; sus 3
+  leads son visibles porque un admin ve todo el inventario de leads. No requiere
+  perfil agente separado.
+
+### [2026-07-01] P2 — Foreign keys sin índice de cobertura (linter de rendimiento)  ✅ RESUELTO
+
+**Zona:** rendimiento / deploy (advisor de Supabase sobre DB real)
+**Brecha:** el linter de rendimiento reportó 5 FKs sin índice de cobertura
+(`admin_access_requests.reviewed_by`, `app_settings.updated_by`,
+`audit_logs.actor_profile_id`, `lead_activities.actor_profile_id`,
+`lead_tasks.assigned_agent_id`). Sin índice, los lookups por esa FK y los
+DELETE/UPDATE de la fila padre hacen scan secuencial y toman locks más amplios
+— degradación conforme crecen leads/actividades.
+
+**Corrección:** migración `supabase/migrations/20260701_add_fk_covering_indexes.sql`
+(idempotente, `CREATE INDEX IF NOT EXISTS`) creada en el repo y aplicada a la DB
+real por MCP (`apply_migration`). Post-verificación: los 5 índices existen en
+`pg_indexes`.
+
+**Nota (no accionable):** los avisos "unused index" del mismo linter son
+artefacto de DB pre-lanzamiento (2 propiedades, 3 leads, sin tráfico de
+consulta real); esos índices se usarán con operación real y NO deben eliminarse.
+
+**Pendiente de dashboard (fuera del alcance de código/MCP):**
+- Advisor de seguridad: "Leaked Password Protection Disabled" — habilitar en
+  Auth > Providers la verificación contra HaveIBeenPwned (toggle de configuración
+  de Auth; no modificable por SQL/MCP).
+
+### [2026-07-01] Verificación del FLUJO ADMIN REAL (backend, DB de producción)  ✅ EJECUTADO
+
+**Método:** al no poder correr el panel en navegador dentro del sandbox (ver
+"Restricción de entorno" abajo), se ejecutó el ciclo de vida completo de un lead
+—las mismas operaciones que realizan las rutas API del admin— directamente
+contra la Supabase de producción (`tewfdfmicifpdecxcpfy`) por MCP, dentro de una
+transacción con ROLLBACK (cero persistencia).
+
+**Pasos ejercidos y resultado:**
+1. Captura pública (public-leads POST): lead insertado, status `new`,
+   privacy_accepted=true.
+2. Asignación por admin (leads PUT): assigned_agent_id → "Claudia Nallely";
+   actividad `assignment` + notificación al admin.
+3. Nota de seguimiento (lead-activities POST): actividad `note`.
+4. Tarea (lead-tasks POST): 1 tarea `pending`, prioridad `high`, due +1 día.
+5. Cambio de estado (leads PUT): `new` → `contacted`; actividad `status_change`.
+6. Verificación del estado unido: 3 actividades, 1 tarea, 1 notificación,
+   agente = "Claudia Nallely". Todas las FK/enums/NOT NULL satisfechas.
+7. ROLLBACK — post-check: 0 filas QA persistidas; total de leads sin cambios (3).
+
+**Restricción de entorno (documentada, NO sorteada):** el flujo admin en
+navegador end-to-end no es ejecutable en este sandbox porque el egress a
+`supabase.co` está denegado por la política de la organización (403 CONNECT), y
+un stack Supabase local tampoco es posible (el pull de imágenes Docker está
+bloqueado: 403 desde el CDN del registro). Conforme al README del proxy
+(`/root/.ccr/README.md`), las denegaciones de política se reportan, no se
+eluden. La verificación en navegador del panel queda para el deploy real
+(Vercel) o una sesión con egress a Supabase habilitado.
+
+### [2026-07-01] P0 — Feature de acceso a documentos ROTA en producción (migración sin aplicar)  ✅ RESUELTO
+
+**Zona:** inventario / leads / seguridad (flujo de descarga de documentos)
+**Brecha (crítica):** la migración `20260610_secure_document_access.sql` existe en
+el repo pero NUNCA se aplicó a la Supabase de producción. En consecuencia, en la
+DB real faltaban por completo:
+  - la tabla `public.document_access_requests` (`to_regclass` = null), y
+  - las 9 columnas de `leads` del acceso protegido (whatsapp_normalized,
+    whatsapp_verified_at, nda_accepted_at, nda_version, privacy_notice_version,
+    legal_acceptance_ip/user_agent, document_access_session_token_hash,
+    document_access_expires_at).
+Las 3 rutas del flujo (`/api/document-access/request|verify|download`) consultan
+esas estructuras, por lo que CUALQUIER intento de descargar un brochure/documento
+protegido fallaba en runtime (500 "relation does not exist"). Feature core de
+conversión (captura de lead + NDA + verificación WhatsApp → entrega de documento)
+completamente inoperante para el cliente.
+
+**Detección:** al preparar un hardening en `verify`, un `information_schema` de
+`document_access_requests` volvió vacío → `to_regclass` confirmó tabla ausente y
+el dump de `leads` confirmó columnas ausentes. Dependencia `set_updated_at()`
+verificada presente antes de aplicar.
+
+**Corrección:** se aplicó la migración `20260610_secure_document_access.sql`
+(idempotente) a producción vía MCP `apply_migration`. Post-verificación:
+tabla creada, 5/5 columnas nuevas de leads presentes, RLS habilitado con política
+"Deny direct access", 3 índices y trigger `updated_at` en su lugar.
+
+**Verificación funcional (flujo real, transacción con ROLLBACK):**
+request (lead + solicitud pending) → verify (código correcto → status `verified`
++ token de sesión en el lead) → download (precondiciones): `req_status=verified`,
+`session_matches=true`, `session_valid=true`, `downloadable=true`. Post-check:
+0 filas persistidas (tabla queda en 0), leads sin cambios (3).
+
+### [2026-07-01] Verificación en NAVEGADOR del gate de seguridad admin  ✅ EJECUTADO
+
+**Zona:** seguridad + flujo admin (nivel UI, Chromium)
+**Método:** con el sitio corriendo, se condujo Chromium (Playwright,
+executablePath al chromium del entorno) sobre la porción del flujo admin que no
+depende de Supabase.
+**Resultados:**
+- Gate de autenticación: las 6 rutas protegidas (`/admin`, `/admin/leads`,
+  `/admin/properties`, `/admin/agents`, `/admin/settings`, `/admin/account`) sin
+  sesión redirigen a `/admin/login` (server-side `requireAdminSession`). Ninguna
+  ruta expone datos sin sesión.
+- UI de login: renderiza campos email/password/submit + wordmark "BLACK CAPITAL".
+- Manejo de error de credenciales: login inválido muestra "Correo o contraseña
+  incorrectos." (evidencia: shots `admin-login.png`, `admin-login-error.png`).
+
+**Cobertura del "flujo admin real":** entrada/seguridad verificada en navegador
+(arriba) + operaciones de datos (leads y documentos, ciclo completo) verificadas
+contra la DB de producción por MCP.
+
+### [2026-07-01] Verificación del FLUJO ADMIN AUTENTICADO en NAVEGADOR (mock local)  ✅ EJECUTADO
+
+**Contexto:** el egress a Supabase está bloqueado por política, por lo que el
+CRUD admin autenticado no se puede probar contra la Supabase real desde el
+sandbox. Para cubrirlo igualmente en navegador, se levantó un mock local de
+Supabase (GoTrue + PostgREST en memoria, en `http://localhost:54321`, sembrado
+con los datos REALES extraídos por MCP: admin, 3 leads, 2 propiedades, 2
+agentes) y se apuntó la app a él. Esto ejercita el código real del cliente y del
+servidor Next (login `@supabase/ssr`, `requireAdminSession`, páginas admin,
+`@/lib/data`), solo con el backend simulado.
+
+**Resultado (Chromium, sesión autenticada, 0 errores de consola de la app):**
+- Login (`signInWithPassword`) → aterriza en `/admin` autenticado.
+- Dashboard: encabezado + leads recientes (Juan Perez/Claudia) + inventario
+  reciente (Villas del Sol/Casa) renderizados con datos.
+- Leads (lista): muestra los leads sembrados.
+- Lead detalle: nombre y correo del prospecto.
+- Propiedades: ambas fichas listadas.
+- Agentes: Moises y Claudia.
+- Configuración: formulario cargado.
+- Evidencia: shots `admin-dashboard.png`, `admin-leads.png`,
+  `admin-lead-detail.png`, `admin-properties.png`, `admin-agents.png`,
+  `admin-settings.png`.
+
+**Hallazgo colateral (positivo):** la app aplica una Content-Security-Policy
+estricta (`connect-src` restringido a `*.supabase.co` y allowlist). El mock local
+solo funcionó tras añadir `http://localhost:54321` a `connect-src` de forma
+**temporal y revertida** (no commiteada). En producción la CSP es correcta y no
+requiere cambios.
+
+**Nota de método:** el mock y el ajuste de CSP fueron exclusivamente de
+verificación; no se commiteó ningún archivo de mock ni el cambio de CSP. El
+árbol quedó limpio. La verificación contra la Supabase real (no mock) sigue
+correspondiendo al deploy de Vercel.
+
+### [2026-07-01] P2 — Variables de entorno del flujo de documentos sin documentar  ✅ RESUELTO
+
+**Zona:** deploy / documentación (directamente ligada al P0 de documentos)
+**Brecha:** auditoría `process.env` (código) vs `.env.example` reveló 8 variables
+leídas por el código pero NO documentadas. Crítico: las de WhatsApp Cloud API
+(`WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`,
+`WHATSAPP_VERIFICATION_TEMPLATE_NAME`) son REQUERIDAS en producción para el flujo
+de acceso a documentos — sin ellas, `sendWhatsappVerificationCode` devuelve
+"WhatsApp no está configurado" y `/api/document-access/request` responde 502. Un
+deployer que siguiera `.env.example` no las configuraría → la feature (recién
+restaurada a nivel esquema) seguiría inoperante en el paso de envío.
+
+**Corrección:** `.env.example` ahora documenta WHATSAPP_ACCESS_TOKEN,
+WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_VERIFICATION_TEMPLATE_NAME (requeridas),
+WHATSAPP_TEMPLATE_LANGUAGE, WHATSAPP_GRAPH_API_VERSION (opcionales, con default),
+y DOCUMENT_ACCESS_SECRET (opcional, con fallback a SUPABASE_SERVICE_ROLE_KEY),
+con notas de impacto.
+
+**Nota:** `hashSecret` degrada con gracia (`DOCUMENT_ACCESS_SECRET ||
+SUPABASE_SERVICE_ROLE_KEY || literal`); como el service role siempre está en prod,
+el hashing no se rompe, pero se recomienda un secreto dedicado y rotable.
+
+**Dependencia operativa del P0 de documentos (config de deploy, no código):**
+para que el flujo funcione en producción se deben cargar en Vercel las variables
+de WhatsApp Cloud API y `RESEND_API_KEY` (entrega por email). El esquema ya está
+aplicado; falta esta configuración de entorno.
+
+### [2026-07-01] Smoke-test de producción parametrizable (deploy)  ✅ ENTREGADO
+
+**Zona:** deploy / verificación post-deploy
+**Contexto:** el "smoke test del panel contra Supabase real" no se puede correr
+desde el sandbox (egress a Supabase/Vercel bloqueado por política). Para no dejar
+esa verificación como una tarea manual irrepetible, se entregó como artefacto de
+código: `tests/production-smoke.spec.ts`.
+
+**Qué valida (sin depender de datos):** 12 rutas públicas → 200; artefactos SEO
+(`robots.txt`, `sitemap.xml`, `/opengraph-image` con content-type imagen); gate
+de seguridad admin (rutas `/admin/*` → redirect a login sin sesión); cabeceras de
+seguridad (CSP con `default-src 'self'` y `*.supabase.co`, `X-Content-Type-Options:
+nosniff`).
+
+**Uso post-deploy:**
+`SMOKE_BASE_URL=https://blackmx.vercel.app npx playwright test tests/production-smoke.spec.ts --project=chromium`
+
+**Verificación local del propio test:** 15/15 en verde contra el dev server;
+lint 0, typecheck 0.
+
+### [2026-07-01] P2 — Mismatch de hidratación SSR en favoritos  ✅ RESUELTO
+
+**Zona:** responsive/UX + correctness (audit #7 "favoritos persisten entre sesiones")
+**Brecha:** `useFavorites` inicializaba el estado con un initializer lazy que leía
+`localStorage` (`useState(readFavorites)`). En SSR el servidor renderiza con `[]`,
+pero el PRIMER render del cliente leía los favoritos reales → para un usuario que
+regresa con favoritos, `FavoriteButton` producía clases `active` distintas entre
+servidor y cliente = **hydration mismatch** (error de consola en producción y
+posible re-render del subtree). El comentario "no setState in effect needed" era
+la causa, no una optimización válida.
+
+**Corrección:** patrón SSR-safe — el estado arranca en `[]` (igual que el server)
+y los favoritos persistidos se cargan en un `useEffect` tras montar; los
+consumidores ya ocultan el botón con `opacity-0` hasta `hydrated`, así que no hay
+flash.
+
+**Verificación (navegador, con favorito sembrado en localStorage = usuario que
+regresa):** `/inventario` con 2 propiedades — cards renderizan; el botón del
+favorito sembrado muestra estado activo ("Quitar de favoritos") y el otro
+inactivo; `localStorage` persiste el favorito entre cargas; **HYDRATION ISSUES:
+NONE**, 0 errores de consola. lint 0, typecheck 0, build exit 0.
+
+Con esto queda cubierto también el punto del audit sobre persistencia de
+favoritos entre sesiones (funciona vía `localStorage` con clave `bc_favorites`).
+
+### [2026-07-01] P2 — `businessFunction` inválido en JSON-LD de propiedad (SEO)  ✅ RESUELTO
+
+**Zona:** SEO / datos estructurados
+**Brecha:** `PropertyJsonLd` emitía `offers.businessFunction: businessType` con
+texto libre en español ("Venta"/"Renta"). schema.org espera un valor GoodRelations
+(URL enum); los crawlers ignoran el texto libre, así que la señal venta-vs-renta
+no era legible por máquina en los rich results.
+**Corrección:** mapeo a GoodRelations — Venta → `#Sell`, Renta → `#LeaseOut`; si
+el tipo no mapea, se omite la propiedad (evita un valor inválido). El resto del
+Offer (price/priceCurrency/availability) ya era correcto.
+**Evidencia:** lint 0, typecheck 0, build exit 0. El resto del catálogo de
+structured data (Organization/WebSite en home y sub-marcas, BreadcrumbList,
+tipo de residencia, floorSize/landSize, broker) ya estaba correcto.
+
+### [2026-07-01] P2 — Botones de solo-icono del admin sin nombre accesible  ✅ RESUELTO
+
+**Zona:** accesibilidad (panel admin) — la a11y pública ya estaba en 0 issues.
+**Brecha:** `AdminTooltip` era un tooltip puramente visual (un `<span>` que
+aparece en hover/focus) que NO asociaba su label al trigger por ARIA. Los botones
+de solo-icono que lo usan (campana de notificaciones en el topbar, etc.) quedaban
+**sin nombre accesible**: un lector de pantalla los anunciaba como "button" a
+secas. Un tooltip aporta descripción, no nombre.
+**Corrección:** `AdminTooltip` ahora inyecta `aria-label={label}` en el hijo vía
+`cloneElement` (respetando un `aria-label` propio si ya lo trae) y marca el span
+visual como `aria-hidden`. Arregla todos los icon-buttons que lo usan en un solo
+punto.
+**Evidencia:** lint 0, typecheck 0, build exit 0. Patrón estándar de React
+(cloneElement) para nombrar el trigger.
+
+### [2026-07-01] P1 — Bloqueo de disposable emails rechaza a Hotmail (leads perdidos)  ✅ RESUELTO
+
+**Zona:** leads / captura pública (validación Zod)
+**Brecha:** `isDisposableEmail` usaba `domain.includes(blocked)` (substring) y la
+blocklist contiene `"tmail"`. Como **"hotmail.com" contiene "tmail"**
+(`ho-tmail`) — y también "fastmail.com" — el schema rechazaba TODO correo
+@hotmail.com en el formulario público con el mensaje "utiliza un dominio real".
+Hotmail es de los proveedores más usados en México (mercado objetivo): se
+perdían leads reales de forma silenciosa. Impacto directo en operación comercial
+(los datos reales incluso tienen leads @hotmail.com).
+
+**Corrección:** coincidencia por límites de dominio en vez de substring — se
+bloquea si `domain === blocked`, `startsWith(blocked+".")`, `endsWith("."+blocked)`
+o `includes("."+blocked+".")` (cubre subdominios como `sub.mailinator.com`).
+
+**Evidencia:** prueba de la función pura — legítimos (hotmail, fastmail, gmail,
+outlook, yahoo.com.mx, icloud, corporativo) → permitidos; desechables
+(mailinator, tempmail, 10minutemail, grr.la, sub.mailinator.com, temp-mail.org,
+yopmail, 33mail) → bloqueados. lint 0, typecheck 0, build exit 0.
+
+**Nota:** el archivo de migración del repo ya era correcto; el defecto era de
+despliegue (drift schema repo↔prod). Recomendado: asegurar que el pipeline
+aplique migraciones pendientes en cada deploy (Vercel + Supabase) para evitar
+drift futuro.
+
+### [2026-07-01] P2 — Hardening OTP de documentos (defensa en profundidad)  ⏭️ DIFERIDO
+
+**Zona:** seguridad (document-access/verify)
+**Observación:** el código OTP de 6 dígitos se protege por rate-limit por IP
+(8/min) + TTL corto del código; no hay bloqueo por intentos fallidos por-solicitud.
+Ante fuerza bruta distribuida (IPs rotativas) dentro del TTL sería deseable
+invalidar la solicitud tras N fallos (columna `verification_attempts`).
+Riesgo residual BAJO con las defensas actuales; se difiere como mejora futura
+para no acoplar más cambios de esquema en este ciclo.

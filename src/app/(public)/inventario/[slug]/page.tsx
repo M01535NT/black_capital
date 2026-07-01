@@ -73,10 +73,34 @@ export async function generateMetadata({
         return { title: "Propiedad no encontrada | Black Capital" };
     }
 
+    const metaTitle = `${property.title} en Tijuana | Black Capital`;
+    const metaDescription = (property.description || `Propiedad en venta en Tijuana: ${property.title}`).slice(0, 160);
+    // Cuando la ficha tiene portada, la usamos como imagen social en OG y Twitter
+    // (compartir listados en WhatsApp/X es el caso de uso central de los asesores).
+    // Sin portada, omitimos las imágenes para heredar la convención opengraph-image.tsx.
+    const socialImages = property.cover_image
+        ? [{ url: property.cover_image, alt: property.title }]
+        : undefined;
+
     return {
-        title: `${property.title} en Tijuana | Black Capital`,
-        description: (property.description || `Propiedad en venta en Tijuana: ${property.title}`).slice(0, 160),
-        openGraph: property.cover_image ? { images: [{ url: property.cover_image, alt: property.title }] } : undefined,
+        title: metaTitle,
+        description: metaDescription,
+        openGraph: {
+            type: "website",
+            title: metaTitle,
+            description: metaDescription,
+            ...(socialImages ? { images: socialImages } : {}),
+        },
+        ...(socialImages
+            ? {
+                  twitter: {
+                      card: "summary_large_image",
+                      title: metaTitle,
+                      description: metaDescription,
+                      images: socialImages,
+                  },
+              }
+            : {}),
     };
 }
 

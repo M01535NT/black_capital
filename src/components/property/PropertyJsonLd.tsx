@@ -51,6 +51,14 @@ export function PropertyJsonLd({
     };
     const mappedType = typeMap[propertyType.toLowerCase()] || 'Residence';
 
+    // schema.org `businessFunction` expects a GoodRelations enum URL, not free
+    // text — crawlers ignore "Venta"/"Renta", so the sale-vs-rent signal is lost.
+    const businessFunctionMap: Record<string, string> = {
+        venta: 'http://purl.org/goodrelations/v1#Sell',
+        renta: 'http://purl.org/goodrelations/v1#LeaseOut',
+    };
+    const mappedBusinessFunction = businessFunctionMap[businessType.toLowerCase()];
+
     const ld: Record<string, unknown> = {
         '@context': 'https://schema.org',
         '@type': mappedType,
@@ -69,7 +77,7 @@ export function PropertyJsonLd({
             '@type': 'Offer',
             price: price,
             priceCurrency: currency || 'MXN',
-            businessFunction: businessType,
+            ...(mappedBusinessFunction && { businessFunction: mappedBusinessFunction }),
             availability: 'https://schema.org/InStock',
         },
     };
