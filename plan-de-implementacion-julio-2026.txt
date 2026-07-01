@@ -325,3 +325,27 @@ fuerza `agent_id=NULL` para evitar vínculos obsoletos.
   (perfil `tonala.mn`, role=admin) y además figura como agente público; sus 3
   leads son visibles porque un admin ve todo el inventario de leads. No requiere
   perfil agente separado.
+
+### [2026-07-01] P2 — Foreign keys sin índice de cobertura (linter de rendimiento)  ✅ RESUELTO
+
+**Zona:** rendimiento / deploy (advisor de Supabase sobre DB real)
+**Brecha:** el linter de rendimiento reportó 5 FKs sin índice de cobertura
+(`admin_access_requests.reviewed_by`, `app_settings.updated_by`,
+`audit_logs.actor_profile_id`, `lead_activities.actor_profile_id`,
+`lead_tasks.assigned_agent_id`). Sin índice, los lookups por esa FK y los
+DELETE/UPDATE de la fila padre hacen scan secuencial y toman locks más amplios
+— degradación conforme crecen leads/actividades.
+
+**Corrección:** migración `supabase/migrations/20260701_add_fk_covering_indexes.sql`
+(idempotente, `CREATE INDEX IF NOT EXISTS`) creada en el repo y aplicada a la DB
+real por MCP (`apply_migration`). Post-verificación: los 5 índices existen en
+`pg_indexes`.
+
+**Nota (no accionable):** los avisos "unused index" del mismo linter son
+artefacto de DB pre-lanzamiento (2 propiedades, 3 leads, sin tráfico de
+consulta real); esos índices se usarán con operación real y NO deben eliminarse.
+
+**Pendiente de dashboard (fuera del alcance de código/MCP):**
+- Advisor de seguridad: "Leaked Password Protection Disabled" — habilitar en
+  Auth > Providers la verificación contra HaveIBeenPwned (toggle de configuración
+  de Auth; no modificable por SQL/MCP).
