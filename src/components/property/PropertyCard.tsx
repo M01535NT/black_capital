@@ -101,7 +101,8 @@ export function PropertyCard({
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                    <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+                    {/* right-28 reserva la zona de favorito/compartir para que los badges envuelvan sin traslape */}
+                    <div className="absolute left-4 right-28 top-4 flex flex-wrap gap-2">
                         <span className="border border-white/10 bg-black/60 px-3 py-1 property-tag-type text-white backdrop-blur-md">
                             {property.property_use}
                         </span>
@@ -177,7 +178,7 @@ export function PropertyCard({
                 <div className="border-t border-white/[0.06] p-4 pt-0">
                     <Link
                         href={contactHref}
-                        className="group/cta flex min-h-10 items-center justify-center gap-2 px-4 text-white/78 transition-colors hover:text-[var(--color-accent)]"
+                        className="group/cta flex min-h-11 items-center justify-center gap-2 px-4 text-white/78 transition-colors hover:text-[var(--color-accent)]"
                     >
                         <MessageCircle className="h-4 w-4" aria-hidden="true" />
                         <span className="property-tag-type relative pb-1">
@@ -188,12 +189,12 @@ export function PropertyCard({
                 </div>
             )}
             <div className="absolute right-4 top-4 z-20 flex items-center gap-2">
-                <FavoriteButton propertyId={property.id} variant="icon" className="h-9 w-9" />
+                <FavoriteButton propertyId={property.id} variant="icon" className="h-11 w-11 sm:h-9 sm:w-9" />
                 <ShareButton
                     title={property.title}
                     description={property.address || undefined}
                     variant="icon"
-                    className="h-9 w-9 rounded-full border-white/10 bg-black/60 text-white backdrop-blur-md hover:bg-black/80"
+                    className="h-11 w-11 sm:h-9 sm:w-9 rounded-full border-white/10 bg-black/60 text-white backdrop-blur-md hover:bg-black/80"
                 />
             </div>
         </article>
