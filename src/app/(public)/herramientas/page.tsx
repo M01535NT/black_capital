@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { InvestmentCalculators } from "@/components/tools/investment-calculators";
 import {
     ArrowRight,
     Calculator,
@@ -85,21 +86,21 @@ export default function HerramientasPage() {
                         </div>
 
                         <div className="hidden p-5 lg:block">
-                                    <p className="property-tag-type text-[var(--color-accent)]/75">
-                                        En desarrollo
-                                    </p>
+                            <p className="property-tag-type text-[var(--color-accent)]/75">
+                                Disponibles hoy
+                            </p>
                             <ol className="mt-5 space-y-4 text-body text-white/58">
                                 <li className="flex gap-3">
                                     <span className="text-[var(--color-accent)]">01</span>
-                                    Hipoteca funcional
+                                    <a href="#roi" className="transition-colors hover:text-[var(--color-accent)]">Calculadora ROI</a>
                                 </li>
                                 <li className="flex gap-3">
                                     <span className="text-[var(--color-accent)]">02</span>
-                                    Impuestos de compraventa
+                                    <a href="#flipping" className="transition-colors hover:text-[var(--color-accent)]">Simulador Flipping</a>
                                 </li>
                                 <li className="flex gap-3">
                                     <span className="text-[var(--color-accent)]">03</span>
-                                    Gastos de cierre
+                                    <a href="#isai" className="transition-colors hover:text-[var(--color-accent)]">Calculadora ISAI</a>
                                 </li>
                             </ol>
                         </div>
@@ -124,6 +125,14 @@ export default function HerramientasPage() {
 
                             <div className="grid grid-cols-1 xl:grid-cols-[1fr_22rem]">
                                 <main className="border-b border-white/[0.08] xl:border-b-0 xl:border-r">
+                                    <div className="border-b border-white/[0.08] p-4 sm:p-6 lg:p-8">
+                                        <p className="property-tag-type text-[var(--color-accent)]/80">
+                                            Calculadoras en línea
+                                        </p>
+                                        <div className="mt-4">
+                                            <InvestmentCalculators />
+                                        </div>
+                                    </div>
                                     <div className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-3 lg:mx-0 lg:grid lg:grid-cols-1 lg:gap-0 lg:divide-y lg:divide-white/[0.08] lg:overflow-visible lg:px-0 lg:pb-0">
                                         {primaryTools.map((tool, index) => {
                                             const Icon = tool.icon;

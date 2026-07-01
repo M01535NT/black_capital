@@ -24,8 +24,8 @@
 | Home (todas sus secciones: hero, lines, featured, zones, methodology, testimonials, FAQ, tools) | `/` | 10/10 | 10/10 ✅ (2026-07-01) | Counters restaurados a 0→total (fallback 1.8s los mataba); años operando unificados en CONTACT_CONFIG (⚠️ confirmar 8 vs 12 con cliente); aria-controls en FAQ; dead code fuera (HomeHeroHeadline, lib/stats.ts) |
 | Inventario (catálogo + filtros + empty state) | `/inventario` | 10/10 | 10/10 ✅ (2026-07-01) | Comportamiento ya sólido (URL sync, empty state+CTA, limpiar, buscar); fixes: aria-pressed en 14 chips, aria-label en 3 inputs numéricos |
 | Ficha de propiedad (galería, métricas, specs, agente, sticky bar, docs, mapa) | `/inventario/[slug]` | 10/10 | 10/10 ✅ (2026-07-01) | h2 "Descripción" duplicado eliminado; lightbox accesible (role=dialog + trigger teclado); guard StickyContactBar sin canales; a11y calculadora (slider + plazos) |
-| Contacto (form de leads) | `/contacto` | — | PENDIENTE | form: verificar solo validación client-side, NO enviar leads reales |
-| Herramientas (calculadora hipotecaria) | `/herramientas` | — | PENDIENTE | |
+| Contacto (form de leads) | `/contacto` | 10/10 | 10/10 ✅ (2026-07-01) | Form corregido en unidad forms (bug P1 + a11y); página sin overflow, h1 claro, WA+mail directos |
+| Herramientas (calculadoras) | `/herramientas` | 10/10 | 10/10 ✅ (2026-07-01) | NUEVO: 3 calculadoras funcionales (ROI, Flipping, ISAI) — el nav prometía #roi/#flipping/#isai y la página era solo catálogo estático |
 | Nosotros + historia + valores + equipo | `/nosotros/*` | — | PENDIENTE | |
 | Legales | `/legal/*` | — | PENDIENTE | |
 
@@ -61,6 +61,8 @@
 _(vacío)_
 
 ## Registro de fixes por unidad
+
+- **2026-07-01 · /herramientas → 10/10 (feature nueva).** El menú Herramientas del header linkeaba a `/herramientas#roi`, `#flipping` e `#isai` pero la página era un catálogo estático sin una sola calculadora (se auto-describía "En desarrollo"). Construido `investment-calculators.tsx`: Calculadora ROI (bruto + neto/cap rate), Simulador Flipping (utilidad, ROI proyecto y anualizado, costos de venta parametrizables) y Calculadora ISAI (tasa referencial 2% Tijuana con disclaimer). Verificado en vivo: recálculo reactivo (renta 20k → ROI 14.1%), ISAI $1.7M → $34,000, anchors aterrizan con scroll-mt-28, inputs 44px con label, sin overflow móvil. Sidebar "En desarrollo" → "Disponibles hoy" con links. /contacto también cerrado (fixes en unidad forms). tsc 0, lint 0.
 
 - **2026-07-01 · Ficha de propiedad → 10/10.** (1) El h2 "Descripción" salía duplicado: ChapterLabel de la página + heading interno de `PropertyDescription`; eliminado el interno. (2) Galería: el carrusel abría lightbox solo con click de mouse → `role="button"` + `tabIndex` + Enter/Espacio; lightbox ahora con `role="dialog"`/`aria-modal`/`aria-label`. Verificado abrir/cerrar con overflow del body restaurado. (3) `StickyContactBar` devuelve null sin canales de contacto (antes renderizaba franja vacía). (4) Calculadora: `aria-label`/`aria-valuetext` en slider de enganche, `aria-pressed` en botones de plazo; cálculo verificado ($340,000 enganche / $15,887 mensual sobre $1.7M). "Leer más/menos" funciona. Overflow 0 en móvil/desktop, sidebar sticky ok, tsc 0, lint 0.
 
