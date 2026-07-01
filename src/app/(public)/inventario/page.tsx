@@ -99,7 +99,22 @@ async function InventoryContent() {
 export default function InventoryPage() {
     return (
         <div className="w-full flex-1 flex flex-col bg-background">
-            <div id="catalogo" className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 w-full pb-10 pt-24 sm:pt-28 lg:pb-16 lg:pt-32">
+            <header className="border-b border-white/[0.08]">
+                <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 w-full pb-8 pt-24 sm:pt-28 lg:pt-32">
+                    <div className="flex items-center gap-3">
+                        <span className="h-px w-6 bg-[var(--color-accent)]" aria-hidden="true" />
+                        <span className="property-tag-type gold-ink">Inventario · Tijuana</span>
+                    </div>
+                    <h1 className="mt-4 font-display text-display-2 font-extrabold uppercase leading-[1.02] tracking-headline text-white">
+                        Propiedades disponibles
+                    </h1>
+                    <p className="mt-3 max-w-xl text-body text-white/58">
+                        Residencial, comercial e industrial con valor comercial, revisión
+                        documental y ruta de cierre.
+                    </p>
+                </div>
+            </header>
+            <div id="catalogo" className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 w-full pb-10 pt-8 lg:pb-16">
                 <Suspense fallback={<InventorySkeleton />}>
                     <InventoryContent />
                 </Suspense>

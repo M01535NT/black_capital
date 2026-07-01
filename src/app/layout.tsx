@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site-url";
-import { Manrope } from "next/font/google";
+import { Archivo, Public_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeGuard } from "@/components/theme-guard";
 import "./globals.css";
 
-const manrope = Manrope({
+// Display / headings — heavy geometric grotesque (uppercase, tight tracking).
+const archivo = Archivo({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+// Body / UI — humanist sans with excellent legibility at small sizes.
+const publicSans = Public_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -109,7 +118,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body
-        className={`${manrope.variable} antialiased min-h-screen flex flex-col bg-black text-white`}
+        className={`${archivo.variable} ${publicSans.variable} antialiased min-h-screen flex flex-col bg-black text-white`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           <ThemeGuard />

@@ -12,7 +12,9 @@ import { PropertyLocation } from "@/components/property/PropertyLocation";
 import { PropertySidebar } from "@/components/property/PropertySidebar";
 import { StickyContactBar } from "@/components/property/StickyContactBar";
 import { PropertyJsonLd } from "@/components/property/PropertyJsonLd";
+import { PropertyChapterNav, type Chapter } from "@/components/property/PropertyChapterNav";
 import { FavoriteButton } from "@/components/property/favorite-button";
+import { MortgageCalculator } from "@/components/tools/mortgage-calculator";
 import { FadeIn } from "@/components/ui/motion";
 
 import { CONTACT_CONFIG } from "@/lib/contact-config";
@@ -45,6 +47,20 @@ type SimilarProperty = {
 
 const SECTION_HEADING =
     "property-tag-type text-white/48";
+
+/** Editorial numbered chapter heading (matches the reference "0X · Título"). */
+function ChapterLabel({ number, title }: { number: string; title: string }) {
+    return (
+        <div className="mb-7 flex items-baseline gap-3.5">
+            <span className="font-display text-body-sm font-bold tabular-nums text-[var(--color-accent)]">
+                {number}
+            </span>
+            <h2 className="font-display text-display-3 font-extrabold uppercase leading-none tracking-headline text-white">
+                {title}
+            </h2>
+        </div>
+    );
+}
 
 export async function generateMetadata({
     params,
@@ -172,6 +188,21 @@ export default async function PropertyDetailPage({
         Object.assign(customAttrs, property.custom_attributes);
     }
 
+    const hasMedia = Boolean(property.video_urls?.length || property.tour_embeds?.length);
+    const isForSale = property.business_type === "Venta";
+
+    // Editorial chapter index (matches the reference "capítulos 01–08").
+    const chapters: Chapter[] = [
+        { id: "galeria", label: "Galería" },
+        { id: "propiedad", label: "La propiedad" },
+        ...(property.description ? [{ id: "descripcion", label: "Descripción" }] : []),
+        ...(hasMedia ? [{ id: "multimedia", label: "Multimedia" }] : []),
+        ...(property.address ? [{ id: "ubicacion", label: "Ubicación" }] : []),
+        ...(isForSale ? [{ id: "financiamiento", label: "Financiamiento" }] : []),
+    ];
+    const chapterNumber = (id: string) =>
+        String(chapters.findIndex((c) => c.id === id) + 1).padStart(2, "0");
+
     return (
         <>
             <PropertyJsonLd
@@ -191,8 +222,9 @@ export default async function PropertyDetailPage({
             />
             
             <div className="min-h-screen w-full overflow-x-hidden bg-background">
-                <section className="w-full overflow-x-clip border-b border-white/[0.06] pt-20 lg:pt-28">
-                    <div className="mx-auto max-w-[90rem] min-w-0 px-4 pb-5 pt-4 sm:px-10 sm:pt-6 lg:px-16">
+                <section id="galeria" className="w-full overflow-x-clip border-b border-white/[0.06] pt-20 scroll-mt-24 lg:pt-28">
+                    <div className="mx-auto max-w-[90rem] min-w-0 px-4 pb-8 pt-4 sm:px-10 sm:pt-6 lg:px-16">
+                        <ChapterLabel number={chapterNumber("galeria")} title="Galería" />
                         <ImageGallery
                             images={property.images || []}
                             title={property.title}
@@ -226,54 +258,79 @@ export default async function PropertyDetailPage({
                     </FadeIn>
 
                     <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
-                        <div className="min-w-0 space-y-10 md:space-y-16 lg:col-span-8">
-                            
-                            <FadeIn direction="up" delay={0.2}>
-                                <PropertyHeader
-                                    businessType={property.business_type}
-                                    propertyUse={property.property_use}
-                                    propertyType={property.property_type}
-                                    isProject={property.is_project}
-                                    status={property.status}
-                                    title={property.title}
-                                    address={property.address}
-                                    price={property.price}
-                                    currency={property.currency}
-                                    priceMxn={property.price_mxn}
-                                />
-                            </FadeIn>
+                        <div className="min-w-0 space-y-14 md:space-y-20 lg:col-span-8">
 
-                            <FadeIn direction="up" delay={0.3}>
-                                <PropertyMetrics
-                                    m2Terrain={property.m2_terrain}
-                                    m2Construction={property.m2_construction}
-                                    customAttributes={customAttrs}
-                                    propertyType={property.property_type}
-                                    createdAt={property.created_at}
-                                />
-                            </FadeIn>
-
-                            <FadeIn direction="up" delay={0.4}>
-                                {property.description && (
-                                    <div className="border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6">
-                                        <PropertyDescription description={property.description} />
-                                    </div>
-                                )}
-                            </FadeIn>
-
-                            {(property.video_urls?.length || property.tour_embeds?.length) ? (
-                                <FadeIn direction="up" delay={0.5}>
-                                    <PropertyMedia
-                                        videoUrls={property.video_urls}
-                                        tourEmbeds={property.tour_embeds}
+                            <section id="propiedad" className="scroll-mt-24 space-y-10">
+                                <ChapterLabel number={chapterNumber("propiedad")} title="La propiedad" />
+                                <FadeIn direction="up" delay={0.2}>
+                                    <PropertyHeader
+                                        businessType={property.business_type}
+                                        propertyUse={property.property_use}
+                                        propertyType={property.property_type}
+                                        isProject={property.is_project}
+                                        status={property.status}
+                                        title={property.title}
+                                        address={property.address}
+                                        price={property.price}
+                                        currency={property.currency}
+                                        priceMxn={property.price_mxn}
                                     />
                                 </FadeIn>
+
+                                <FadeIn direction="up" delay={0.3}>
+                                    <PropertyMetrics
+                                        m2Terrain={property.m2_terrain}
+                                        m2Construction={property.m2_construction}
+                                        customAttributes={customAttrs}
+                                        propertyType={property.property_type}
+                                        createdAt={property.created_at}
+                                    />
+                                </FadeIn>
+                            </section>
+
+                            {property.description && (
+                                <section id="descripcion" className="scroll-mt-24">
+                                    <ChapterLabel number={chapterNumber("descripcion")} title="Descripción" />
+                                    <FadeIn direction="up" delay={0.4}>
+                                        <div className="border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6">
+                                            <PropertyDescription description={property.description} />
+                                        </div>
+                                    </FadeIn>
+                                </section>
+                            )}
+
+                            {hasMedia ? (
+                                <section id="multimedia" className="scroll-mt-24">
+                                    <ChapterLabel number={chapterNumber("multimedia")} title="Multimedia" />
+                                    <FadeIn direction="up" delay={0.5}>
+                                        <PropertyMedia
+                                            videoUrls={property.video_urls}
+                                            tourEmbeds={property.tour_embeds}
+                                        />
+                                    </FadeIn>
+                                </section>
                             ) : null}
 
                             {property.address && (
-                                <FadeIn direction="up" delay={0.6}>
-                                    <PropertyLocation address={property.address} title={property.title} />
-                                </FadeIn>
+                                <section id="ubicacion" className="scroll-mt-24">
+                                    <ChapterLabel number={chapterNumber("ubicacion")} title="Ubicación" />
+                                    <FadeIn direction="up" delay={0.6}>
+                                        <PropertyLocation address={property.address} title={property.title} />
+                                    </FadeIn>
+                                </section>
+                            )}
+
+                            {isForSale && (
+                                <section id="financiamiento" className="scroll-mt-24">
+                                    <ChapterLabel number={chapterNumber("financiamiento")} title="Financiamiento" />
+                                    <FadeIn direction="up" delay={0.7}>
+                                        <MortgageCalculator
+                                            price={property.price}
+                                            currency={property.currency}
+                                            businessType={property.business_type}
+                                        />
+                                    </FadeIn>
+                                </section>
                             )}
 
                             {similar.length > 0 && (
@@ -308,6 +365,9 @@ export default async function PropertyDetailPage({
 
                         <div className="lg:col-span-4">
                             <div className="space-y-8 lg:sticky lg:top-24">
+                                <div className="hidden border border-white/[0.08] bg-white/[0.02] p-6 lg:block">
+                                    <PropertyChapterNav chapters={chapters} />
+                                </div>
                                 <FadeIn direction="up" delay={0.4}>
                                     <PropertySidebar
                                         agents={agents}
