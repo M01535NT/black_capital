@@ -250,3 +250,38 @@ encoge al ancho del container en móvil).
 **Evidencia:** medición DOM en 375px — home tras carga: overflow solo provenía de
 este skeleton (los otros "offenders" eran el header `inset-x-0` = scrollbar, no bug).
 inventario, black-luxury: 0px de overflow. typecheck 0, lint 0, build exit 0.
+
+### [2026-07-01] P2 — Preview social incompleta en fichas de propiedad  ✅ RESUELTO
+
+**Zona:** SEO / operación cliente (audit #5)
+**Brecha:** `src/app/(public)/inventario/[slug]/page.tsx` (`generateMetadata`)
+emitía la foto de portada solo en `openGraph.images`, sin declarar el bloque
+`twitter`. Compartir un listado individual en X/Twitter (y clientes que leen la
+tarjeta de Twitter) no garantizaba la imagen grande de la propiedad — justo el
+caso de uso central de los asesores al difundir inmuebles por mensajería/redes.
+El OG tampoco fijaba `type/title/description` explícitos por ficha.
+
+**Corrección:** cuando la ficha tiene `cover_image`, se declara ahora tanto
+`openGraph` (type website + title + description + images) como `twitter`
+(`summary_large_image` + title + description + images) apuntando a la portada.
+Sin portada, se omiten las imágenes para heredar la convención global
+`opengraph-image.tsx` (evita duplicar/romper el fallback). `metadataBase` del
+root layout resuelve las rutas a URLs absolutas para los crawlers.
+
+**Evidencia de verificación:**
+- typecheck (tsc --noEmit): 0 errores
+- lint (eslint): 0 errores
+- build (next build): exit 0; `/inventario/[slug]` compila como ƒ (dynamic).
+- navegador (Playwright + chromium, viewport 375px y 1440px): 13 rutas públicas
+  responden 200 sin overflow horizontal; auditoría de nombres accesibles y `alt`
+  = 0 incidencias; contraste dorado/negro ≥ 7.05:1 (supera AA 4.5:1).
+- suite Playwright (public-ui + subbrand-value-hover): 12/13 en verde. El único
+  fallo ("property detail ... when inventory has live items") es dependencia de
+  datos: sin inventario en Supabase el `getAttribute` auto-espera hasta el timeout
+  antes del `test.skip` previsto (línea 76); no lo causa este cambio (solo afecta
+  el `<head>`).
+
+**Limitaciones de entorno (no verificable en este sandbox):**
+- Flujo admin real end-to-end y carga de inventario de renta requieren
+  credenciales de Supabase (no disponibles); el sitio arranca con mock client.
+- Preview social contra los validadores de X/Facebook requiere despliegue público.
