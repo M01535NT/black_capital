@@ -172,6 +172,15 @@ export function ImageGallery({
           onClick={() => openLightbox(activeIndex)}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
+          role="button"
+          tabIndex={0}
+          aria-label={`Ampliar imagen ${displayIndex + 1} de ${allImages.length}`}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openLightbox(activeIndex);
+            }
+          }}
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -298,6 +307,9 @@ export function ImageGallery({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Galería de ${title}`}
             onClick={closeLightbox}
             onTouchStart={handleLightboxTouchStart}
             onTouchEnd={handleLightboxTouchEnd}

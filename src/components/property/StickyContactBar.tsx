@@ -28,6 +28,10 @@ export function StickyContactBar({
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Sin canales de contacto no hay barra: evita renderizar una franja vacía.
+  const hasChannels = Boolean(agentWhatsapp || agentPhone || agentEmail)
+  if (!hasChannels) return null
+
   const buildWhatsappUrl = (phone: string) => {
     const cleaned = phone.replace(/\D/g, '')
     const formatted = cleaned.length === 10 ? `52${cleaned}` : cleaned

@@ -89,6 +89,8 @@ export function MortgageCalculator({
           max="50"
           step="5"
           value={downPayment}
+          aria-label="Porcentaje de enganche"
+          aria-valuetext={`${downPayment} por ciento`}
           onChange={(e) => setDownPayment(Number(e.target.value))}
           className="w-full h-2 bg-foreground/10 rounded-full appearance-none cursor-pointer slider-gold"
         />
@@ -108,6 +110,8 @@ export function MortgageCalculator({
             <button
               key={term}
               onClick={() => setYears(term)}
+              aria-pressed={years === term}
+              aria-label={`Plazo de ${term} años`}
               className={`py-2 rounded-lg border transition-all ${
                 years === term
                   ? "bg-[var(--color-accent)] text-background border-[var(--color-accent)] font-semibold"
