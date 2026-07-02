@@ -215,7 +215,7 @@ export async function BrandInventory({
                         aria-label={highlight ? `${title} ${highlight}` : title}
                     >
                         {title}
-                        {highlight && <> <span className="metallic-gold-static">{highlight}</span></>}
+                        {highlight && <span className="metallic-gold-static">{` ${highlight}`}</span>}
                     </h2>
                 </div>
                 <p className="max-w-xl text-body text-white/58 sm:text-right">

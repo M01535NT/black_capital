@@ -90,8 +90,8 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                         className="text-display-2 text-balance text-white"
                         aria-label={`${config.title} ${config.titleHighlight}`}
                     >
-                        {config.title}{" "}
-                        <span className="metallic-gold-static">{config.titleHighlight}</span>
+                        {config.title}
+                        <span className="metallic-gold-static">{` ${config.titleHighlight}`}</span>
                     </h2>
 
                     <span
