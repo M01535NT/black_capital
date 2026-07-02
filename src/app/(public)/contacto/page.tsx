@@ -8,7 +8,7 @@ import { ContactLeadForm } from "@/components/public/contact-lead-form";
 export const metadata: Metadata = {
     title: "Contacto | Black Capital",
     description:
-        "Contacta a Black Capital para comprar, vender, rentar, invertir o conocer el valor comercial de un inmueble en Tijuana.",
+        "Contacta a Black Capital para comprar, vender, rentar o saber cuánto puede valer una propiedad en Tijuana.",
     openGraph: {
         title: "Contacto | Black Capital",
         description:
@@ -27,8 +27,8 @@ const contactCards = [
         title: "WhatsApp",
         lines: [CONTACT_CONFIG.phone],
         action: {
-            label: "Enviar",
-            href: `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, quiero recibir información sobre un inmueble.")}`,
+            label: "Escribir",
+            href: `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, quiero orientación sobre una propiedad.")}`,
             external: true,
         },
     },
@@ -85,21 +85,21 @@ export default function ContactoPage() {
                 Contacto directo
             </p>
                         <h1 className="max-w-4xl text-display-1 leading-hero tracking-tight text-white text-balance">
-                            Cuéntanos qué necesitas hacer con un inmueble.
+                            Dinos qué buscas y te respondemos directo.
                         </h1>
                         <p className="mt-4 max-w-2xl text-body-fluid leading-relaxed text-white/72 lg:mt-5">
-                            Comprar, vender, rentar, invertir o conocer su valor comercial: empezamos por entender el objetivo.
+                            Comprar, vender, rentar o saber cuánto puede valer una propiedad en Tijuana.
                         </p>
                         <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-7">
                             <Link
                                 href="#solicitud"
                                 className="brushed-gold inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none premium-cta"
                             >
-                                Enviar solicitud
+                                Contar qué busco
                                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
                             </Link>
                             <a
-                                href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, quiero recibir información sobre un inmueble.")}`}
+                                href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, quiero orientación sobre una propiedad.")}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="group inline-flex min-h-[50px] w-fit items-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"
@@ -125,10 +125,10 @@ export default function ContactoPage() {
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-3 py-4 lg:grid-cols-1">
-                                {["Tipo de activo", "Zona de interés", "Presupuesto", "Datos de contacto"].map((label) => (
+                                {["Tipo de propiedad", "Zona", "Presupuesto", "Contacto"].map((label) => (
                                     <div key={label} className="flex min-h-16 flex-col justify-between border border-white/[0.08] bg-white/[0.03] px-3 py-3 lg:min-h-0 lg:flex-row lg:items-center lg:px-4">
                                         <span className="text-body-sm text-white/65 lg:text-body">{label}</span>
-                                        <span className="property-tag-type text-[var(--color-accent)]">Enviar</span>
+                                        <span className="property-tag-type text-[var(--color-accent)]">Listo</span>
                                     </div>
                                 ))}
                             </div>
@@ -136,7 +136,7 @@ export default function ContactoPage() {
                                 href="#solicitud"
                                 className="inline-flex w-full items-center justify-center gap-2 premium-cta bg-white text-black"
                             >
-                                Dejar datos
+                                Dejar mis datos
                                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
                             </Link>
                         </div>
@@ -151,11 +151,11 @@ export default function ContactoPage() {
                             Canales
                         </p>
                         <h2 className="text-display-2 leading-display tracking-headline text-white">
-                            Elige cómo contactarnos.
+                            Elige el canal que prefieras.
                         </h2>
                     </div>
                     <p className="max-w-xl text-body text-white/58 sm:text-right">
-                        Te respondemos por el canal que elijas para entender tu objetivo y proponer el siguiente paso.
+                        Te respondemos para entender qué buscas y orientarte sin vueltas.
                     </p>
                 </div>
 
@@ -206,13 +206,13 @@ export default function ContactoPage() {
                 <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-6 px-6 sm:px-10 lg:grid-cols-12 lg:gap-16 lg:px-16">
                     <div className="lg:col-span-5">
                         <p className="mb-3 property-tag-type text-[var(--color-accent)]">
-                            Solicitud de contacto
+                            Contacto
                         </p>
                         <h2 className="text-display-2 text-white leading-display tracking-headline">
-                            Déjanos tus datos y el contexto del inmueble.
+                            Cuéntanos lo básico.
                         </h2>
                         <p className="mt-4 max-w-md text-body text-white/58 lg:mt-6">
-                            Revisamos tu mensaje y te contactamos para ordenar necesidad, zona, presupuesto o valor comercial.
+                            Nosotros te decimos el siguiente paso según zona, presupuesto y tipo de propiedad.
                         </p>
                     </div>
                     <div className="lg:col-span-7">
@@ -229,21 +229,21 @@ export default function ContactoPage() {
                             Próximo paso
                         </p>
                     <h2 className="mb-5 text-display-2 leading-display tracking-headline text-white">
-                        También puedes empezar por inventario o WhatsApp.
+                        También puedes empezar por propiedades o WhatsApp.
                     </h2>
                     <p className="mb-10 text-body text-white/58">
-                        Si todavía no tienes claro el tipo de inmueble, WhatsApp es la ruta más rápida.
+                        Si todavía no tienes claro qué buscar, WhatsApp es la forma más rápida de orientarte.
                     </p>
                     <div className="flex flex-col justify-center gap-3 sm:flex-row">
                         <Link
                             href="/inventario"
                             className="brushed-gold inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none premium-cta"
                         >
-                            <span>Ver Inventario</span>
+                            <span>Ver propiedades</span>
                             <ArrowRight className="h-4 w-4" aria-hidden="true" />
                         </Link>
                         <a
-                            href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, quiero recibir información sobre un inmueble.")}`}
+                            href={`https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, quiero orientación sobre una propiedad.")}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="group inline-flex min-h-[50px] items-center justify-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"

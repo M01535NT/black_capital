@@ -9,34 +9,34 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const steps = [
   {
     step: "01",
-    title: "Diagnóstico del activo",
+    title: "Revisamos la propiedad",
     text:
-      "Revisamos ubicación, uso, estado, documentos y comparables antes de definir precio o ruta.",
-    signal: "Base real",
+      "Ubicación, estado, precio y documentos básicos antes de publicar, visitar u ofertar.",
+    signal: "Información clara",
     image: "/hero-luxury.webp",
   },
   {
     step: "02",
-    title: "Valor y estrategia",
+    title: "Definimos el siguiente paso",
     text:
-      "Definimos valor de salida, perfil de comprador y argumentos de venta o renta según el tipo de propiedad.",
-    signal: "Precio claro",
+      "Precio de salida, público ideal y forma de mover la compra, venta o renta.",
+    signal: "Precio defendible",
     image: "/hero-business.webp",
   },
   {
     step: "03",
-    title: "Exposición y filtro",
+    title: "Mostramos y filtramos",
     text:
-      "Mostramos el activo donde corresponde, filtramos prospectos y ordenamos visitas, consultas y ofertas.",
-    signal: "Demanda útil",
+      "Ordenamos visitas, consultas y ofertas para enfocarnos en interesados reales.",
+    signal: "Interesados reales",
     image: "/industrial-hero.webp",
   },
   {
     step: "04",
     title: "Negociación y cierre",
     text:
-      "Acompañamos contrapropuestas, condiciones, documentación y coordinación notarial hasta la firma.",
-    signal: "Firma limpia",
+      "Acompañamos oferta, condiciones, papeles y coordinación final hasta la firma.",
+    signal: "Cierre ordenado",
     image: "/hero-industrial.webp",
   },
 ];
@@ -105,15 +105,15 @@ export function MethodologySection() {
         <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
             <p className="mb-3 property-tag-type gold-ink">
-              Metodología Black Capital
+              Cómo trabajamos
             </p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
-              De valor estimado a cierre.
+              Cuatro pasos. Sin enredos.
             </h2>
           </div>
           <div className="lg:col-span-5 lg:flex lg:justify-end">
             <p className="max-w-md text-body text-white/58">
-              Antes de publicar o visitar, revisamos activo, precio, mercado y documentos.
+              Te damos claridad antes de publicar, visitar, ofertar o cerrar.
             </p>
           </div>
         </div>

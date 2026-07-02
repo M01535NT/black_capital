@@ -29,13 +29,13 @@ const hitos = [
     },
     {
         anio: "2024",
-        titulo: "Proceso",
-        descripcion: "Ordenamos valor comercial, documentos y ruta de seguimiento.",
+        titulo: "Método",
+        descripcion: "Mejoramos la revisión de precio, documentos y seguimiento.",
     },
     {
         anio: "2026",
         titulo: "Hoy",
-        descripcion: "Residencial, comercial e industrial con equipos y filtros propios.",
+        descripcion: "Residencial, comercial e industrial con atención directa.",
     },
 ];
 
@@ -105,7 +105,7 @@ export default function HistoriaPage() {
                 </FadeIn>
             </div>
 
-            <NextStepCTA description="Ocho años operando en Tijuana. Cuéntanos qué necesitas comprar, vender o rentar." />
+            <NextStepCTA description="Ocho años en Tijuana. Cuéntanos qué quieres comprar, vender o rentar." />
         </div>
     );
 }

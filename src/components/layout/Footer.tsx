@@ -38,7 +38,7 @@ const corpLinks = [
 export function Footer() {
     const phoneRaw = CONTACT_CONFIG.phoneRaw;
     const whatsappHref = `https://wa.me/${phoneRaw}?text=${encodeURIComponent(
-        "Hola, me gustaría recibir información sobre propiedades de inversión.",
+        "Hola, me gustaría recibir información sobre propiedades en Tijuana.",
     )}`;
 
     return (
@@ -58,7 +58,7 @@ export function Footer() {
                     <div className="col-span-2 md:col-span-4 space-y-5">
                         <Logo href="/" variant="full" size="md" tone="gold" />
                         <p className="text-body max-w-sm">
-                            Inmobiliaria en Tijuana para activos residenciales, comerciales e industriales. Te ayudamos a ordenar precio, zona, documentos y ruta de cierre.
+                            Inmobiliaria en Tijuana para comprar, vender o rentar casas, locales, oficinas, naves y bodegas con información clara.
                         </p>
                         <div className="flex gap-2 pt-2 flex-wrap">
                             {socialLinks.map((social) => {
@@ -191,7 +191,7 @@ export function Footer() {
                         © {new Date().getFullYear()} Black Capital. Todos los derechos reservados.
                     </p>
                     <p className="footer-legal-type text-white/30">
-                        Representación inmobiliaria profesional
+                        Inmobiliaria en Tijuana
                     </p>
                 </div>
             </div>

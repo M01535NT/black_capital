@@ -24,11 +24,11 @@ export function HomeZones() {
       <div className="px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
         <p className="mb-3 property-tag-type gold-ink">Dónde operamos</p>
         <h2 className="text-display-2 leading-display tracking-headline text-white">
-          Zonas que cubrimos en Tijuana.
+          Zonas donde sí tenemos contexto.
         </h2>
         <p className="mt-5 max-w-sm text-body text-white/58">
-          Conocemos precio, uso de suelo y demanda de cada corredor. Estas son
-          las zonas donde concentramos inventario.
+          Tijuana cambia por colonia. Te ayudamos a leer precio, demanda y tipo
+          de inmueble por zona.
         </p>
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 sm:gap-x-10">

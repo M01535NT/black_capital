@@ -6,24 +6,24 @@ import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 const FAQS = [
   {
-    q: "¿Cobran por una valuación comercial?",
-    a: "La estimación inicial de valor de salida es sin costo. Usamos comparables reales de la zona y el estado del inmueble; si necesitas un avalúo formal para trámite bancario o notarial, te canalizamos con un perito autorizado.",
+    q: "¿Cobran por estimar el valor?",
+    a: "La estimación inicial no tiene costo. Si necesitas avalúo formal, te conectamos con un perito autorizado.",
   },
   {
     q: "¿Qué documentos revisan antes de avanzar?",
-    a: "Escrituras, boleta predial, uso de suelo, régimen de propiedad y adeudos. Ordenamos la carpeta documental antes de publicar o de que hagas una oferta, para evitar sorpresas en el cierre.",
+    a: "Precio, zona, estado general y documentos básicos. La revisión completa depende del tipo de inmueble.",
   },
   {
     q: "¿Trabajan renta además de venta?",
-    a: "Sí. Operamos venta y renta en las tres líneas: residencial, comercial e industrial. Cada operación se filtra con criterios propios antes de agendar recorridos.",
+    a: "Sí. Trabajamos compra, venta y renta residencial, comercial e industrial.",
   },
   {
-    q: "¿En qué zonas de Tijuana tienen inventario?",
-    a: "Concentramos activos en Chapultepec, Zona Río, Playas, Otay, Díaz Ordaz y El Florido. Conocemos precio por m², uso de suelo y demanda de cada corredor.",
+    q: "¿En qué zonas trabajan?",
+    a: "Principalmente Tijuana y zonas cercanas. Podemos revisar si tu zona encaja con el tipo de inmueble.",
   },
   {
-    q: "¿Cuánto tarda una operación con ustedes?",
-    a: "Depende del tipo de activo y de la documentación. Definimos una ruta de cierre desde el diagnóstico, con tiempos estimados por etapa, para que sepas qué esperar en cada paso.",
+    q: "¿Cuánto tarda una compra o venta?",
+    a: "Depende del inmueble, documentos y forma de pago. Desde el inicio te explicamos los pasos probables.",
   },
 ];
 
@@ -43,8 +43,7 @@ export function HomeFAQ() {
             Antes de empezar.
           </h2>
           <p className="mt-5 max-w-sm text-body text-white/58">
-            ¿Otra duda? Escríbenos por WhatsApp y te respondemos el mismo día
-            hábil.
+            ¿Otra duda? Escríbenos por WhatsApp y te orientamos directo.
           </p>
           <Link
             href={whatsappHref}

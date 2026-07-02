@@ -46,7 +46,7 @@ export function ContactCTA({
                     ¿Te interesa?
                 </h3>
                 <p className="text-body leading-relaxed text-white/58">
-                    Solicita información detallada o agenda una visita.
+                    Pide la ficha completa o agenda una visita.
                 </p>
                 <a
                   href={whatsappHref}

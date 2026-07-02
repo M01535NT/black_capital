@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
  * debe terminar sin siguiente paso. Estilo alineado al manifiesto de Home.
  */
 export function NextStepCTA({
-    title = "¿Tienes una operación en mente?",
+    title = "¿Tienes una propiedad en mente?",
     description = "Cuéntanos qué necesitas comprar, vender o rentar y te respondemos el mismo día hábil.",
 }: {
     title?: string;

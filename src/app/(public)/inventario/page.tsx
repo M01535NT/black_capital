@@ -8,14 +8,14 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
     title: "Inventario en Tijuana | Black Capital",
-    description: "Explora residencias, locales, oficinas y naves en Tijuana con filtros por uso, zona, precio y superficie.",
+    description: "Busca casas, locales, oficinas y naves en Tijuana por zona, precio, uso y superficie.",
 };
 
 const PLACEHOLDER_PROPERTIES: PropertyCardData[] = [
     {
         id: "placeholder-residencial",
         slug: null,
-        title: "Casa familiar en zona residencial de Tijuana",
+        title: "Casa familiar en Zona Río",
         property_use: "Residencial",
         property_type: "Casa",
         business_type: "Venta",
@@ -32,7 +32,7 @@ const PLACEHOLDER_PROPERTIES: PropertyCardData[] = [
     {
         id: "placeholder-comercial",
         slug: null,
-        title: "Local comercial en corredor de alto tráfico",
+        title: "Local comercial en Otay",
         property_use: "Comercial",
         property_type: "Local",
         business_type: "Renta",
@@ -49,7 +49,7 @@ const PLACEHOLDER_PROPERTIES: PropertyCardData[] = [
     {
         id: "placeholder-industrial",
         slug: null,
-        title: "Nave industrial clase A cerca de garita",
+        title: "Nave industrial en parque de Tijuana",
         property_use: "Industrial",
         property_type: "Nave",
         business_type: "Renta",
@@ -106,11 +106,11 @@ export default function InventoryPage() {
                         <span className="property-tag-type gold-ink">Inventario · Tijuana</span>
                     </div>
                     <h1 className="mt-4 font-display text-display-2 font-extrabold uppercase leading-[1.02] tracking-headline text-white">
-                        Propiedades disponibles
+                        Propiedades en Tijuana
                     </h1>
                     <p className="mt-3 max-w-xl text-body text-white/58">
-                        Residencial, comercial e industrial con valor comercial, revisión
-                        documental y ruta de cierre.
+                        Casas, locales, oficinas y naves. Filtra por zona,
+                        precio, uso y superficie.
                     </p>
                 </div>
             </header>

@@ -41,7 +41,7 @@ function buildRows(d: TechnicalSheetData): [string, string][] {
     const perM2 = pricePerM2(d);
     const published = publishedLabel(d);
     return [
-        ["Operación", d.businessType],
+        ["Modalidad", d.businessType],
         ["Uso", d.propertyUse],
         ...(d.propertyType ? ([["Tipo", d.propertyType]] as [string, string][]) : []),
         ["Estatus", d.statusLabel],
@@ -97,7 +97,7 @@ export function FichaPdfButton({ data }: { data: TechnicalSheetData }) {
             className="inline-flex min-h-11 items-center gap-2 border border-[var(--color-accent)]/35 bg-[var(--color-accent)]/10 px-4 font-display text-[0.7rem] font-bold uppercase tracking-[0.08em] text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black"
         >
             <FileDown className="size-4" aria-hidden="true" />
-            Descargar PDF
+            Descargar ficha
         </button>
     );
 }

@@ -6,7 +6,7 @@ import { Shield, Eye, Handshake, Target, Scale, Zap } from "lucide-react";
 export const metadata: Metadata = {
     title: "Nuestros Valores | Black Capital",
     description:
-        "Los valores que guían a Black Capital: transparencia, compromiso, disciplina y resultados. Conoce los principios que aplicamos en cada operación inmobiliaria en Tijuana.",
+        "Los valores que guían a Black Capital: claridad, trato directo, revisión y seguimiento inmobiliario en Tijuana.",
     alternates: {
         canonical: "https://blackmx.vercel.app/nosotros/valores",
     },
@@ -25,8 +25,8 @@ const valores = [
     },
     {
         icon: Target,
-        titulo: "Resultados",
-        descripcion: "Seguimiento hasta firma o decisión final.",
+        titulo: "Seguimiento",
+        descripcion: "Acompañamiento hasta firma o decisión final.",
     },
     {
         icon: Shield,
@@ -88,7 +88,7 @@ export default function ValoresPage() {
                 </StaggerChildren>
             </div>
 
-            <NextStepCTA description="Estos principios aplican en cada operación. Cuéntanos la tuya y te respondemos el mismo día hábil." />
+            <NextStepCTA description="Estos principios guían cada compra, venta y renta. Cuéntanos tu caso y te respondemos directo." />
         </div>
     );
 }

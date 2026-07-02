@@ -22,7 +22,7 @@ export const herramientasDropdown = [
 export const verticales = [
   { name: "Black Luxury", href: "/black-luxury", desc: "Residencias por privacidad y zona" },
   { name: "Black Business", href: "/black-business", desc: "Locales, oficinas y plazas" },
-  { name: "Black Industrial", href: "/black-industrial", desc: "Naves, bodegas y operación" },
+  { name: "Black Industrial", href: "/black-industrial", desc: "Naves, bodegas y logística" },
 ];
 
 export type DropdownKey = "venta" | "renta" | "herramientas";

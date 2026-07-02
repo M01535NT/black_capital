@@ -10,10 +10,10 @@ const interestOptions = [
   "Comprar",
   "Vender",
   "Rentar",
-  "Opinión de valor",
-  "Dictamen de factibilidad",
-  "Plan de comercialización",
-  "Fotografía y video",
+  "Saber cuánto puede valer",
+  "Revisar factibilidad",
+  "Preparar venta",
+  "Fotos y video para vender",
 ] as const;
 
 export function ContactLeadForm() {
@@ -21,13 +21,13 @@ export function ContactLeadForm() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const defaultInterest =
     searchParams.get("servicio") === "opinion-de-valor"
-      ? "Opinión de valor"
+      ? "Saber cuánto puede valer"
       : searchParams.get("servicio") === "dictamen-factibilidad"
-        ? "Dictamen de factibilidad"
+        ? "Revisar factibilidad"
         : searchParams.get("servicio") === "plan-comercializacion"
-          ? "Plan de comercialización"
+          ? "Preparar venta"
           : searchParams.get("servicio") === "fotografia-video"
-            ? "Fotografía y video"
+            ? "Fotos y video para vender"
             : searchParams.get("objetivo") === "vender"
               ? "Vender"
               : searchParams.get("objetivo") === "comprar"
@@ -75,7 +75,7 @@ export function ContactLeadForm() {
         <CheckCircle2 className="mb-5 h-9 w-9 text-[var(--color-accent)]" />
         <h3 className="mb-3 text-display-3 text-white">Solicitud registrada</h3>
         <p className="text-body text-white/65 leading-relaxed">
-          Recibimos tus datos. El siguiente paso es entender tu necesidad y preparar una respuesta útil.
+          Recibimos tus datos. Te contactamos para entender qué buscas y orientarte con el siguiente paso.
         </p>
       </div>
     );
@@ -139,8 +139,8 @@ export function ContactLeadForm() {
       <textarea
         name="message"
         rows={3}
-        placeholder="Zona, tipo de inmueble y objetivo."
-        aria-label="Mensaje: zona, tipo de inmueble y objetivo"
+        placeholder="Zona, tipo de propiedad y qué quieres hacer."
+        aria-label="Mensaje: zona, tipo de propiedad y qué quieres hacer"
         className="w-full resize-none border border-white/12 bg-white/[0.035] px-3 py-3 text-body-sm text-white outline-none placeholder:text-white/35 focus:border-[var(--color-accent)] sm:text-body"
       />
 
@@ -151,7 +151,7 @@ export function ContactLeadForm() {
           required
           className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
         />
-        Acepto el aviso de privacidad y autorizo que me contacten sobre mi solicitud.
+        Acepto el aviso de privacidad y autorizo que me contacten sobre este mensaje.
       </label>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -163,7 +163,7 @@ export function ContactLeadForm() {
           {status === "submitting" ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : null}
-          {status === "submitting" ? "Enviando" : "Enviar solicitud"}
+          {status === "submitting" ? "Enviando" : "Enviar mensaje"}
           {status !== "submitting" ? <ArrowRight className="ml-2 h-4 w-4" /> : null}
         </Button>
         {status === "error" ? (

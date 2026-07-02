@@ -15,7 +15,7 @@ const miembros = [
     {
         nombre: "Moisés Núñez",
         cargo: "Director General",
-        descripcion: "Estructura operaciones, valor comercial y seguimiento con propietarios e inversionistas.",
+        descripcion: "Define precio, estrategia y seguimiento con propietarios e inversionistas.",
     },
     {
         nombre: "Omar Medina Yañez",
@@ -70,7 +70,7 @@ export default function EquipoPage() {
                 </StaggerChildren>
             </div>
 
-            <NextStepCTA description="Habla directo con el equipo: sin intermediarios, respuesta el mismo día hábil." />
+            <NextStepCTA description="Habla directo con el equipo: sin intermediarios y con respuesta clara." />
         </div>
     );
 }

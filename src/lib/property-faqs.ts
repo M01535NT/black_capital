@@ -16,22 +16,22 @@ export const DEFAULT_FAQ_CATALOG: FaqCatalogItem[] = [
     {
         id: "legal",
         q: "¿Cuál es la situación legal de la propiedad?",
-        a: "Revisamos escritura, boleta predial y gravámenes antes de publicar. La documentación está disponible para revisión con tu notario.",
+        a: "Podemos compartir documentos disponibles bajo solicitud. Revisa detalles finales con tu notario antes de cerrar.",
     },
     {
         id: "documentos",
         q: "¿Puedo revisar la documentación antes de decidir?",
-        a: "Sí. La carpeta documental se comparte a través de la solicitud de documentos de esta página, con un proceso de acceso controlado.",
+        a: "Sí. La documentación disponible se comparte desde esta página con acceso controlado.",
     },
     {
         id: "visita",
         q: "¿Puedo agendar una visita?",
-        a: "Claro. Coordinamos una visita guiada con un asesor, con información previa del inmueble y de la zona.",
+        a: "Sí. Coordinamos una visita con información previa del inmueble y de la zona.",
     },
     {
         id: "pago",
         q: "¿Qué formas de pago aceptan?",
-        a: "Crédito bancario, INFONAVIT/FOVISSSTE y pago de contado, según el perfil de la operación. Te conectamos con instituciones para precalificar.",
+        a: "Puede aplicar crédito bancario, INFONAVIT/FOVISSSTE o pago de contado según la propiedad. Confirma opciones antes de ofertar.",
     },
     {
         id: "precio",
@@ -41,22 +41,22 @@ export const DEFAULT_FAQ_CATALOG: FaqCatalogItem[] = [
     {
         id: "gastos",
         q: "¿Qué gastos adicionales debo considerar?",
-        a: "Escrituración, honorarios notariales, avalúo e impuestos aplicables. Te preparamos una estimación de costos de cierre.",
+        a: "Escrituración, honorarios notariales, avalúo e impuestos aplicables. Te orientamos con una estimación inicial.",
     },
     {
         id: "apartado",
         q: "¿Cómo se aparta la propiedad?",
-        a: "Con un anticipo y la firma de un convenio. El asesor te explica el proceso, los montos y los tiempos.",
+        a: "Normalmente con anticipo y convenio. Te explicamos montos, tiempos y condiciones antes de firmar.",
     },
     {
         id: "tiempos",
-        q: "¿Cuánto tarda el proceso completo?",
-        a: "Depende de la documentación y la forma de pago. Definimos una ruta de cierre con tiempos estimados por etapa.",
+        q: "¿Cuánto tarda comprar o rentar?",
+        a: "Depende de documentos, forma de pago y disponibilidad. Te explicamos los pasos probables desde el inicio.",
     },
     {
         id: "asesor",
         q: "¿Con quién trato durante el proceso?",
-        a: "Con un asesor asignado de Black Capital, sin intermediarios, que da seguimiento directo a tu operación.",
+        a: "Con un asesor asignado de Black Capital que da seguimiento directo a tu caso.",
     },
     {
         id: "zona",

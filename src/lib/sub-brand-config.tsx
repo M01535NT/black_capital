@@ -107,9 +107,9 @@ const baseJsonLd = {
 
 const LUXURY_STATS: StatItem[] = [
     { value: "Privacidad", label: "Acceso, entorno y condiciones de uso antes de visitar." },
-    { value: "Zona", label: "Servicios, conectividad y plusvalía residencial." },
+    { value: "Zona", label: "Servicios, conectividad y vida diaria alrededor." },
     { value: "Diseño", label: "Distribución, luz, acabados y mantenimiento visible." },
-    { value: "Valor", label: "Comparables para comprar o vender con mejor contexto." },
+    { value: "Precio", label: "Referencias de mercado para comprar o vender con más contexto." },
 ];
 
 const BUSINESS_STATS: StatItem[] = [
@@ -121,7 +121,7 @@ const BUSINESS_STATS: StatItem[] = [
 
 const INDUSTRIAL_STATS: StatItem[] = [
     { value: "m²", label: "Superficie útil, expansión posible y relación entre nave, patio y oficinas." },
-    { value: "Andenes", label: "Altura, carga, rampas y accesos para operación diaria." },
+    { value: "Andenes", label: "Altura, carga, rampas y accesos para el trabajo diario." },
     { value: "Patio", label: "Maniobra, radios de giro y capacidad para unidades de carga." },
     { value: "Garitas", label: "Conexión con corredores industriales y rutas de exportación." },
 ];
@@ -142,7 +142,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 </>
             ),
             subtitle:
-                "Tijuana y Rosarito. Zonas privadas, precio claro y valor comercial.",
+                "Tijuana y Rosarito. Zonas privadas, presupuesto claro y referencias de mercado.",
             primaryCta: { label: "Ver residencias", href: "/inventario?brand=luxury" },
             secondaryCta: { label: "Hablar con asesor", href: "#luxury-cta" },
         },
@@ -195,31 +195,31 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             sectionId: "luxury-cta",
             eyebrowIcon: "lock",
             eyebrow: "Asesoría residencial",
-            title: "Solicita opciones",
+            title: "Pide opciones",
             titleHighlight: "residenciales",
             description:
-                "Cuéntanos zona, presupuesto y tipo de casa. Te contactamos con opciones residenciales compatibles.",
+                "Cuéntanos zona, presupuesto y tipo de casa. Te contactamos con opciones que encajan.",
             indicator: "Respuesta en menos de 24h",
             companyLabel: "Empresa (opcional)",
             companyPlaceholder: "Empresa o particular",
             companyRequired: false,
             emailPlaceholder: "Correo Electrónico",
-            submitLabel: "Solicitar opciones residenciales",
+            submitLabel: "Pedir opciones residenciales",
             successTitle: "Solicitud recibida",
             successMessage:
-                "Recibimos tu solicitud. Nuestro equipo te contactará con opciones residenciales compatibles.",
+                "Recibimos tu solicitud. Nuestro equipo te contactará con opciones que encajan.",
         },
         jsonLd: {
             ...baseJsonLd,
             "@type": "ItemList",
             name: "Black Luxury · Residencias en Tijuana y Rosarito",
             description:
-                "Casas y residencias filtradas por zona, privacidad, presupuesto y valor comercial en Tijuana y Rosarito.",
+                "Casas y residencias filtradas por zona, privacidad y presupuesto en Tijuana y Rosarito.",
         },
         metadata: {
             title: "Residencias en Tijuana y Rosarito | Black Capital",
             description:
-                "Casas y residencias en zonas seleccionadas de Tijuana y Rosarito, filtradas por privacidad, presupuesto y valor comercial.",
+                "Casas y residencias en zonas seleccionadas de Tijuana y Rosarito, filtradas por privacidad, zona y presupuesto.",
             keywords: [
                 "residencias en Tijuana",
                 "residencias en Rosarito",
@@ -238,7 +238,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             openGraph: {
                 title: "Residencias en Tijuana y Rosarito | Black Capital",
                 description:
-                    "Residencias seleccionadas por privacidad, zona y valor comercial en Tijuana y Rosarito.",
+                    "Residencias seleccionadas por privacidad, zona y presupuesto en Tijuana y Rosarito.",
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Capital",
@@ -256,7 +256,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 card: "summary_large_image",
                 title: "Residencias en Tijuana y Rosarito | Black Capital",
                 description:
-                    "Residencias seleccionadas por privacidad, zona y valor comercial en Tijuana y Rosarito.",
+                    "Residencias seleccionadas por privacidad, zona y presupuesto en Tijuana y Rosarito.",
                 images: ["https://blackmx.vercel.app/hero-luxury.webp"],
             },
         },
@@ -273,19 +273,19 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             accent: "gold",
             headline: (
                 <>
-                    Espacios para operar.
+                    Espacios para tu negocio.
                 </>
             ),
             subtitle:
                 "Locales, oficinas y plazas revisadas por flujo, visibilidad, uso permitido y renta.",
-            primaryCta: { label: "Ver activos comerciales", href: "/inventario?brand=business" },
-            secondaryCta: { label: "Solicitar análisis", href: "#business-cta" },
+            primaryCta: { label: "Ver espacios comerciales", href: "/inventario?brand=business" },
+            secondaryCta: { label: "Pedir opciones", href: "#business-cta" },
         },
         value: {
             eyebrow: "Comercial",
             title: (
                 <>
-                    Decide por corredor, giro y rendimiento.
+                    Elige por zona, giro y visibilidad.
                 </>
             ),
             description:
@@ -315,7 +315,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
         inventory: {
             brandSlug: "business",
             propertyUse: "Comercial",
-            title: "Activos",
+            title: "Espacios",
             highlight: "Comerciales",
             subtitle:
                 "Compara opciones por formato, zona, superficie y uso comercial antes de agendar recorrido.",
@@ -330,26 +330,26 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             sectionId: "business-cta",
             eyebrowIcon: "lock",
             eyebrow: "Asesoría comercial",
-            title: "Solicita opciones",
-            titleHighlight: "de operación",
+            title: "Pide opciones",
+            titleHighlight: "para tu negocio",
             description:
-                "Cuéntanos giro, zona y formato. Te ayudamos a comparar opciones comerciales compatibles.",
+                "Cuéntanos giro, zona y formato. Te ayudamos a comparar opciones comerciales que encajan.",
             indicator: "Respuesta en menos de 24h",
             companyLabel: "Empresa",
             companyPlaceholder: "Empresa",
             companyRequired: false,
             emailPlaceholder: "Correo Electrónico",
-            submitLabel: "Solicitar análisis comercial",
+            submitLabel: "Pedir opciones comerciales",
             successTitle: "Solicitud recibida",
             successMessage:
-                "Recibimos tu solicitud. Nuestro equipo te contactará con opciones comerciales compatibles.",
+                "Recibimos tu solicitud. Nuestro equipo te contactará con opciones comerciales que encajan.",
         },
         jsonLd: {
             ...baseJsonLd,
             "@type": "ItemList",
             name: "Black Business · Centros Comerciales y Locales en Tijuana",
             description:
-                "Locales, oficinas y plazas comerciales evaluadas por flujo, visibilidad y operación en Tijuana, Baja California.",
+                "Locales, oficinas y plazas comerciales filtradas por flujo, visibilidad y uso permitido en Tijuana, Baja California.",
         },
         metadata: {
             title: "Locales Comerciales en Tijuana | Black Capital",
@@ -371,7 +371,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             openGraph: {
                 title: "Locales Comerciales en Tijuana | Black Capital",
                 description:
-                    "Locales, oficinas y plazas en Tijuana evaluadas por flujo, visibilidad y operación.",
+                    "Locales, oficinas y plazas en Tijuana filtradas por flujo, visibilidad y uso permitido.",
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Capital",
@@ -389,7 +389,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 card: "summary_large_image",
                 title: "Locales Comerciales en Tijuana | Black Capital",
                 description:
-                    "Locales, oficinas y plazas en Tijuana evaluadas por flujo, visibilidad y operación.",
+                    "Locales, oficinas y plazas en Tijuana filtradas por flujo, visibilidad y uso permitido.",
                 images: ["https://blackmx.vercel.app/hero-business.webp"],
             },
         },
@@ -407,31 +407,31 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             overlayClass: "from-background via-background/90 to-background/55",
             headline: (
                 <>
-                    Operación industrial.
+                    Naves y bodegas en Tijuana.
                 </>
             ),
             subtitle:
                 "Naves y bodegas revisadas por superficie, accesos, maniobra, uso y conectividad.",
-            primaryCta: { label: "Ver activos industriales", href: "/inventario?brand=industrial" },
-            secondaryCta: { label: "Solicitar portafolio", href: "#industrial-cta" },
+            primaryCta: { label: "Ver naves y bodegas", href: "/inventario?brand=industrial" },
+            secondaryCta: { label: "Pedir opciones", href: "#industrial-cta" },
             gridLines: true,
             cursorGlow: false,
         },
         value: {
-            eyebrow: "Activos industriales",
+            eyebrow: "Industrial",
             title: (
                 <>
-                    La nave debe funcionar antes de cerrar.
+                    La nave debe funcionar para tu logística.
                 </>
             ),
             description:
-                "Comparamos activos industriales por capacidad real de operación, conectividad y restricciones de uso.",
+                "Comparamos naves y bodegas por superficie útil, conectividad, restricciones de uso y maniobra.",
             items: [
                 {
                     icon: Factory,
                     title: "Naves Industriales",
                     description:
-                        "Altura, claros, energía y andenes leídos contra el tipo de operación.",
+                        "Altura, claros, energía y andenes revisados según el trabajo diario.",
                 },
                 {
                     icon: Warehouse,
@@ -454,7 +454,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             title: "Naves y",
             highlight: "Bodegas",
             subtitle:
-                "Revisa activos por superficie, conectividad, tipo de operación y capacidad de maniobra.",
+                "Revisa naves y bodegas por superficie, conectividad, uso permitido y capacidad de maniobra.",
             ctaText: "Ver inventario industrial",
             accentColor: "steel",
         },
@@ -465,30 +465,30 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             notesFormat: "always",
             eyebrowIcon: "download",
             eyebrow: "Portafolio industrial",
-            title: "Solicita opciones",
-            titleHighlight: "operativa",
+            title: "Pide opciones",
+            titleHighlight: "industriales",
             description:
                 "Comparte superficie, uso y zona objetivo. Te ayudamos a filtrar naves y bodegas por capacidad real.",
             companyLabel: "Empresa",
             companyPlaceholder: "Empresa *",
             companyRequired: true,
             emailPlaceholder: "Correo Corporativo",
-            submitLabel: "Solicitar análisis industrial",
-            successTitle: "Solicitud Registrada",
+            submitLabel: "Pedir opciones industriales",
+            successTitle: "Solicitud registrada",
             successMessage:
-                "Recibimos tu solicitud. Nuestro equipo te contactará con opciones industriales compatibles.",
+                "Recibimos tu solicitud. Nuestro equipo te contactará con opciones industriales que encajan.",
         },
         jsonLd: {
             ...baseJsonLd,
             "@type": "ItemList",
             name: "Black Industrial · Naves, Bodegas y Parques Logísticos en Tijuana",
             description:
-                "Naves, bodegas y activos industriales en Tijuana evaluados por superficie, conectividad y capacidad operativa.",
+                "Naves, bodegas e inmuebles industriales en Tijuana filtrados por superficie, conectividad y capacidad de maniobra.",
         },
         metadata: {
             title: "Naves Industriales en Tijuana | Black Capital",
             description:
-                "Naves, bodegas y parques industriales en Tijuana evaluados por superficie, conectividad y capacidad operativa.",
+                "Naves, bodegas y parques industriales en Tijuana filtrados por superficie, conectividad y capacidad de maniobra.",
             keywords: [
                 "naves industriales Tijuana",
                 "parques industriales Tijuana",
@@ -505,7 +505,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
             openGraph: {
                 title: "Naves Industriales en Tijuana | Black Capital",
                 description:
-                    "Naves, bodegas y parques industriales en Tijuana evaluados por superficie, conectividad y operación.",
+                    "Naves, bodegas y parques industriales en Tijuana filtrados por superficie, conectividad y maniobra.",
                 type: "website",
                 locale: "es_MX",
                 siteName: "Black Capital",
@@ -523,7 +523,7 @@ export const SUB_BRAND_CONFIGS: Record<SubBrandKey, SubBrandConfig> = {
                 card: "summary_large_image",
                 title: "Naves Industriales en Tijuana | Black Capital",
                 description:
-                    "Naves, bodegas y parques industriales en Tijuana evaluados por superficie, conectividad y operación.",
+                    "Naves, bodegas y parques industriales en Tijuana filtrados por superficie, conectividad y maniobra.",
                 images: ["https://blackmx.vercel.app/industrial-hero.webp"],
             },
         },

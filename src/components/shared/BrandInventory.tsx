@@ -77,7 +77,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             slug: null,
             title: "Residencia familiar con amenidades",
             property_type: "Residencial",
-            business_type: "Alta plusvalía",
+            business_type: "Zona residencial",
             price: 0,
             currency: "USD",
             m2_construction: 260,
@@ -116,7 +116,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
         {
             id: "placeholder-comercial-2",
             slug: null,
-            title: "Oficina ejecutiva lista para operar",
+            title: "Oficina ejecutiva lista para uso",
             property_type: "Oficina",
             business_type: "Corporativo",
             price: 0,
@@ -296,7 +296,7 @@ export async function BrandInventory({
                                             href={href}
                                             className="inline-flex flex-1 items-center justify-center gap-2 border border-white/10 px-4 py-2.5 property-tag-type text-white/75 transition-colors hover:border-[var(--color-accent)]/30 hover:text-white"
                                         >
-                                            Solicitar
+                                            Pedir detalles
                                         </Link>
                                     </div>
                                 </div>

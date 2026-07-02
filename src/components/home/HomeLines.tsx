@@ -9,7 +9,7 @@ const LINES = [
     title: "Black Luxury",
     href: "/black-luxury",
     image: "/brand-luxury.webp",
-    copy: "Casas y residencias por zona, privacidad, presupuesto y etapa de compra.",
+    copy: "Casas y residencias por zona, presupuesto y estilo de vida.",
     zones: "Chapultepec · Zona Río · Playas",
   },
   {
@@ -18,7 +18,7 @@ const LINES = [
     title: "Black Business",
     href: "/black-business",
     image: "/brand-business.webp",
-    copy: "Locales, oficinas y plazas por flujo, visibilidad, uso permitido y potencial de renta.",
+    copy: "Locales y oficinas por ubicación, flujo y condiciones de renta.",
     zones: "Zona Río · Otay · Díaz Ordaz",
   },
   {
@@ -27,7 +27,7 @@ const LINES = [
     title: "Black Industrial",
     href: "/black-industrial",
     image: "/brand-industrial.webp",
-    copy: "Naves y bodegas por superficie, accesos, maniobra y zona industrial.",
+    copy: "Naves y bodegas por superficie, accesos y trabajo diario.",
     zones: "Otay · Pacífico · El Florido",
   },
 ] as const;
@@ -38,13 +38,13 @@ export function HomeLines() {
       <div className="mx-auto max-w-[90rem] px-6 pt-16 sm:px-10 lg:px-16 lg:pt-24">
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="mb-3 property-tag-type gold-ink">Tres líneas de negocio</p>
+            <p className="mb-3 property-tag-type gold-ink">Qué trabajamos</p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
-              Elige por tipo de activo.
+              Elige lo que estás buscando.
             </h2>
           </div>
           <p className="max-w-xs text-body leading-snug text-white/58">
-            Cada línea filtra con criterios propios antes de agendar recorridos.
+            Casas, locales, oficinas y naves en Tijuana. Cada tipo se revisa con lo que importa.
           </p>
         </div>
       </div>
@@ -79,7 +79,7 @@ export function HomeLines() {
               </p>
             </div>
             <span className="inline-flex items-center gap-2 self-start pt-2 property-tag-type text-white/85 transition-colors group-hover:text-[var(--color-accent)] sm:self-center sm:pt-0">
-              <span className="hidden sm:inline">Ver línea</span>
+              <span className="hidden sm:inline">Ver opciones</span>
               <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
           </Link>

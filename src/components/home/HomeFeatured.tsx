@@ -92,7 +92,7 @@ export async function HomeFeatured() {
           <div>
             <p className="mb-3 property-tag-type gold-ink">Inventario destacado</p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
-              Propiedades seleccionadas.
+              Propiedades listas para revisar.
             </h2>
           </div>
           <Link
@@ -100,7 +100,7 @@ export async function HomeFeatured() {
             className="group inline-flex items-center gap-2 property-tag-type text-[var(--color-accent)]"
           >
             <span className="relative pb-1">
-              Ver todo el inventario
+              Ver todas las propiedades
               <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
             </span>
             <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />

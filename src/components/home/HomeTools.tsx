@@ -4,23 +4,23 @@ import { ArrowRight } from "lucide-react";
 const TOOLS = [
   {
     step: "01",
-    title: "Valuación comercial",
-    copy: "Estimamos valor de salida con comparables reales de la zona, no promedios genéricos.",
-    cta: "Solicitar valuación",
+    title: "Opinión de valor",
+    copy: "Estima un rango antes de publicar, comprar o negociar.",
+    cta: "Recibir opinión",
     href: "/herramientas",
   },
   {
     step: "02",
     title: "Revisión documental",
-    copy: "Escrituras, predial, uso de suelo y adeudos revisados antes de avanzar en la operación.",
-    cta: "Revisar mis papeles",
+    copy: "Identifica papeles básicos antes de avanzar con una propiedad.",
+    cta: "Revisar documentos",
     href: "/herramientas",
   },
   {
     step: "03",
-    title: "Comparables de zona",
-    copy: "Precio por m², tiempos de venta y demanda por corredor para ubicar tu activo con contexto.",
-    cta: "Ver comparables",
+    title: "Referencias de zona",
+    copy: "Compara precio, superficie y ubicación para decidir mejor.",
+    cta: "Ver referencias",
     href: "/herramientas",
   },
 ] as const;
@@ -33,12 +33,11 @@ export function HomeTools() {
           <div>
             <p className="mb-3 property-tag-type gold-ink">Herramientas</p>
             <h2 className="text-display-2 leading-display tracking-headline text-white">
-              Decide con datos, no corazonadas.
+              Calcula antes de decidir.
             </h2>
           </div>
           <p className="max-w-xs text-body leading-snug text-white/58">
-            Instrumentos que usamos antes de publicar, visitar o hacer una
-            oferta.
+            Números rápidos para preparar compra, venta, renta o inversión.
           </p>
         </div>
 

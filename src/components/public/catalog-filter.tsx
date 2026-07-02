@@ -155,7 +155,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             id="catalog-search"
                             ref={searchInputRef}
                             type="text"
-                            placeholder="Buscar por título, zona o tipo..."
+                            placeholder="Busca por zona, tipo o palabra clave..."
                             value={searchTerm}
                             onChange={(e) => {
                                 setSearchTerm(e.target.value);
@@ -371,10 +371,10 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                         <Search className="size-6" aria-hidden="true" />
                     </div>
                     <h2 className="mb-3 text-display-4 text-white">
-                        No encontramos coincidencias
+                        No encontramos propiedades con esos filtros
                     </h2>
                     <p className="mx-auto mb-8 max-w-md text-body text-white/58">
-                        Ajusta los filtros o comparte tu búsqueda con un asesor para preparar opciones similares.
+                        Limpia filtros o cuéntanos qué buscas para revisar opciones parecidas.
                     </p>
                     <div className="flex flex-col justify-center gap-3 sm:flex-row">
                         <button
@@ -391,7 +391,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             href={`/contacto?interes=inventario${searchTerm ? `&busqueda=${encodeURIComponent(searchTerm)}` : ""}`}
                             className="brushed-gold premium-cta inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6"
                         >
-                            Hablar con asesor
+                            Contar qué busco
                             <ArrowRight className="h-4 w-4" aria-hidden="true" />
                         </Link>
                     </div>

@@ -168,7 +168,7 @@ export function PropertyCard({
                                 : formatShortPrice(property.price, property.currency, property.business_type)}
                         </p>
                         <span className="inline-flex items-center gap-2 property-tag-type text-white/70 transition-colors group-hover:text-[var(--color-accent)]">
-                            {property.isPlaceholder ? "Solicitar" : "Ver ficha"}
+                            {property.isPlaceholder ? "Consultar" : "Ver ficha"}
                             <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                         </span>
                     </div>
@@ -182,7 +182,7 @@ export function PropertyCard({
                     >
                         <MessageCircle className="h-4 w-4" aria-hidden="true" />
                         <span className="property-tag-type relative pb-1">
-                            Solicitar información
+                            Pedir información
                             <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover/cta:opacity-100" />
                         </span>
                     </Link>

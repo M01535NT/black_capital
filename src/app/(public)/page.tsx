@@ -16,11 +16,11 @@ import { Testimonials } from "@/components/home/Testimonials";
 export const metadata: Metadata = {
   title: "Inmobiliaria en Tijuana",
   description:
-    "Compra, venta y renta de inmuebles residenciales, comerciales e industriales en Tijuana con valor comercial, revisión documental y ruta de cierre.",
+    "Compra, venta y renta de inmuebles residenciales, comerciales e industriales en Tijuana con información clara desde el inicio.",
   openGraph: {
     title: "Black Capital | Inmobiliaria en Tijuana",
     description:
-      "Representación inmobiliaria para comprar, vender, rentar o conocer el valor comercial de un inmueble en Tijuana.",
+      "Inmobiliaria en Tijuana para comprar, vender o rentar inmuebles con acompañamiento directo.",
     type: "website",
     locale: "es_MX",
     siteName: "Black Capital",
@@ -108,13 +108,13 @@ export default function HomePage() {
               </span>
             </div>
             <h1 className="font-display text-[clamp(1.75rem,6vw,5.75rem)] font-extrabold uppercase leading-[1.02] tracking-tight text-white">
-              Representación<br />
-              inmobiliaria<br />
-              <span className="gold-ink">con criterio.</span>
+              Inmuebles<br />
+              en Tijuana<br />
+              <span className="gold-ink">con claridad.</span>
             </h1>
             <p className="mt-6 max-w-md text-body text-white/60">
-              Ordenamos precio, zona, documentos y ruta de cierre antes de que
-              avances. Residencial, comercial e industrial.
+              Compra, venta y renta residencial, comercial e industrial con
+              información clara antes de decidir.
             </p>
 
             <div className="mt-9 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-7">
@@ -122,7 +122,7 @@ export default function HomePage() {
                 href="/inventario"
                 className="brushed-gold premium-cta inline-flex min-h-[50px] items-center justify-center gap-2 rounded-none"
               >
-                Ver inventario
+                Ver propiedades
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
@@ -130,7 +130,7 @@ export default function HomePage() {
                 className="group inline-flex w-fit items-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"
               >
                 <span className="property-tag-type relative pb-1">
-                  Hablar con un asesor
+                  Contar qué busco
                   <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
                 </span>
                 <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -208,15 +208,15 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_22rem]">
               <div className="px-5 py-7 sm:px-7 sm:py-8 lg:px-9 lg:py-10">
                 <div className="flex items-center justify-between gap-4">
-                  <p className="property-tag-type gold-ink">Manifiesto</p>
+                  <p className="property-tag-type gold-ink">Nuestra forma de trabajar</p>
                   <span className="h-px flex-1 bg-white/[0.08]" aria-hidden="true" />
                 </div>
                 <p className="mt-5 mb-0 max-w-4xl text-[clamp(1.8rem,7vw,2.65rem)] font-extrabold leading-[1.02] tracking-headline text-white/92 lg:text-display-2">
-                  Primero el activo.{" "}
-                  <span className="gold-ink">Luego la operación</span>.
+                  Primero entendemos la propiedad.{" "}
+                  <span className="gold-ink">Después movemos el siguiente paso</span>.
                 </p>
                 <p className="mt-4 mb-0 max-w-2xl text-body leading-snug text-white/58">
-                  Ordenamos precio, zona, documentos y ruta antes de avanzar.
+                  Revisamos precio, zona y datos clave para comprar, vender o rentar con más claridad.
                 </p>
               </div>
 
@@ -244,7 +244,7 @@ export default function HomePage() {
             </div>
             <div className="border-t border-white/[0.08] px-5 py-3 sm:px-7 lg:px-9">
               <p className="mb-0 text-[0.72rem] font-semibold uppercase leading-tight tracking-[0.1em] text-white/45">
-                Compra, venta, renta e inversión inmobiliaria en Tijuana.
+                Compra, venta, renta e inversión inmobiliaria en Tijuana y Baja California.
               </p>
             </div>
           </div>

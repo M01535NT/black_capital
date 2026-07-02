@@ -4,7 +4,7 @@ import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 export const metadata: Metadata = {
     title: "Términos y Condiciones | Black Capital",
-    description: "Términos y condiciones de uso de la plataforma Black Capital en Tijuana, Baja California.",
+    description: "Reglas de uso del sitio Black Capital y de la información inmobiliaria publicada.",
     alternates: {
         canonical: "https://blackmx.vercel.app/legal/terminos-condiciones",
     },
@@ -34,7 +34,7 @@ export default function TermsPage() {
                                 1. Aceptación de los Términos
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Al acceder y utilizar la plataforma Black Capital (en adelante, &quot;la Plataforma&quot;), usted acepta estar sujeto a estos Términos y Condiciones. Si no está de acuerdo con alguna parte, no debe utilizar la Plataforma.
+                                Al usar el sitio de Black Capital aceptas estos Términos y Condiciones. Si no estás de acuerdo, no uses el sitio.
                             </p>
                         </section>
 
@@ -43,7 +43,7 @@ export default function TermsPage() {
                                 2. Descripción del Servicio
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Black Capital es una plataforma inmobiliaria que proporciona información sobre propiedades residenciales, comerciales e industriales en Tijuana, Baja California. La Plataforma incluye listados de propiedades, herramientas de cálculo y servicios de contacto con asesores inmobiliarios.
+                                Black Capital publica información sobre propiedades residenciales, comerciales e industriales en Tijuana, Baja California. El sitio incluye listados, herramientas de cálculo y canales de contacto con asesores inmobiliarios.
                             </p>
                         </section>
 
@@ -52,7 +52,7 @@ export default function TermsPage() {
                                 3. Uso Permitido
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Usted se compromete a utilizar la Plataforma únicamente para fines legítimos relacionados con la búsqueda, evaluación o adquisición de propiedades inmobiliarias. Queda prohibido:
+                                Usa el sitio solo para buscar, evaluar o solicitar información inmobiliaria. Queda prohibido:
                             </p>
                             <ul className="list-disc list-inside space-y-2 text-foreground/70 ml-4">
                                 <li>Utilizar la Plataforma para fines comerciales no autorizados</li>
@@ -68,7 +68,7 @@ export default function TermsPage() {
                                 4. Propiedad Intelectual
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Todo el contenido de la Plataforma, incluyendo pero no limitado a textos, gráficos, logotipos, imágenes, fotografías, videos, software y código fuente, es propiedad de Black Capital o de sus licenciantes y está protegido por las leyes de propiedad intelectual mexicanas e internacionales.
+                                Los textos, gráficos, logotipos, imágenes, videos, software y código del sitio pertenecen a Black Capital o a sus licenciantes, y están protegidos por las leyes aplicables de propiedad intelectual.
                             </p>
                         </section>
 
@@ -77,7 +77,7 @@ export default function TermsPage() {
                                 5. Información de Propiedades
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                La información sobre propiedades publicada en la Plataforma se proporciona de buena fe y se basa en datos obtenidos de fuentes consideradas confiables. Sin embargo, Black Capital no garantiza la exactitud, integridad o disponibilidad actual de dicha información. Los análisis financieros son estimaciones y no constituyen asesoramiento financiero profesional.
+                                La información de propiedades se publica de buena fe y puede cambiar sin aviso. Black Capital no garantiza exactitud, integridad ni disponibilidad actual. Los cálculos financieros son estimaciones y no constituyen asesoría financiera profesional.
                             </p>
                         </section>
 
@@ -86,7 +86,7 @@ export default function TermsPage() {
                                 6. Registro y Datos Personales
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Para acceder a ciertos servicios, puede ser necesario proporcionar información personal. El tratamiento de sus datos se rige por nuestro <a href="/legal/aviso-privacidad" className="text-[var(--color-accent)] hover:underline">Aviso de Privacidad</a>. Usted es responsable de mantener la confidencialidad de sus credenciales de acceso.
+                                Algunos servicios pueden pedir datos personales. Su tratamiento se rige por nuestro <a href="/legal/aviso-privacidad" className="text-[var(--color-accent)] hover:underline">Aviso de Privacidad</a>. Si tienes credenciales de acceso, eres responsable de mantenerlas bajo resguardo.
                             </p>
                         </section>
 
@@ -95,7 +95,7 @@ export default function TermsPage() {
                                 7. Limitación de Responsabilidad
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                En la máxima medida permitida por la ley aplicable, Black Capital no será responsable por daños indirectos, incidentales, especiales, consecuentes o punitivos, incluyendo pero no limitado a pérdida de beneficios, datos, uso o buena voluntad, resultantes de su uso o incapacidad para usar la Plataforma.
+                                En la medida permitida por la ley, Black Capital no será responsable por daños indirectos, pérdida de beneficios, pérdida de datos o afectaciones derivadas del uso o imposibilidad de uso del sitio.
                             </p>
                         </section>
 
@@ -104,7 +104,7 @@ export default function TermsPage() {
                                 8. Enlaces a Terceros
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                La Plataforma puede contener enlaces a sitios web de terceros. Black Capital no controla ni asume responsabilidad por el contenido, políticas de privacidad o prácticas de dichos sitios.
+                                El sitio puede incluir enlaces a terceros. Black Capital no controla ni asume responsabilidad por su contenido, políticas de privacidad o prácticas.
                             </p>
                         </section>
 
@@ -113,7 +113,7 @@ export default function TermsPage() {
                                 9. Modificaciones
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Black Capital se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento. Las modificaciones entrarán en vigor inmediatamente después de su publicación en la Plataforma.
+                                Black Capital puede modificar estos Términos y Condiciones. Los cambios entrarán en vigor al publicarse en el sitio.
                             </p>
                         </section>
 
@@ -131,7 +131,7 @@ export default function TermsPage() {
                                 11. Contacto
                             </h2>
                             <p className="text-body text-foreground/70 leading-relaxed mb-4">
-                                Si tiene preguntas sobre estos Términos y Condiciones, puede contactarnos a través de:
+                                Si tienes preguntas sobre estos Términos y Condiciones, puedes contactarnos por:
                             </p>
                             <ul className="list-none space-y-2 text-foreground/70">
                                 <li><strong>Correo:</strong> {CONTACT_CONFIG.email}</li>

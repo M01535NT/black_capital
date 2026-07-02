@@ -13,7 +13,7 @@ const defaultTestimonials = [
   },
   {
     quote:
-      "Definimos valor comercial, preparamos la venta y cerramos en el tiempo previsto.",
+      "Definimos un precio realista, preparamos la venta y cerramos en el tiempo previsto.",
     attribution: "A. G.",
     role: "Familia compradora, Zona Río",
   },
@@ -26,7 +26,7 @@ export function Testimonials({
 }) {
   return (
     <section
-      aria-label="Voces de clientes Black Capital"
+      aria-label="Clientes Black Capital"
       className="relative border-y border-white/[0.06] bg-white/[0.02]"
     >
       <div
@@ -36,13 +36,13 @@ export function Testimonials({
       <div className="mx-auto max-w-[90rem] px-6 py-12 sm:px-10 sm:py-14 lg:px-16 lg:py-24">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start lg:gap-12">
           <div className="lg:col-span-4">
-            <p className="mb-2 property-tag-type gold-ink lg:mb-3">Voces</p>
+            <p className="mb-2 property-tag-type gold-ink lg:mb-3">Clientes</p>
             {/* .testimonials-heading (globals, sin capa): "Operaciones" a display-2 no cabe en la columna 4/12 */}
             <h2 className="testimonials-heading mb-0 text-display-2 leading-display tracking-headline text-white">
-              Operaciones que nos confiaron.
+              Decisiones con mejor información.
             </h2>
             <p className="mt-4 mb-0 max-w-md text-body leading-snug text-white/58 lg:mt-6">
-              Personas que necesitaban comprar, vender o evaluar un inmueble con mejor información.
+              Personas que compraron, vendieron o evaluaron una propiedad con nuestro acompañamiento.
             </p>
           </div>
 

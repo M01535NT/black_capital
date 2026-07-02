@@ -31,7 +31,7 @@ export function SubBrandStats({
     brand,
     eyebrow = "Criterios de selección",
     title = "Datos útiles antes de visitar.",
-    description = "Cada activo se compara por uso, ubicación, precio y condiciones reales.",
+    description = "Cada propiedad se compara por uso, ubicación, precio y condiciones reales.",
     stats,
     spacing = "default",
 }: SubBrandStatsProps) {
