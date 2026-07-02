@@ -159,7 +159,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
                     <FileText className="size-4 text-[var(--color-accent)]" />
                 </span>
                 <span className="min-w-0 flex-1">
-                    <span className="block truncate text-body text-white transition-colors group-hover:text-[var(--color-accent)]">
+                    <span className="block truncate text-body-sm font-semibold text-white transition-colors group-hover:text-[var(--color-accent)]">
                         {doc.label}
                     </span>
                     <span className="mt-1 flex items-center gap-1.5 text-caption uppercase tracking-wider text-white/42">
@@ -167,8 +167,8 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
                         {doc.type}
                     </span>
                 </span>
-                <span className="shrink-0 text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent)]">
-                    Solicitar documentos
+                <span className="shrink-0 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--color-accent)]">
+                    Solicitar
                 </span>
             </button>
 

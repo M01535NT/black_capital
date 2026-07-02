@@ -198,7 +198,8 @@ export default async function PropertyDetailPage({
 
     const technicalData = {
         title: property.title,
-        reference: (property.slug || property.id).toString().toUpperCase().slice(0, 18),
+        // Código corto tipo plantilla (TIJ-XXXXXXXX) en lugar del slug truncado.
+        reference: `TIJ-${property.id.toString().replace(/-/g, "").slice(0, 8).toUpperCase()}`,
         businessType: property.business_type,
         propertyUse: property.property_use,
         propertyType: property.property_type,
