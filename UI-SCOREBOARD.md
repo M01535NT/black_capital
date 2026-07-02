@@ -62,6 +62,14 @@ Hallazgo de regresión corregido: h2 "Operaciones que nos confiaron." (Testimoni
 
 _(vacío)_
 
+## Rediseño ficha de propiedad (plantilla "Propiedad Editorial Black") — 2026-07-01
+
+Score visual final: **10/10** (rúbrica: fidelidad a plantilla, jerarquía, esquinas cuadradas, densidad compacta, responsive 375/768/1119, interacciones, a11y, requisitos completos, copy, consola/gates).
+
+Requisitos del cliente (11/11): carrusel fotos ✓ · video ✓ · 360° ✓ (tabs Fotos/Video/360 verificados con contenido real; nota WhatsApp si faltan medios) · descripción ✓ · ficha técnica ✓ (capítulo 03, filas editoriales) · perfil asesor ✓ (sidebar con WhatsApp/Email) · mapa ✓ (condicional a dirección) · FAQ ✓ (acordeón numerado por operación) · calculadora ✓ (mensualidad protagonista + sliders enganche/plazo/tasa dorados; recálculo verificado $13,578→$11,881) · botón PDF ✓ (ventana imprimible con marca, verificado por intercepción) · box de archivos ✓ (documentos con solicitud).
+
+Iteración 1 (commit 5a6f2ae): MediaShowcase, TechnicalSheet+FichaPdfButton, PropertyFAQ, MortgageCalculator rediseñada, StickyContactBar en todos los viewports, capítulos renumerados, `.slider-gold` en globals. Iteración 2 (commit fb90339): sidebar sin ficha duplicada + CTA real en Siguiente paso, DocumentCard legible, referencia TIJ-XXXXXXXX, SpecRow y PropertyMedia eliminados (dead).
+
 ## Registro de fixes por unidad
 
 - **2026-07-01 · Tier 4 Admin → cerrado.** Login verificado en vivo (labels htmlFor, toggle de contraseña con aria-label, inputs y CTA a 44px en móvil — fix `h-11 sm:h-9` —, `role="alert"` en error, guard redirige /admin/* sin sesión a login). Interiores del panel: verificación por código (regla dura: no crear sesión ni escribir contra Supabase de producción) — los 3 `alert()` nativos restantes reemplazados por toasts de sonner (`property-form.tsx` ×2, `properties/columns.tsx` ×1), cerrando el P2 pendiente del QA anterior. `window.confirm` para borrado destructivo se conserva a propósito. tsc 0, lint 0.
