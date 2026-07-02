@@ -109,18 +109,24 @@ export function FichaPdfButton({ data }: { data: TechnicalSheetData }) {
 export function TechnicalSheet({ data }: { data: TechnicalSheetData }) {
     const rows = buildRows(data);
     const perM2 = pricePerM2(data);
+    // Strip glanceable: flex-wrap para que llene la fila sin celdas vacías,
+    // sin importar cuántos datos existan. Estatus y referencia siempre están.
     const stats: { label: string; value: string }[] = [
         ...(data.m2Terrain ? [{ label: "Terreno", value: formatArea(data.m2Terrain, "") }] : []),
         ...(data.m2Construction ? [{ label: "Construcción", value: formatArea(data.m2Construction, "") }] : []),
         ...(perM2 ? [{ label: "Precio por m²", value: perM2.replace(" / m²", "") }] : []),
+        { label: "Estatus", value: data.statusLabel },
         { label: "Referencia", value: data.reference },
     ];
 
     return (
         <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-px border border-white/[0.08] bg-white/[0.08] sm:grid-cols-4">
+            <div className="flex flex-wrap gap-px border border-white/[0.08] bg-white/[0.08]">
                 {stats.map((s) => (
-                    <div key={s.label} className="bg-background px-4 py-4">
+                    <div
+                        key={s.label}
+                        className="min-w-[140px] flex-1 bg-background px-4 py-4"
+                    >
                         <p className="font-display text-lg font-extrabold leading-tight tabular-nums text-white sm:text-xl">
                             {s.value}
                         </p>
