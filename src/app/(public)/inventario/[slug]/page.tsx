@@ -6,7 +6,7 @@ import { PropertyDescription } from "@/components/property/PropertyDescription";
 import { MediaShowcase } from "@/components/property/MediaShowcase";
 import { TechnicalSheet, FichaPdfButton } from "@/components/property/TechnicalSheet";
 import { PropertyFAQ } from "@/components/property/PropertyFAQ";
-import { parsePropertyFaqs } from "@/lib/property-faqs";
+import { resolvePropertyFaqs } from "@/lib/property-faqs";
 import { PropertyLocation } from "@/components/property/PropertyLocation";
 import { AgentCard } from "@/components/property/AgentCard";
 import { DocumentCard } from "@/components/property/DocumentCard";
@@ -432,7 +432,7 @@ export default async function PropertyDetailPage({
                             <FadeIn direction="up" delay={0.1}>
                                 <PropertyFAQ
                                     businessType={property.business_type}
-                                    faqs={parsePropertyFaqs(property.faqs)}
+                                    faqs={resolvePropertyFaqs(property.faqs)}
                                 />
                             </FadeIn>
                         </section>

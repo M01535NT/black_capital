@@ -27,10 +27,11 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { FileText, HelpCircle, ImageIcon, Loader2, MapPin, Plus, Settings2, Star, UploadCloud, UserRoundCheck, X } from "lucide-react";
+import { FileText, HelpCircle, ImageIcon, Loader2, MapPin, Settings2, Star, UploadCloud, UserRoundCheck, X } from "lucide-react";
 import { toast } from "sonner";
 import { AgentSelect } from "./agent-select";
 import { adminCardClass } from "./admin-ui";
+import { FAQ_CATALOG, FAQ_MIN, FAQ_MAX, parseFaqIds } from "@/lib/property-faqs";
 
 interface PdfEntry {
     file: File;
@@ -84,20 +85,14 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [pdfEntries, setPdfEntries] = useState<PdfEntry[]>([]);
-    const [faqs, setFaqs] = useState<{ q: string; a: string }[]>(() =>
-        Array.isArray(initialData?.faqs)
-            ? initialData.faqs
-                  .filter((f: unknown): f is { q: string; a: string } =>
-                      !!f && typeof f === "object" && typeof (f as { q?: unknown }).q === "string" && typeof (f as { a?: unknown }).a === "string",
-                  )
-                  .map((f: { q: string; a: string }) => ({ q: f.q, a: f.a }))
-            : [],
-    );
+    const [faqIds, setFaqIds] = useState<string[]>(() => parseFaqIds(initialData?.faqs));
 
-    const addFaq = () => setFaqs((prev) => [...prev, { q: "", a: "" }]);
-    const removeFaq = (index: number) => setFaqs((prev) => prev.filter((_, i) => i !== index));
-    const updateFaq = (index: number, key: "q" | "a", value: string) =>
-        setFaqs((prev) => prev.map((f, i) => (i === index ? { ...f, [key]: value } : f)));
+    const toggleFaq = (id: string) =>
+        setFaqIds((prev) => {
+            if (prev.includes(id)) return prev.filter((x) => x !== id);
+            if (prev.length >= FAQ_MAX) return prev; // tope de 5
+            return [...prev, id];
+        });
 
     const form = useForm<PropertyFormValues>({
         // Resolver<PropertyFormValues> keeps the RHF/zod inference in sync
@@ -244,23 +239,25 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
 
     // ── Submit ──
     async function onSubmit(data: PropertyFormValues) {
+        // FAQ: se permite ninguna (usa las genéricas) o entre FAQ_MIN y FAQ_MAX.
+        // 1–2 seleccionadas es inválido: forzamos la regla del cliente.
+        if (faqIds.length > 0 && faqIds.length < FAQ_MIN) {
+            toast.error(`Selecciona al menos ${FAQ_MIN} preguntas frecuentes (o ninguna para usar las genéricas).`);
+            return;
+        }
+
         setIsSubmitting(true);
         try {
             const isEditing = !!initialData?.id;
             let propertyData;
 
-            // FAQ: solo las filas con pregunta y respuesta llenas.
-            const cleanedFaqs = faqs
-                .map((f) => ({ q: f.q.trim(), a: f.a.trim() }))
-                .filter((f) => f.q.length > 0 && f.a.length > 0);
-
-            // Step 1: Create/Update property record via API
+            // Step 1: Create/Update property record via API. Guardamos solo los ids.
             try {
                 if (isEditing) {
                     const res = await fetch('/api/properties', {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id: initialData.id, ...data, faqs: cleanedFaqs }),
+                        body: JSON.stringify({ id: initialData.id, ...data, faqs: faqIds }),
                     });
                     const json = await res.json();
                     if (!res.ok) throw new Error(json.error || 'Error al actualizar');
@@ -269,7 +266,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     const res = await fetch('/api/properties', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ ...data, faqs: cleanedFaqs }),
+                        body: JSON.stringify({ ...data, faqs: faqIds }),
                     });
                     const json = await res.json();
                     if (!res.ok) throw new Error(json.error || 'Error al crear');
@@ -814,62 +811,67 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 </div>
                 </FormSection>
 
-                {/* ── Preguntas frecuentes (por propiedad) ── */}
+                {/* ── Preguntas frecuentes: checklist de catálogo fijo ── */}
                 <FormSection
                     icon={HelpCircle}
                     title="Preguntas frecuentes"
-                    description="Preguntas y respuestas propias de esta propiedad. Si lo dejas vacío, la ficha muestra las preguntas genéricas del sitio."
+                    description="Marca de 3 a 5 preguntas para mostrar en la ficha pública. Las respuestas son fijas e iguales para todas las propiedades. Sin selección, se muestran las genéricas."
                 >
-                    <div className="space-y-4">
-                        {faqs.length === 0 && (
-                            <p className="text-sm text-white/45">
-                                Sin preguntas propias. Se mostrarán las genéricas.
-                            </p>
-                        )}
-                        {faqs.map((faq, index) => (
-                            <div
-                                key={index}
-                                className="space-y-3 border border-white/[0.08] bg-white/[0.02] p-4"
+                    <div className="space-y-3">
+                        <div className="flex items-center justify-between gap-3">
+                            <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/50">
+                                Seleccionadas
+                            </span>
+                            <span
+                                className={`font-display text-sm font-bold tabular-nums ${
+                                    faqIds.length > 0 && faqIds.length < FAQ_MIN
+                                        ? "text-red-400"
+                                        : "text-[var(--color-accent)]"
+                                }`}
                             >
-                                <div className="flex items-center justify-between gap-3">
-                                    <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/50">
-                                        Pregunta {index + 1}
-                                    </span>
-                                    <button
-                                        type="button"
-                                        onClick={() => removeFaq(index)}
-                                        aria-label={`Eliminar pregunta ${index + 1}`}
-                                        className="flex h-8 w-8 items-center justify-center border border-white/[0.1] text-white/50 transition-colors hover:border-red-400/40 hover:text-red-400"
-                                    >
-                                        <X className="h-4 w-4" />
-                                    </button>
-                                </div>
-                                <Input
-                                    value={faq.q}
-                                    onChange={(e) => updateFaq(index, "q", e.target.value)}
-                                    placeholder="¿Pregunta del cliente?"
-                                    aria-label={`Pregunta ${index + 1}`}
-                                    className="border-white/[0.1] bg-background/70 text-white"
-                                />
-                                <Textarea
-                                    value={faq.a}
-                                    onChange={(e) => updateFaq(index, "a", e.target.value)}
-                                    placeholder="Respuesta clara y directa."
-                                    aria-label={`Respuesta ${index + 1}`}
-                                    rows={3}
-                                    className="border-white/[0.1] bg-background/70 text-white"
-                                />
-                            </div>
-                        ))}
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={addFaq}
-                            className="w-full rounded-full border-white/[0.12] bg-white/[0.025] text-white sm:w-auto"
-                        >
-                            <Plus className="mr-2 h-4 w-4" />
-                            Agregar pregunta
-                        </Button>
+                                {faqIds.length} / {FAQ_MAX}
+                                <span className="ml-2 font-normal text-white/40">
+                                    (mínimo {FAQ_MIN})
+                                </span>
+                            </span>
+                        </div>
+
+                        <ul className="space-y-2">
+                            {FAQ_CATALOG.map((item) => {
+                                const checked = faqIds.includes(item.id);
+                                const atMax = faqIds.length >= FAQ_MAX;
+                                const disabled = !checked && atMax;
+                                return (
+                                    <li key={item.id}>
+                                        <label
+                                            className={`flex cursor-pointer items-start gap-3 border p-3.5 transition-colors ${
+                                                checked
+                                                    ? "border-[var(--color-accent)]/40 bg-[var(--color-accent)]/[0.06]"
+                                                    : disabled
+                                                      ? "cursor-not-allowed border-white/[0.06] bg-white/[0.01] opacity-45"
+                                                      : "border-white/[0.08] bg-white/[0.02] hover:border-white/20"
+                                            }`}
+                                        >
+                                            <Checkbox
+                                                checked={checked}
+                                                disabled={disabled}
+                                                onCheckedChange={() => toggleFaq(item.id)}
+                                                className="mt-0.5 shrink-0"
+                                                aria-label={item.q}
+                                            />
+                                            <span className="min-w-0">
+                                                <span className="block text-sm font-semibold text-white">
+                                                    {item.q}
+                                                </span>
+                                                <span className="mt-1 block text-[13px] leading-relaxed text-white/50">
+                                                    {item.a}
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </li>
+                                );
+                            })}
+                        </ul>
                     </div>
                 </FormSection>
 
