@@ -1,8 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowRight } from "lucide-react";
-import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 interface MortgageCalculatorProps {
   price: number;
@@ -79,10 +77,6 @@ export function MortgageCalculator({ price, currency }: MortgageCalculatorProps)
       maximumFractionDigits: 0,
     }).format(amount);
 
-  const whatsappHref = `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(
-    `Hola, quiero solicitar preaprobación de crédito. Precio ${fmt(price)}, enganche ${downPayment}%, plazo ${years} años.`,
-  )}`;
-
   return (
     <div className="border border-white/[0.08] bg-white/[0.02]">
       <div className="grid grid-cols-1 gap-8 p-5 sm:p-7 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-12">
@@ -112,15 +106,6 @@ export function MortgageCalculator({ price, currency }: MortgageCalculatorProps)
             </span>
             <span>Financiar {fmt(loanAmount)}</span>
           </div>
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 inline-flex min-h-11 items-center gap-2 gold-gradient px-5 font-display text-[0.7rem] font-bold uppercase tracking-[0.08em] text-black transition-[filter] hover:brightness-110"
-          >
-            Solicitar preaprobación
-            <ArrowRight className="size-3.5" aria-hidden="true" />
-          </a>
         </div>
 
         {/* Controles */}
