@@ -280,7 +280,7 @@ export function CatalogFilter({ properties }: { properties: Property[] }) {
                             aria-pressed={!activeStatus}
                             className={`${pillBase} ${!activeStatus ? pillActive : pillInactive}`}
                         >
-                            Estatus
+                            Todos
                         </button>
                         {STATUS_OPTIONS.map((status) => (
                             <button

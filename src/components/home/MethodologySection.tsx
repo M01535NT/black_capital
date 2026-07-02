@@ -96,7 +96,7 @@ export function MethodologySection() {
       };
 
   return (
-    <section className="relative">
+    <section className="relative" data-section="home-methodology">
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/35 to-transparent"

@@ -63,8 +63,8 @@ export default function HerramientasPage() {
     return (
         <div className="min-h-screen bg-[#050505] text-white">
             <section className="mx-auto max-w-[94rem] px-4 pb-4 pt-14 sm:px-6 sm:pt-32 lg:px-10 lg:pb-12 lg:pt-36">
-                <div className="scrollbar-none -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 lg:mx-0 lg:grid lg:min-h-[calc(100svh-9rem)] lg:grid-cols-[18rem_1fr] lg:gap-0 lg:overflow-visible lg:border lg:border-white/[0.08] lg:px-0">
-                    <aside className="min-w-[82vw] snap-center border border-white/[0.08] bg-black/35 lg:min-w-0 lg:border-0 lg:border-r">
+                <div className="flex flex-col gap-4 lg:grid lg:min-h-[calc(100svh-9rem)] lg:grid-cols-[18rem_1fr] lg:gap-0 lg:overflow-visible lg:border lg:border-white/[0.08]">
+                    <aside className="border border-white/[0.08] bg-black/35 lg:border-0 lg:border-r">
                         <div className="border-b border-white/[0.08] p-4 lg:p-5">
                             <p className="text-body-sm property-tag-type text-[var(--color-accent)]">
                                 Black tools
@@ -106,7 +106,7 @@ export default function HerramientasPage() {
                         </div>
                     </aside>
 
-                    <div className="relative min-w-[82vw] snap-center overflow-hidden border border-white/[0.08] lg:min-w-0 lg:border-0">
+                    <div className="relative overflow-hidden border border-white/[0.08] lg:border-0">
                         <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(227,187,63,0.08),transparent_38%),linear-gradient(to_right,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:auto,48px_48px]" />
                         <div className="relative grid min-h-full grid-cols-1 lg:grid-rows-[auto_1fr_auto]">
                             <header className="border-b border-white/[0.08] p-4 sm:p-8 lg:p-10">
@@ -134,11 +134,11 @@ export default function HerramientasPage() {
                                             <InvestmentCalculators />
                                         </div>
                                     </div>
-                                    <div className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-3 lg:mx-0 lg:grid lg:grid-cols-1 lg:gap-0 lg:divide-y lg:divide-white/[0.08] lg:overflow-visible lg:px-0 lg:pb-0">
+                                    <div className="grid grid-cols-1 gap-4 lg:gap-0 lg:divide-y lg:divide-white/[0.08]">
                                         {primaryTools.map((tool, index) => {
                                             const Icon = tool.icon;
                                             return (
-                                                <article key={tool.title} className="grid min-w-[78vw] snap-center grid-cols-1 gap-0 border border-white/[0.08] bg-black/10 transition-colors hover:bg-white/[0.025] sm:min-w-[58vw] lg:min-w-0 lg:border-0 lg:grid-cols-[5rem_1fr]">
+                                                <article key={tool.title} className="grid grid-cols-1 gap-0 border border-white/[0.08] bg-black/10 transition-colors hover:bg-white/[0.025] lg:border-0 lg:grid-cols-[5rem_1fr]">
                                                     <div className="flex items-center justify-between border-b border-white/[0.08] p-5 lg:block lg:border-b-0 lg:border-r">
                                                         <span className="block property-tag-type text-[var(--color-accent)]">
                                                             0{index + 1}
@@ -178,11 +178,11 @@ export default function HerramientasPage() {
                                     <p className="property-tag-type text-white/35">
                                         Biblioteca adicional
                                     </p>
-                                    <div className="scrollbar-none -mx-4 mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 xl:grid-cols-1">
+                                    <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-1">
                                         {secondaryTools.map((tool) => {
                                             const Icon = tool.icon;
                                             return (
-                                                <div key={tool.title} className="grid min-h-[92px] min-w-[42vw] snap-center grid-cols-1 border border-white/[0.08] bg-black/25 sm:min-w-0 sm:grid-cols-[2.75rem_1fr] xl:min-h-0">
+                                                <div key={tool.title} className="grid min-h-[92px] grid-cols-1 border border-white/[0.08] bg-black/25 sm:grid-cols-[2.75rem_1fr] xl:min-h-0">
                                                     <div className="flex items-center justify-center border-r border-white/[0.08]">
                                                         <Icon className="h-4 w-4 text-[var(--color-accent)]" strokeWidth={1.5} />
                                                     </div>
