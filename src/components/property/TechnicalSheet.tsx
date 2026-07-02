@@ -16,22 +16,45 @@ export interface TechnicalSheetData {
     address?: string | null;
     m2Terrain?: number | null;
     m2Construction?: number | null;
+    createdAt?: string | null;
     customAttributes: Record<string, string>;
 }
 
+function pricePerM2(d: TechnicalSheetData): string | null {
+    if (!d.m2Construction || d.m2Construction <= 0) return null;
+    const v = d.price / d.m2Construction;
+    return `${new Intl.NumberFormat("es-MX", {
+        style: "currency",
+        currency: d.currency === "USD" ? "USD" : "MXN",
+        maximumFractionDigits: 0,
+    }).format(v)} / m²`;
+}
+
+function publishedLabel(d: TechnicalSheetData): string | null {
+    if (!d.createdAt) return null;
+    const date = new Date(d.createdAt);
+    if (Number.isNaN(date.getTime())) return null;
+    return date.toLocaleDateString("es-MX", { year: "numeric", month: "long" });
+}
+
 function buildRows(d: TechnicalSheetData): [string, string][] {
-    const rows: [string, string][] = [
+    const perM2 = pricePerM2(d);
+    const published = publishedLabel(d);
+    return [
         ["Operación", d.businessType],
         ["Uso", d.propertyUse],
         ...(d.propertyType ? ([["Tipo", d.propertyType]] as [string, string][]) : []),
         ["Estatus", d.statusLabel],
+        ["Precio", formatPrice(d.price, d.currency)],
+        ...(perM2 ? ([["Precio por m² construido", perM2]] as [string, string][]) : []),
+        ["Moneda", d.currency === "USD" ? "Dólares (USD)" : "Pesos (MXN)"],
         ...(d.m2Terrain ? ([["Terreno", formatArea(d.m2Terrain, "")]] as [string, string][]) : []),
         ...(d.m2Construction ? ([["Construcción", formatArea(d.m2Construction, "")]] as [string, string][]) : []),
         ...(d.address ? ([["Zona", d.address]] as [string, string][]) : []),
         ...Object.entries(d.customAttributes),
+        ...(published ? ([["Publicada", published]] as [string, string][]) : []),
         ["Referencia", d.reference],
     ];
-    return rows;
 }
 
 /** Ventana imprimible con la ficha; el usuario la guarda como PDF desde el diálogo del navegador. */
@@ -80,22 +103,42 @@ export function FichaPdfButton({ data }: { data: TechnicalSheetData }) {
 }
 
 /**
- * Ficha técnica editorial: filas clave-valor a dos columnas con hairlines,
- * como la sección 03 de la plantilla. Compacta a propósito.
+ * Ficha técnica editorial (capítulo 03): strip de indicadores clave arriba
+ * y filas clave-valor a dos columnas con hairlines, como la plantilla.
  */
 export function TechnicalSheet({ data }: { data: TechnicalSheetData }) {
     const rows = buildRows(data);
+    const perM2 = pricePerM2(data);
+    const stats: { label: string; value: string }[] = [
+        ...(data.m2Terrain ? [{ label: "Terreno", value: formatArea(data.m2Terrain, "") }] : []),
+        ...(data.m2Construction ? [{ label: "Construcción", value: formatArea(data.m2Construction, "") }] : []),
+        ...(perM2 ? [{ label: "Precio por m²", value: perM2.replace(" / m²", "") }] : []),
+        { label: "Referencia", value: data.reference },
+    ];
+
     return (
-        <div className="grid grid-cols-1 gap-x-12 sm:grid-cols-2">
-            {rows.map(([k, v]) => (
-                <div
-                    key={k}
-                    className="flex items-baseline justify-between gap-6 border-t border-white/[0.1] py-3.5"
-                >
-                    <span className="text-body-sm text-white/50">{k}</span>
-                    <span className="text-right text-body-sm font-semibold text-white">{v}</span>
-                </div>
-            ))}
+        <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-px border border-white/[0.08] bg-white/[0.08] sm:grid-cols-4">
+                {stats.map((s) => (
+                    <div key={s.label} className="bg-background px-4 py-4">
+                        <p className="font-display text-lg font-extrabold leading-tight tabular-nums text-white sm:text-xl">
+                            {s.value}
+                        </p>
+                        <p className="mt-1 property-tag-type text-white/45">{s.label}</p>
+                    </div>
+                ))}
+            </div>
+            <div className="grid grid-cols-1 gap-x-12 sm:grid-cols-2">
+                {rows.map(([k, v]) => (
+                    <div
+                        key={k}
+                        className="flex items-baseline justify-between gap-6 border-t border-white/[0.1] py-3"
+                    >
+                        <span className="text-body-sm text-white/50">{k}</span>
+                        <span className="text-right text-body-sm font-semibold text-white">{v}</span>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

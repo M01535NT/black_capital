@@ -1,17 +1,16 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { Breadcrumbs } from "@/components/public/breadcrumbs";
 import { PropertyCard } from "@/components/property/PropertyCard";
-import { PropertyHeader } from "@/components/property/PropertyHeader";
-import { PropertyMetrics } from "@/components/property/PropertyMetrics";
 import { PropertyDescription } from "@/components/property/PropertyDescription";
 import { MediaShowcase } from "@/components/property/MediaShowcase";
 import { TechnicalSheet, FichaPdfButton } from "@/components/property/TechnicalSheet";
 import { PropertyFAQ } from "@/components/property/PropertyFAQ";
 import { PropertyLocation } from "@/components/property/PropertyLocation";
-import { PropertySidebar } from "@/components/property/PropertySidebar";
+import { AgentCard } from "@/components/property/AgentCard";
+import { DocumentCard } from "@/components/property/DocumentCard";
 import { StickyContactBar } from "@/components/property/StickyContactBar";
+import { ArrowLeft } from "lucide-react";
 import { PropertyJsonLd } from "@/components/property/PropertyJsonLd";
 import { PropertyChapterNav, type Chapter } from "@/components/property/PropertyChapterNav";
 import { FavoriteButton } from "@/components/property/favorite-button";
@@ -22,7 +21,6 @@ import { CONTACT_CONFIG } from "@/lib/contact-config";
 import { getPropertyDocuments, toVisibleDocuments } from "@/lib/document-access";
 import { formatPrice, formatShortPrice, formatArea } from "@/lib/format";
 import { STATUS_LABELS } from "@/lib/property-constants";
-import Image from "next/image";
 import Link from "next/link";
 
 export const revalidate = 60;
@@ -193,8 +191,6 @@ export default async function PropertyDetailPage({
     }
 
     const isForSale = property.business_type === "Venta";
-    const heroImage: string | null =
-        property.cover_image || (property.images?.length ? property.images[0] : null);
 
     const technicalData = {
         title: property.title,
@@ -210,8 +206,17 @@ export default async function PropertyDetailPage({
         address: property.address,
         m2Terrain: property.m2_terrain,
         m2Construction: property.m2_construction,
+        createdAt: property.created_at,
         customAttributes: customAttrs,
     };
+
+    const hasContactChapter = agents.length > 0 || documents.length > 0;
+    const contactChapterLabel =
+        agents.length > 0 && documents.length > 0
+            ? "Asesor y documentos"
+            : agents.length > 0
+              ? "Tu asesor"
+              : "Documentos";
 
     // Índice editorial de capítulos (plantilla "Propiedad Editorial Black": 01–0N).
     const chapters: Chapter[] = [
@@ -220,6 +225,7 @@ export default async function PropertyDetailPage({
         { id: "ficha-tecnica", label: "Ficha técnica" },
         ...(property.address ? [{ id: "ubicacion", label: "Ubicación" }] : []),
         ...(isForSale ? [{ id: "financiamiento", label: "Financiamiento" }] : []),
+        ...(hasContactChapter ? [{ id: "asesor", label: contactChapterLabel }] : []),
         { id: "preguntas", label: "Preguntas" },
     ];
     const chapterNumber = (id: string) =>
@@ -243,80 +249,52 @@ export default async function PropertyDetailPage({
                 url={`/inventario/${slug}`}
             />
             
-            <div className="min-h-screen w-full overflow-x-hidden bg-background">
-                {/* Full-bleed hero */}
-                <section
-                    className="relative flex h-[70svh] min-h-[460px] w-full items-end overflow-hidden"
-                    style={{
-                        background:
-                            "repeating-linear-gradient(135deg,#151310 0 12px,#100e0c 12px 24px)",
-                    }}
-                >
-                    {heroImage && (
-                        <Image
-                            src={heroImage}
-                            alt={property.title}
-                            fill
-                            priority
-                            sizes="100vw"
-                            className="object-cover"
-                        />
-                    )}
-                    <div
-                        className="absolute inset-0"
-                        style={{
-                            background:
-                                "linear-gradient(180deg,rgba(5,5,5,.55) 0%,rgba(5,5,5,.1) 30%,rgba(5,5,5,.4) 62%,rgba(5,5,5,.96) 100%)",
-                        }}
-                    />
-                    <div className="relative w-full">
-                        <div className="mx-auto max-w-[90rem] px-6 pb-9 pt-24 sm:px-10 lg:px-16">
-                            <div className="mb-5 flex flex-wrap items-center gap-2">
-                                <span className="gold-gradient px-2.5 py-1 property-tag-type text-black">
-                                    {property.business_type}
-                                </span>
-                                <span className="border border-white/40 px-2.5 py-1 property-tag-type text-white">
-                                    {STATUS_LABELS[property.status] || property.status}
-                                </span>
-                                {property.address && (
-                                    <span className="property-tag-type text-white/75">
-                                        {property.address}
+            {/* overflow-x-clip (no hidden): hidden crea un scroll container y rompe el sticky del índice */}
+            <div className="min-h-screen w-full overflow-x-clip bg-background">
+                {/* Encabezado compacto (sin hero): volver + título + badges + precio */}
+                <header className="border-b border-white/[0.06] pt-24 lg:pt-28">
+                    <div className="mx-auto max-w-[90rem] px-6 pb-7 sm:px-10 lg:px-16">
+                        <div className="mb-5 flex items-center justify-between gap-4">
+                            <Link
+                                href={`/inventario?tipo=${encodeURIComponent(property.business_type)}`}
+                                className="group inline-flex items-center gap-2 property-tag-type text-white/55 transition-colors hover:text-[var(--color-accent)]"
+                            >
+                                <ArrowLeft className="size-3.5 transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
+                                Volver a {property.business_type}
+                            </Link>
+                            <FavoriteButton propertyId={property.id} variant="pill" />
+                        </div>
+                        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                            <div className="min-w-0">
+                                <div className="mb-3 flex flex-wrap items-center gap-2">
+                                    <span className="gold-gradient px-2.5 py-1 property-tag-type text-black">
+                                        {property.business_type}
                                     </span>
-                                )}
-                            </div>
-                            <h1 className="font-display text-[clamp(2.5rem,7vw,5.5rem)] font-black uppercase leading-[0.9] tracking-tight text-white">
-                                {property.title}
-                            </h1>
-                            <div className="mt-7 flex flex-wrap items-end gap-x-10 gap-y-4 border-t border-white/15 pt-6">
-                                <div>
-                                    <p className="mb-1.5 property-tag-type text-white/55">Precio</p>
-                                    <p className="property-price-type gold-ink">
-                                        {formatPrice(property.price, property.currency)}
-                                    </p>
+                                    <span className="border border-white/25 px-2.5 py-1 property-tag-type text-white/85">
+                                        {STATUS_LABELS[property.status] || property.status}
+                                    </span>
+                                    {property.address && (
+                                        <span className="property-tag-type text-white/60">
+                                            {property.address}
+                                        </span>
+                                    )}
                                 </div>
-                                {property.m2_terrain ? (
-                                    <div>
-                                        <p className="mb-1.5 property-tag-type text-white/55">Terreno</p>
-                                        <p className="font-display text-display-3 font-bold text-white">
-                                            {formatArea(property.m2_terrain, "")}
-                                        </p>
-                                    </div>
-                                ) : null}
-                                {property.m2_construction ? (
-                                    <div>
-                                        <p className="mb-1.5 property-tag-type text-white/55">Construcción</p>
-                                        <p className="font-display text-display-3 font-bold text-white">
-                                            {formatArea(property.m2_construction, "")}
-                                        </p>
-                                    </div>
-                                ) : null}
+                                <h1 className="font-display text-[clamp(1.9rem,4vw,3.1rem)] font-black uppercase leading-[0.95] tracking-tight text-white">
+                                    {property.title}
+                                </h1>
+                            </div>
+                            <div className="shrink-0 lg:pb-1 lg:text-right">
+                                <p className="mb-1 property-tag-type text-white/50">Precio publicado</p>
+                                <p className="font-display text-[clamp(1.6rem,3vw,2.2rem)] font-extrabold leading-none tabular-nums gold-ink">
+                                    {formatPrice(property.price, property.currency)}
+                                </p>
                             </div>
                         </div>
                     </div>
-                </section>
+                </header>
 
-                <section id="galeria" className="w-full overflow-x-clip border-y border-white/[0.06] scroll-mt-24">
-                    <div className="mx-auto max-w-[90rem] min-w-0 px-4 pb-8 pt-10 sm:px-10 lg:px-16">
+                <section id="galeria" className="w-full overflow-x-clip border-b border-white/[0.06] scroll-mt-24">
+                    <div className="mx-auto max-w-[90rem] min-w-0 px-4 pb-8 pt-8 sm:px-10 lg:px-16">
                         <ChapterLabel number={chapterNumber("galeria")} title="Galería" />
                         <MediaShowcase
                             images={property.images || []}
@@ -329,160 +307,160 @@ export default async function PropertyDetailPage({
                     </div>
                 </section>
 
-                <div className="mx-auto max-w-[90rem] space-y-8 px-4 py-8 sm:px-10 md:space-y-10 md:py-16 lg:px-16">
-                    
-                    <FadeIn direction="up" delay={0.1}>
-                        <div className="grid grid-cols-1 gap-4 sm:flex sm:items-center sm:justify-between">
-                            <div className="min-w-0 overflow-hidden">
-                                <Breadcrumbs
-                                    items={[
-                                        { label: "Inventario", href: "/inventario" },
-                                        { label: property.business_type, href: `/inventario?business=${encodeURIComponent(property.business_type)}` },
-                                        { label: property.title },
-                                    ]}
-                                />
-                            </div>
-                            <div className="flex w-full items-center gap-2 sm:w-auto sm:justify-end">
-                                <FavoriteButton
-                                    propertyId={property.id}
-                                    variant="pill"
-                                    className="flex-1 justify-center sm:flex-none"
-                                />
-                            </div>
+                {/* Shell plantilla: índice lateral sticky (corto → siempre visible) + una columna */}
+                <div className="mx-auto grid max-w-[90rem] grid-cols-1 px-4 sm:px-10 lg:grid-cols-[220px_1fr] lg:px-16">
+                    <aside className="hidden border-r border-white/[0.06] py-10 pr-8 lg:block">
+                        <div className="sticky top-24">
+                            <PropertyChapterNav chapters={chapters} />
                         </div>
-                    </FadeIn>
+                    </aside>
 
-                    <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
-                        <div className="min-w-0 space-y-14 md:space-y-20 lg:col-span-8">
+                    <div className="min-w-0 space-y-12 py-8 md:space-y-14 md:py-10 lg:pl-12">
 
-                            <section id="propiedad" className="scroll-mt-24 space-y-10">
-                                <ChapterLabel number={chapterNumber("propiedad")} title="La propiedad" />
-                                <FadeIn direction="up" delay={0.2}>
-                                    <PropertyHeader
-                                        businessType={property.business_type}
-                                        propertyUse={property.property_use}
-                                        propertyType={property.property_type}
-                                        isProject={property.is_project}
-                                        status={property.status}
-                                        title={property.title}
-                                        address={property.address}
+                        <section id="propiedad" className="scroll-mt-24">
+                            <ChapterLabel number={chapterNumber("propiedad")} title="La propiedad" />
+                            <FadeIn direction="up" delay={0.1}>
+                                <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-12">
+                                    <div className="min-w-0">
+                                        {property.description ? (
+                                            <PropertyDescription description={property.description} />
+                                        ) : (
+                                            <p className="max-w-prose text-body leading-relaxed text-white/66">
+                                                {property.property_type || property.property_use} en{" "}
+                                                {property.address || "Tijuana"} disponible en{" "}
+                                                {property.business_type.toLowerCase()}. Solicita la
+                                                información completa con un asesor.
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div className="border-t border-white/[0.1] pt-2 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
+                                        {[
+                                            ...(property.m2_terrain ? [["Terreno", formatArea(property.m2_terrain, "")]] : []),
+                                            ...(property.m2_construction ? [["Construcción", formatArea(property.m2_construction, "")]] : []),
+                                            ...(property.property_type ? [["Tipo", property.property_type]] : []),
+                                            ["Estatus", STATUS_LABELS[property.status] || property.status],
+                                        ].map(([label, value]) => (
+                                            <div
+                                                key={label}
+                                                className="flex items-baseline justify-between gap-4 border-b border-white/[0.1] py-3 last:border-b-0"
+                                            >
+                                                <span className="text-body-sm text-white/50">{label}</span>
+                                                <span className="font-display text-body-lg font-extrabold text-white">
+                                                    {value}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </FadeIn>
+                        </section>
+
+                        <section id="ficha-tecnica" className="scroll-mt-24">
+                            <div className="mb-7 flex flex-wrap items-center justify-between gap-4">
+                                <ChapterLabel number={chapterNumber("ficha-tecnica")} title="Ficha técnica" className="mb-0" />
+                                <FichaPdfButton data={technicalData} />
+                            </div>
+                            <FadeIn direction="up" delay={0.1}>
+                                <TechnicalSheet data={technicalData} />
+                            </FadeIn>
+                        </section>
+
+                        {property.address && (
+                            <section id="ubicacion" className="scroll-mt-24">
+                                <ChapterLabel number={chapterNumber("ubicacion")} title="Ubicación" />
+                                <FadeIn direction="up" delay={0.1}>
+                                    <PropertyLocation address={property.address} title={property.title} />
+                                </FadeIn>
+                            </section>
+                        )}
+
+                        {isForSale && (
+                            <section id="financiamiento" className="scroll-mt-24">
+                                <ChapterLabel number={chapterNumber("financiamiento")} title="Financiamiento" />
+                                <FadeIn direction="up" delay={0.1}>
+                                    <MortgageCalculator
                                         price={property.price}
                                         currency={property.currency}
-                                        priceMxn={property.price_mxn}
-                                        showTitle={false}
+                                        businessType={property.business_type}
                                     />
                                 </FadeIn>
-
-                                <FadeIn direction="up" delay={0.3}>
-                                    <PropertyMetrics
-                                        m2Terrain={property.m2_terrain}
-                                        m2Construction={property.m2_construction}
-                                        customAttributes={customAttrs}
-                                        propertyType={property.property_type}
-                                        createdAt={property.created_at}
-                                    />
-                                </FadeIn>
-
-                                {property.description && (
-                                    <FadeIn direction="up" delay={0.4}>
-                                        <div className="border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6">
-                                            <PropertyDescription description={property.description} />
-                                        </div>
-                                    </FadeIn>
-                                )}
                             </section>
+                        )}
 
-                            <section id="ficha-tecnica" className="scroll-mt-24">
-                                <div className="mb-7 flex flex-wrap items-center justify-between gap-4">
-                                    <ChapterLabel number={chapterNumber("ficha-tecnica")} title="Ficha técnica" className="mb-0" />
-                                    <FichaPdfButton data={technicalData} />
-                                </div>
-                                <FadeIn direction="up" delay={0.5}>
-                                    <TechnicalSheet data={technicalData} />
-                                </FadeIn>
-                            </section>
-
-                            {property.address && (
-                                <section id="ubicacion" className="scroll-mt-24">
-                                    <ChapterLabel number={chapterNumber("ubicacion")} title="Ubicación" />
-                                    <FadeIn direction="up" delay={0.6}>
-                                        <PropertyLocation address={property.address} title={property.title} />
-                                    </FadeIn>
-                                </section>
-                            )}
-
-                            {isForSale && (
-                                <section id="financiamiento" className="scroll-mt-24">
-                                    <ChapterLabel number={chapterNumber("financiamiento")} title="Financiamiento" />
-                                    <FadeIn direction="up" delay={0.7}>
-                                        <MortgageCalculator
-                                            price={property.price}
-                                            currency={property.currency}
-                                            businessType={property.business_type}
-                                        />
-                                    </FadeIn>
-                                </section>
-                            )}
-
-                            <section id="preguntas" className="scroll-mt-24">
-                                <ChapterLabel number={chapterNumber("preguntas")} title="Preguntas frecuentes" />
-                                <FadeIn direction="up" delay={0.7}>
-                                    <PropertyFAQ businessType={property.business_type} />
-                                </FadeIn>
-                            </section>
-
-                            {similar.length > 0 && (
-                                <FadeIn direction="up" delay={0.8}>
-                                    <section className="space-y-6 border-t border-white/[0.06] pt-8">
-                                        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                                            <div className="flex items-center gap-3">
-                                                <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
-                                                <h2 className={SECTION_HEADING}>Propiedades Similares</h2>
+                        {hasContactChapter && (
+                            <section id="asesor" className="scroll-mt-24">
+                                <ChapterLabel number={chapterNumber("asesor")} title={contactChapterLabel} />
+                                <FadeIn direction="up" delay={0.1}>
+                                    <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                                        {agents.length > 0 && (
+                                            <div className="border border-white/[0.08] bg-white/[0.025] p-5">
+                                                <p className="mb-4 property-tag-type text-white/48">
+                                                    {agents.length === 1 ? "Tu asesor" : "Tus asesores"}
+                                                </p>
+                                                <div className="space-y-5">
+                                                    {agents.map((agent) => (
+                                                        <AgentCard key={agent.id} agent={agent} />
+                                                    ))}
+                                                </div>
                                             </div>
-                                                <Link
-                                                href={`/inventario?uso=${encodeURIComponent(property.property_use)}`}
-                                                className="property-tag-type text-[var(--color-accent)]"
-                                            >
-                                                Ver inventario
-                                            </Link>
-                                        </div>
-                                        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                                            {similar.map((sp, i) => (
-                                                <PropertyCard
-                                                    key={sp.id}
-                                                    property={sp}
-                                                    variant="similar"
-                                                    index={i}
-                                                />
-                                            ))}
-                                        </div>
-                                    </section>
+                                        )}
+                                        {documents.length > 0 && (
+                                            <div className="border border-white/[0.08] bg-white/[0.025] p-5">
+                                                <p className="mb-4 property-tag-type text-white/48">
+                                                    Documentos de la propiedad
+                                                </p>
+                                                <div className="space-y-2">
+                                                    {documents.map((doc) => (
+                                                        <DocumentCard
+                                                            key={doc.id}
+                                                            doc={doc}
+                                                            propertyId={property.id}
+                                                            propertyTitle={property.title}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </FadeIn>
-                            )}
-                        </div>
+                            </section>
+                        )}
 
-                        <div className="lg:col-span-4">
-                            <div className="space-y-8 lg:sticky lg:top-24">
-                                <div className="hidden border border-white/[0.08] bg-white/[0.02] p-6 lg:block">
-                                    <PropertyChapterNav chapters={chapters} />
-                                </div>
-                                <FadeIn direction="up" delay={0.4}>
-                                    <PropertySidebar
-                                        agents={agents}
-                                        property={{
-                                            id: property.id,
-                                            title: property.title,
-                                            m2_terrain: property.m2_terrain,
-                                            m2_construction: property.m2_construction,
-                                            property_type: property.property_type,
-                                            business_type: property.business_type,
-                                            property_use: property.property_use,
-                                        }}
-                                        documents={documents}
-                                    />
-                                </FadeIn>
-                            </div>
-                        </div>
+                        <section id="preguntas" className="scroll-mt-24">
+                            <ChapterLabel number={chapterNumber("preguntas")} title="Preguntas frecuentes" />
+                            <FadeIn direction="up" delay={0.1}>
+                                <PropertyFAQ businessType={property.business_type} />
+                            </FadeIn>
+                        </section>
+
+                        {similar.length > 0 && (
+                            <FadeIn direction="up" delay={0.1}>
+                                <section className="space-y-6 border-t border-white/[0.06] pt-8">
+                                    <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
+                                            <h2 className={SECTION_HEADING}>Propiedades Similares</h2>
+                                        </div>
+                                        <Link
+                                            href={`/inventario?uso=${encodeURIComponent(property.property_use)}`}
+                                            className="property-tag-type text-[var(--color-accent)]"
+                                        >
+                                            Ver inventario
+                                        </Link>
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                                        {similar.map((sp, i) => (
+                                            <PropertyCard
+                                                key={sp.id}
+                                                property={sp}
+                                                variant="similar"
+                                                index={i}
+                                            />
+                                        ))}
+                                    </div>
+                                </section>
+                            </FadeIn>
+                        )}
                     </div>
                 </div>
 

@@ -1,58 +1,58 @@
 export default function PropertyLoading() {
     return (
-        <div className="w-full min-h-screen bg-background" aria-busy="true" aria-label="Cargando propiedad">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24 pb-6 space-y-8">
-                {/* Gallery skeleton */}
-                <div className="rounded-2xl overflow-hidden">
+        <div className="min-h-screen w-full bg-background" aria-busy="true" aria-label="Cargando propiedad">
+            {/* Encabezado compacto */}
+            <div className="border-b border-white/[0.06] pt-24 lg:pt-28">
+                <div className="mx-auto max-w-[90rem] space-y-4 px-6 pb-7 sm:px-10 lg:px-16">
+                    <div className="skeleton-shimmer h-3 w-28" />
+                    <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                        <div className="space-y-3">
+                            <div className="skeleton-shimmer h-5 w-44" />
+                            <div className="skeleton-shimmer h-10 w-72 sm:w-96" />
+                        </div>
+                        <div className="skeleton-shimmer h-8 w-40" />
+                    </div>
+                </div>
+            </div>
+
+            {/* Galería */}
+            <div className="border-b border-white/[0.06]">
+                <div className="mx-auto max-w-[90rem] space-y-3 px-4 py-8 sm:px-10 lg:px-16">
+                    <div className="skeleton-shimmer h-4 w-24" />
                     <div className="skeleton-shimmer aspect-[16/9] sm:aspect-[16/10]" />
-                    {/** Thumbnails */}
-                    <div className="flex gap-2 p-3 bg-foreground/[0.02]">
+                    <div className="flex gap-2">
                         {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="skeleton-shimmer size-[64px] rounded-lg shrink-0" />
+                            <div key={i} className="skeleton-shimmer size-12 shrink-0" />
                         ))}
                     </div>
                 </div>
+            </div>
 
-                {/* Breadcrumbs */}
-                <div className="skeleton-shimmer skeleton-text-sm w-32 h-3" />
-
-                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-                    {/* Left column */}
-                    <div className="flex-1 min-w-0 space-y-8">
-                        {/* Header */}
-                        <div className="space-y-3">
-                            <div className="skeleton-shimmer skeleton-text-sm w-20 h-3" />
-                            <div className="skeleton-shimmer skeleton-text w-3/4 h-9" />
-                            <div className="skeleton-shimmer skeleton-text-sm w-48 h-3.5" />
-                            <div className="skeleton-shimmer skeleton-text w-40 h-7 mt-2" />
-                        </div>
-
-                        <div className="h-px bg-foreground/5" />
-
-                        {/* Metrics grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            {[1, 2, 3, 4].map((i) => (
-                                <div key={i} className="rounded-xl border border-foreground/5 p-4 space-y-2">
-                                    <div className="skeleton-shimmer skeleton-text-sm w-16 h-3" />
-                                    <div className="skeleton-shimmer skeleton-text w-20 h-5" />
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="h-px bg-foreground/5" />
-
-                        {/* Description lines */}
-                        <div className="space-y-3">
-                            {[90, 85, 70, 80, 60].map((w, i) => (
-                                <div key={i} className="skeleton-shimmer skeleton-text-sm" style={{ width: `${w}%` }} />
-                            ))}
-                        </div>
+            {/* Shell: índice + contenido */}
+            <div className="mx-auto grid max-w-[90rem] grid-cols-1 px-4 sm:px-10 lg:grid-cols-[220px_1fr] lg:px-16">
+                <div className="hidden space-y-4 border-r border-white/[0.06] py-10 pr-8 lg:block">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                        <div key={i} className="skeleton-shimmer h-3.5 w-32" />
+                    ))}
+                </div>
+                <div className="space-y-10 py-8 md:py-10 lg:pl-12">
+                    <div className="space-y-3">
+                        {[90, 85, 70, 80].map((w, i) => (
+                            <div key={i} className="skeleton-shimmer h-3.5" style={{ width: `${w}%` }} />
+                        ))}
                     </div>
-
-                    {/* Right sidebar */}
-                    <div className="lg:w-80 space-y-6">
-                        <div className="skeleton-shimmer rounded-2xl h-48" />
-                        <div className="skeleton-shimmer rounded-xl h-24" />
+                    <div className="grid grid-cols-2 gap-px border border-white/[0.06] bg-white/[0.04] sm:grid-cols-4">
+                        {[1, 2, 3, 4].map((i) => (
+                            <div key={i} className="space-y-2 bg-background p-4">
+                                <div className="skeleton-shimmer h-5 w-16" />
+                                <div className="skeleton-shimmer h-3 w-20" />
+                            </div>
+                        ))}
+                    </div>
+                    <div className="space-y-3">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                            <div key={i} className="skeleton-shimmer h-4 w-full" />
+                        ))}
                     </div>
                 </div>
             </div>
