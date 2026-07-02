@@ -210,7 +210,10 @@ export async function BrandInventory({
                     <p className="mb-3 text-caption gold-ink">
                         {eyebrow}
                     </p>
-                    <h2 className="text-display-2 leading-display tracking-headline text-white">
+                    <h2
+                        className="text-display-2 leading-display tracking-headline text-white"
+                        aria-label={highlight ? `${title} ${highlight}` : title}
+                    >
                         {title}
                         {highlight && <> <span className="metallic-gold-static">{highlight}</span></>}
                     </h2>

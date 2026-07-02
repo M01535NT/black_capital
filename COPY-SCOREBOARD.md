@@ -35,3 +35,4 @@ Cada página suma 1 punto por criterio cumplido:
 
 - 2026-07-02 · Scoreboard creado. Se inicia por Home.
 - 2026-07-02 · Todas las unidades públicas quedan en 10/10 antes de commit.
+- 2026-07-02 · Verificación en navegador real detectó headings combinados sin espacio accesible; se corrigió con `aria-label`.
