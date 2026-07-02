@@ -16,18 +16,18 @@ export interface AgentInfo {
  */
 export function AgentCard({ agent }: { agent: AgentInfo }) {
     return (
-        <div className="flex items-start gap-4">
-            <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 font-semibold text-[var(--color-accent)]">
+        <div className="flex items-start gap-4 sm:gap-5">
+            <div className="flex size-24 shrink-0 items-center justify-center overflow-hidden border border-[var(--color-accent)]/25 bg-[var(--color-accent)]/10 font-semibold text-[var(--color-accent)] sm:size-28">
                 {agent.photo_url ? (
                     <Image
                         src={agent.photo_url}
                         alt={agent.full_name}
-                        width={56}
-                        height={56}
+                        width={112}
+                        height={112}
                         className="size-full object-cover"
                     />
                 ) : (
-                    <span className="text-lg">{agent.full_name.charAt(0).toUpperCase()}</span>
+                    <span className="text-3xl">{agent.full_name.charAt(0).toUpperCase()}</span>
                 )}
             </div>
             <div className="min-w-0 flex-1 space-y-1.5">
