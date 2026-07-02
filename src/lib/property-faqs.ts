@@ -6,12 +6,13 @@ export const FAQ_MIN = 3;
 export const FAQ_MAX = 5;
 
 /**
- * Catálogo fijo de preguntas frecuentes. Las respuestas son SIEMPRE las mismas
- * para la misma pregunta (fuente única de verdad): el agente solo elige cuáles
- * mostrar con un checkbox, no edita el texto. La columna `properties.faqs`
- * guarda únicamente los ids seleccionados y aquí se resuelve el contenido.
+ * Catálogo semilla de preguntas frecuentes. Es el DEFAULT: al editar el
+ * catálogo desde el admin, la versión vigente se guarda en `app_settings`
+ * (key `faq_catalog`) y esta constante solo se usa cuando aún no hay datos.
+ * Las respuestas son globales: la misma pregunta muestra la misma respuesta
+ * en todas las propiedades. La columna `properties.faqs` guarda solo ids.
  */
-export const FAQ_CATALOG: FaqCatalogItem[] = [
+export const DEFAULT_FAQ_CATALOG: FaqCatalogItem[] = [
     {
         id: "legal",
         q: "¿Cuál es la situación legal de la propiedad?",
@@ -69,17 +70,38 @@ export const FAQ_CATALOG: FaqCatalogItem[] = [
     },
 ];
 
-const CATALOG_BY_ID = new Map(FAQ_CATALOG.map((item) => [item.id, item]));
+/**
+ * Valida y limpia un catálogo (venga de la BD o del cliente): cada item debe
+ * tener id, q y a como strings no vacíos; se recortan espacios y se descartan
+ * ids duplicados o inválidos. Devuelve el default si no queda nada válido.
+ */
+export function normalizeFaqCatalog(raw: unknown): FaqCatalogItem[] {
+    if (!Array.isArray(raw)) return DEFAULT_FAQ_CATALOG;
+    const seen = new Set<string>();
+    const items: FaqCatalogItem[] = [];
+    for (const entry of raw) {
+        if (!entry || typeof entry !== "object") continue;
+        const { id, q, a } = entry as Record<string, unknown>;
+        if (typeof id !== "string" || typeof q !== "string" || typeof a !== "string") continue;
+        const cleanId = id.trim();
+        const cleanQ = q.trim();
+        const cleanA = a.trim();
+        if (!cleanId || !cleanQ || !cleanA || seen.has(cleanId)) continue;
+        seen.add(cleanId);
+        items.push({ id: cleanId, q: cleanQ, a: cleanA });
+    }
+    return items.length > 0 ? items : DEFAULT_FAQ_CATALOG;
+}
 
-/** Normaliza el JSON de la columna `faqs` a una lista de ids válidos del catálogo. */
-export function parseFaqIds(raw: unknown): string[] {
+/** Ids válidos (presentes en el catálogo dado), sin duplicados, en orden de selección. */
+export function parseFaqIds(raw: unknown, catalog: FaqCatalogItem[]): string[] {
     if (!Array.isArray(raw)) return [];
+    const byId = new Set(catalog.map((c) => c.id));
     const seen = new Set<string>();
     const ids: string[] = [];
     for (const item of raw) {
-        // Formato actual: array de ids. Se tolera el formato legado {id} por si acaso.
         const id = typeof item === "string" ? item : (item as { id?: unknown })?.id;
-        if (typeof id === "string" && CATALOG_BY_ID.has(id) && !seen.has(id)) {
+        if (typeof id === "string" && byId.has(id) && !seen.has(id)) {
             seen.add(id);
             ids.push(id);
         }
@@ -88,13 +110,13 @@ export function parseFaqIds(raw: unknown): string[] {
 }
 
 /**
- * Resuelve el JSON de `faqs` a los {q, a} del catálogo, respetando el orden de
- * selección. Server-safe (sin "use client"): la usa el server component de la
- * ficha y también el admin. Los ids desconocidos se descartan.
+ * Resuelve el JSON de `faqs` (ids) a los {q, a} del catálogo dado, respetando el
+ * orden de selección. Server-safe. Los ids que ya no existen se descartan.
  */
-export function resolvePropertyFaqs(raw: unknown): PropertyFaq[] {
-    return parseFaqIds(raw).map((id) => {
-        const item = CATALOG_BY_ID.get(id)!;
+export function resolvePropertyFaqs(raw: unknown, catalog: FaqCatalogItem[]): PropertyFaq[] {
+    const byId = new Map(catalog.map((c) => [c.id, c]));
+    return parseFaqIds(raw, catalog).map((id) => {
+        const item = byId.get(id)!;
         return { q: item.q, a: item.a };
     });
 }

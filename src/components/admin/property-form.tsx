@@ -27,11 +27,11 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { FileText, HelpCircle, ImageIcon, Loader2, MapPin, Settings2, Star, UploadCloud, UserRoundCheck, X } from "lucide-react";
+import { Check, FileText, HelpCircle, ImageIcon, Loader2, MapPin, Pencil, Plus, Settings2, Star, Trash2, UploadCloud, UserRoundCheck, X } from "lucide-react";
 import { toast } from "sonner";
 import { AgentSelect } from "./agent-select";
 import { adminCardClass } from "./admin-ui";
-import { FAQ_CATALOG, FAQ_MIN, FAQ_MAX, parseFaqIds } from "@/lib/property-faqs";
+import { FAQ_MIN, FAQ_MAX, parseFaqIds, type FaqCatalogItem } from "@/lib/property-faqs";
 
 interface PdfEntry {
     file: File;
@@ -79,13 +79,23 @@ function FormSection({
     );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- initialData is partially-typed DB row; zod validates at runtime
-export function PropertyForm({ initialData }: { initialData?: any }) {
+export function PropertyForm({
+    initialData,
+    faqCatalog,
+}: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- initialData is partially-typed DB row; zod validates at runtime
+    initialData?: any;
+    faqCatalog: FaqCatalogItem[];
+}) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [pdfEntries, setPdfEntries] = useState<PdfEntry[]>([]);
-    const [faqIds, setFaqIds] = useState<string[]>(() => parseFaqIds(initialData?.faqs));
+    const [catalog, setCatalog] = useState<FaqCatalogItem[]>(faqCatalog);
+    const [faqIds, setFaqIds] = useState<string[]>(() => parseFaqIds(initialData?.faqs, faqCatalog));
+    const [editingFaqId, setEditingFaqId] = useState<string | null>(null);
+    const [faqDraft, setFaqDraft] = useState<{ q: string; a: string }>({ q: "", a: "" });
+    const [savingCatalog, setSavingCatalog] = useState(false);
 
     const toggleFaq = (id: string) =>
         setFaqIds((prev) => {
@@ -93,6 +103,81 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             if (prev.length >= FAQ_MAX) return prev; // tope de 5
             return [...prev, id];
         });
+
+    // ── Edición del catálogo global (persiste para TODAS las propiedades) ──
+    const startEditFaq = (item: FaqCatalogItem) => {
+        setEditingFaqId(item.id);
+        setFaqDraft({ q: item.q, a: item.a });
+    };
+    const cancelEditFaq = () => {
+        setEditingFaqId(null);
+        setFaqDraft({ q: "", a: "" });
+    };
+
+    // Guarda el catálogo completo (ya modificado) contra la API global.
+    const persistCatalog = async (next: FaqCatalogItem[]): Promise<boolean> => {
+        setSavingCatalog(true);
+        try {
+            const res = await fetch("/api/faq-catalog", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ catalog: next }),
+            });
+            const json = await res.json();
+            if (!res.ok) throw new Error(json.error || "Error al guardar el catálogo");
+            setCatalog(json.catalog as FaqCatalogItem[]);
+            // Descartar selección de ids que ya no existen tras la edición.
+            const validIds = new Set((json.catalog as FaqCatalogItem[]).map((c) => c.id));
+            setFaqIds((prev) => prev.filter((id) => validIds.has(id)));
+            return true;
+        } catch (err) {
+            toast.error(err instanceof Error ? err.message : "Error al guardar el catálogo");
+            return false;
+        } finally {
+            setSavingCatalog(false);
+        }
+    };
+
+    const saveEditFaq = async () => {
+        const q = faqDraft.q.trim();
+        const a = faqDraft.a.trim();
+        if (!q || !a) {
+            toast.error("La pregunta y la respuesta no pueden estar vacías.");
+            return;
+        }
+        const next = catalog.map((c) => (c.id === editingFaqId ? { ...c, q, a } : c));
+        if (await persistCatalog(next)) {
+            toast.success("Pregunta actualizada para todas las propiedades.");
+            cancelEditFaq();
+        }
+    };
+
+    const addCatalogItem = async () => {
+        const id = (typeof crypto !== "undefined" && crypto.randomUUID)
+            ? `faq_${crypto.randomUUID().slice(0, 8)}`
+            : `faq_${Date.now()}`;
+        const next: FaqCatalogItem[] = [
+            ...catalog,
+            { id, q: "Nueva pregunta", a: "Nueva respuesta" },
+        ];
+        if (await persistCatalog(next)) {
+            const created = next[next.length - 1];
+            startEditFaq(created);
+        }
+    };
+
+    const deleteCatalogItem = async (id: string) => {
+        if (!window.confirm("¿Eliminar esta pregunta del catálogo? Dejará de aparecer en todas las propiedades que la usaban.")) return;
+        const next = catalog.filter((c) => c.id !== id);
+        if (next.length === 0) {
+            toast.error("El catálogo no puede quedar vacío.");
+            return;
+        }
+        if (await persistCatalog(next)) {
+            toast.success("Pregunta eliminada del catálogo.");
+            if (editingFaqId === id) cancelEditFaq();
+        }
+    };
 
     const form = useForm<PropertyFormValues>({
         // Resolver<PropertyFormValues> keeps the RHF/zod inference in sync
@@ -811,11 +896,11 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                 </div>
                 </FormSection>
 
-                {/* ── Preguntas frecuentes: checklist de catálogo fijo ── */}
+                {/* ── Preguntas frecuentes: checklist + edición del catálogo global ── */}
                 <FormSection
                     icon={HelpCircle}
                     title="Preguntas frecuentes"
-                    description="Marca de 3 a 5 preguntas para mostrar en la ficha pública. Las respuestas son fijas e iguales para todas las propiedades. Sin selección, se muestran las genéricas."
+                    description="Marca de 3 a 5 preguntas para mostrar en esta ficha. Editar el texto cambia la pregunta/respuesta para TODAS las propiedades (catálogo global). Sin selección, se muestran las genéricas."
                 >
                     <div className="space-y-3">
                         <div className="flex items-center justify-between gap-3">
@@ -837,41 +922,120 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         </div>
 
                         <ul className="space-y-2">
-                            {FAQ_CATALOG.map((item) => {
+                            {catalog.map((item) => {
                                 const checked = faqIds.includes(item.id);
                                 const atMax = faqIds.length >= FAQ_MAX;
                                 const disabled = !checked && atMax;
-                                return (
-                                    <li key={item.id}>
-                                        <label
-                                            className={`flex cursor-pointer items-start gap-3 border p-3.5 transition-colors ${
-                                                checked
-                                                    ? "border-[var(--color-accent)]/40 bg-[var(--color-accent)]/[0.06]"
-                                                    : disabled
-                                                      ? "cursor-not-allowed border-white/[0.06] bg-white/[0.01] opacity-45"
-                                                      : "border-white/[0.08] bg-white/[0.02] hover:border-white/20"
-                                            }`}
+                                const isEditing = editingFaqId === item.id;
+
+                                if (isEditing) {
+                                    return (
+                                        <li
+                                            key={item.id}
+                                            className="space-y-3 border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/[0.05] p-3.5"
                                         >
-                                            <Checkbox
-                                                checked={checked}
-                                                disabled={disabled}
-                                                onCheckedChange={() => toggleFaq(item.id)}
-                                                className="mt-0.5 shrink-0"
-                                                aria-label={item.q}
+                                            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+                                                Editando · aplica a todas las propiedades
+                                            </p>
+                                            <Input
+                                                value={faqDraft.q}
+                                                onChange={(e) => setFaqDraft((d) => ({ ...d, q: e.target.value }))}
+                                                placeholder="Pregunta"
+                                                aria-label="Pregunta"
+                                                className="border-white/[0.1] bg-background/70 text-white"
                                             />
-                                            <span className="min-w-0">
-                                                <span className="block text-sm font-semibold text-white">
-                                                    {item.q}
-                                                </span>
-                                                <span className="mt-1 block text-[13px] leading-relaxed text-white/50">
-                                                    {item.a}
-                                                </span>
+                                            <Textarea
+                                                value={faqDraft.a}
+                                                onChange={(e) => setFaqDraft((d) => ({ ...d, a: e.target.value }))}
+                                                placeholder="Respuesta"
+                                                aria-label="Respuesta"
+                                                rows={3}
+                                                className="border-white/[0.1] bg-background/70 text-white"
+                                            />
+                                            <div className="flex flex-wrap gap-2">
+                                                <Button
+                                                    type="button"
+                                                    onClick={saveEditFaq}
+                                                    disabled={savingCatalog}
+                                                    className="brushed-gold rounded-full font-bold"
+                                                >
+                                                    {savingCatalog ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Check className="mr-2 h-4 w-4" />}
+                                                    Guardar
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    onClick={cancelEditFaq}
+                                                    disabled={savingCatalog}
+                                                    className="rounded-full border-white/[0.12] bg-white/[0.025] text-white"
+                                                >
+                                                    Cancelar
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    onClick={() => deleteCatalogItem(item.id)}
+                                                    disabled={savingCatalog}
+                                                    className="rounded-full border-red-400/30 bg-red-500/[0.06] text-red-400 hover:bg-red-500/10"
+                                                >
+                                                    <Trash2 className="mr-2 h-4 w-4" />
+                                                    Eliminar
+                                                </Button>
+                                            </div>
+                                        </li>
+                                    );
+                                }
+
+                                return (
+                                    <li
+                                        key={item.id}
+                                        className={`flex items-start gap-3 border p-3.5 transition-colors ${
+                                            checked
+                                                ? "border-[var(--color-accent)]/40 bg-[var(--color-accent)]/[0.06]"
+                                                : disabled
+                                                  ? "border-white/[0.06] bg-white/[0.01] opacity-45"
+                                                  : "border-white/[0.08] bg-white/[0.02]"
+                                        }`}
+                                    >
+                                        <Checkbox
+                                            checked={checked}
+                                            disabled={disabled}
+                                            onCheckedChange={() => toggleFaq(item.id)}
+                                            className="mt-0.5 shrink-0"
+                                            aria-label={item.q}
+                                            id={`faq-${item.id}`}
+                                        />
+                                        <label htmlFor={`faq-${item.id}`} className="min-w-0 flex-1 cursor-pointer">
+                                            <span className="block text-sm font-semibold text-white">
+                                                {item.q}
+                                            </span>
+                                            <span className="mt-1 block text-[13px] leading-relaxed text-white/50">
+                                                {item.a}
                                             </span>
                                         </label>
+                                        <button
+                                            type="button"
+                                            onClick={() => startEditFaq(item)}
+                                            aria-label={`Editar: ${item.q}`}
+                                            className="flex h-8 w-8 shrink-0 items-center justify-center border border-white/[0.1] text-white/50 transition-colors hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)]"
+                                        >
+                                            <Pencil className="h-3.5 w-3.5" />
+                                        </button>
                                     </li>
                                 );
                             })}
                         </ul>
+
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={addCatalogItem}
+                            disabled={savingCatalog || editingFaqId !== null}
+                            className="w-full rounded-full border-white/[0.12] bg-white/[0.025] text-white sm:w-auto"
+                        >
+                            <Plus className="mr-2 h-4 w-4" />
+                            Agregar pregunta al catálogo
+                        </Button>
                     </div>
                 </FormSection>
 
