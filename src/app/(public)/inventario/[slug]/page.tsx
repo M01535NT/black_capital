@@ -1,13 +1,14 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { ImageGallery } from "@/components/public/image-gallery";
 import { Breadcrumbs } from "@/components/public/breadcrumbs";
 import { PropertyCard } from "@/components/property/PropertyCard";
 import { PropertyHeader } from "@/components/property/PropertyHeader";
 import { PropertyMetrics } from "@/components/property/PropertyMetrics";
 import { PropertyDescription } from "@/components/property/PropertyDescription";
-import { PropertyMedia } from "@/components/property/PropertyMedia";
+import { MediaShowcase } from "@/components/property/MediaShowcase";
+import { TechnicalSheet, FichaPdfButton } from "@/components/property/TechnicalSheet";
+import { PropertyFAQ } from "@/components/property/PropertyFAQ";
 import { PropertyLocation } from "@/components/property/PropertyLocation";
 import { PropertySidebar } from "@/components/property/PropertySidebar";
 import { StickyContactBar } from "@/components/property/StickyContactBar";
@@ -19,7 +20,7 @@ import { FadeIn } from "@/components/ui/motion";
 
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 import { getPropertyDocuments, toVisibleDocuments } from "@/lib/document-access";
-import { formatPrice, formatArea } from "@/lib/format";
+import { formatPrice, formatShortPrice, formatArea } from "@/lib/format";
 import { STATUS_LABELS } from "@/lib/property-constants";
 import Image from "next/image";
 import Link from "next/link";
@@ -52,9 +53,9 @@ const SECTION_HEADING =
     "property-tag-type text-white/48";
 
 /** Editorial numbered chapter heading (matches the reference "0X · Título"). */
-function ChapterLabel({ number, title }: { number: string; title: string }) {
+function ChapterLabel({ number, title, className = "mb-7" }: { number: string; title: string; className?: string }) {
     return (
-        <div className="mb-7 flex items-baseline gap-3.5">
+        <div className={`${className} flex items-baseline gap-3.5`}>
             <span className="font-display text-body-sm font-bold tabular-nums text-[var(--color-accent)]">
                 {number}
             </span>
@@ -191,19 +192,34 @@ export default async function PropertyDetailPage({
         Object.assign(customAttrs, property.custom_attributes);
     }
 
-    const hasMedia = Boolean(property.video_urls?.length || property.tour_embeds?.length);
     const isForSale = property.business_type === "Venta";
     const heroImage: string | null =
         property.cover_image || (property.images?.length ? property.images[0] : null);
 
-    // Editorial chapter index (matches the reference "capítulos 01–08").
+    const technicalData = {
+        title: property.title,
+        reference: (property.slug || property.id).toString().toUpperCase().slice(0, 18),
+        businessType: property.business_type,
+        propertyUse: property.property_use,
+        propertyType: property.property_type,
+        status: property.status,
+        statusLabel: STATUS_LABELS[property.status] || property.status,
+        price: property.price,
+        currency: property.currency,
+        address: property.address,
+        m2Terrain: property.m2_terrain,
+        m2Construction: property.m2_construction,
+        customAttributes: customAttrs,
+    };
+
+    // Índice editorial de capítulos (plantilla "Propiedad Editorial Black": 01–0N).
     const chapters: Chapter[] = [
         { id: "galeria", label: "Galería" },
         { id: "propiedad", label: "La propiedad" },
-        ...(property.description ? [{ id: "descripcion", label: "Descripción" }] : []),
-        ...(hasMedia ? [{ id: "multimedia", label: "Multimedia" }] : []),
+        { id: "ficha-tecnica", label: "Ficha técnica" },
         ...(property.address ? [{ id: "ubicacion", label: "Ubicación" }] : []),
         ...(isForSale ? [{ id: "financiamiento", label: "Financiamiento" }] : []),
+        { id: "preguntas", label: "Preguntas" },
     ];
     const chapterNumber = (id: string) =>
         String(chapters.findIndex((c) => c.id === id) + 1).padStart(2, "0");
@@ -301,11 +317,13 @@ export default async function PropertyDetailPage({
                 <section id="galeria" className="w-full overflow-x-clip border-y border-white/[0.06] scroll-mt-24">
                     <div className="mx-auto max-w-[90rem] min-w-0 px-4 pb-8 pt-10 sm:px-10 lg:px-16">
                         <ChapterLabel number={chapterNumber("galeria")} title="Galería" />
-                        <ImageGallery
+                        <MediaShowcase
                             images={property.images || []}
                             title={property.title}
                             coverImage={property.cover_image}
                             propertyUse={property.property_use}
+                            videoUrls={property.video_urls}
+                            tourEmbeds={property.tour_embeds}
                         />
                     </div>
                 </section>
@@ -363,30 +381,25 @@ export default async function PropertyDetailPage({
                                         createdAt={property.created_at}
                                     />
                                 </FadeIn>
-                            </section>
 
-                            {property.description && (
-                                <section id="descripcion" className="scroll-mt-24">
-                                    <ChapterLabel number={chapterNumber("descripcion")} title="Descripción" />
+                                {property.description && (
                                     <FadeIn direction="up" delay={0.4}>
                                         <div className="border border-white/[0.08] bg-white/[0.025] p-5 sm:p-6">
                                             <PropertyDescription description={property.description} />
                                         </div>
                                     </FadeIn>
-                                </section>
-                            )}
+                                )}
+                            </section>
 
-                            {hasMedia ? (
-                                <section id="multimedia" className="scroll-mt-24">
-                                    <ChapterLabel number={chapterNumber("multimedia")} title="Multimedia" />
-                                    <FadeIn direction="up" delay={0.5}>
-                                        <PropertyMedia
-                                            videoUrls={property.video_urls}
-                                            tourEmbeds={property.tour_embeds}
-                                        />
-                                    </FadeIn>
-                                </section>
-                            ) : null}
+                            <section id="ficha-tecnica" className="scroll-mt-24">
+                                <div className="mb-7 flex flex-wrap items-center justify-between gap-4">
+                                    <ChapterLabel number={chapterNumber("ficha-tecnica")} title="Ficha técnica" className="mb-0" />
+                                    <FichaPdfButton data={technicalData} />
+                                </div>
+                                <FadeIn direction="up" delay={0.5}>
+                                    <TechnicalSheet data={technicalData} />
+                                </FadeIn>
+                            </section>
 
                             {property.address && (
                                 <section id="ubicacion" className="scroll-mt-24">
@@ -409,6 +422,13 @@ export default async function PropertyDetailPage({
                                     </FadeIn>
                                 </section>
                             )}
+
+                            <section id="preguntas" className="scroll-mt-24">
+                                <ChapterLabel number={chapterNumber("preguntas")} title="Preguntas frecuentes" />
+                                <FadeIn direction="up" delay={0.7}>
+                                    <PropertyFAQ businessType={property.business_type} />
+                                </FadeIn>
+                            </section>
 
                             {similar.length > 0 && (
                                 <FadeIn direction="up" delay={0.8}>
@@ -465,17 +485,19 @@ export default async function PropertyDetailPage({
                     </div>
                 </div>
 
-                {/* Sticky bottom contact bar — mobile only */}
+                {/* Barra de acción fija (todos los viewports, plantilla editorial) */}
                 <StickyContactBar
                     propertyId={property.id}
                     agentPhone={agents?.[0]?.phone}
                     agentEmail={agents?.[0]?.email}
                     agentWhatsapp={CONTACT_CONFIG.phoneRaw}
                     propertyTitle={property.title}
+                    priceLabel={formatShortPrice(property.price, property.currency, property.business_type)}
+                    metaLabel={property.m2_construction ? formatArea(property.m2_construction, "") : undefined}
                 />
 
-                {/* Spacer for sticky mobile CTA */}
-                <div className="lg:hidden h-20" />
+                {/* Espaciador para que la barra fija no tape el footer */}
+                <div className="h-16" />
             </div>
         </>
     );

@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Phone, Mail, MessageCircle } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { Phone, MessageCircle } from 'lucide-react'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 interface StickyContactBarProps {
   propertyId: string
@@ -10,15 +10,24 @@ interface StickyContactBarProps {
   agentEmail?: string | null
   agentWhatsapp?: string | null
   propertyTitle: string
+  priceLabel?: string
+  metaLabel?: string
 }
 
+/**
+ * Barra de acción fija inferior (plantilla "Propiedad Editorial Black"):
+ * precio + contexto a la izquierda, Llamar + WhatsApp a la derecha.
+ * Visible en todos los viewports al pasar el hero.
+ */
 export function StickyContactBar({
   agentPhone,
-  agentEmail,
   agentWhatsapp,
   propertyTitle,
+  priceLabel,
+  metaLabel,
 }: StickyContactBarProps) {
   const [isVisible, setIsVisible] = useState(false)
+  const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +38,7 @@ export function StickyContactBar({
   }, [])
 
   // Sin canales de contacto no hay barra: evita renderizar una franja vacía.
-  const hasChannels = Boolean(agentWhatsapp || agentPhone || agentEmail)
+  const hasChannels = Boolean(agentWhatsapp || agentPhone)
   if (!hasChannels) return null
 
   const buildWhatsappUrl = (phone: string) => {
@@ -42,44 +51,49 @@ export function StickyContactBar({
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
+          initial={shouldReduceMotion ? { opacity: 0 } : { y: 100, opacity: 0 }}
+          animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
+          exit={shouldReduceMotion ? { opacity: 0 } : { y: 100, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="fixed bottom-0 left-0 right-0 z-40 lg:hidden"
+          className="fixed bottom-0 left-0 right-0 z-40"
           style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
         >
-          <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-t border-white/[0.06] shadow-2xl">
-            <div className="flex items-center gap-2 p-3">
-              {agentWhatsapp && (
-                <a
-                  href={buildWhatsappUrl(agentWhatsapp)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="brushed-gold flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-3 premium-cta transition-all duration-300 hover:brightness-105"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  <span>WhatsApp</span>
-                </a>
-              )}
-              {agentPhone && (
-                <a
-                  href={`tel:${agentPhone}`}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-body-sm text-white transition-all duration-300 hover:bg-white/[0.08]"
-                >
-                  <Phone className="w-5 h-5" />
-                  <span>Llamar</span>
-                </a>
-              )}
-              {agentEmail && (
-                <a
-                  href={`mailto:${agentEmail}`}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-body-sm text-white transition-all duration-300 hover:bg-white/[0.08]"
-                >
-                  <Mail className="w-5 h-5" />
-                  <span>Email</span>
-                </a>
-              )}
+          <div className="border-t border-white/[0.08] bg-[#0A0A0A]/95 shadow-2xl backdrop-blur-xl">
+            <div className="mx-auto flex max-w-[90rem] items-center justify-between gap-3 px-4 py-2.5 sm:px-10 sm:py-3 lg:px-16">
+              <div className="min-w-0">
+                {priceLabel && (
+                  <p className="truncate font-display text-lg font-extrabold leading-tight tabular-nums gold-ink sm:text-xl">
+                    {priceLabel}
+                  </p>
+                )}
+                <p className="hidden truncate text-[0.72rem] text-white/50 sm:block">
+                  {propertyTitle}
+                  {metaLabel ? ` · ${metaLabel}` : ''}
+                </p>
+              </div>
+              <div className="flex shrink-0 items-center gap-2.5">
+                {agentPhone && (
+                  <a
+                    href={`tel:${agentPhone}`}
+                    className="inline-flex min-h-11 items-center gap-2 border border-white/[0.14] px-4 font-display text-[0.68rem] font-bold uppercase tracking-[0.08em] text-white transition-colors hover:border-[var(--color-accent)]"
+                  >
+                    <Phone className="size-3.5" aria-hidden="true" />
+                    <span className="hidden sm:inline">Llamar</span>
+                    <span className="sr-only sm:hidden">Llamar</span>
+                  </a>
+                )}
+                {agentWhatsapp && (
+                  <a
+                    href={buildWhatsappUrl(agentWhatsapp)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="gold-gradient inline-flex min-h-11 items-center gap-2 px-4 font-display text-[0.68rem] font-bold uppercase tracking-[0.08em] text-black transition-[filter] hover:brightness-110 sm:px-5"
+                  >
+                    <MessageCircle className="size-3.5" aria-hidden="true" />
+                    Agendar visita
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </motion.div>

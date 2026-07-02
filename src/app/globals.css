@@ -116,6 +116,36 @@ html {
   }
 }
 
+/* Sliders dorados de la calculadora (plantilla Propiedad Editorial Black).
+   Sin capa: estiliza el input nativo por encima de cualquier reset. */
+.slider-gold {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.slider-gold::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 3px solid #050505;
+  box-shadow: 0 0 0 1px var(--color-accent);
+  cursor: pointer;
+}
+.slider-gold::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 3px solid #050505;
+  cursor: pointer;
+}
+.slider-gold:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
 /* "Operaciones que nos confiaron." vive en una columna de 4/12 en lg;
    a tamaño display-2 la palabra "Operaciones" desborda la columna.
    (Sin capa por la misma razón que el bloque anterior.) */

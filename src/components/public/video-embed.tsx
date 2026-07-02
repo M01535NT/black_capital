@@ -2,6 +2,8 @@
 
 interface VideoEmbedProps {
     urls: string[];
+    /** Sin encabezado propio (cuando la sección padre ya lo pone, p.ej. tabs de galería). */
+    bare?: boolean;
 }
 
 function extractYoutubeId(url: string): string | null {
@@ -28,7 +30,7 @@ function extractYoutubeId(url: string): string | null {
     return null;
 }
 
-export function VideoEmbed({ urls }: VideoEmbedProps) {
+export function VideoEmbed({ urls, bare = false }: VideoEmbedProps) {
     if (!urls || urls.length === 0) return null;
 
     const validUrls = urls.map(extractYoutubeId).filter(Boolean) as string[];
@@ -36,12 +38,14 @@ export function VideoEmbed({ urls }: VideoEmbedProps) {
 
     return (
         <section className="space-y-5">
-            <div className="flex items-center gap-3">
-                <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
-                <h2 className="property-tag-type text-white/48">
-                    Video Promocional
-                </h2>
-            </div>
+            {!bare && (
+                <div className="flex items-center gap-3">
+                    <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
+                    <h2 className="property-tag-type text-white/48">
+                        Video Promocional
+                    </h2>
+                </div>
+            )}
             <div className="space-y-4">
                 {validUrls.map((videoId, i) => (
                     <div

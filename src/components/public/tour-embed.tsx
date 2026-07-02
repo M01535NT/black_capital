@@ -2,6 +2,8 @@
 
 interface TourEmbedProps {
     urls: string[];
+    /** Sin encabezado propio (cuando la sección padre ya lo pone, p.ej. tabs de galería). */
+    bare?: boolean;
 }
 
 function getEmbedUrl(url: string): string | null {
@@ -17,7 +19,7 @@ function getEmbedUrl(url: string): string | null {
     }
 }
 
-export function TourEmbed({ urls }: TourEmbedProps) {
+export function TourEmbed({ urls, bare = false }: TourEmbedProps) {
     if (!urls || urls.length === 0) return null;
 
     const validUrls = urls.map(getEmbedUrl).filter(Boolean) as string[];
@@ -25,12 +27,14 @@ export function TourEmbed({ urls }: TourEmbedProps) {
 
     return (
         <section className="space-y-5">
-            <div className="flex items-center gap-3">
-                <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
-                <h2 className="property-tag-type text-white/48">
-                    Recorrido Virtual 360°
-                </h2>
-            </div>
+            {!bare && (
+                <div className="flex items-center gap-3">
+                    <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
+                    <h2 className="property-tag-type text-white/48">
+                        Recorrido Virtual 360°
+                    </h2>
+                </div>
+            )}
             <div className="space-y-4">
                 {validUrls.map((embedUrl, i) => (
                     <div
