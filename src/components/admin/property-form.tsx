@@ -27,7 +27,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { FileText, ImageIcon, Loader2, MapPin, Settings2, Star, UploadCloud, UserRoundCheck, X } from "lucide-react";
+import { FileText, HelpCircle, ImageIcon, Loader2, MapPin, Plus, Settings2, Star, UploadCloud, UserRoundCheck, X } from "lucide-react";
 import { toast } from "sonner";
 import { AgentSelect } from "./agent-select";
 import { adminCardClass } from "./admin-ui";
@@ -84,6 +84,20 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [pdfEntries, setPdfEntries] = useState<PdfEntry[]>([]);
+    const [faqs, setFaqs] = useState<{ q: string; a: string }[]>(() =>
+        Array.isArray(initialData?.faqs)
+            ? initialData.faqs
+                  .filter((f: unknown): f is { q: string; a: string } =>
+                      !!f && typeof f === "object" && typeof (f as { q?: unknown }).q === "string" && typeof (f as { a?: unknown }).a === "string",
+                  )
+                  .map((f: { q: string; a: string }) => ({ q: f.q, a: f.a }))
+            : [],
+    );
+
+    const addFaq = () => setFaqs((prev) => [...prev, { q: "", a: "" }]);
+    const removeFaq = (index: number) => setFaqs((prev) => prev.filter((_, i) => i !== index));
+    const updateFaq = (index: number, key: "q" | "a", value: string) =>
+        setFaqs((prev) => prev.map((f, i) => (i === index ? { ...f, [key]: value } : f)));
 
     const form = useForm<PropertyFormValues>({
         // Resolver<PropertyFormValues> keeps the RHF/zod inference in sync
@@ -235,13 +249,18 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
             const isEditing = !!initialData?.id;
             let propertyData;
 
+            // FAQ: solo las filas con pregunta y respuesta llenas.
+            const cleanedFaqs = faqs
+                .map((f) => ({ q: f.q.trim(), a: f.a.trim() }))
+                .filter((f) => f.q.length > 0 && f.a.length > 0);
+
             // Step 1: Create/Update property record via API
             try {
                 if (isEditing) {
                     const res = await fetch('/api/properties', {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id: initialData.id, ...data }),
+                        body: JSON.stringify({ id: initialData.id, ...data, faqs: cleanedFaqs }),
                     });
                     const json = await res.json();
                     if (!res.ok) throw new Error(json.error || 'Error al actualizar');
@@ -250,7 +269,7 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                     const res = await fetch('/api/properties', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data),
+                        body: JSON.stringify({ ...data, faqs: cleanedFaqs }),
                     });
                     const json = await res.json();
                     if (!res.ok) throw new Error(json.error || 'Error al crear');
@@ -793,6 +812,65 @@ export function PropertyForm({ initialData }: { initialData?: any }) {
                         </div>
                     )}
                 </div>
+                </FormSection>
+
+                {/* ── Preguntas frecuentes (por propiedad) ── */}
+                <FormSection
+                    icon={HelpCircle}
+                    title="Preguntas frecuentes"
+                    description="Preguntas y respuestas propias de esta propiedad. Si lo dejas vacío, la ficha muestra las preguntas genéricas del sitio."
+                >
+                    <div className="space-y-4">
+                        {faqs.length === 0 && (
+                            <p className="text-sm text-white/45">
+                                Sin preguntas propias. Se mostrarán las genéricas.
+                            </p>
+                        )}
+                        {faqs.map((faq, index) => (
+                            <div
+                                key={index}
+                                className="space-y-3 border border-white/[0.08] bg-white/[0.02] p-4"
+                            >
+                                <div className="flex items-center justify-between gap-3">
+                                    <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/50">
+                                        Pregunta {index + 1}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFaq(index)}
+                                        aria-label={`Eliminar pregunta ${index + 1}`}
+                                        className="flex h-8 w-8 items-center justify-center border border-white/[0.1] text-white/50 transition-colors hover:border-red-400/40 hover:text-red-400"
+                                    >
+                                        <X className="h-4 w-4" />
+                                    </button>
+                                </div>
+                                <Input
+                                    value={faq.q}
+                                    onChange={(e) => updateFaq(index, "q", e.target.value)}
+                                    placeholder="¿Pregunta del cliente?"
+                                    aria-label={`Pregunta ${index + 1}`}
+                                    className="border-white/[0.1] bg-background/70 text-white"
+                                />
+                                <Textarea
+                                    value={faq.a}
+                                    onChange={(e) => updateFaq(index, "a", e.target.value)}
+                                    placeholder="Respuesta clara y directa."
+                                    aria-label={`Respuesta ${index + 1}`}
+                                    rows={3}
+                                    className="border-white/[0.1] bg-background/70 text-white"
+                                />
+                            </div>
+                        ))}
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={addFaq}
+                            className="w-full rounded-full border-white/[0.12] bg-white/[0.025] text-white sm:w-auto"
+                        >
+                            <Plus className="mr-2 h-4 w-4" />
+                            Agregar pregunta
+                        </Button>
+                    </div>
                 </FormSection>
 
                 <div className={`${adminCardClass} sticky bottom-3 z-10 flex flex-col gap-4 p-3 shadow-2xl shadow-black/30 sm:flex-row`}>

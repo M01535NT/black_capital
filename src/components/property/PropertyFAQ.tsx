@@ -1,14 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import type { PropertyFaq } from "@/lib/property-faqs";
 
-/**
- * FAQ del capítulo "Preguntas" de la ficha (plantilla sección 07):
- * acordeón numerado, respuestas genéricas parametrizadas por tipo de operación.
- */
-export function PropertyFAQ({ businessType }: { businessType: string }) {
+function genericFaqs(businessType: string): PropertyFaq[] {
     const isSale = businessType === "Venta";
-    const faqs = [
+    return [
         {
             q: "¿Cuál es la situación legal de la propiedad?",
             a: "Revisamos escritura, boleta predial y gravámenes antes de publicar. La carpeta documental está disponible para revisión con tu notario a través de la solicitud de documentos de esta página.",
@@ -31,6 +28,21 @@ export function PropertyFAQ({ businessType }: { businessType: string }) {
             a: "Depende de la documentación y el tipo de pago. Desde el diagnóstico definimos una ruta de cierre con tiempos estimados por etapa para que sepas qué esperar.",
         },
     ];
+}
+
+/**
+ * FAQ del capítulo "Preguntas" de la ficha (plantilla sección 07): acordeón
+ * numerado. Usa las preguntas propias de la propiedad si existen; si no, cae a
+ * un set genérico parametrizado por tipo de operación.
+ */
+export function PropertyFAQ({
+    businessType,
+    faqs: customFaqs,
+}: {
+    businessType: string;
+    faqs?: PropertyFaq[];
+}) {
+    const faqs = customFaqs && customFaqs.length > 0 ? customFaqs : genericFaqs(businessType);
 
     const [open, setOpen] = useState<number | null>(0);
 

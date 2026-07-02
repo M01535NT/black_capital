@@ -9,7 +9,7 @@ const ALLOWED_COLUMNS = new Set([
   "m2_terrain", "m2_construction", "price", "currency",
   "address", "description", "status",
   "video_urls", "tour_embeds", "brochure_path", "cover_image",
-  "custom_attributes", "images", "documents",
+  "custom_attributes", "images", "documents", "faqs",
 ]);
 
 /**

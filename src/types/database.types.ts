@@ -247,6 +247,7 @@ export type Database = {
           custom_attributes: Json | null
           description: string | null
           documents: Json | null
+          faqs: Json | null
           id: string
           images: string[] | null
           is_assignment: boolean | null
@@ -274,6 +275,7 @@ export type Database = {
           custom_attributes?: Json | null
           description?: string | null
           documents?: Json | null
+          faqs?: Json | null
           id?: string
           images?: string[] | null
           is_assignment?: boolean | null
@@ -301,6 +303,7 @@ export type Database = {
           custom_attributes?: Json | null
           description?: string | null
           documents?: Json | null
+          faqs?: Json | null
           id?: string
           images?: string[] | null
           is_assignment?: boolean | null
