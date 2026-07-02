@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#050505;font-family:'Public Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+    --bg:#050505;--panel:#0a0a0a;--footer:#000;--ink:#fff;--muted:#cfcbc1;--line:rgba(255,255,255,.22);--acc:#d2a53e;--acc-rgb:210,165,62}
+  @keyframes bcFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  @media (max-width:980px){
+    [data-r="navlinks"]{display:none !important}
+    [data-r="grid"]{grid-template-columns:1fr 1fr !important}
+    [data-r="menugrid"]{grid-template-columns:1fr !important}
+    [data-r="filters"]{flex-direction:column !important;align-items:stretch !important}
+    [data-r="pad"]{padding-left:24px !important;padding-right:24px !important}
+    [data-r="foot"]{grid-template-columns:1fr 1fr !important}
+  }
+  @media (max-width:600px){
+    [data-r="grid"]{grid-template-columns:1fr !important}
+    [data-r="pad"]{padding-left:16px !important;padding-right:16px !important}
+    [data-r="foot"]{grid-template-columns:1fr !important}
+  }
+</style>
+</helmet>
+
+<div style="background:var(--bg);min-height:100vh;color:var(--ink)">
+
+  <!-- NAV -->
+  <div data-r="nav" style="position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--line);background:rgba(5,5,5,.86);backdrop-filter:blur(8px)">
+    <div style="display:flex;align-items:center;gap:20px">
+      <div style="display:flex;align-items:center;gap:9px"><div style="width:3px;height:24px;background:var(--acc)"></div><div style="font:800 14px/1 'Archivo',sans-serif">BLACK<span style="display:block;font-size:7px;letter-spacing:.28em;color:var(--muted);font-weight:600;margin-top:2px">CAPITAL</span></div></div>
+      <div data-r="navlinks" style="display:flex;gap:26px;font:600 11px 'Public Sans',sans-serif;letter-spacing:.12em;color:var(--muted);text-transform:uppercase">
+        <a href="https://blackmx.vercel.app/" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Inicio</a>
+        <a href="#" style="color:var(--ink);text-decoration:none">Inventario</a>
+        <a href="https://blackmx.vercel.app/nosotros" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Nosotros</a>
+        <a href="https://blackmx.vercel.app/herramientas" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Herramientas</a>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <a href="tel:526641049491" style="font:600 11px 'Public Sans',sans-serif;letter-spacing:.08em;color:var(--acc);text-decoration:none">+52 664 104 9491</a>
+      <div onClick="{{ toggleMenu }}" style="display:flex;flex-direction:column;gap:5px;width:42px;height:42px;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:3px;cursor:pointer" style-hover="border-color:rgba(var(--acc-rgb),.5)"><span style="width:19px;height:2px;background:var(--ink)"></span><span style="width:19px;height:2px;background:var(--ink)"></span><span style="width:19px;height:2px;background:var(--acc)"></span></div>
+    </div>
+  </div>
+
+  <!-- OVERLAY MENÚ -->
+  <div style="{{ overlayStyle }}">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid var(--line)">
+      <div style="display:flex;align-items:center;gap:10px"><div style="width:3px;height:26px;background:var(--acc)"></div><div style="font:800 15px/1 'Archivo',sans-serif">BLACK<span style="display:block;font-size:8px;letter-spacing:.28em;color:var(--muted);font-weight:600;margin-top:2px">CAPITAL</span></div></div>
+      <div onClick="{{ closeMenu }}" style="width:42px;height:42px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:3px;cursor:pointer;font:400 22px 'Archivo',sans-serif">×</div>
+    </div>
+    <div data-r="menugrid" style="flex:1;display:grid;grid-template-columns:1.4fr 1fr">
+      <div style="padding:48px;display:flex;flex-direction:column;gap:6px;justify-content:center">
+        <a href="https://blackmx.vercel.app/" onClick="{{ closeMenu }}" style="font:800 40px/1.2 'Archivo',sans-serif;text-transform:uppercase;text-decoration:none;color:var(--ink)" style-hover="color:var(--acc)">Inicio</a>
+        <a href="#" onClick="{{ closeMenu }}" style="font:800 40px/1.2 'Archivo',sans-serif;text-transform:uppercase;text-decoration:none;color:var(--ink)" style-hover="color:var(--acc)">Inventario</a>
+        <a href="https://blackmx.vercel.app/nosotros" onClick="{{ closeMenu }}" style="font:800 40px/1.2 'Archivo',sans-serif;text-transform:uppercase;text-decoration:none;color:var(--ink)" style-hover="color:var(--acc)">Nosotros</a>
+        <a href="https://blackmx.vercel.app/herramientas" onClick="{{ closeMenu }}" style="font:800 40px/1.2 'Archivo',sans-serif;text-transform:uppercase;text-decoration:none;color:var(--ink)" style-hover="color:var(--acc)">Herramientas</a>
+      </div>
+      <div style="padding:48px;border-left:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:26px">
+        <div><div style="font:600 10px 'Public Sans',sans-serif;letter-spacing:.18em;color:var(--acc);text-transform:uppercase;margin-bottom:10px">Contacto</div><div style="font:400 14px/1.8 'Public Sans',sans-serif;color:var(--muted)">Tijuana, Baja California<br>+52 664 104 9491<br>Lun–Vie · 9:00–18:00 PT</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <div data-r="pad" style="padding:52px 40px 26px">
+    <span style="font:600 11px 'Public Sans',sans-serif;letter-spacing:.22em;color:var(--acc);text-transform:uppercase">Inventario · Tijuana</span>
+    <h1 style="font:800 44px/1.02 'Archivo',sans-serif;letter-spacing:-.02em;margin:14px 0 10px;text-transform:uppercase">Propiedades disponibles</h1>
+    <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--muted);max-width:520px;margin:0">Residencial, comercial e industrial con valor comercial, revisión documental y ruta de cierre.</p>
+  </div>
+
+  <!-- FILTROS -->
+  <div data-r="pad" style="position:sticky;top:57px;z-index:20;padding:16px 40px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(5,5,5,.92);backdrop-filter:blur(8px)">
+    <div data-r="filters" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center">
+        <div style="display:flex;gap:6px;border:1px solid var(--line);border-radius:100px;padding:4px">
+          <div onClick="{{ opTodo }}" style="{{ pillOpTodo }}">Todo</div>
+          <div onClick="{{ opVenta }}" style="{{ pillOpVenta }}">Venta</div>
+          <div onClick="{{ opRenta }}" style="{{ pillOpRenta }}">Renta</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <div onClick="{{ tpTodos }}" style="{{ pillTpTodos }}">Todos</div>
+          <div onClick="{{ tpRes }}" style="{{ pillTpRes }}">Residencial</div>
+          <div onClick="{{ tpCom }}" style="{{ pillTpCom }}">Comercial</div>
+          <div onClick="{{ tpInd }}" style="{{ pillTpInd }}">Industrial</div>
+        </div>
+      </div>
+      <div style="font:600 11px 'Public Sans',sans-serif;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">{{ countText }}</div>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div data-r="pad" style="padding:32px 40px 64px">
+    <div data-r="grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px">
+      <sc-for list="{{ items }}" as="p" hint-placeholder-count="6">
+        <a href="Propiedad Editorial Black.dc.html" style="text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:8px;overflow:hidden;display:block;cursor:pointer;transition:transform .2s,border-color .2s" style-hover="border-color:rgba(var(--acc-rgb),.4);transform:translateY(-4px)">
+          <div style="{{ p.bgStyle }}">
+            <span style="{{ p.badgeStyle }}">{{ p.op }}</span>
+          </div>
+          <div style="padding:20px">
+            <div style="font:600 9.5px 'Public Sans',sans-serif;letter-spacing:.14em;color:var(--acc);text-transform:uppercase;margin-bottom:8px">{{ p.tag }}</div>
+            <div style="font:800 20px 'Archivo',sans-serif">{{ p.title }}</div>
+            <div style="font:400 12px 'Public Sans',sans-serif;color:var(--muted);margin-top:10px">{{ p.specs }}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);margin-top:16px;padding-top:16px">
+              <span style="font:800 18px 'Archivo',sans-serif">{{ p.price }}</span>
+              <span style="font:700 10px 'Archivo',sans-serif;letter-spacing:.1em;color:var(--acc);text-transform:uppercase">Ver ficha →</span>
+            </div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+    <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:60px 0;text-align:center;font:400 14px 'Public Sans',sans-serif;color:var(--muted)">Sin resultados para este filtro. Ajusta operación o tipo.</div>
+    </sc-if>
+    <div style="display:flex;justify-content:center;margin-top:44px">
+      <div style="font:700 11px 'Archivo',sans-serif;letter-spacing:.1em;color:var(--ink);border:1px solid var(--line);padding:14px 28px;border-radius:3px;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--acc)">Cargar más</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div data-r="pad" style="border-top:1px solid var(--line);background:var(--footer);padding:52px 40px 28px">
+    <div data-r="foot" style="display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:36px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.1)">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px"><div style="width:3px;height:26px;background:var(--acc)"></div><div style="font:800 15px/1 'Archivo',sans-serif">BLACK<span style="display:block;font-size:8px;letter-spacing:.28em;color:var(--muted);font-weight:600;margin-top:2px">CAPITAL</span></div></div>
+        <p style="font:400 13px/1.7 'Public Sans',sans-serif;color:var(--muted);max-width:300px;margin:0">Representación inmobiliaria en Tijuana para activos residenciales, comerciales e industriales.</p>
+      </div>
+      <div><div style="font:800 10px 'Archivo',sans-serif;letter-spacing:.16em;color:var(--acc);text-transform:uppercase;margin-bottom:16px">Marcas</div><div style="display:flex;flex-direction:column;gap:11px;font:400 13px 'Public Sans',sans-serif;color:var(--muted)"><a href="https://blackmx.vercel.app/black-luxury" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Black Luxury</a><a href="https://blackmx.vercel.app/black-business" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Black Business</a><a href="https://blackmx.vercel.app/black-industrial" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Black Industrial</a></div></div>
+      <div><div style="font:800 10px 'Archivo',sans-serif;letter-spacing:.16em;color:var(--acc);text-transform:uppercase;margin-bottom:16px">Corporativo</div><div style="display:flex;flex-direction:column;gap:11px;font:400 13px 'Public Sans',sans-serif;color:var(--muted)"><a href="https://blackmx.vercel.app/nosotros" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Nosotros</a><a href="https://blackmx.vercel.app/herramientas" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Herramientas</a><a href="https://blackmx.vercel.app/legal/aviso-privacidad" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Aviso de Privacidad</a></div></div>
+      <div><div style="font:800 10px 'Archivo',sans-serif;letter-spacing:.16em;color:var(--acc);text-transform:uppercase;margin-bottom:16px">Contacto</div><div style="display:flex;flex-direction:column;gap:11px;font:400 13px/1.5 'Public Sans',sans-serif;color:var(--muted)"><span>Tijuana, Baja California</span><a href="tel:526641049491" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">+52 (664) 104 9491</a><a href="mailto:contacto@blackmx.com" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">contacto@blackmx.com</a></div></div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;flex-wrap:wrap;gap:10px">
+      <span style="font:400 11px 'Public Sans',sans-serif;color:#66635d">© 2026 Black Capital. Todos los derechos reservados.</span>
+      <span style="font:600 10px 'Public Sans',sans-serif;letter-spacing:.14em;color:#66635d;text-transform:uppercase">Cumplimiento LFPIORPI Art. 27</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { menuOpen: false, op: 'Todo', tipo: 'Todos' };
+  PROPS = [
+    { op: 'Venta', tipo: 'Residencial', zona: 'Chapultepec', title: 'Residencia Chapultepec', price: '$12,400,000', specs: '4 rec · 3.5 baños · 320 m²', img: 'assets/hero.png' },
+    { op: 'Venta', tipo: 'Residencial', zona: 'Playas', title: 'Casa en Playas', price: '$6,850,000', specs: '3 rec · 2.5 baños · 210 m²', img: 'assets/prop-residencial.png' },
+    { op: 'Renta', tipo: 'Comercial', zona: 'Zona Río', title: 'Oficina corporativa', price: '$48,000 /mes', specs: '210 m² · piso 8 · 6 estac.', img: 'assets/prop-comercial.png' },
+    { op: 'Venta', tipo: 'Comercial', zona: 'Otay', title: 'Local comercial Otay', price: '$3,200,000', specs: '120 m² · planta baja', img: 'assets/prop-comercial.png' },
+    { op: 'Venta', tipo: 'Industrial', zona: 'Otay', title: 'Nave con andén', price: '$2.4M USD', specs: '4,200 m² · 9 m altura', img: 'assets/prop-industrial.png' },
+    { op: 'Renta', tipo: 'Industrial', zona: 'Pacífico', title: 'Bodega logística', price: '$140,000 /mes', specs: '2,800 m² · 3 andenes', img: 'assets/prop-industrial.png' },
+    { op: 'Renta', tipo: 'Residencial', zona: 'Zona Río', title: 'Departamento Río', price: '$28,000 /mes', specs: '2 rec · 2 baños · 95 m²', img: 'assets/prop-residencial.png' },
+    { op: 'Venta', tipo: 'Residencial', zona: 'Chapultepec', title: 'Residencia con vista', price: '$8,900,000', specs: '4 rec · 3 baños · 280 m²', img: 'assets/hero.png' },
+    { op: 'Venta', tipo: 'Comercial', zona: 'Díaz Ordaz', title: 'Plaza comercial', price: '$18,500,000', specs: '640 m² · 8 locales', img: 'assets/prop-comercial.png' }
+  ];
+  pill(active) { return 'font:700 10px \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:9px 15px;border-radius:100px;cursor:pointer;' + (active ? 'background:linear-gradient(180deg,#e6c56d,#c69d38);color:#050505' : 'color:var(--muted);border:1px solid var(--line)'); }
+  pillSeg(active) { return 'font:700 10px \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:100px;cursor:pointer;' + (active ? 'background:linear-gradient(180deg,#e6c56d,#c69d38);color:#050505' : 'color:var(--muted)'); }
+  renderVals() {
+    const op = this.state.op, tipo = this.state.tipo;
+    const list = this.PROPS.filter((p) => (op === 'Todo' || p.op === op) && (tipo === 'Todos' || p.tipo === tipo));
+    const items = list.map((p) => ({
+      op: p.op, title: p.title, price: p.price, specs: p.specs,
+      tag: p.zona + ' · ' + p.tipo,
+      bgStyle: "position:relative;height:260px;background:url('" + p.img + "') center/cover,#100e0c;border-bottom:1px solid rgba(var(--acc-rgb),.14)",
+      badgeStyle: 'position:absolute;top:14px;left:14px;font:700 8.5px \'Archivo\',sans-serif;letter-spacing:.12em;padding:5px 9px;border-radius:2px;text-transform:uppercase;' + (p.op === 'Venta' ? 'color:var(--bg);background:var(--acc)' : 'color:var(--ink);background:rgba(255,255,255,.14)')
+    }));
+    const n = list.length;
+    return {
+      toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      overlayStyle: 'position:fixed;inset:0;z-index:90;background:rgba(4,4,4,.98);backdrop-filter:blur(6px);flex-direction:column;animation:bcFade .28s ease;display:' + (this.state.menuOpen ? 'flex' : 'none'),
+      opTodo: () => this.setState({ op: 'Todo' }), opVenta: () => this.setState({ op: 'Venta' }), opRenta: () => this.setState({ op: 'Renta' }),
+      tpTodos: () => this.setState({ tipo: 'Todos' }), tpRes: () => this.setState({ tipo: 'Residencial' }), tpCom: () => this.setState({ tipo: 'Comercial' }), tpInd: () => this.setState({ tipo: 'Industrial' }),
+      pillOpTodo: this.pillSeg(op === 'Todo'), pillOpVenta: this.pillSeg(op === 'Venta'), pillOpRenta: this.pillSeg(op === 'Renta'),
+      pillTpTodos: this.pill(tipo === 'Todos'), pillTpRes: this.pill(tipo === 'Residencial'), pillTpCom: this.pill(tipo === 'Comercial'), pillTpInd: this.pill(tipo === 'Industrial'),
+      items, empty: n === 0,
+      countText: n + (n === 1 ? ' propiedad' : ' propiedades')
+    };
+  }
+}
+</script>
+</body>
+</html>

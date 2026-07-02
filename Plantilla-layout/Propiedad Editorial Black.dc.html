@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&amp;family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#050505;font-family:'Public Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+    --bg:#050505;--panel:#0a0a0a;--footer:#000;--ink:#fff;--muted:#cfcbc1;--line:rgba(255,255,255,.22);--acc:#cfa652;--acc-rgb:207,166,82}
+  @keyframes bcFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes bcPulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.14);opacity:1}}
+  @keyframes bcDown{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(6px);opacity:1}}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:var(--line);outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--acc);cursor:pointer;border:3px solid #050505;box-shadow:0 0 0 1px var(--acc)}
+  input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--acc);cursor:pointer;border:3px solid #050505}
+  @media (max-width:1000px){
+    [data-r="index"]{display:none !important}
+    [data-r="shell"]{grid-template-columns:1fr !important}
+    [data-r="two"]{grid-template-columns:1fr !important}
+    [data-r="calc"]{grid-template-columns:1fr !important}
+    [data-r="asesor"]{grid-template-columns:1fr !important}
+    [data-r="menugrid"]{grid-template-columns:1fr !important}
+    [data-r="pad"]{padding-left:24px !important;padding-right:24px !important}
+    [data-r="herobar"]{gap:20px !important;flex-wrap:wrap !important}
+  }
+  @media (max-width:600px){
+    [data-r="stage"]{height:300px !important}
+    [data-r="hero"]{height:76vh !important}
+    [data-r="htitle"]{font-size:44px !important}
+    [data-r="foot"]{grid-template-columns:1fr 1fr !important}
+    [data-r="bottombar"]{padding:10px 16px !important}
+    [data-r="pad"]{padding-left:16px !important;padding-right:16px !important}
+  }
+</style>
+</helmet>
+
+<div style="background:var(--bg);min-height:100vh;color:var(--ink);padding-bottom:70px">
+
+  <!-- ===== NAV ===== -->
+  <div style="position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:linear-gradient(180deg,rgba(5,5,5,.9),rgba(5,5,5,0))">
+    <div style="display:flex;align-items:center;gap:9px"><div style="width:3px;height:24px;background:var(--acc)"></div><div style="font:800 14px/1 'Archivo',sans-serif">BLACK<span style="display:block;font-size:7px;letter-spacing:.28em;color:var(--muted);font-weight:600;margin-top:2px">CAPITAL</span></div></div>
+    <div onClick="{{ toggleMenu }}" style="display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:100px;padding:9px 16px;cursor:pointer;background:rgba(5,5,5,.4)" style-hover="border-color:var(--acc)"><span style="font:700 10px 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase">Menú</span><div style="display:flex;flex-direction:column;gap:3px"><span style="width:15px;height:2px;background:var(--acc)"></span><span style="width:15px;height:2px;background:var(--ink)"></span></div></div>
+  </div>
+
+  <!-- ===== OVERLAY MENÚ ===== -->
+  <div style="{{ overlayStyle }}">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid var(--line)">
+      <div style="display:flex;align-items:center;gap:10px"><div style="width:3px;height:26px;background:var(--acc)"></div><div style="font:800 15px/1 'Archivo',sans-serif">BLACK<span style="display:block;font-size:8px;letter-spacing:.28em;color:var(--muted);font-weight:600;margin-top:2px">CAPITAL</span></div></div>
+      <div onClick="{{ closeMenu }}" style="width:42px;height:42px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:3px;cursor:pointer;font:400 22px 'Archivo',sans-serif">×</div>
+    </div>
+    <div data-r="menugrid" style="flex:1;display:grid;grid-template-columns:1.4fr 1fr">
+      <div style="padding:48px;display:flex;flex-direction:column;gap:6px;justify-content:center">
+        <a href="https://blackmx.vercel.app/" onClick="{{ closeMenu }}" style="font:800 40px/1.2 'Archivo',sans-serif;text-transform:uppercase;text-decoration:none;color:var(--ink)" style-hover="color:var(--acc)">Inicio</a>
+        <a href="https://blackmx.vercel.app/inventario" onClick="{{ closeMenu }}" style="font:800 40px/1.2 'Archivo',sans-serif;text-transform:uppercase;text-decoration:none;color:var(--ink)" style-hover="color:var(--acc)">Inventario</a>
+        <a href="https://blackmx.vercel.app/nosotros" onClick="{{ closeMenu }}" style="font:800 40px/1.2 'Archivo',sans-serif;text-transform:uppercase;text-decoration:none;color:var(--ink)" style-hover="color:var(--acc)">Nosotros</a>
+        <a href="https://blackmx.vercel.app/herramientas" onClick="{{ closeMenu }}" style="font:800 40px/1.2 'Archivo',sans-serif;text-transform:uppercase;text-decoration:none;color:var(--ink)" style-hover="color:var(--acc)">Herramientas</a>
+      </div>
+      <div style="padding:48px;border-left:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:26px">
+        <div><div style="font:600 10px 'Public Sans',sans-serif;letter-spacing:.18em;color:var(--acc);text-transform:uppercase;margin-bottom:10px">Contacto</div><div style="font:400 14px/1.8 'Public Sans',sans-serif;color:var(--muted)">Tijuana, Baja California<br>+52 664 104 9491<br>Lun–Vie · 9:00–18:00 PT</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HERO full-bleed ===== -->
+  <div data-r="hero" style="position:relative;height:var(--heroh,88vh);min-height:520px;overflow:hidden">
+    <img src="assets/hero.png" alt="Residencia Chapultepec" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.55) 0%,rgba(5,5,5,.1) 30%,rgba(5,5,5,.35) 60%,rgba(5,5,5,.95) 100%)"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0" data-r="pad">
+      <div style="padding:0 32px 30px">
+        <div style="display:flex;gap:8px;margin-bottom:18px"><span style="font:700 9px 'Archivo',sans-serif;letter-spacing:.14em;color:var(--bg);background:var(--acc);padding:6px 11px;border-radius:100px;text-transform:uppercase">Venta</span><span style="font:700 9px 'Archivo',sans-serif;letter-spacing:.14em;color:var(--ink);border:1px solid rgba(255,255,255,.4);padding:6px 11px;border-radius:100px;text-transform:uppercase">Disponible</span><span style="font:600 9px 'Public Sans',sans-serif;letter-spacing:.14em;color:rgba(255,255,255,.8);padding:6px 4px;text-transform:uppercase">Chapultepec · Tijuana</span></div>
+        <h1 data-r="htitle" style="font:900 var(--htitle,92px)/.92 'Archivo',sans-serif;letter-spacing:-.03em;margin:0;text-transform:uppercase">Residencia<br>Chapultepec</h1>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SHELL: índice + capítulos ===== -->
+  <div data-r="shell" style="display:grid;grid-template-columns:220px 1fr;max-width:1400px;margin:0 auto">
+    <!-- ÍNDICE lateral -->
+    <aside data-r="index" style="align-self: start; position: sticky; top: 0; padding: 48px 0 48px 32px; height: 781px; display: flex; flex-direction: column; justify-content: center; gap: 12px; border-right: 1px solid var(--line); width: 220px">
+      <a href="#c1" style="display:flex;gap:10px;align-items:baseline;padding:9px 0;text-decoration:none" style-hover="color:var(--acc)"><span style="font:700 10px 'Archivo',monospace;color:var(--acc)">01</span><span style="font:600 12px 'Public Sans',sans-serif;color:var(--ink)">Galería</span></a>
+      <a href="#c2" style="display:flex;gap:10px;align-items:baseline;padding:9px 0;text-decoration:none;color:var(--muted)" style-hover="color:var(--acc)"><span style="font:700 10px 'Archivo',monospace;color:var(--acc)">02</span><span style="font:600 12px 'Public Sans',sans-serif">La propiedad</span></a>
+      <a href="#c3" style="display:flex;gap:10px;align-items:baseline;padding:9px 0;text-decoration:none;color:var(--muted)" style-hover="color:var(--acc)"><span style="font:700 10px 'Archivo',monospace;color:var(--acc)">03</span><span style="font:600 12px 'Public Sans',sans-serif">Ficha técnica</span></a>
+      <a href="#c4" style="display:flex;gap:10px;align-items:baseline;padding:9px 0;text-decoration:none;color:var(--muted)" style-hover="color:var(--acc)"><span style="font:700 10px 'Archivo',monospace;color:var(--acc)">04</span><span style="font:600 12px 'Public Sans',sans-serif">Ubicación</span></a>
+      <a href="#c5" style="display:flex;gap:10px;align-items:baseline;padding:9px 0;text-decoration:none;color:var(--muted)" style-hover="color:var(--acc)"><span style="font:700 10px 'Archivo',monospace;color:var(--acc)">05</span><span style="font:600 12px 'Public Sans',sans-serif">Financiamiento</span></a>
+      <a href="#c6" style="display:flex;gap:10px;align-items:baseline;padding:9px 0;text-decoration:none;color:var(--muted)" style-hover="color:var(--acc)"><span style="font:700 10px 'Archivo',monospace;color:var(--acc)">06</span><span style="font:600 12px 'Public Sans',sans-serif">Tu asesor</span></a>
+      <a href="#c7" style="display:flex;gap:10px;align-items:baseline;padding:9px 0;text-decoration:none;color:var(--muted)" style-hover="color:var(--acc)"><span style="font:700 10px 'Archivo',monospace;color:var(--acc)">07</span><span style="font:600 12px 'Public Sans',sans-serif">Preguntas</span></a>
+      <a href="#c8" style="display:flex;gap:10px;align-items:baseline;padding:9px 0;text-decoration:none;color:var(--muted)" style-hover="color:var(--acc)"><span style="font:700 10px 'Archivo',monospace;color:var(--acc)">08</span><span style="font:600 12px 'Public Sans',sans-serif">Agenda</span></a>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <div style="min-width:0">
+
+      <!-- 01 · MEDIA (Fotos / Video / 360) -->
+      <section id="c1" data-r="pad" style="padding:56px 48px;border-bottom:1px solid var(--line)">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:22px">
+          <div style="display:flex;align-items:baseline;gap:14px"><span style="font:700 12px 'Archivo',monospace;color:var(--acc)">01</span><h2 style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.01em;margin:0;text-transform:uppercase">Galería</h2></div>
+          <div style="display:flex;gap:6px;border:1px solid var(--line);border-radius:100px;padding:4px">
+            <div onClick="{{ mFotos }}" style="{{ tabFotos }}">Fotos</div>
+            <div onClick="{{ mVideo }}" style="{{ tabVideo }}">Video</div>
+            <div onClick="{{ m360 }}" style="{{ tab360 }}">360°</div>
+          </div>
+        </div>
+
+        <!-- panel FOTOS -->
+        <div style="{{ panelFotos }}">
+          <div data-r="stage" style="position:relative;height:520px;border-radius:12px;overflow:hidden;border:1px solid var(--line)">
+            <img ref="{{ photoRef }}" src="assets/hero.png" alt="Foto de la propiedad" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+            <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,5,5,.4),rgba(5,5,5,0) 20%,rgba(5,5,5,0) 80%,rgba(5,5,5,.4))"></div>
+            <div onClick="{{ prevPhoto }}" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;background:rgba(5,5,5,.55);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;font:400 18px 'Archivo';color:#fff" style-hover="background:var(--acc);color:var(--bg)">‹</div>
+            <div onClick="{{ nextPhoto }}" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;background:rgba(5,5,5,.55);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;font:400 18px 'Archivo';color:#fff" style-hover="background:var(--acc);color:var(--bg)">›</div>
+            <div style="position:absolute;bottom:16px;right:16px;font:600 10px 'Public Sans',monospace;letter-spacing:.1em;color:rgba(255,255,255,.85);background:rgba(0,0,0,.5);padding:6px 12px;border-radius:100px"><span ref="{{ photoCntRef }}">1</span> / 5</div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+            <div ref="{{ thumbRef }}" onClick="{{ p0 }}" style="width:100px;aspect-ratio:4/3;flex:none;border-radius:6px;overflow:hidden;cursor:pointer;border:1px solid var(--acc)"><img src="assets/hero.png" alt="Foto" style="width:100%;height:100%;object-fit:cover"></div>
+            <div ref="{{ thumbRef }}" onClick="{{ p1 }}" style="width:100px;aspect-ratio:4/3;flex:none;border-radius:6px;overflow:hidden;cursor:pointer;border:1px solid var(--line)"><img src="assets/prop-residencial.png" alt="Foto" style="width:100%;height:100%;object-fit:cover"></div>
+            <div ref="{{ thumbRef }}" onClick="{{ p2 }}" style="width:100px;aspect-ratio:4/3;flex:none;border-radius:6px;overflow:hidden;cursor:pointer;border:1px solid var(--line)"><img src="assets/prop-comercial.png" alt="Foto" style="width:100%;height:100%;object-fit:cover"></div>
+            <div ref="{{ thumbRef }}" onClick="{{ p3 }}" style="width:100px;aspect-ratio:4/3;flex:none;border-radius:6px;overflow:hidden;cursor:pointer;border:1px solid var(--line)"><img src="assets/prop-industrial.png" alt="Foto" style="width:100%;height:100%;object-fit:cover"></div>
+            <div ref="{{ thumbRef }}" onClick="{{ p4 }}" style="width:100px;aspect-ratio:4/3;flex:none;border-radius:6px;overflow:hidden;cursor:pointer;border:1px solid var(--line)"><img src="assets/hero.png" alt="Foto" style="width:100%;height:100%;object-fit:cover"></div>
+          </div>
+        </div>
+
+        <!-- panel VIDEO -->
+        <div style="{{ panelVideo }}">
+          <div data-r="stage" style="position:relative;height:520px;border-radius:12px;overflow:hidden;border:1px solid var(--line)">
+            <img src="assets/hero.png" alt="Video" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.55)">
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer">
+              <div style="width:84px;height:84px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;animation:bcPulse 2.4s ease-in-out infinite"><div style="width:0;height:0;border-left:22px solid var(--bg);border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:5px"></div></div>
+              <div style="font:700 11px 'Archivo',sans-serif;letter-spacing:.14em;color:#fff;text-transform:uppercase">Reproducir · 2:14</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- panel 360 -->
+        <div style="{{ panel360 }}">
+          <div data-r="stage" style="position:relative;height:520px;border-radius:12px;overflow:hidden;border:1px solid var(--line)">
+            <img ref="{{ tourRef }}" src="assets/hero.png" alt="Recorrido 360" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.25),rgba(5,5,5,.45))"></div>
+            <div style="position:absolute;top:44%;left:34%;width:16px;height:16px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 6px rgba(var(--acc-rgb),.25);animation:bcPulse 2.4s ease-in-out infinite"></div>
+            <div style="position:absolute;top:16px;left:16px;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.5);padding:7px 12px;border-radius:100px"><span style="font:800 11px 'Archivo',sans-serif;color:var(--acc)">360°</span><span ref="{{ tourLabelRef }}" style="font:600 10px 'Public Sans',sans-serif;letter-spacing:.1em;color:#fff;text-transform:uppercase">Sala</span></div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none"><div style="font:600 10px 'Public Sans',sans-serif;letter-spacing:.14em;color:rgba(255,255,255,.8);text-transform:uppercase;border:1px solid rgba(255,255,255,.4);border-radius:100px;padding:8px 16px">Arrastra para explorar</div></div>
+            <div style="position:absolute;left:16px;bottom:16px;display:flex;gap:8px">
+              <div ref="{{ roomRef }}" onClick="{{ q0 }}" style="font:700 10px 'Archivo',sans-serif;letter-spacing:.08em;color:var(--bg);background:var(--acc);padding:9px 13px;border-radius:100px;cursor:pointer;text-transform:uppercase">Sala</div>
+              <div ref="{{ roomRef }}" onClick="{{ q1 }}" style="font:700 10px 'Archivo',sans-serif;letter-spacing:.08em;color:#fff;border:1px solid rgba(255,255,255,.4);padding:9px 13px;border-radius:100px;cursor:pointer;text-transform:uppercase">Cocina</div>
+              <div ref="{{ roomRef }}" onClick="{{ q2 }}" style="font:700 10px 'Archivo',sans-serif;letter-spacing:.08em;color:#fff;border:1px solid rgba(255,255,255,.4);padding:9px 13px;border-radius:100px;cursor:pointer;text-transform:uppercase">Recámara</div>
+              <div ref="{{ roomRef }}" onClick="{{ q3 }}" style="font:700 10px 'Archivo',sans-serif;letter-spacing:.08em;color:#fff;border:1px solid rgba(255,255,255,.4);padding:9px 13px;border-radius:100px;cursor:pointer;text-transform:uppercase">Terraza</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 · LA PROPIEDAD -->
+      <section id="c2" data-r="pad" style="padding:56px 48px;border-bottom:1px solid var(--line)">
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font:700 12px 'Archivo',monospace;color:var(--acc)">02</span><h2 style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.01em;margin:0;text-transform:uppercase">La propiedad</h2></div>
+        <div data-r="two" style="display:grid;grid-template-columns:1.4fr 1fr;gap:44px">
+          <div>
+            <p style="font:400 17px/1.8 'Public Sans',sans-serif;color:var(--ink);margin:0 0 16px;max-width:600px">Residencia urbana en Chapultepec que integra amplitud, privacidad y cercanía a las zonas más activas de Tijuana.</p>
+            <p style="font:400 15px/1.75 'Public Sans',sans-serif;color:var(--muted);margin:0 0 28px;max-width:600px">La distribución prioriza luz natural, circulación clara y áreas sociales conectadas a la terraza. Recién remodelada y lista para entrega, escriturada y libre de gravamen.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font:600 10px 'Public Sans',sans-serif;letter-spacing:.08em;color:var(--muted);border:1px solid var(--line);padding:8px 14px;border-radius:100px;text-transform:uppercase">Construida 2022</span>
+              <span style="font:600 10px 'Public Sans',sans-serif;letter-spacing:.08em;color:var(--muted);border:1px solid var(--line);padding:8px 14px;border-radius:100px;text-transform:uppercase">2 niveles</span>
+              <span style="font:600 10px 'Public Sans',sans-serif;letter-spacing:.08em;color:var(--muted);border:1px solid var(--line);padding:8px 14px;border-radius:100px;text-transform:uppercase">Terraza 95 m²</span>
+              <span style="font:600 10px 'Public Sans',sans-serif;letter-spacing:.08em;color:var(--muted);border:1px solid var(--line);padding:8px 14px;border-radius:100px;text-transform:uppercase">Privada con caseta</span>
+            </div>
+          </div>
+          <div style="border-left:1px solid var(--line);padding-left:32px">
+            <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)"><span style="font:400 12px 'Public Sans',sans-serif;color:var(--muted)">Terreno</span><span style="font:800 18px 'Archivo',sans-serif">480 m²</span></div>
+            <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)"><span style="font:400 12px 'Public Sans',sans-serif;color:var(--muted)">Construcción</span><span style="font:800 18px 'Archivo',sans-serif">320 m²</span></div>
+            <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)"><span style="font:400 12px 'Public Sans',sans-serif;color:var(--muted)">Estacionamientos</span><span style="font:800 18px 'Archivo',sans-serif">2</span></div>
+            <div style="display:flex;justify-content:space-between;padding:14px 0"><span style="font:400 12px 'Public Sans',sans-serif;color:var(--muted)">Referencia</span><span style="font:800 14px ui-monospace,monospace;color:var(--acc)">TIJ-CHA-118</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 · FICHA TÉCNICA (tabs) -->
+      <section id="c3" data-r="pad" style="padding:56px 48px;border-bottom:1px solid var(--line);background:var(--panel)">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:26px">
+          <div style="display:flex;align-items:baseline;gap:14px"><span style="font:700 12px 'Archivo',monospace;color:var(--acc)">03</span><h2 style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.01em;margin:0;text-transform:uppercase">Ficha técnica</h2></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <div onClick="{{ f0 }}" style="{{ fichaTab0 }}">Interiores</div>
+            <div onClick="{{ f1 }}" style="{{ fichaTab1 }}">Acabados</div>
+            <div onClick="{{ f2 }}" style="{{ fichaTab2 }}">Exteriores</div>
+            <div onClick="{{ f3 }}" style="{{ fichaTab3 }}">Seguridad</div>
+          </div>
+        </div>
+        <div style="{{ fichaG0 }}"><div data-r="two" style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px">
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Recámaras</span><span style="font:600 14px 'Public Sans',sans-serif">4 con clóset</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Principal</span><span style="font:600 14px 'Public Sans',sans-serif">Vestidor + en suite</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Cocina</span><span style="font:600 14px 'Public Sans',sans-serif">Integral con isla</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Sala / comedor</span><span style="font:600 14px 'Public Sans',sans-serif">Doble altura</span></div>
+        </div></div>
+        <div style="{{ fichaG1 }}"><div data-r="two" style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px">
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Pisos</span><span style="font:600 14px 'Public Sans',sans-serif">Porcelanato y madera</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Ventanería</span><span style="font:600 14px 'Public Sans',sans-serif">Aluminio + doble cristal</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Climatización</span><span style="font:600 14px 'Public Sans',sans-serif">Minisplit por zona</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Boiler</span><span style="font:600 14px 'Public Sans',sans-serif">Gas natural</span></div>
+        </div></div>
+        <div style="{{ fichaG2 }}"><div data-r="two" style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px">
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Terraza</span><span style="font:600 14px 'Public Sans',sans-serif">95 m²</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Jardín</span><span style="font:600 14px 'Public Sans',sans-serif">Riego automático</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Cochera</span><span style="font:600 14px 'Public Sans',sans-serif">2 autos techada</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Barda</span><span style="font:600 14px 'Public Sans',sans-serif">Perimetral</span></div>
+        </div></div>
+        <div style="{{ fichaG3 }}"><div data-r="two" style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px">
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Acceso</span><span style="font:600 14px 'Public Sans',sans-serif">Privada con caseta</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Vigilancia</span><span style="font:600 14px 'Public Sans',sans-serif">24/7 con CCTV</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Agua</span><span style="font:600 14px 'Public Sans',sans-serif">Cisterna + bomba</span></div>
+          <div style="display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line)"><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Internet</span><span style="font:600 14px 'Public Sans',sans-serif">Fibra óptica</span></div>
+        </div></div>
+      </section>
+
+      <!-- 04 · UBICACIÓN -->
+      <section id="c4" data-r="pad" style="padding:56px 48px;border-bottom:1px solid var(--line)">
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font:700 12px 'Archivo',monospace;color:var(--acc)">04</span><h2 style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.01em;margin:0;text-transform:uppercase">Ubicación</h2></div>
+        <div style="position:relative;height:300px;border-radius:12px;overflow:hidden;border:1px solid var(--line);margin-bottom:16px">
+          <img src="assets/zona-mapa.png" alt="Mapa" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.12),rgba(5,5,5,.3))"></div>
+          <div style="position:absolute;top:46%;left:47%;width:16px;height:16px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 7px rgba(var(--acc-rgb),.2);animation:bcPulse 2.4s ease-in-out infinite"></div>
+          <div style="position:absolute;bottom:14px;left:16px;font:600 11px 'Public Sans',sans-serif;color:var(--ink)">Chapultepec, Tijuana · zona aproximada</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div style="flex:1;min-width:140px;border:1px solid var(--line);border-radius:8px;padding:16px 18px"><div style="font:800 20px 'Archivo',sans-serif;color:var(--acc)">4<span style="font-size:12px;color:var(--muted)"> min</span></div><div style="font:400 12px 'Public Sans',sans-serif;color:var(--muted);margin-top:2px">Club Campestre</div></div>
+          <div style="flex:1;min-width:140px;border:1px solid var(--line);border-radius:8px;padding:16px 18px"><div style="font:800 20px 'Archivo',sans-serif;color:var(--acc)">7<span style="font-size:12px;color:var(--muted)"> min</span></div><div style="font:400 12px 'Public Sans',sans-serif;color:var(--muted);margin-top:2px">Zona Río</div></div>
+          <div style="flex:1;min-width:140px;border:1px solid var(--line);border-radius:8px;padding:16px 18px"><div style="font:800 20px 'Archivo',sans-serif;color:var(--acc)">15<span style="font-size:12px;color:var(--muted)"> min</span></div><div style="font:400 12px 'Public Sans',sans-serif;color:var(--muted);margin-top:2px">Garita Otay</div></div>
+          <div style="flex:1;min-width:140px;border:1px solid var(--line);border-radius:8px;padding:16px 18px"><div style="font:800 20px 'Archivo',sans-serif;color:var(--acc)">18<span style="font-size:12px;color:var(--muted)"> min</span></div><div style="font:400 12px 'Public Sans',sans-serif;color:var(--muted);margin-top:2px">Aeropuerto TIJ</div></div>
+        </div>
+      </section>
+
+      <!-- 05 · FINANCIAMIENTO -->
+      <section id="c5" data-r="pad" style="padding:56px 48px;border-bottom:1px solid var(--line);background:var(--panel)">
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font:700 12px 'Archivo',monospace;color:var(--acc)">05</span><h2 style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.01em;margin:0;text-transform:uppercase">Financiamiento</h2></div>
+        <div data-r="calc" style="display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center">
+          <div>
+            <div style="font:600 10px 'Public Sans',sans-serif;letter-spacing:.14em;color:var(--muted);text-transform:uppercase">Mensualidad estimada</div>
+            <div style="font:900 58px/1 'Archivo',sans-serif;color:var(--acc);margin:8px 0 20px">{{ simMensualidad }}</div>
+            <div style="height:8px;border-radius:100px;overflow:hidden;background:var(--line);display:flex;margin-bottom:10px"><div style="{{ barEnganche }}"></div></div>
+            <div style="display:flex;justify-content:space-between;font:400 12px 'Public Sans',sans-serif;color:var(--muted)"><span><b style="color:var(--acc)">Enganche</b> {{ simEnganche }}</span><span>Financiar {{ simFinanciar }}</span></div>
+            <a href="#c8" style="display:inline-block;margin-top:24px;font:700 11px 'Archivo',sans-serif;letter-spacing:.06em;color:var(--bg);background:var(--acc);padding:14px 24px;border-radius:4px;text-transform:uppercase;text-decoration:none" style-hover="filter:brightness(1.08)">Solicitar preaprobación →</a>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:26px">
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="font:600 11px 'Public Sans',sans-serif;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Enganche</span><span style="font:700 13px 'Archivo',sans-serif;color:var(--acc)">{{ simEngancheLabel }}</span></div><input type="range" min="10" max="40" step="5" value="{{ engancheVal }}" onInput="{{ setEnganche }}"></div>
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="font:600 11px 'Public Sans',sans-serif;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Plazo</span><span style="font:700 13px 'Archivo',sans-serif;color:var(--acc)">{{ simPlazoLabel }}</span></div><input type="range" min="5" max="25" step="5" value="{{ plazoVal }}" onInput="{{ setPlazo }}"></div>
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="font:600 11px 'Public Sans',sans-serif;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Tasa anual</span><span style="font:700 13px 'Archivo',sans-serif;color:var(--acc)">{{ simTasaLabel }}</span></div><input type="range" min="8" max="14" step="0.25" value="{{ tasaVal }}" onInput="{{ setTasa }}"></div>
+            <p style="font:400 10.5px/1.5 'Public Sans',sans-serif;color:#66635d;margin:0">Estimación referencial sobre {{ simPrecio }}. Sujeto a aprobación crediticia.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 · ASESOR -->
+      <section id="c6" data-r="pad" style="padding:56px 48px;border-bottom:1px solid var(--line)">
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font:700 12px 'Archivo',monospace;color:var(--acc)">06</span><h2 style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.01em;margin:0;text-transform:uppercase">Tu asesor</h2></div>
+        <div data-r="asesor" style="display:grid;grid-template-columns:200px 1fr;gap:36px;align-items:center">
+          <div style="position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:repeating-linear-gradient(135deg,#151310 0 11px,#100e0c 11px 22px);display:flex;align-items:center;justify-content:center"><div style="width:84px;height:84px;border-radius:50%;background:var(--acc);color:var(--bg);font:800 32px 'Archivo',sans-serif;display:flex;align-items:center;justify-content:center">M</div></div>
+          <div>
+            <div style="font:400 20px/1.5 'Archivo',sans-serif;color:var(--ink);max-width:640px;margin-bottom:22px">“Acompaño cada operación con información clara y seguimiento directo. Sin intermediarios, respondo en menos de 2 horas hábiles.”</div>
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:22px"><div style="font:800 16px 'Archivo',sans-serif">Moisés Núñez</div><span style="width:4px;height:4px;border-radius:50%;background:var(--acc)"></span><span style="font:400 13px 'Public Sans',sans-serif;color:var(--muted)">Asesor Senior · Black Capital</span><span style="font:600 9px 'Public Sans',sans-serif;letter-spacing:.06em;color:var(--acc);border:1px solid rgba(var(--acc-rgb),.4);padding:4px 9px;border-radius:100px;text-transform:uppercase">AMPI</span></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <a href="https://wa.me/526641049491" target="_blank" rel="noopener" style="font:700 11px 'Archivo',sans-serif;letter-spacing:.06em;color:var(--bg);background:var(--acc);padding:13px 22px;border-radius:4px;text-transform:uppercase;text-decoration:none" style-hover="filter:brightness(1.08)">WhatsApp</a>
+              <a href="tel:526641049491" style="font:700 11px 'Archivo',sans-serif;letter-spacing:.06em;color:var(--ink);border:1px solid var(--line);padding:13px 22px;border-radius:4px;text-transform:uppercase;text-decoration:none" style-hover="border-color:var(--acc)">Llamar</a>
+              <a href="mailto:contacto@blackmx.com" style="font:700 11px 'Archivo',sans-serif;letter-spacing:.06em;color:var(--ink);border:1px solid var(--line);padding:13px 22px;border-radius:4px;text-transform:uppercase;text-decoration:none" style-hover="border-color:var(--acc)">Correo</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 · FAQ -->
+      <section id="c7" data-r="pad" style="padding:56px 48px;border-bottom:1px solid var(--line);background:var(--panel)">
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font:700 12px 'Archivo',monospace;color:var(--acc)">07</span><h2 style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.01em;margin:0;text-transform:uppercase">Preguntas frecuentes</h2></div>
+        <div style="border-bottom:1px solid var(--line)">
+          <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="4">
+            <div style="border-top:1px solid var(--line)">
+              <div onClick="{{ f.onToggle }}" style="display:flex;align-items:center;gap:20px;padding:22px 0;cursor:pointer">
+                <span style="font:700 12px 'Archivo',monospace;color:var(--acc);flex:none">{{ f.num }}</span>
+                <span style="font:700 17px 'Archivo',sans-serif;color:var(--ink);flex:1">{{ f.q }}</span>
+                <span style="font:400 22px/1 'Archivo',sans-serif;color:var(--acc);flex:none">{{ f.sign }}</span>
+              </div>
+              <div style="{{ f.answerStyle }}"><p style="font:400 14px/1.7 'Public Sans',sans-serif;color:var(--muted);margin:0 0 22px 32px;max-width:620px">{{ f.a }}</p></div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <!-- 08 · AGENDA -->
+      <section id="c8" data-r="pad" style="padding:56px 48px">
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font:700 12px 'Archivo',monospace;color:var(--acc)">08</span><h2 style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.01em;margin:0;text-transform:uppercase">Agenda tu visita</h2></div>
+        <div data-r="two" style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+          <p style="font:400 15px/1.75 'Public Sans',sans-serif;color:var(--muted);margin:0;max-width:360px">Coordinamos visitas con información previa del inmueble, ubicación y condiciones. Un asesor confirma en menos de 2 horas.</p>
+          <div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+              <input type="text" placeholder="Nombre completo" style="background:#131210;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:14px 16px;font:400 13px 'Public Sans',sans-serif;color:var(--ink);outline:none" style-focus="border-color:var(--acc)">
+              <input type="tel" placeholder="Teléfono" style="background:#131210;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:14px 16px;font:400 13px 'Public Sans',sans-serif;color:var(--ink);outline:none" style-focus="border-color:var(--acc)">
+            </div>
+            <input type="email" placeholder="Email" style="width:100%;background:#131210;border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:14px 16px;font:400 13px 'Public Sans',sans-serif;color:var(--ink);outline:none;margin-bottom:12px" style-focus="border-color:var(--acc)">
+            <a href="https://wa.me/526641049491?text=Quiero%20agendar%20visita%20a%20Residencia%20Chapultepec" target="_blank" rel="noopener" style="display:block;font:700 12px 'Archivo',sans-serif;letter-spacing:.06em;color:var(--bg);background:var(--acc);padding:15px;border-radius:4px;text-align:center;text-transform:uppercase;text-decoration:none" style-hover="filter:brightness(1.08)">Confirmar solicitud →</a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div data-r="pad" style="border-top:1px solid var(--line);background:var(--footer);padding:52px 48px 28px">
+    <div data-r="foot" style="display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:36px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.1)">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px"><div style="width:3px;height:26px;background:var(--acc)"></div><div style="font:800 15px/1 'Archivo',sans-serif">BLACK<span style="display:block;font-size:8px;letter-spacing:.28em;color:var(--muted);font-weight:600;margin-top:2px">CAPITAL</span></div></div>
+        <p style="font:400 13px/1.7 'Public Sans',sans-serif;color:var(--muted);max-width:300px;margin:0">Representación inmobiliaria en Tijuana para activos residenciales, comerciales e industriales.</p>
+      </div>
+      <div><div style="font:800 10px 'Archivo',sans-serif;letter-spacing:.16em;color:var(--acc);text-transform:uppercase;margin-bottom:16px">Marcas</div><div style="display:flex;flex-direction:column;gap:11px;font:400 13px 'Public Sans',sans-serif;color:var(--muted)"><a href="https://blackmx.vercel.app/black-luxury" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Black Luxury</a><a href="https://blackmx.vercel.app/black-business" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Black Business</a><a href="https://blackmx.vercel.app/black-industrial" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Black Industrial</a></div></div>
+      <div><div style="font:800 10px 'Archivo',sans-serif;letter-spacing:.16em;color:var(--acc);text-transform:uppercase;margin-bottom:16px">Corporativo</div><div style="display:flex;flex-direction:column;gap:11px;font:400 13px 'Public Sans',sans-serif;color:var(--muted)"><a href="https://blackmx.vercel.app/nosotros" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Nosotros</a><a href="https://blackmx.vercel.app/herramientas" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Herramientas</a><a href="https://blackmx.vercel.app/legal/aviso-privacidad" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">Aviso de Privacidad</a></div></div>
+      <div><div style="font:800 10px 'Archivo',sans-serif;letter-spacing:.16em;color:var(--acc);text-transform:uppercase;margin-bottom:16px">Contacto</div><div style="display:flex;flex-direction:column;gap:11px;font:400 13px/1.5 'Public Sans',sans-serif;color:var(--muted)"><span>Tijuana, Baja California</span><a href="tel:526641049491" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">+52 (664) 104 9491</a><a href="mailto:contacto@blackmx.com" style="color:inherit;text-decoration:none" style-hover="color:var(--ink)">contacto@blackmx.com</a></div></div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;flex-wrap:wrap;gap:10px">
+      <span style="font:400 11px 'Public Sans',sans-serif;color:#66635d">© 2026 Black Capital. Todos los derechos reservados.</span>
+      <span style="font:600 10px 'Public Sans',sans-serif;letter-spacing:.14em;color:#66635d;text-transform:uppercase">Cumplimiento LFPIORPI Art. 27</span>
+    </div>
+  </div>
+
+  <!-- ===== BOTTOM ACTION BAR ===== -->
+  <div data-r="bottombar" style="position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 32px;border-top:1px solid var(--line);background:rgba(5,5,5,.9);backdrop-filter:blur(10px)">
+    <div style="display:flex;align-items:baseline;gap:12px"><span style="font:800 18px 'Archivo',sans-serif;color:var(--acc)">$12,400,000</span><span style="font:400 11px 'Public Sans',sans-serif;color:var(--muted)">Residencia Chapultepec · 320 m²</span></div>
+    <div style="display:flex;gap:10px">
+      <a href="tel:526641049491" style="font:700 10px 'Archivo',sans-serif;letter-spacing:.08em;color:var(--ink);border:1px solid var(--line);padding:12px 18px;border-radius:3px;text-transform:uppercase;text-decoration:none" style-hover="border-color:var(--acc)">Llamar</a>
+      <a href="#c8" style="font:700 10px 'Archivo',sans-serif;letter-spacing:.08em;color:var(--bg);background:var(--acc);padding:12px 18px;border-radius:3px;text-transform:uppercase;text-decoration:none" style-hover="filter:brightness(1.08)">Agendar visita →</a>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Oro&quot;,&quot;options&quot;:[&quot;Oro&quot;,&quot;Bronce&quot;,&quot;Esmeralda&quot;,&quot;Acero&quot;,&quot;Borgoña&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Apariencia&quot;,&quot;label&quot;:&quot;Acento de marca&quot;},&quot;contraste&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Máximo&quot;,&quot;options&quot;:[&quot;Suave&quot;,&quot;Medio&quot;,&quot;Alto&quot;,&quot;Máximo&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Apariencia&quot;,&quot;label&quot;:&quot;Nivel de contraste&quot;},&quot;hero&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Cinematográfico&quot;,&quot;options&quot;:[&quot;Cinematográfico&quot;,&quot;Estándar&quot;,&quot;Compacto&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Apariencia&quot;,&quot;label&quot;:&quot;Drama del hero&quot;}}">
+class Component extends DCLogic {
+  state = { menuOpen: false, media: 'fotos', ficha: 0, faq: 0, enganche: 20, plazo: 20, tasa: 10.5 };
+  PRICE = 12400000;
+  PHOTOS = ['assets/hero.png', 'assets/prop-residencial.png', 'assets/prop-comercial.png', 'assets/prop-industrial.png', 'assets/hero.png'];
+  ROOMS = [{ img: 'assets/hero.png', label: 'Sala' }, { img: 'assets/prop-comercial.png', label: 'Cocina' }, { img: 'assets/prop-residencial.png', label: 'Recámara' }, { img: 'assets/prop-industrial.png', label: 'Terraza' }];
+  FAQ_DATA = [
+    { q: '¿Cuál es la situación legal de la propiedad?', a: 'Escritura pública inscrita en el Registro Público de la Propiedad, libre de gravamen. Documentación completa para revisión con tu notario.' },
+    { q: '¿Aceptan financiamiento bancario?', a: 'Sí: crédito bancario, INFONAVIT/FOVISSSTE y pago de contado. Te conectamos con instituciones para tu precalificación.' },
+    { q: '¿Es apta para inversión o renta?', a: 'Por zona y conservación es atractiva para vivir o rentar. Compartimos comparables de la zona a solicitud.' },
+    { q: '¿Puedo visitarla antes de decidir?', a: 'Claro. Coordinamos una visita guiada con un asesor e información previa del inmueble.' }
+  ];
+  _pi = 0; _ri = 0; _thumbs = []; _rooms = [];
+  photoRef = (el) => { this._photo = el; };
+  photoCntRef = (el) => { this._cnt = el; };
+  thumbRef = (el) => { if (el && this._thumbs.indexOf(el) < 0) this._thumbs.push(el); };
+  tourRef = (el) => { this._tour = el; };
+  tourLabelRef = (el) => { this._tourLabel = el; };
+  roomRef = (el) => { if (el && this._rooms.indexOf(el) < 0) this._rooms.push(el); };
+  setPhoto(i) {
+    this._pi = (i + this.PHOTOS.length) % this.PHOTOS.length;
+    if (this._photo) this._photo.src = this.PHOTOS[this._pi];
+    if (this._cnt) this._cnt.textContent = (this._pi + 1);
+    this._thumbs.forEach((t, idx) => { if (t && t.style) t.style.borderColor = idx === this._pi ? 'var(--acc)' : 'var(--line)'; });
+  }
+  setRoom(i) {
+    this._ri = i; const room = this.ROOMS[i];
+    if (this._tour) this._tour.src = room.img;
+    if (this._tourLabel) this._tourLabel.textContent = room.label;
+    this._rooms.forEach((t, idx) => {
+      if (!t) return;
+      if (idx === i) { t.style.background = 'var(--acc)'; t.style.color = 'var(--bg)'; t.style.border = 'none'; }
+      else { t.style.background = 'transparent'; t.style.color = '#fff'; t.style.border = '1px solid rgba(255,255,255,.4)'; }
+    });
+  }
+  fmt(x) { return '$' + Math.round(x).toLocaleString('en-US'); }
+  THEME = {
+    accent: {
+      'Oro':      { acc: '#cfa652', rgb: '207,166,82' },
+      'Bronce':   { acc: '#b5793e', rgb: '181,121,62' },
+      'Esmeralda':{ acc: '#3f9f7f', rgb: '63,159,127' },
+      'Acero':    { acc: '#8a97a6', rgb: '138,151,166' },
+      'Borgoña':  { acc: '#a2495a', rgb: '162,73,90' }
+    },
+    contraste: {
+      'Suave':  { ink: '#e7e4dd', muted: '#8f8c85', line: 'rgba(255,255,255,.10)' },
+      'Medio':  { ink: '#f4f2ec', muted: '#a8a49c', line: 'rgba(255,255,255,.16)' },
+      'Alto':   { ink: '#fbfaf7', muted: '#cfcbc1', line: 'rgba(255,255,255,.22)' },
+      'Máximo': { ink: '#ffffff', muted: '#e6e3db', line: 'rgba(255,255,255,.30)' }
+    },
+    hero: {
+      'Cinematográfico': { h: '88vh', t: '92px' },
+      'Estándar':        { h: '68vh', t: '76px' },
+      'Compacto':        { h: '52vh', t: '60px' }
+    }
+  };
+  applyTheme() {
+    const A = this.THEME.accent[this.props.accent] || this.THEME.accent['Oro'];
+    const C = this.THEME.contraste[this.props.contraste] || this.THEME.contraste['Alto'];
+    const H = this.THEME.hero[this.props.hero] || this.THEME.hero['Cinematográfico'];
+    const b = document.body.style;
+    b.setProperty('--acc', A.acc); b.setProperty('--acc-rgb', A.rgb);
+    b.setProperty('--ink', C.ink); b.setProperty('--muted', C.muted); b.setProperty('--line', C.line);
+    b.setProperty('--heroh', H.h); b.setProperty('--htitle', H.t);
+  }
+  componentDidMount() { this.applyTheme(); }
+  componentDidUpdate() { this.applyTheme(); }
+  tab(active) { return 'font:700 10px \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:100px;cursor:pointer;' + (active ? 'background:var(--acc);color:var(--bg)' : 'color:var(--muted)'); }
+  ftab(active) { return 'font:700 10px \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:9px 15px;border-radius:100px;cursor:pointer;border:1px solid ' + (active ? 'var(--acc);background:var(--acc);color:var(--bg)' : 'var(--line);color:var(--muted);background:transparent'); }
+  renderVals() {
+    const pct = this.state.enganche, plazo = this.state.plazo, tasa = this.state.tasa;
+    const eng = this.PRICE * pct / 100, fin = this.PRICE - eng;
+    const r = tasa / 100 / 12, n = plazo * 12;
+    const m = r > 0 ? fin * r / (1 - Math.pow(1 + r, -n)) : fin / n;
+    const md = this.state.media, fi = this.state.ficha;
+    const faqs = this.FAQ_DATA.map((f, i) => {
+      const open = this.state.faq === i;
+      return { q: f.q, a: f.a, num: '0' + (i + 1), sign: open ? '−' : '+', onToggle: () => this.setState((s) => ({ faq: s.faq === i ? null : i })), answerStyle: 'overflow:hidden;display:' + (open ? 'block' : 'none') };
+    });
+    const grp = (i) => 'display:' + (fi === i ? 'block' : 'none');
+    return {
+      toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      overlayStyle: 'position:fixed;inset:0;z-index:90;background:rgba(4,4,4,.98);backdrop-filter:blur(6px);flex-direction:column;animation:bcFade .28s ease;display:' + (this.state.menuOpen ? 'flex' : 'none'),
+      // media tabs
+      mFotos: () => this.setState({ media: 'fotos' }), mVideo: () => this.setState({ media: 'video' }), m360: () => this.setState({ media: '360' }),
+      tabFotos: this.tab(md === 'fotos'), tabVideo: this.tab(md === 'video'), tab360: this.tab(md === '360'),
+      panelFotos: 'display:' + (md === 'fotos' ? 'block' : 'none'), panelVideo: 'display:' + (md === 'video' ? 'block' : 'none'), panel360: 'display:' + (md === '360' ? 'block' : 'none'),
+      // photo gallery
+      photoRef: this.photoRef, photoCntRef: this.photoCntRef, thumbRef: this.thumbRef,
+      p0: () => this.setPhoto(0), p1: () => this.setPhoto(1), p2: () => this.setPhoto(2), p3: () => this.setPhoto(3), p4: () => this.setPhoto(4),
+      prevPhoto: () => this.setPhoto(this._pi - 1), nextPhoto: () => this.setPhoto(this._pi + 1),
+      // 360
+      tourRef: this.tourRef, tourLabelRef: this.tourLabelRef, roomRef: this.roomRef,
+      q0: () => this.setRoom(0), q1: () => this.setRoom(1), q2: () => this.setRoom(2), q3: () => this.setRoom(3),
+      // ficha
+      f0: () => this.setState({ ficha: 0 }), f1: () => this.setState({ ficha: 1 }), f2: () => this.setState({ ficha: 2 }), f3: () => this.setState({ ficha: 3 }),
+      fichaTab0: this.ftab(fi === 0), fichaTab1: this.ftab(fi === 1), fichaTab2: this.ftab(fi === 2), fichaTab3: this.ftab(fi === 3),
+      fichaG0: grp(0), fichaG1: grp(1), fichaG2: grp(2), fichaG3: grp(3),
+      faqs,
+      // calc
+      engancheVal: pct, plazoVal: plazo, tasaVal: tasa,
+      setEnganche: (e) => this.setState({ enganche: +e.target.value }),
+      setPlazo: (e) => this.setState({ plazo: +e.target.value }),
+      setTasa: (e) => this.setState({ tasa: +e.target.value }),
+      barEnganche: 'width:' + pct + '%;background:var(--acc);height:100%',
+      simEngancheLabel: pct + '% · ' + this.fmt(eng), simPlazoLabel: plazo + ' años', simTasaLabel: tasa.toFixed(2) + '%',
+      simMensualidad: this.fmt(m), simPrecio: this.fmt(this.PRICE), simEnganche: this.fmt(eng), simFinanciar: this.fmt(fin)
+    };
+  }
+}
+</script>
+</body>
+</html>
