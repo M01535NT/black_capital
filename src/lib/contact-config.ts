@@ -21,7 +21,7 @@ export const CONTACT_CONFIG = {
     /** Business hours (display lines) */
     hours: [
         "Lunes a Viernes",
-        "9:00 AM — 6:00 PM (PT)",
+        "9:00 AM - 6:00 PM (PT)",
         "Sábados con cita previa",
     ],
     /** Business-level facts (not stored in DB). Edit here when the company grows. */

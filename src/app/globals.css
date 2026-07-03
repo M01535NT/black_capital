@@ -376,6 +376,21 @@ body {
   .animate-marquee {
     animation: marquee 20s linear infinite;
   }
+
+  /* Ticker continuo y seamless: el track contiene 2 copias del contenido y se
+     desplaza -50% (una copia exacta) en loop. Ancho natural, gap uniforme. */
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee-track 34s linear infinite;
+  }
+  .marquee-viewport:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes marquee-track {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
   .hero-marquee-rotate-wrap {
     position: relative;
     display: inline-block;
@@ -753,7 +768,7 @@ body {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .animate-marquee, .metallic-gold { animation: none !important; }
+  .animate-marquee, .marquee-track, .metallic-gold { animation: none !important; }
 }
 
 @media print {

@@ -2,7 +2,6 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
-import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 
 export default function PublicLayout({
     children,
@@ -23,7 +22,6 @@ export default function PublicLayout({
                 </main>
                 <Footer />
             </div>
-            <WhatsAppFloat />
         </>
     );
 }

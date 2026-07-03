@@ -9,6 +9,7 @@ import {
     MessageCircle,
 } from "lucide-react";
 import { Logo } from "./Logo";
+import { Reveal } from "@/components/home/_motion";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 /* ── Google Maps link derived from the human-readable address ── */
@@ -38,29 +39,49 @@ const corpLinks = [
 export function Footer() {
     const phoneRaw = CONTACT_CONFIG.phoneRaw;
     const whatsappHref = `https://wa.me/${phoneRaw}?text=${encodeURIComponent(
-        "Hola, me gustaría recibir información sobre propiedades de inversión.",
+        "Hola, me gustaría recibir información sobre propiedades en Tijuana.",
     )}`;
 
     return (
         <footer
             role="contentinfo"
             aria-label="Pie de página"
-            className="w-full bg-background mt-auto relative"
+            className="relative mt-auto w-full overflow-hidden bg-background"
         >
             <div
                 aria-hidden="true"
                 className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/35 to-transparent"
             />
-            {/* ═══════ FOOTER PROPIAMENTE ═══════ */}
-            <div className="max-w-[90rem] mx-auto px-6 sm:px-10 lg:px-16 pt-12 pb-8 sm:pt-16">
-                <div className="grid grid-cols-2 md:grid-cols-12 gap-10 lg:gap-12 mb-16">
+            {/* Halo dorado ambiental */}
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -bottom-52 left-1/2 h-[32rem] w-[46rem] -translate-x-1/2 rounded-full opacity-[0.05] blur-[110px]"
+                style={{ background: "var(--gradient-gold)" }}
+            />
+
+            <div className="relative mx-auto max-w-[90rem] px-6 pb-8 pt-16 sm:px-10 sm:pt-20 lg:px-16">
+                {/* Franja-statement */}
+                <Reveal className="mb-14 flex flex-col gap-6 border-b border-white/[0.06] pb-12 lg:flex-row lg:items-end lg:justify-between">
+                    <p className="max-w-3xl text-[clamp(1.6rem,4vw,3rem)] font-extrabold uppercase leading-[1.04] tracking-headline text-white">
+                        Bienes raíces{" "}
+                        <span className="gold-ink">con criterio</span>.
+                    </p>
+                    <p className="property-tag-type text-white/40 lg:text-right">
+                        Residencial · Comercial · Industrial
+                    </p>
+                </Reveal>
+
+                <Reveal
+                    y={18}
+                    className="mb-16 grid grid-cols-2 gap-10 md:grid-cols-12 lg:gap-12"
+                >
                     {/* Brand */}
-                    <div className="col-span-2 md:col-span-4 space-y-5">
+                    <div className="col-span-2 space-y-5 md:col-span-4">
                         <Logo href="/" variant="full" size="md" tone="gold" />
-                        <p className="text-body max-w-sm">
-                            Inmobiliaria en Tijuana para activos residenciales, comerciales e industriales. Te ayudamos a ordenar precio, zona, documentos y ruta de cierre.
+                        <p className="max-w-sm text-body">
+                            Inmobiliaria en Tijuana para activos residenciales, comerciales e industriales. Ponemos en orden precio, zona, documentos y ruta de cierre antes de que avances.
                         </p>
-                        <div className="flex gap-2 pt-2 flex-wrap">
+                        <div className="flex flex-wrap gap-2 pt-2">
                             {socialLinks.map((social) => {
                                 const handle = (() => {
                                     try {
@@ -76,10 +97,10 @@ export function Footer() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         title={`${social.name} · ${handle}`}
-                                        className="w-11 h-11 sm:w-9 sm:h-9 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 transition-all duration-300 focus-visible:text-[var(--color-accent)] focus-visible:border-[var(--color-accent)]/40 focus-visible:outline-none"
+                                        className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/50 transition-colors duration-200 ease-out hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] focus-visible:border-[var(--color-accent)]/40 focus-visible:text-[var(--color-accent)] focus-visible:outline-none sm:h-9 sm:w-9"
                                         aria-label={`${social.name} (${handle})`}
                                     >
-                                        <social.icon className="w-4 h-4" aria-hidden="true" />
+                                        <social.icon className="h-4 w-4" aria-hidden="true" />
                                     </a>
                                 );
                             })}
@@ -88,29 +109,25 @@ export function Footer() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title={`WhatsApp · ${CONTACT_CONFIG.phone}`}
-                                className="w-11 h-11 sm:w-9 sm:h-9 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 transition-all duration-300 focus-visible:text-[var(--color-accent)] focus-visible:border-[var(--color-accent)]/40 focus-visible:outline-none"
+                                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/50 transition-colors duration-200 ease-out hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] focus-visible:border-[var(--color-accent)]/40 focus-visible:text-[var(--color-accent)] focus-visible:outline-none sm:h-9 sm:w-9"
                                 aria-label="WhatsApp"
                             >
-                                <MessageCircle className="w-4 h-4" aria-hidden="true" />
+                                <MessageCircle className="h-4 w-4" aria-hidden="true" />
                             </a>
                         </div>
                     </div>
 
                     {/* Marcas */}
-                    <div className="col-span-1 md:col-span-3 space-y-5">
-                        <h4 className="footer-heading-type text-white/55">
-                            Marcas
-                        </h4>
+                    <div className="col-span-1 space-y-5 md:col-span-3">
+                        <h4 className="footer-heading-type text-white/55">Marcas</h4>
                         <ul className="space-y-3">
                             {brandLinks.map((link) => (
                                 <li key={link.name}>
                                     <Link href={link.href} className="group flex flex-col">
-                                        <span className="footer-link-type group-hover:text-[var(--color-accent)] transition-colors">
+                                        <span className="footer-link-type transition-colors group-hover:text-[var(--color-accent)]">
                                             {link.name}
                                         </span>
-                                        <span className="footer-legal-type mt-0.5">
-                                            {link.desc}
-                                        </span>
+                                        <span className="footer-legal-type mt-0.5">{link.desc}</span>
                                     </Link>
                                 </li>
                             ))}
@@ -118,16 +135,14 @@ export function Footer() {
                     </div>
 
                     {/* Corporativo */}
-                    <div className="col-span-1 md:col-span-2 space-y-5">
-                        <h4 className="footer-heading-type text-white/55">
-                            Corporativo
-                        </h4>
+                    <div className="col-span-1 space-y-5 md:col-span-2">
+                        <h4 className="footer-heading-type text-white/55">Corporativo</h4>
                         <ul className="space-y-3">
                             {corpLinks.map((link) => (
                                 <li key={link.name}>
                                     <Link
                                         href={link.href}
-                                        className="footer-link-type hover:text-[var(--color-accent)] transition-colors"
+                                        className="footer-link-type transition-colors hover:text-[var(--color-accent)]"
                                     >
                                         {link.name}
                                     </Link>
@@ -137,48 +152,46 @@ export function Footer() {
                     </div>
 
                     {/* Contacto */}
-                    <div className="col-span-2 md:col-span-3 space-y-5">
-                        <h4 className="footer-heading-type text-white/55">
-                            Contacto
-                        </h4>
-                        <ul className="space-y-3 footer-link-type text-white/55 leading-relaxed">
+                    <div className="col-span-2 space-y-5 md:col-span-3">
+                        <h4 className="footer-heading-type text-white/55">Contacto</h4>
+                        <ul className="footer-link-type space-y-3 leading-relaxed text-white/55">
                             <li>
                                 <a
                                     href={mapsHref}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group inline-flex items-start gap-2 hover:text-[var(--color-accent)] transition-colors"
+                                    className="group inline-flex items-start gap-2 transition-colors hover:text-[var(--color-accent)]"
                                 >
-                                    <MapPin className="w-3.5 h-3.5 mt-1 text-[var(--color-accent)] flex-shrink-0" aria-hidden="true" />
+                                    <MapPin className="mt-1 h-3.5 w-3.5 flex-shrink-0 text-[var(--color-accent)]" aria-hidden="true" />
                                     <span className="group-hover:underline">{CONTACT_CONFIG.address}</span>
                                 </a>
                             </li>
                             <li>
                                 <a
                                     href={`tel:${phoneRaw}`}
-                                    className="group inline-flex items-center gap-2 hover:text-[var(--color-accent)] transition-colors"
+                                    className="group inline-flex items-center gap-2 transition-colors hover:text-[var(--color-accent)]"
                                 >
-                                    <Phone className="w-3.5 h-3.5 text-[var(--color-accent)]" aria-hidden="true" />
-                                    <span className="group-hover:underline">{CONTACT_CONFIG.phone}</span>
+                                    <Phone className="h-3.5 w-3.5 text-[var(--color-accent)]" aria-hidden="true" />
+                                    <span className="tabular-nums group-hover:underline">{CONTACT_CONFIG.phone}</span>
                                 </a>
                             </li>
                             <li>
                                 <a
                                     href={`mailto:${CONTACT_CONFIG.email}`}
-                                    className="group inline-flex items-center gap-2 hover:text-[var(--color-accent)] transition-colors break-all"
+                                    className="group inline-flex items-center gap-2 break-all transition-colors hover:text-[var(--color-accent)]"
                                 >
-                                    <Mail className="w-3.5 h-3.5 text-[var(--color-accent)] flex-shrink-0" aria-hidden="true" />
+                                    <Mail className="h-3.5 w-3.5 flex-shrink-0 text-[var(--color-accent)]" aria-hidden="true" />
                                     <span className="group-hover:underline">{CONTACT_CONFIG.email}</span>
                                 </a>
                             </li>
-                            <li className="pt-1 footer-legal-type text-white/35 leading-relaxed">
+                            <li className="footer-legal-type pt-1 leading-relaxed text-white/35">
                                 {CONTACT_CONFIG.hours.map((line) => (
                                     <span key={line} className="block">{line}</span>
                                 ))}
                             </li>
                         </ul>
                     </div>
-                </div>
+                </Reveal>
 
                 {/* Compliance */}
                 <p className="footer-legal-type mb-6 max-w-3xl leading-relaxed text-white/55">
@@ -186,7 +199,7 @@ export function Footer() {
                 </p>
 
                 {/* Bottom bar */}
-                <div className="pt-6 border-t border-white/[0.06] flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="flex flex-col items-center justify-between gap-4 border-t border-white/[0.06] pt-6 md:flex-row">
                     <p className="footer-legal-type text-white/40">
                         © {new Date().getFullYear()} Black Capital. Todos los derechos reservados.
                     </p>
