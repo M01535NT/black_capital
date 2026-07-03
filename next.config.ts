@@ -38,7 +38,7 @@ const nextConfig: NextConfig = {
               "font-src 'self' data:",
               "connect-src 'self' https://*.supabase.co https://*.posthog.com https://*.i.posthog.com https://api.resend.com https://vitals.vercel-insights.com",
               "media-src 'self' https://*.supabase.co",
-              "frame-src 'self' https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com",
+              "frame-src 'self' https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com https://kuula.co https://*.kuula.co",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",

@@ -162,12 +162,13 @@ export function ImageGallery({
         <div
           className={cn(
             "relative w-full overflow-hidden cursor-pointer group",
-            // Componente compacto, no hero. Tope duro por breakpoint.
-            "aspect-[3/4] max-h-[520px]",
-            "sm:aspect-[4/3] sm:max-h-[560px]",
-            "md:aspect-[16/10] md:max-h-[600px]",
-            "lg:aspect-[16/9] lg:max-h-[620px]",
-            "xl:max-h-[680px]",
+            // Compacto, no hero. Topes relativos al viewport en desktop para que
+            // la galería quepa en pantalla (no se corte bajo el encabezado).
+            "aspect-[4/3] max-h-[440px]",
+            "sm:aspect-[16/10] sm:max-h-[500px]",
+            "md:aspect-[16/10] md:max-h-[58vh]",
+            "lg:aspect-[3/2] lg:max-h-[62vh]",
+            "xl:max-h-[66vh]",
           )}
           onClick={() => openLightbox(activeIndex)}
           onTouchStart={handleTouchStart}

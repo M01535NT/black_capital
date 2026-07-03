@@ -14,7 +14,7 @@ import { DocumentCard } from "@/components/property/DocumentCard";
 import { StickyContactBar } from "@/components/property/StickyContactBar";
 import { ArrowLeft } from "lucide-react";
 import { PropertyJsonLd } from "@/components/property/PropertyJsonLd";
-import { PropertyChapterNav, type Chapter } from "@/components/property/PropertyChapterNav";
+import { PropertySummaryCard } from "@/components/property/PropertySummaryCard";
 import { FavoriteButton } from "@/components/property/favorite-button";
 import { MortgageCalculator } from "@/components/tools/mortgage-calculator";
 import { FadeIn } from "@/components/ui/motion";
@@ -49,8 +49,7 @@ type SimilarProperty = {
     m2_construction: number | null;
 };
 
-const SECTION_HEADING =
-    "property-tag-type text-white/48";
+const SECTION_HEADING = "property-tag-type text-white/48";
 
 /** Editorial numbered chapter heading (matches the reference "0X · Título"). */
 function ChapterLabel({ number, title, className = "mb-7" }: { number: string; title: string; className?: string }) {
@@ -153,7 +152,6 @@ export default async function PropertyDetailPage({
     if (error || !property) return notFound();
 
     // Parallelize the two lookups that depend on property.id / property.property_use.
-    // The agents-in-agents fetch must remain sequential (depends on property_agents result).
     const [propertyAgentsRes, similarRes] = await Promise.all([
         supabase
             .from("property_agents")
@@ -213,26 +211,33 @@ export default async function PropertyDetailPage({
         customAttributes: customAttrs,
     };
 
-    const hasContactChapter = agents.length > 0 || documents.length > 0;
-    const contactChapterLabel =
-        agents.length > 0 && documents.length > 0
-            ? "Contacto y documentos"
-            : agents.length > 0
-              ? "Asesor"
-              : "Documentos";
+    // ── Resumen sticky (columna derecha) ──
+    const primaryAgent = agents[0] ?? null;
+    const extraAgents = agents.slice(1);
+    const pricePerM2 = property.m2_construction
+        ? formatPrice(Math.round(property.price / property.m2_construction), property.currency)
+        : null;
 
-    // Índice editorial de capítulos (plantilla "Propiedad Editorial Black": 01–0N).
-    const chapters: Chapter[] = [
-        { id: "galeria", label: "Galería" },
+    const summaryFacts: { label: string; value: string }[] = [
+        ...(property.m2_terrain ? [{ label: "Terreno", value: formatArea(property.m2_terrain, "") }] : []),
+        ...(property.m2_construction ? [{ label: "Construcción", value: formatArea(property.m2_construction, "") }] : []),
+        ...(property.property_type ? [{ label: "Tipo", value: property.property_type }] : []),
+        { label: "Uso", value: property.property_use },
+        { label: "Estatus", value: STATUS_LABELS[property.status] || property.status },
+        { label: "Referencia", value: technicalData.reference },
+    ];
+
+    // Secciones de contenido (columna izquierda), numeradas desde 02 (Galería = 01).
+    const contentSections = [
         { id: "propiedad", label: "Descripción" },
         { id: "ficha-tecnica", label: "Ficha técnica" },
         ...(property.address ? [{ id: "ubicacion", label: "Ubicación" }] : []),
         ...(isForSale ? [{ id: "financiamiento", label: "Financiamiento" }] : []),
-        ...(hasContactChapter ? [{ id: "asesor", label: contactChapterLabel }] : []),
-        { id: "preguntas", label: "Preguntas" },
+        ...(documents.length > 0 ? [{ id: "documentos", label: "Documentos" }] : []),
+        ...(extraAgents.length > 0 ? [{ id: "asesores", label: "Asesores" }] : []),
+        { id: "preguntas", label: "Preguntas frecuentes" },
     ];
-    const chapterNumber = (id: string) =>
-        String(chapters.findIndex((c) => c.id === id) + 1).padStart(2, "0");
+    const num = (id: string) => String(contentSections.findIndex((c) => c.id === id) + 1).padStart(2, "0");
 
     return (
         <>
@@ -251,18 +256,18 @@ export default async function PropertyDetailPage({
                 agents={agents}
                 url={`/inventario/${slug}`}
             />
-            
-            {/* overflow-x-clip (no hidden): hidden crea un scroll container y rompe el sticky del índice */}
+
+            {/* overflow-x-clip (no hidden): hidden crea un scroll container y rompe el sticky */}
             <div className="min-h-screen w-full overflow-x-clip bg-background">
-                {/* Encabezado compacto (sin hero): volver + título + badges + precio */}
-                <header className="border-b border-white/[0.06] pt-24 lg:pt-28">
-                    <div className="mx-auto max-w-[90rem] px-6 pb-7 sm:px-10 lg:px-16">
+                {/* Encabezado compacto: volver + título + badges + precio */}
+                <header className="border-b border-white/[0.06] pt-20 lg:pt-24">
+                    <div className="mx-auto max-w-[90rem] px-6 pb-6 sm:px-10 lg:px-16">
                         <div className="mb-5 flex items-center justify-between gap-4">
                             <Link
                                 href={`/inventario?tipo=${encodeURIComponent(property.business_type)}`}
-                                className="group inline-flex items-center gap-2 property-tag-type text-white/55 transition-colors hover:text-[var(--color-accent)]"
+                                className="group inline-flex items-center gap-2 property-tag-type text-white/55 transition-colors duration-200 ease-out hover:text-[var(--color-accent)]"
                             >
-                                <ArrowLeft className="size-3.5 transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
+                                <ArrowLeft className="size-3.5 transition-transform duration-200 ease-out group-hover:-translate-x-0.5" aria-hidden="true" />
                                 Volver a {property.business_type}
                             </Link>
                             <FavoriteButton propertyId={property.id} variant="pill" />
@@ -277,9 +282,7 @@ export default async function PropertyDetailPage({
                                         {STATUS_LABELS[property.status] || property.status}
                                     </span>
                                     {property.address && (
-                                        <span className="property-tag-type text-white/60">
-                                            {property.address}
-                                        </span>
+                                        <span className="property-tag-type text-white/60">{property.address}</span>
                                     )}
                                 </div>
                                 <h1 className="font-display text-[clamp(1.9rem,4vw,3.1rem)] font-black uppercase leading-[0.95] tracking-tight text-white">
@@ -296,9 +299,9 @@ export default async function PropertyDetailPage({
                     </div>
                 </header>
 
+                {/* 01 · Galería (full-width) */}
                 <section id="galeria" className="w-full overflow-x-clip border-b border-white/[0.06] scroll-mt-24">
-                    <div className="mx-auto max-w-[90rem] min-w-0 px-4 pb-8 pt-8 sm:px-10 lg:px-16">
-                        <ChapterLabel number={chapterNumber("galeria")} title="Galería" />
+                    <div className="mx-auto min-w-0 max-w-[90rem] px-4 pb-8 pt-5 sm:px-10 lg:px-16">
                         <MediaShowcase
                             images={property.images || []}
                             title={property.title}
@@ -310,68 +313,56 @@ export default async function PropertyDetailPage({
                     </div>
                 </section>
 
-                {/* Shell plantilla: índice lateral sticky (corto → siempre visible) + una columna */}
-                <div className="mx-auto grid max-w-[90rem] grid-cols-1 px-4 sm:px-10 lg:grid-cols-[220px_1fr] lg:px-16">
-                    <aside className="hidden border-r border-white/[0.06] py-10 pr-8 lg:block">
-                        <div className="sticky top-24">
-                            <PropertyChapterNav chapters={chapters} />
+                {/* Dos columnas: contenido (izq) + resumen sticky (der) */}
+                <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-x-12 px-4 sm:px-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:px-16">
+                    {/* Resumen sticky. DOM-first → en móvil aparece arriba (precio/CTA temprano);
+                        en desktop se coloca explícitamente en la columna 2. */}
+                    <aside className="lg:col-start-2 lg:row-start-1">
+                        <div className="py-8 lg:sticky lg:top-24 lg:py-10">
+                            <PropertySummaryCard
+                                price={property.price}
+                                currency={property.currency}
+                                businessType={property.business_type}
+                                pricePerM2={pricePerM2}
+                                facts={summaryFacts}
+                                agent={primaryAgent}
+                                whatsappFallback={CONTACT_CONFIG.phoneRaw}
+                                propertyTitle={property.title}
+                            />
                         </div>
                     </aside>
 
-                    <div className="min-w-0 space-y-12 py-8 md:space-y-14 md:py-10 lg:pl-12">
-
+                    {/* Contenido */}
+                    <main className="min-w-0 space-y-12 py-8 md:space-y-14 lg:col-start-1 lg:row-start-1 lg:py-10 lg:pr-12">
                         <section id="propiedad" className="scroll-mt-24">
-                            <ChapterLabel number={chapterNumber("propiedad")} title="Descripción" />
-                            <FadeIn direction="up" delay={0.1}>
-                                <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-12">
-                                    <div className="min-w-0">
-                                        {property.description ? (
-                                            <PropertyDescription description={property.description} />
-                                        ) : (
-                                            <p className="max-w-prose text-body leading-relaxed text-white/66">
-                                                {property.property_type || property.property_use} en{" "}
-                                                {property.address || "Tijuana"} disponible en{" "}
-                                                {property.business_type.toLowerCase()}. Pide la ficha
-                                                completa para revisar detalles.
-                                            </p>
-                                        )}
-                                    </div>
-                                    <div className="border-t border-white/[0.1] pt-2 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
-                                        {[
-                                            ...(property.m2_terrain ? [["Terreno", formatArea(property.m2_terrain, "")]] : []),
-                                            ...(property.m2_construction ? [["Construcción", formatArea(property.m2_construction, "")]] : []),
-                                            ...(property.property_type ? [["Tipo", property.property_type]] : []),
-                                            ["Estatus", STATUS_LABELS[property.status] || property.status],
-                                        ].map(([label, value]) => (
-                                            <div
-                                                key={label}
-                                                className="flex items-baseline justify-between gap-4 border-b border-white/[0.1] py-3 last:border-b-0"
-                                            >
-                                                <span className="text-body-sm text-white/50">{label}</span>
-                                                <span className="font-display text-body-lg font-extrabold text-white">
-                                                    {value}
-                                                </span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                            <ChapterLabel number={num("propiedad")} title="Descripción" />
+                            <FadeIn direction="up">
+                                {property.description ? (
+                                    <PropertyDescription description={property.description} />
+                                ) : (
+                                    <p className="max-w-prose text-body leading-relaxed text-white/66">
+                                        {property.property_type || property.property_use} en{" "}
+                                        {property.address || "Tijuana"} disponible en{" "}
+                                        {property.business_type.toLowerCase()}. Pide la ficha completa para revisar detalles.
+                                    </p>
+                                )}
                             </FadeIn>
                         </section>
 
                         <section id="ficha-tecnica" className="scroll-mt-24">
                             <div className="mb-7 flex flex-wrap items-center justify-between gap-4">
-                                <ChapterLabel number={chapterNumber("ficha-tecnica")} title="Ficha técnica" className="mb-0" />
+                                <ChapterLabel number={num("ficha-tecnica")} title="Ficha técnica" className="mb-0" />
                                 <FichaPdfButton data={technicalData} />
                             </div>
-                            <FadeIn direction="up" delay={0.1}>
+                            <FadeIn direction="up">
                                 <TechnicalSheet data={technicalData} />
                             </FadeIn>
                         </section>
 
                         {property.address && (
                             <section id="ubicacion" className="scroll-mt-24">
-                                <ChapterLabel number={chapterNumber("ubicacion")} title="Ubicación" />
-                                <FadeIn direction="up" delay={0.1}>
+                                <ChapterLabel number={num("ubicacion")} title="Ubicación" />
+                                <FadeIn direction="up">
                                     <PropertyLocation address={property.address} title={property.title} />
                                 </FadeIn>
                             </section>
@@ -379,8 +370,8 @@ export default async function PropertyDetailPage({
 
                         {isForSale && (
                             <section id="financiamiento" className="scroll-mt-24">
-                                <ChapterLabel number={chapterNumber("financiamiento")} title="Financiamiento" />
-                                <FadeIn direction="up" delay={0.1}>
+                                <ChapterLabel number={num("financiamiento")} title="Financiamiento" />
+                                <FadeIn direction="up">
                                     <MortgageCalculator
                                         price={property.price}
                                         currency={property.currency}
@@ -390,87 +381,81 @@ export default async function PropertyDetailPage({
                             </section>
                         )}
 
-                        {hasContactChapter && (
-                            <section id="asesor" className="scroll-mt-24">
-                                <ChapterLabel number={chapterNumber("asesor")} title={contactChapterLabel} />
-                                <FadeIn direction="up" delay={0.1}>
-                                    <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-                                        {agents.length > 0 && (
-                                            <div className="border border-white/[0.08] bg-white/[0.025] p-5">
-                                                <p className="mb-4 property-tag-type text-white/48">
-                                                    {agents.length === 1 ? "Asesor" : "Asesores"}
-                                                </p>
-                                                <div className="space-y-5">
-                                                    {agents.map((agent) => (
-                                                        <AgentCard key={agent.id} agent={agent} />
-                                                    ))}
-                                                </div>
+                        {documents.length > 0 && (
+                            <section id="documentos" className="scroll-mt-24">
+                                <ChapterLabel number={num("documentos")} title="Documentos" />
+                                <FadeIn direction="up">
+                                    <div className="border border-white/[0.08] bg-white/[0.02] p-5">
+                                        <div className="space-y-2">
+                                            {documents.map((doc) => (
+                                                <DocumentCard
+                                                    key={doc.id}
+                                                    doc={doc}
+                                                    propertyId={property.id}
+                                                    propertyTitle={property.title}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </FadeIn>
+                            </section>
+                        )}
+
+                        {extraAgents.length > 0 && (
+                            <section id="asesores" className="scroll-mt-24">
+                                <ChapterLabel number={num("asesores")} title="Asesores" />
+                                <FadeIn direction="up">
+                                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                                        {extraAgents.map((agent) => (
+                                            <div key={agent.id} className="border border-white/[0.08] bg-white/[0.02] p-5">
+                                                <AgentCard agent={agent} />
                                             </div>
-                                        )}
-                                        {documents.length > 0 && (
-                                            <div className="border border-white/[0.08] bg-white/[0.025] p-5">
-                                                <p className="mb-4 property-tag-type text-white/48">
-                                                    Documentos
-                                                </p>
-                                                <div className="space-y-2">
-                                                    {documents.map((doc) => (
-                                                        <DocumentCard
-                                                            key={doc.id}
-                                                            doc={doc}
-                                                            propertyId={property.id}
-                                                            propertyTitle={property.title}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
+                                        ))}
                                     </div>
                                 </FadeIn>
                             </section>
                         )}
 
                         <section id="preguntas" className="scroll-mt-24">
-                            <ChapterLabel number={chapterNumber("preguntas")} title="Preguntas frecuentes" />
-                            <FadeIn direction="up" delay={0.1}>
+                            <ChapterLabel number={num("preguntas")} title="Preguntas frecuentes" />
+                            <FadeIn direction="up">
                                 <PropertyFAQ
                                     businessType={property.business_type}
                                     faqs={resolvePropertyFaqs(property.faqs, faqCatalog)}
                                 />
                             </FadeIn>
                         </section>
-
-                        {similar.length > 0 && (
-                            <FadeIn direction="up" delay={0.1}>
-                                <section className="space-y-6 border-t border-white/[0.06] pt-8">
-                                    <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                                        <div className="flex items-center gap-3">
-                                            <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
-                                            <h2 className={SECTION_HEADING}>Propiedades similares</h2>
-                                        </div>
-                                        <Link
-                                            href={`/inventario?uso=${encodeURIComponent(property.property_use)}`}
-                                            className="property-tag-type text-[var(--color-accent)]"
-                                        >
-                                            Ver inventario
-                                        </Link>
-                                    </div>
-                                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                                        {similar.map((sp, i) => (
-                                            <PropertyCard
-                                                key={sp.id}
-                                                property={sp}
-                                                variant="similar"
-                                                index={i}
-                                            />
-                                        ))}
-                                    </div>
-                                </section>
-                            </FadeIn>
-                        )}
-                    </div>
+                    </main>
                 </div>
 
-                {/* Barra de acción fija (todos los viewports, plantilla editorial) */}
+                {/* Similares (full-width) */}
+                {similar.length > 0 && (
+                    <div className="mx-auto max-w-[90rem] px-4 pb-12 sm:px-10 lg:px-16">
+                        <FadeIn direction="up">
+                            <section className="space-y-6 border-t border-white/[0.06] pt-10">
+                                <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
+                                        <h2 className={SECTION_HEADING}>Propiedades similares</h2>
+                                    </div>
+                                    <Link
+                                        href={`/inventario?uso=${encodeURIComponent(property.property_use)}`}
+                                        className="property-tag-type text-[var(--color-accent)]"
+                                    >
+                                        Ver inventario
+                                    </Link>
+                                </div>
+                                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                                    {similar.map((sp, i) => (
+                                        <PropertyCard key={sp.id} property={sp} variant="similar" index={i} />
+                                    ))}
+                                </div>
+                            </section>
+                        </FadeIn>
+                    </div>
+                )}
+
+                {/* Barra de acción fija (solo móvil/tablet; en desktop manda el resumen sticky) */}
                 <StickyContactBar
                     propertyId={property.id}
                     agentPhone={agents?.[0]?.phone}
@@ -481,8 +466,8 @@ export default async function PropertyDetailPage({
                     metaLabel={property.m2_construction ? formatArea(property.m2_construction, "") : undefined}
                 />
 
-                {/* Espaciador para que la barra fija no tape el footer */}
-                <div className="h-16" />
+                {/* Espaciador para que la barra fija (móvil) no tape el footer */}
+                <div className="h-16 lg:h-0" />
             </div>
         </>
     );

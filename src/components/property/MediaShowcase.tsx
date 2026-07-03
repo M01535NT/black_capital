@@ -41,11 +41,13 @@ export function MediaShowcase({
     ];
 
     return (
-        <div className="space-y-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+            {/* Tabs: horizontal arriba en móvil, columna vertical a la izquierda en sm+.
+                Al salir del tope, la media sube y gana alto (se ve más cuadrada). */}
             <div
                 role="tablist"
                 aria-label="Tipo de medio"
-                className="inline-flex gap-1 border border-white/[0.12] p-1"
+                className="flex shrink-0 flex-row gap-1 self-start border border-white/[0.12] p-1 sm:flex-col"
             >
                 {tabs.map(({ key, label, icon: Icon }) => {
                     const active = tab === key;
@@ -58,7 +60,7 @@ export function MediaShowcase({
                             aria-controls={`media-panel-${key}`}
                             onClick={() => setTab(key)}
                             className={cn(
-                                "inline-flex min-h-10 items-center gap-2 px-4 font-display text-[0.7rem] font-bold uppercase tracking-[0.08em] transition-colors",
+                                "inline-flex min-h-10 items-center gap-2 px-4 font-display text-[0.7rem] font-bold uppercase tracking-[0.08em] transition-colors duration-200 ease-out active:scale-[0.98] sm:w-full sm:justify-start",
                                 active
                                     ? "gold-gradient text-black"
                                     : "text-white/60 hover:text-[var(--color-accent)]",
@@ -71,29 +73,31 @@ export function MediaShowcase({
                 })}
             </div>
 
-            <div id="media-panel-fotos" role="tabpanel" hidden={tab !== "fotos"}>
-                <ImageGallery
-                    images={images}
-                    title={title}
-                    coverImage={coverImage}
-                    propertyUse={propertyUse}
-                />
-            </div>
+            <div className="min-w-0 flex-1">
+                <div id="media-panel-fotos" role="tabpanel" hidden={tab !== "fotos"}>
+                    <ImageGallery
+                        images={images}
+                        title={title}
+                        coverImage={coverImage}
+                        propertyUse={propertyUse}
+                    />
+                </div>
 
-            <div id="media-panel-video" role="tabpanel" hidden={tab !== "video"}>
-                {hasVideo ? (
-                    <VideoEmbed urls={videoUrls || []} bare />
-                ) : (
-                    <MediaUnavailable label="Video no disponible" />
-                )}
-            </div>
+                <div id="media-panel-video" role="tabpanel" hidden={tab !== "video"}>
+                    {hasVideo ? (
+                        <VideoEmbed urls={videoUrls || []} bare />
+                    ) : (
+                        <MediaUnavailable label="Video no disponible" />
+                    )}
+                </div>
 
-            <div id="media-panel-360" role="tabpanel" hidden={tab !== "360"}>
-                {hasTour ? (
-                    <TourEmbed urls={tourEmbeds || []} bare />
-                ) : (
-                    <MediaUnavailable label="360 no disponible" />
-                )}
+                <div id="media-panel-360" role="tabpanel" hidden={tab !== "360"}>
+                    {hasTour ? (
+                        <TourEmbed urls={tourEmbeds || []} bare />
+                    ) : (
+                        <MediaUnavailable label="360 no disponible" />
+                    )}
+                </div>
             </div>
         </div>
     );

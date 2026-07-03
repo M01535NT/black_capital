@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Phone, MessageCircle } from 'lucide-react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion, useScroll, useMotionValueEvent } from 'framer-motion'
 
 interface StickyContactBarProps {
   propertyId: string
@@ -29,13 +29,13 @@ export function StickyContactBar({
   const [isVisible, setIsVisible] = useState(false)
   const shouldReduceMotion = useReducedMotion()
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY > 400)
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  // useScroll (framer-motion) en lugar de un listener manual de scroll: se
+  // ejecuta fuera del render y está optimizado (el listener manual está vetado).
+  const { scrollY } = useScroll()
+  useMotionValueEvent(scrollY, 'change', (y) => {
+    const next = y > 400
+    setIsVisible((prev) => (prev === next ? prev : next))
+  })
 
   // Sin canales de contacto no hay barra: evita renderizar una franja vacía.
   const hasChannels = Boolean(agentWhatsapp || agentPhone)
@@ -55,7 +55,7 @@ export function StickyContactBar({
           animate={shouldReduceMotion ? { opacity: 1 } : { y: 0, opacity: 1 }}
           exit={shouldReduceMotion ? { opacity: 0 } : { y: 100, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="fixed bottom-0 left-0 right-0 z-40"
+          className="fixed bottom-0 left-0 right-0 z-40 lg:hidden"
           style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
         >
           <div className="border-t border-white/[0.08] bg-[#0A0A0A]/95 shadow-2xl backdrop-blur-xl">
