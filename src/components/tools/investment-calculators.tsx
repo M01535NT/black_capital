@@ -134,7 +134,7 @@ function RoiCalculator() {
       icon={Percent}
       category="Inversión"
       title="Calculadora ROI"
-      description="Retorno anual de una propiedad en renta: bruto y neto de gastos."
+      description="Retorno anual estimado de una propiedad en renta: bruto y neto de gastos."
     >
       <div className="space-y-4">
         <Field label="Precio de compra" value={price} onChange={setPrice} suffix="MXN" />
@@ -176,12 +176,12 @@ function FlippingSimulator() {
       icon={ArrowRightLeft}
       category="Inversión"
       title="Simulador Flipping"
-      description="Utilidad y retorno de comprar, remodelar y revender."
+      description="Utilidad estimada al comprar, remodelar y vender."
     >
       <div className="space-y-4">
         <Field label="Precio de compra" value={buy} onChange={setBuy} suffix="MXN" />
         <Field label="Remodelación y cierre" value={rehab} onChange={setRehab} suffix="MXN" />
-        <Field label="Precio de venta esperado" value={sale} onChange={setSale} suffix="MXN" />
+        <Field label="Precio estimado de venta" value={sale} onChange={setSale} suffix="MXN" />
         <div className="grid grid-cols-2 gap-4">
           <Field label="Duración (meses)" value={months} onChange={setMonths} />
           <Field label="Costos de venta" value={sellCostPct} onChange={setSellCostPct} suffix="%" />
@@ -211,14 +211,14 @@ function IsaiCalculator() {
       icon={ReceiptText}
       category="Impuestos"
       title="Calculadora ISAI"
-      description="Impuesto sobre adquisición de inmuebles al comprar en Tijuana."
+      description="Estimación inicial del impuesto de adquisición al comprar en Tijuana."
     >
       <div className="space-y-4">
-        <Field label="Valor de la operación" value={value} onChange={setValue} suffix="MXN" />
+        <Field label="Valor de compra" value={value} onChange={setValue} suffix="MXN" />
         <Field label="Tasa aplicable" value={rate} onChange={setRate} suffix="%" />
         <p className="text-body-sm leading-relaxed text-white/45">
           La tasa referencial en Tijuana ronda el 2% sobre el valor más alto
-          entre operación, catastral y avalúo. El cálculo notarial final puede
+          entre precio, valor catastral y avalúo. El cálculo notarial final puede
           variar por actualización de tarifas y del valor catastral.
         </p>
       </div>

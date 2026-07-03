@@ -8,24 +8,24 @@ function genericFaqs(businessType: string): PropertyFaq[] {
     return [
         {
             q: "¿Cuál es la situación legal de la propiedad?",
-            a: "Revisamos escritura, boleta predial y gravámenes antes de publicar. La carpeta documental está disponible para revisión con tu notario a través de la solicitud de documentos de esta página.",
+            a: "Podemos compartir documentos disponibles bajo solicitud. Revisa detalles finales con tu notario antes de cerrar.",
         },
         isSale
             ? {
                   q: "¿Aceptan financiamiento bancario?",
-                  a: "Sí: crédito bancario, INFONAVIT/FOVISSSTE y pago de contado, según el perfil de la operación. Usa la calculadora de esta página para estimar tu mensualidad y te conectamos con instituciones para precalificar.",
+                  a: "Puede aplicar crédito bancario, INFONAVIT/FOVISSSTE o pago de contado según la propiedad. Usa la calculadora como referencia inicial.",
               }
             : {
                   q: "¿Qué requisitos piden para rentar?",
-                  a: "Identificación, comprobante de ingresos y aval u obligado solidario según el caso. Te confirmamos la lista exacta al agendar la visita.",
+                  a: "Normalmente identificación, comprobante de ingresos y aval u obligado solidario. Te confirmamos la lista exacta antes de avanzar.",
               },
         {
             q: "¿Puedo visitarla antes de decidir?",
-            a: "Claro. Coordinamos una visita guiada con un asesor, con información previa del inmueble, la zona y las condiciones de la operación.",
+            a: "Sí. Coordinamos una visita con información previa del inmueble, la zona y las condiciones principales.",
         },
         {
-            q: "¿Cuánto tarda el proceso completo?",
-            a: "Depende de la documentación y el tipo de pago. Desde el diagnóstico definimos una ruta de cierre con tiempos estimados por etapa para que sepas qué esperar.",
+            q: "¿Cuánto tarda comprar o rentar?",
+            a: "Depende de documentos, forma de pago y disponibilidad. Te explicamos los pasos probables desde el inicio.",
         },
     ];
 }
@@ -33,7 +33,7 @@ function genericFaqs(businessType: string): PropertyFaq[] {
 /**
  * FAQ del capítulo "Preguntas" de la ficha (plantilla sección 07): acordeón
  * numerado. Usa las preguntas propias de la propiedad si existen; si no, cae a
- * un set genérico parametrizado por tipo de operación.
+ * un set genérico parametrizado por tipo de movimiento.
  */
 export function PropertyFAQ({
     businessType,

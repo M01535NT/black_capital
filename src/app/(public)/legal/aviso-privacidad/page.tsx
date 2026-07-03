@@ -5,7 +5,7 @@ import { CONTACT_CONFIG } from "@/lib/contact-config";
 export const metadata: Metadata = {
     title: "Aviso de Privacidad | Black Capital",
     description:
-        "Aviso de privacidad y política de protección de datos personales de Black Capital. Conoce cómo protegemos tu información.",
+        "Aviso de privacidad de Black Capital: qué datos solicitamos y para qué los usamos.",
     alternates: {
         canonical: "https://blackmx.vercel.app/legal/aviso-privacidad",
     },
@@ -21,7 +21,7 @@ export default function PrivacidadPage() {
                         Aviso de Privacidad
                     </h1>
                     <p className="footer-legal-type text-[var(--color-accent)]/80 max-w-2xl">
-                        Última actualización: Junio 2026
+                        Última actualización: junio 2026
                     </p>
                 </div>
             </div>
@@ -35,9 +35,8 @@ export default function PrivacidadPage() {
                         </h2>
                             <p>
                                 Black Capital, con domicilio en Tijuana, Baja California, México, es responsable
-                                del tratamiento de los datos personales que nos proporcione, los cuales serán
-                                protegidos conforme a lo dispuesto por la Ley Federal de Protección de Datos
-                                Personales en Posesión de los Particulares (&ldquo;LFPDPPP&rdquo;) y demás normatividad aplicable.
+                                de los datos personales que nos proporciones. Los tratamos conforme a la Ley Federal
+                                de Protección de Datos Personales en Posesión de los Particulares (&ldquo;LFPDPPP&rdquo;) y demás normatividad aplicable.
                             </p>
                         </section>
 
@@ -58,13 +57,13 @@ export default function PrivacidadPage() {
                             <h2 className="text-2xl font-bold text-foreground border-b border-foreground/10 pb-4">
                                 III. Finalidades del Tratamiento
                             </h2>
-                            <p>Sus datos personales serán utilizados para:</p>
+                            <p>Usamos tus datos para:</p>
                             <ul className="list-disc pl-6 space-y-2">
-                                <li>Envío de información sobre propiedades solicitadas</li>
-                                <li>Contacto para asesoría inmobiliaria personalizada</li>
-                                <li>Seguimiento de solicitudes de información</li>
-                                <li>Envío de comunicaciones sobre oportunidades relevantes</li>
-                                <li>Mejora de nuestros servicios y experiencia de usuario</li>
+                                <li>Enviarte información sobre propiedades que solicites</li>
+                                <li>Contactarte para asesoría inmobiliaria</li>
+                                <li>Dar seguimiento a tus solicitudes</li>
+                                <li>Compartirte oportunidades relevantes</li>
+                                <li>Mejorar nuestros servicios y experiencia de usuario</li>
                             </ul>
                         </section>
 
@@ -73,8 +72,8 @@ export default function PrivacidadPage() {
                                 IV. Derechos ARCO
                             </h2>
                             <p>
-                                Usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento
-                                de sus datos personales. Para ejercer estos derechos, puede contactarnos en:{" "}
+                                Tienes derecho a acceder, rectificar, cancelar u oponerte al tratamiento
+                                de tus datos personales. Para ejercer estos derechos, contáctanos en:{" "}
                                 <a href={`mailto:${CONTACT_CONFIG.email}`} className="text-[var(--color-accent)] hover:underline">
                                     {CONTACT_CONFIG.email}
                                 </a>
@@ -86,11 +85,9 @@ export default function PrivacidadPage() {
                                 V. Seguridad de los Datos
                             </h2>
                             <p>
-                                Implementamos medidas de seguridad administrativas, técnicas y físicas para
-                                proteger sus datos personales contra daño, pérdida, alteración, destrucción o
-                                uso, acceso o tratamiento no autorizado. Utilizamos cifrado de datos en
-                                tránsito y en reposo, y nuestros sistemas están protegidos por Row Level
-                                Security (RLS) a nivel de base de datos.
+                                Aplicamos medidas administrativas, técnicas y físicas razonables para
+                                proteger tus datos personales contra daño, pérdida, alteración, destrucción,
+                                uso, acceso o tratamiento no autorizado.
                             </p>
                         </section>
 
@@ -99,7 +96,7 @@ export default function PrivacidadPage() {
                                 VI. Contacto
                             </h2>
                             <p>
-                                Para cualquier consulta sobre este aviso de privacidad, puede escribirnos a{" "}
+                                Para cualquier consulta sobre este aviso de privacidad, escríbenos a{" "}
                                 <a href={`mailto:${CONTACT_CONFIG.email}`} className="text-[var(--color-accent)] hover:underline">
                                     {CONTACT_CONFIG.email}
                                 </a>{" "}

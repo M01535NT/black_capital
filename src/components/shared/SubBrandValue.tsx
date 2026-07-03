@@ -65,7 +65,7 @@ const BRAND_IMAGES: Record<SubBrandValueProps["brand"], BrandCardImage[]> = {
         },
         {
             src: "/brand-business.webp",
-            alt: "Interior comercial para operación de servicios en Tijuana",
+            alt: "Interior comercial para servicios en Tijuana",
             imageClassName: "object-[70%_50%]",
         },
     ],
@@ -82,7 +82,7 @@ const BRAND_IMAGES: Record<SubBrandValueProps["brand"], BrandCardImage[]> = {
         },
         {
             src: "/hero-industrial.webp",
-            alt: "Bodega industrial para operación logística en Tijuana",
+            alt: "Bodega industrial para logística en Tijuana",
             imageClassName: "object-[66%_50%]",
         },
     ],

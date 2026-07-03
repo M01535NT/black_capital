@@ -216,15 +216,15 @@ export default async function PropertyDetailPage({
     const hasContactChapter = agents.length > 0 || documents.length > 0;
     const contactChapterLabel =
         agents.length > 0 && documents.length > 0
-            ? "Asesor y documentos"
+            ? "Contacto y documentos"
             : agents.length > 0
-              ? "Tu asesor"
+              ? "Asesor"
               : "Documentos";
 
     // Índice editorial de capítulos (plantilla "Propiedad Editorial Black": 01–0N).
     const chapters: Chapter[] = [
         { id: "galeria", label: "Galería" },
-        { id: "propiedad", label: "La propiedad" },
+        { id: "propiedad", label: "Descripción" },
         { id: "ficha-tecnica", label: "Ficha técnica" },
         ...(property.address ? [{ id: "ubicacion", label: "Ubicación" }] : []),
         ...(isForSale ? [{ id: "financiamiento", label: "Financiamiento" }] : []),
@@ -287,7 +287,7 @@ export default async function PropertyDetailPage({
                                 </h1>
                             </div>
                             <div className="shrink-0 lg:pb-1 lg:text-right">
-                                <p className="mb-1 property-tag-type text-white/50">Precio publicado</p>
+                                <p className="mb-1 property-tag-type text-white/50">Precio</p>
                                 <p className="font-display text-[clamp(1.6rem,3vw,2.2rem)] font-extrabold leading-none tabular-nums gold-ink">
                                     {formatPrice(property.price, property.currency)}
                                 </p>
@@ -321,7 +321,7 @@ export default async function PropertyDetailPage({
                     <div className="min-w-0 space-y-12 py-8 md:space-y-14 md:py-10 lg:pl-12">
 
                         <section id="propiedad" className="scroll-mt-24">
-                            <ChapterLabel number={chapterNumber("propiedad")} title="La propiedad" />
+                            <ChapterLabel number={chapterNumber("propiedad")} title="Descripción" />
                             <FadeIn direction="up" delay={0.1}>
                                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-12">
                                     <div className="min-w-0">
@@ -331,8 +331,8 @@ export default async function PropertyDetailPage({
                                             <p className="max-w-prose text-body leading-relaxed text-white/66">
                                                 {property.property_type || property.property_use} en{" "}
                                                 {property.address || "Tijuana"} disponible en{" "}
-                                                {property.business_type.toLowerCase()}. Solicita la
-                                                información completa con un asesor.
+                                                {property.business_type.toLowerCase()}. Pide la ficha
+                                                completa para revisar detalles.
                                             </p>
                                         )}
                                     </div>
@@ -398,7 +398,7 @@ export default async function PropertyDetailPage({
                                         {agents.length > 0 && (
                                             <div className="border border-white/[0.08] bg-white/[0.025] p-5">
                                                 <p className="mb-4 property-tag-type text-white/48">
-                                                    {agents.length === 1 ? "Tu asesor" : "Tus asesores"}
+                                                    {agents.length === 1 ? "Asesor" : "Asesores"}
                                                 </p>
                                                 <div className="space-y-5">
                                                     {agents.map((agent) => (
@@ -410,7 +410,7 @@ export default async function PropertyDetailPage({
                                         {documents.length > 0 && (
                                             <div className="border border-white/[0.08] bg-white/[0.025] p-5">
                                                 <p className="mb-4 property-tag-type text-white/48">
-                                                    Documentos de la propiedad
+                                                    Documentos
                                                 </p>
                                                 <div className="space-y-2">
                                                     {documents.map((doc) => (
@@ -445,7 +445,7 @@ export default async function PropertyDetailPage({
                                     <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                                         <div className="flex items-center gap-3">
                                             <span className="h-px w-10 bg-[var(--color-accent)]/60" aria-hidden="true" />
-                                            <h2 className={SECTION_HEADING}>Propiedades Similares</h2>
+                                            <h2 className={SECTION_HEADING}>Propiedades similares</h2>
                                         </div>
                                         <Link
                                             href={`/inventario?uso=${encodeURIComponent(property.property_use)}`}

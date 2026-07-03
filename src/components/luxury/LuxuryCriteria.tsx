@@ -77,7 +77,7 @@ export function LuxuryCriteria() {
             <h2 className="text-display-2 text-white">Menos recorrido. Mejor decisión.</h2>
           </div>
           <p className="max-w-md text-body text-white/58 lg:col-span-5 lg:ml-auto">
-            Cada opción se revisa por privacidad, zona, estado y valor comercial
+            Cada opción se revisa por privacidad, zona, estado visible y precio
             antes de recomendar una visita.
           </p>
         </div>
@@ -108,7 +108,7 @@ export function LuxuryCriteria() {
                 <div className="absolute inset-0 bg-gradient-to-r from-black/22 via-transparent to-transparent" />
                 <div className="grain-overlay opacity-[0.08]" aria-hidden="true" />
                 <div className="absolute inset-x-6 bottom-6">
-                  <p className="property-tag-type gold-ink">Criterio activo</p>
+                  <p className="property-tag-type gold-ink">Punto clave</p>
                   <p className="mt-2 text-display-3 text-white">{active.value}</p>
                 </div>
               </div>

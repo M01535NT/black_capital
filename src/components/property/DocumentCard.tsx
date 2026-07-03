@@ -168,7 +168,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
                     </span>
                 </span>
                 <span className="shrink-0 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--color-accent)]">
-                    Solicitar
+                    Pedir
                 </span>
             </button>
 
@@ -176,7 +176,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
                 <DialogContent className="border-white/[0.08] bg-[#080808] text-white sm:max-w-xl">
                     <DialogHeader>
                         <DialogTitle className="text-display-3 leading-tight text-white">
-                            Solicitar documentos
+                            Pedir documentos
                         </DialogTitle>
                         <DialogDescription className="text-body text-white/58">
                             {doc.label} · {propertyTitle}
@@ -186,7 +186,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
                     {step === "checking" && (
                         <div className="flex min-h-40 items-center justify-center gap-3 text-body text-white/60">
                             <Loader2 className="size-4 animate-spin text-[var(--color-accent)]" />
-                            Preparando solicitud...
+                            Preparando...
                         </div>
                     )}
 
@@ -219,7 +219,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
                             <div className="space-y-3 border border-white/[0.08] bg-white/[0.025] p-3">
                                 <label className="flex items-start gap-3 text-body-sm leading-5 text-white/66">
                                     <input name="acceptedNda" type="checkbox" required className="mt-1 accent-[var(--color-accent)]" />
-                                    Acepto el NDA para consultar documentos privados de esta operación.
+                                    Acepto el NDA para consultar documentos privados de esta propiedad.
                                 </label>
                                 <label className="flex items-start gap-3 text-body-sm leading-5 text-white/66">
                                     <input name="acceptedPrivacy" type="checkbox" required className="mt-1 accent-[var(--color-accent)]" />
@@ -227,7 +227,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
                                 </label>
                             </div>
                             <Button type="submit" className="brushed-gold min-h-11 w-full rounded-full px-5 text-black">
-                                Solicitar documentos
+                                Pedir documentos
                             </Button>
                         </form>
                     )}

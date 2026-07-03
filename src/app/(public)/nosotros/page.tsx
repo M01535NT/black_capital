@@ -7,7 +7,7 @@ import { Shield, Users, TrendingUp, Award, ArrowRight } from "lucide-react";
 export const metadata: Metadata = {
     title: "Nosotros | Black Capital",
     description:
-        "Black Capital es una inmobiliaria en Tijuana enfocada en operaciones residenciales, comerciales e industriales.",
+        "Black Capital es una inmobiliaria en Tijuana para compra, venta y renta residencial, comercial e industrial.",
     alternates: {
         canonical: "https://blackmx.vercel.app/nosotros",
     },
@@ -50,7 +50,7 @@ const subpaginas = [
     {
         href: "/nosotros/valores",
         titulo: "Valores",
-        descripcion: "Cómo trabajamos antes, durante y después de una operación.",
+        descripcion: "Los principios que usamos para cuidar cada decisión.",
     },
 ];
 
@@ -68,11 +68,11 @@ export default function NosotrosPage() {
                         <div className="lg:col-span-8">
                             <Eyebrow label="Acerca de nosotros" />
                             <h1 className="text-display-1 text-white leading-hero tracking-tight text-balance">
-                                Inmobiliaria local para operaciones{" "}
-                                <span className="metallic-gold-static gold-glow">bien preparadas</span>.
+                                Inmobiliaria local para decidir{" "}
+                                <span className="metallic-gold-static gold-glow">con más claridad</span>.
                             </h1>
                             <p className="text-body-fluid text-white/70 leading-relaxed max-w-2xl mt-6 sm:mt-10">
-                                Trabajamos con propietarios, compradores e inversionistas en residencial, comercial e industrial.
+                                Trabajamos con propietarios, compradores e inversionistas en Tijuana: residencial, comercial e industrial.
                             </p>
                         </div>
                     </div>
@@ -83,9 +83,9 @@ export default function NosotrosPage() {
             <Section id="subpaginas" label="Secciones" spacing="default" containerWidth="wide">
                         <div className="flex items-end justify-between gap-8 mb-14 sm:mb-20">
                             <div className="max-w-2xl">
-                                <Eyebrow label="Profundiza" />
+                                <Eyebrow label="Conoce más" />
                                 <h2 className="text-display-2 text-white leading-display tracking-headline">
-                                    Qué hay detrás de Black Capital.
+                                    Cómo trabajamos en Tijuana.
                                 </h2>
                     </div>
                 </div>
@@ -133,7 +133,7 @@ export default function NosotrosPage() {
                         </h2>
                     </div>
                     <p className="text-body-fluid-sm text-white/55 leading-relaxed max-w-md sm:text-right hidden sm:block">
-                        Revisamos el inmueble, ordenamos la información y acompañamos el cierre.
+                        Revisamos la propiedad, ordenamos la información y damos seguimiento directo.
                     </p>
                 </div>
 

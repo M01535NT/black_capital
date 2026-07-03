@@ -78,7 +78,7 @@ const QUICK_SEARCH_CONFIG: Record<string, QuickSearchConfig> = {
             { label: "Oficina", value: "Oficina" },
             { label: "Plaza", value: "Plaza" },
         ],
-        zoneLabel: "Zona de operación",
+        zoneLabel: "Zona comercial",
         zonePlaceholder: "Toda Tijuana",
         zoneOptions: [
             { label: "Zona Río", value: "Zona Río" },
@@ -95,7 +95,7 @@ const QUICK_SEARCH_CONFIG: Record<string, QuickSearchConfig> = {
     "Black Industrial": {
         use: "Industrial",
         propertyLabel: "Tipo de nave",
-        propertyPlaceholder: "Cualquier activo",
+        propertyPlaceholder: "Cualquier nave o bodega",
         propertyOptions: [
             { label: "Nave", value: "Nave" },
             { label: "Bodega", value: "Bodega" },
@@ -260,10 +260,10 @@ export function SubBrandHero({
                 </div>
                 <div className="border-t border-white/[0.08] sm:border-r sm:border-white/[0.08] xl:border-t-0">
                     {filterCell(
-                        "Operación",
+                        "Tipo",
                         operation,
                         setOperation,
-                        "Venta y renta",
+                        "Venta o renta",
                         [
                             { label: "Venta", value: "Venta" },
                             { label: "Renta", value: "Renta" },

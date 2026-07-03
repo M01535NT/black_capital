@@ -32,15 +32,15 @@ const primaryTools = [
         icon: ReceiptText,
         title: "ISR e ISAI",
         category: "Impuestos",
-        description: "Impuestos clave de compraventa.",
-        inputs: ["Valor", "Operación", "Estado", "Escenario"],
+        description: "Impuestos y gastos que conviene estimar antes de firmar.",
+        inputs: ["Valor", "Compra/venta", "Estado", "Escenario"],
     },
     {
         icon: TrendingUp,
         title: "ROI",
         category: "Inversión",
-        description: "Renta, gastos y retorno proyectado.",
-        inputs: ["Inversión", "Renta", "Gastos", "Plusvalía"],
+        description: "Renta, gastos y retorno estimado.",
+        inputs: ["Inversión", "Renta", "Gastos", "Retorno"],
     },
 ];
 
@@ -49,7 +49,7 @@ const secondaryTools = [
     { icon: Landmark, title: "Gastos de cierre", category: "Compra" },
     { icon: Home, title: "Capacidad de compra", category: "Planeación" },
     { icon: Scale, title: "Comprar vs rentar", category: "Decisión" },
-    { icon: ClipboardCheck, title: "Checklist documental", category: "Proceso" },
+    { icon: ClipboardCheck, title: "Checklist documental", category: "Antes de firmar" },
     { icon: FileSpreadsheet, title: "Comparador de propiedades", category: "Análisis" },
 ];
 
@@ -70,7 +70,7 @@ export default function HerramientasPage() {
                                 Black tools
                             </p>
                             <h1 className="mt-3 max-w-56 text-4xl font-semibold leading-[0.95] tracking-normal text-white sm:text-6xl lg:mt-4 lg:text-5xl">
-                                Cálculos para preparar una operación.
+                                Calcula antes de decidir.
                             </h1>
                         </div>
 
@@ -115,10 +115,10 @@ export default function HerramientasPage() {
                                 Herramientas inmobiliarias para clientes
                             </p>
                             <h2 className="mt-4 text-display-2 text-white lg:mt-6">
-                                Estima antes de avanzar.
+                                Números claros antes de mover dinero.
                             </h2>
                             <p className="mt-3 max-w-2xl text-body text-white/58 lg:mt-6">
-                                Números orientativos para preparar compra, venta, renta o inversión.
+                                Estimaciones rápidas para comprar, vender, rentar o invertir con más contexto.
                             </p>
                                 </div>
                             </header>
@@ -210,7 +210,7 @@ export default function HerramientasPage() {
                                         href="/contacto?interes=herramientas"
                                         className="inline-flex min-h-14 w-full items-center justify-center gap-3 px-6 property-tag-type text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-black lg:min-h-16 lg:w-auto"
                                     >
-                                        Solicitar cálculo
+                                        Pedir orientación
                                         <ArrowRight className="h-4 w-4" />
                                     </Link>
                                 </div>

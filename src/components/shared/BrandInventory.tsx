@@ -77,7 +77,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
             slug: null,
             title: "Residencia familiar con amenidades",
             property_type: "Residencial",
-            business_type: "Alta plusvalía",
+            business_type: "Zona residencial",
             price: 0,
             currency: "USD",
             m2_construction: 260,
@@ -116,7 +116,7 @@ const PLACEHOLDER_PROPERTIES: Record<BrandInventoryProps["propertyUse"], BrandPr
         {
             id: "placeholder-comercial-2",
             slug: null,
-            title: "Oficina ejecutiva lista para operar",
+            title: "Oficina ejecutiva lista para uso",
             property_type: "Oficina",
             business_type: "Corporativo",
             price: 0,
@@ -210,9 +210,12 @@ export async function BrandInventory({
                     <p className="mb-3 text-caption gold-ink">
                         {eyebrow}
                     </p>
-                    <h2 className="text-display-2 leading-display tracking-headline text-white">
+                    <h2
+                        className="text-display-2 leading-display tracking-headline text-white"
+                        aria-label={highlight ? `${title} ${highlight}` : title}
+                    >
                         {title}
-                        {highlight && <> <span className="metallic-gold-static">{highlight}</span></>}
+                        {highlight && <span className="metallic-gold-static">{` ${highlight}`}</span>}
                     </h2>
                 </div>
                 <p className="max-w-xl text-body text-white/58 sm:text-right">
@@ -296,7 +299,7 @@ export async function BrandInventory({
                                             href={href}
                                             className="inline-flex flex-1 items-center justify-center gap-2 border border-white/10 px-4 py-2.5 property-tag-type text-white/75 transition-colors hover:border-[var(--color-accent)]/30 hover:text-white"
                                         >
-                                            Solicitar
+                                            Pedir detalles
                                         </Link>
                                     </div>
                                 </div>

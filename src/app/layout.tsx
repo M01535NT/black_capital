@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | Black Capital",
   },
   description:
-    "Compra, venta, renta y valor comercial de inmuebles residenciales, comerciales e industriales en Tijuana.",
+    "Compra, venta y renta de inmuebles residenciales, comerciales e industriales en Tijuana.",
   keywords: [
     "inmobiliaria Tijuana",
     "casas en Tijuana",
