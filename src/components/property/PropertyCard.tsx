@@ -42,7 +42,7 @@ interface PropertyCardProps {
 
 const SIZES: Record<Variant, string> = {
     default: "(max-width: 768px) 100vw, 50vw",
-    featured: "(max-width: 768px) 85vw, 65vw",
+    featured: "(max-width: 639px) calc(100vw - 48px), (max-width: 767px) calc(100vw - 80px), (max-width: 1023px) calc((100vw - 104px) / 2), (max-width: 1599px) calc((100vw - 152px) / 2), 724px",
     similar: "(max-width: 640px) 100vw, 50vw",
 };
 
@@ -84,7 +84,7 @@ export function PropertyCard({
                 aria-label={`Ver detalles de ${property.title}`}
                 className={cn(
                     "relative block overflow-hidden rounded-[1.25rem] bg-white/5",
-                    isFeatured ? "h-[58svh] min-h-[340px] max-h-[680px]" : "aspect-[4/5] sm:aspect-[5/4]",
+                    isFeatured ? "aspect-[4/3] max-h-[42svh] sm:aspect-[3/2]" : "aspect-[4/5] sm:aspect-[5/4]",
                 )}
             >
                 <Image

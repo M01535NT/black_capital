@@ -27,9 +27,9 @@ export function FeaturedTrack({ properties }: { properties: PropertyCardData[] }
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </button>
       </div>
-      <div ref={track} id={trackId} role="region" aria-label="Propiedades destacadas" tabIndex={0} className="scrollbar-none flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-2 [scroll-padding-inline:1.5rem] sm:gap-8 sm:px-10 sm:[scroll-padding-inline:2.5rem] lg:px-16 lg:[scroll-padding-inline:4rem] focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]">
+      <div ref={track} id={trackId} role="region" aria-label="Propiedades destacadas" tabIndex={0} className="scrollbar-none flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 [scroll-padding-inline:1.5rem] sm:px-10 sm:[scroll-padding-inline:2.5rem] lg:px-16 lg:[scroll-padding-inline:4rem] focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]">
         {properties.map((property, i) => (
-          <div key={property.id} className="w-[85vw] max-w-[850px] shrink-0 snap-start md:w-[65vw]">
+          <div key={property.id} className="w-full shrink-0 snap-start md:w-[calc((100%-1.5rem)/2)]">
             <PropertyCard property={property} variant="featured" index={i} disableMotion />
           </div>
         ))}
