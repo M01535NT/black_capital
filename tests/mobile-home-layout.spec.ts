@@ -10,7 +10,7 @@ test.use({
 test("home methodology section stacks vertically on mobile", async ({ page }, testInfo) => {
   await page.goto("/");
 
-  const heading = page.getByRole("heading", { name: /Del diagnóstico a la firma/i });
+  const heading = page.getByRole("heading", { name: /Criterio en\s*cada paso/i });
   await heading.scrollIntoViewIfNeeded();
   await page.waitForTimeout(200);
 

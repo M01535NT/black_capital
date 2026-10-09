@@ -12,7 +12,7 @@ export function SavedProperties() {
   return (
     <Drawer autoFocus direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <button type="button" aria-label={`Abrir guardados (${count})`} className="inline-flex h-11 items-center gap-2 border border-white/12 px-3 text-white/65 transition-colors hover:text-[var(--color-accent)]">
+        <button type="button" aria-label={`Abrir guardados (${count})`} className="inline-flex h-11 items-center gap-2 rounded-full border border-white/15 px-3 text-white/65 transition-colors hover:text-[var(--color-accent)]">
           <Heart className="h-4 w-4" aria-hidden="true" />
           <span className="property-tag-type hidden lg:inline">Guardados</span>
           {count > 0 && <span className="property-tag-type gold-ink">{count}</span>}

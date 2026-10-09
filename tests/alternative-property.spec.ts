@@ -53,11 +53,7 @@ test('property mobile action remains visible without horizontal overflow', async
   await expect(bar).toBeVisible();
 });
 
-for (const [brand, label] of [
-  ['luxury', 'Cuéntanos qué casa buscas'],
-  ['business', 'Cuéntanos qué necesita tu negocio'],
-  ['industrial', 'Comparte los requisitos de tu operación'],
-]) {
+for (const brand of ['luxury', 'business', 'industrial']) {
   test(`${brand} puts inventory before criteria and keeps contextual contact`, async ({ page }) => {
     await page.goto(`/black-${brand}`);
     const inventory = page.locator(`#${brand}-inventory`);
@@ -65,7 +61,7 @@ for (const [brand, label] of [
     await expect(inventory).toBeVisible();
     expect(await inventory.evaluate((el, id) => Boolean(el.compareDocumentPosition(document.getElementById(id)!) & Node.DOCUMENT_POSITION_FOLLOWING), `${brand}-value`)).toBe(true);
     await expect(criteria).toBeVisible();
-    const cta = page.locator(`#${brand}-cta`).getByRole('link', { name: label, exact: true });
+    const cta = page.locator(`#${brand}-cta`).getByRole('link', { name: 'Hablemos', exact: true });
     await expect(cta).toHaveAttribute('href', new RegExp(`brand=${brand}`));
     await expect(cta).toHaveAttribute('href', /objetivo=buscar-propiedad/);
   });

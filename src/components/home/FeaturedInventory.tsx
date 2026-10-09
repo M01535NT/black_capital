@@ -88,15 +88,15 @@ export async function FeaturedInventory() {
   if (list.length === 0) list = FALLBACK;
 
   return (
-    <section className="border-t border-white/[0.08] bg-white/[0.015]">
-      <div className="mx-auto max-w-[90rem] px-6 pb-4 pt-16 sm:px-10 lg:px-16 lg:pt-24">
-        <Reveal className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <section id="seleccion" className="scroll-mt-24 overflow-hidden py-20 lg:py-32">
+      <div className="mx-auto max-w-[100rem] px-6 sm:px-10 lg:px-16">
+        <Reveal className="mb-5 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-xl">
             <h2 className="text-display-2 leading-display tracking-headline text-white">
-              Inventario disponible.
+              Espacios con visión.
             </h2>
             <p className="mt-4 text-body leading-snug text-white/58">
-              Verificadas y listas para visitar.
+              Explora nuestra selección de propiedades.
             </p>
           </div>
           <div className="flex items-center gap-6">
@@ -114,7 +114,7 @@ export async function FeaturedInventory() {
         </Reveal>
       </div>
 
-      <div className="mx-auto max-w-[90rem] px-6 pb-16 sm:px-10 lg:px-16 lg:pb-24">
+      <div className="mx-auto max-w-[100rem]">
         <FeaturedTrack properties={list.slice(0, 8)} />
       </div>
     </section>

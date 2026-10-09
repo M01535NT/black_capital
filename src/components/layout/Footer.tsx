@@ -68,7 +68,7 @@ export function Footer() {
                     <div className="col-span-2 space-y-5 md:col-span-4">
                         <Logo href="/" variant="full" size="md" tone="gold" />
                         <p className="max-w-sm text-body">
-                            Inmobiliaria en Tijuana para activos residenciales, comerciales e industriales. Ponemos en orden precio, zona, documentos y ruta de cierre antes de que avances.
+                            Representación inmobiliaria en Tijuana. Residencial, comercial e industrial.
                         </p>
                         <div className="flex flex-wrap gap-2 pt-2">
                             {socialLinks.map((social) => {

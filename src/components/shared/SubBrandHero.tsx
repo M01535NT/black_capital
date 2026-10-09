@@ -1,13 +1,13 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform, type Variants } from "framer-motion";
-import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { FormEvent, ReactNode } from "react";
-import { useMemo, useRef, useState } from "react";
-import { ArrowRight, ChevronDown, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useId, useMemo, useState } from "react";
+import { ArrowDown, ArrowUpRight, ChevronDown, Search, X } from "lucide-react";
+import { CinematicImage } from "@/components/visual/CinematicImage";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export type Accent = "gold" | "steel";
 
@@ -117,61 +117,16 @@ const QUICK_SEARCH_CONFIG: Record<string, QuickSearchConfig> = {
     },
 };
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-
-const heroGroup: Variants = {
-    hidden: {},
-    show: {
-        transition: {
-            staggerChildren: 0.1,
-            delayChildren: 0.12,
-        },
-    },
-};
-
-const heroChild: Variants = {
-    hidden: { opacity: 0, y: 26 },
-    show: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.78, ease: EASE },
-    },
-};
-
-const headlineReveal: Variants = {
-    hidden: { opacity: 0, y: 34, clipPath: "inset(0% 0% 100% 0%)" },
-    show: {
-        opacity: 1,
-        y: 0,
-        clipPath: "inset(0% 0% 0% 0%)",
-        transition: { duration: 0.95, ease: EASE },
-    },
-};
 
 export function SubBrandHero({
-    brand,
-    backgroundImage,
-    backgroundImageWebp,
-    backgroundAlt,
-    overlayClass,
-    headline,
-    subtitle,
-    primaryCta,
-    secondaryCta,
-    highlights,
-    gridLines = false,
-    cursorGlow = true,
+    brand, backgroundImage, backgroundImageWebp, backgroundAlt,
+    headline, subtitle, primaryCta, secondaryCta,
 }: SubBrandHeroProps) {
     const router = useRouter();
-    const sectionRef = useRef<HTMLElement | null>(null);
-    const shouldReduceMotion = useReducedMotion();
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ["start start", "end start"],
-    });
-    const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
-    const overlayFade = useTransform(scrollYProgress, [0, 1], [1, 0.4]);
+    const reduceMotion = useReducedMotion();
+    const formId = useId();
     const quickSearch = QUICK_SEARCH_CONFIG[brand] ?? QUICK_SEARCH_CONFIG["Black Luxury"];
+    const [searchOpen, setSearchOpen] = useState(false);
     const [propertyType, setPropertyType] = useState("");
     const [zone, setZone] = useState("");
     const [operation, setOperation] = useState("");
@@ -186,269 +141,64 @@ export function SubBrandHero({
         return `/inventario?${params.toString()}`;
     }, [minArea, operation, propertyType, quickSearch.use, zone]);
 
-    const submitQuickSearch = (event: FormEvent<HTMLFormElement>) => {
+    function submitQuickSearch(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
+        setSearchOpen(false);
         router.push(quickSearchHref);
-    };
+    }
 
-    /* Una sola celda de filtro: label arriba, select sin chrome, chevron dorado. */
-    const filterCell = (
-        label: string,
-        value: string,
-        onChange: (value: string) => void,
-        placeholder: string,
-        options: QuickSearchOption[],
-    ) => (
-        <label className="group/cell relative flex flex-col gap-1.5 px-5 py-4 transition-colors duration-300 hover:bg-white/[0.03]">
-            <span className="property-tag-type text-white/45 transition-colors duration-300 group-focus-within/cell:text-[var(--color-accent)]">
-                {label}
-            </span>
-            <div className="relative">
-                <select
-                    value={value}
-                    onChange={(event) => onChange(event.target.value)}
-                    className="w-full cursor-pointer appearance-none border-0 bg-transparent pr-7 text-body-sm font-medium text-white outline-none"
-                >
-                    <option value="" className="bg-background text-white">{placeholder}</option>
-                    {options.map((option) => (
-                        <option key={option.value} value={option.value} className="bg-background text-white">
-                            {option.label}
-                        </option>
-                    ))}
+    const filter = (label: string, value: string, onChange: (value: string) => void, placeholder: string, options: QuickSearchOption[]) => (
+        <label className="flex min-w-0 flex-col gap-3">
+            <span className="property-tag-type text-white/60">{label}</span>
+            <span className="relative">
+                <select value={value} onChange={(event) => onChange(event.target.value)} className="min-h-12 w-full min-w-0 appearance-none rounded-xl border border-white/20 bg-white/[0.04] px-4 pr-9 text-body-sm text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]">
+                    <option value="" className="bg-background">{placeholder}</option>
+                    {options.map((option) => <option key={option.value} value={option.value} className="bg-background">{option.label}</option>)}
                 </select>
-                <ChevronDown
-                    className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-accent)]/70"
-                    aria-hidden="true"
-                />
-            </div>
+                <ChevronDown className="pointer-events-none absolute right-3 top-4 size-4 text-[var(--color-accent)]" aria-hidden="true" />
+            </span>
         </label>
     );
 
-    const quickSearchForm = (
-        <form
-            onSubmit={submitQuickSearch}
-            aria-label="Búsqueda rápida de inventario"
-            className="glass overflow-hidden border border-white/[0.1] shadow-2xl shadow-black/50"
-        >
-            <div className="flex items-center gap-3 border-b border-white/[0.08] px-5 py-3.5">
-                <span className="gold-gradient flex h-8 w-8 items-center justify-center rounded-full text-black">
-                    <Search className="h-4 w-4" aria-hidden="true" />
-                </span>
-                <p className="property-tag-type text-white/70">Búsqueda rápida</p>
-                <span className="ml-auto hidden text-body-sm text-white/40 sm:block">
-                    Filtra el inventario en segundos
-                </span>
-            </div>
-            <div className="grid grid-cols-1 divide-y divide-white/[0.08] sm:grid-cols-2 sm:divide-y-0 xl:grid-cols-[repeat(4,minmax(0,1fr))_auto] xl:items-stretch">
-                <div className="sm:border-r sm:border-white/[0.08]">
-                    {filterCell(
-                        quickSearch.propertyLabel,
-                        propertyType,
-                        setPropertyType,
-                        quickSearch.propertyPlaceholder,
-                        quickSearch.propertyOptions,
-                    )}
-                </div>
-                <div className="border-t border-white/[0.08] sm:border-t-0 xl:border-r xl:border-white/[0.08]">
-                    {filterCell(
-                        quickSearch.zoneLabel,
-                        zone,
-                        setZone,
-                        quickSearch.zonePlaceholder,
-                        quickSearch.zoneOptions,
-                    )}
-                </div>
-                <div className="border-t border-white/[0.08] sm:border-r sm:border-white/[0.08] xl:border-t-0">
-                    {filterCell(
-                        "Tipo",
-                        operation,
-                        setOperation,
-                        "Venta o renta",
-                        [
-                            { label: "Venta", value: "Venta" },
-                            { label: "Renta", value: "Renta" },
-                        ],
-                    )}
-                </div>
-                <div className="border-t border-white/[0.08] sm:border-t-0 xl:border-r xl:border-white/[0.08]">
-                    {filterCell(
-                        quickSearch.areaLabel,
-                        minArea,
-                        setMinArea,
-                        "Sin mínimo",
-                        quickSearch.areaOptions,
-                    )}
-                </div>
-                <Button
-                    type="submit"
-                    className="brushed-gold premium-cta group/btn col-span-full inline-flex min-h-14 items-center justify-center gap-2 rounded-none xl:col-span-1 xl:h-full xl:min-h-0 xl:px-7"
-                >
-                    Buscar
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 motion-safe:group-hover/btn:translate-x-1" aria-hidden="true" />
-                </Button>
-            </div>
-        </form>
-    );
-
     return (
-        <section
-            ref={sectionRef}
-            aria-label={`${brand} — Presentación`}
-            className="relative overflow-hidden border-b border-white/[0.06] bg-background"
-        >
-            <div className="relative flex min-h-[100svh] flex-col overflow-hidden pt-20 lg:pt-28">
-                {/* ── Fondo cinematográfico ── */}
-                <motion.div
-                    aria-hidden="true"
-                    className="absolute inset-x-0 -top-[4%] bottom-[-10%]"
-                    style={shouldReduceMotion ? undefined : { y: imageY }}
-                    initial={shouldReduceMotion ? false : { scale: 1.05 }}
-                    animate={shouldReduceMotion ? undefined : { scale: 1.12 }}
-                    transition={{ duration: 18, ease: "easeOut" }}
-                >
-                    {backgroundImageWebp ? (
-                        <picture>
-                            <source srcSet={backgroundImageWebp} type="image/webp" />
-                            <Image
-                                src={backgroundImage}
-                                alt=""
-                                fill
-                                priority
-                                sizes="100vw"
-                                className="object-cover opacity-[0.55]"
-                            />
-                        </picture>
-                    ) : (
-                        <Image
-                            src={backgroundImage}
-                            alt=""
-                            fill
-                            priority
-                            sizes="100vw"
-                            className="object-cover opacity-[0.55]"
-                        />
-                    )}
+        <section aria-label={`${brand} — Presentación`} className="relative isolate flex min-h-[100svh] w-full flex-col justify-end overflow-hidden bg-background">
+            <CinematicImage src={backgroundImageWebp ?? backgroundImage} alt={backgroundAlt} priority className="!absolute inset-0" imageClassName="object-[60%_center]" />
+            <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,.3)_0%,transparent_35%,rgba(0,0,0,.16)_55%,rgba(0,0,0,.8)_100%)]" />
+            <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,.38),transparent_75%)]" />
+            <div className="relative mx-auto w-full max-w-[100rem] px-6 pb-9 pt-48 sm:px-10 sm:pb-12 lg:px-20 lg:pb-14 lg:pt-64">
+                <motion.div initial={reduceMotion ? false : { opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}>
+                    <p className="mb-6 flex items-center gap-3 text-caption text-white/85"><span aria-hidden="true" className="h-px w-8 bg-[var(--color-accent)]" />{brand}</p>
+                    <h1 className="text-display-1 max-w-[960px] text-balance text-white [text-shadow:0_2px_28px_rgba(0,0,0,.15)]">{headline}</h1>
+                    <p className="mt-6 max-w-[440px] text-body text-white/80">{subtitle}</p>
+                    <div className="mt-9 flex flex-wrap items-center gap-3 sm:gap-4">
+                        <Link href={primaryCta.href} className="group inline-flex min-h-12 items-center gap-5 rounded-full bg-white px-6 py-3 text-body-sm font-medium text-black transition-colors hover:bg-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+                            {primaryCta.label}<ArrowUpRight className="size-4 transition-transform motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5" aria-hidden="true" />
+                        </Link>
+                        <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
+                            <DialogTrigger asChild>
+                                <button type="button" className="inline-flex min-h-12 items-center gap-3 rounded-full border border-white/45 bg-black/10 px-5 text-body-sm text-white backdrop-blur-sm transition-colors hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"><Search className="size-4" aria-hidden="true" />Buscar</button>
+                            </DialogTrigger>
+                            <DialogContent showCloseButton={false} className="max-h-[90svh] overflow-y-auto rounded-3xl border-white/15 bg-[#10100f] p-6 text-white motion-reduce:animate-none sm:max-w-2xl sm:p-10">
+                                <DialogClose className="absolute right-4 top-4 flex size-10 items-center justify-center rounded-full border border-white/20 text-white hover:bg-white/10" aria-label="Cerrar búsqueda"><X className="size-4" /></DialogClose>
+                                <motion.div initial={reduceMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+                                    <p className="mb-5 text-caption gold-ink">{brand}</p>
+                                    <DialogTitle className="pr-6 text-display-3 text-white">Encuentra tu próximo espacio.</DialogTitle>
+                                    <DialogDescription className="mt-3 text-body-sm text-white/60">Elige tus criterios y explora el inventario.</DialogDescription>
+                                    <form id={formId} onSubmit={submitQuickSearch} aria-label="Búsqueda rápida de inventario" className="mt-8 grid min-w-0 gap-6 sm:grid-cols-2">
+                                        {filter(quickSearch.propertyLabel, propertyType, setPropertyType, quickSearch.propertyPlaceholder, quickSearch.propertyOptions)}
+                                        {filter(quickSearch.zoneLabel, zone, setZone, quickSearch.zonePlaceholder, quickSearch.zoneOptions)}
+                                        {filter("Tipo", operation, setOperation, "Venta o renta", [{ label: "Venta", value: "Venta" }, { label: "Renta", value: "Renta" }])}
+                                        {filter(quickSearch.areaLabel, minArea, setMinArea, "Sin mínimo", quickSearch.areaOptions)}
+                                        <button type="submit" className="mt-2 inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-[var(--color-accent)] px-6 text-body-sm font-medium text-black sm:col-span-2">Ver resultados<ArrowUpRight className="size-4" aria-hidden="true" /></button>
+                                    </form>
+                                </motion.div>
+                            </DialogContent>
+                        </Dialog>
+                    </div>
                 </motion.div>
-                <span className="sr-only">{backgroundAlt}</span>
-
-                {/* ── Overlays multi-stop para legibilidad + profundidad ── */}
-                <motion.div
-                    aria-hidden="true"
-                    className={`absolute inset-0 bg-gradient-to-r ${overlayClass ?? "from-background via-background/80 to-background/25"}`}
-                    style={shouldReduceMotion ? undefined : { opacity: overlayFade }}
-                />
-                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/45" />
-                <div className="grain-overlay opacity-[0.1]" aria-hidden="true" />
-                {cursorGlow && (
-                    <div
-                        aria-hidden="true"
-                        className="absolute inset-0 mix-blend-screen opacity-25"
-                        style={{
-                            background:
-                                "radial-gradient(ellipse at 80% 16%, rgba(210, 167, 60, 0.45), transparent 56%)",
-                        }}
-                    />
-                )}
-                {gridLines && (
-                    <div
-                        aria-hidden="true"
-                        className="absolute inset-0 opacity-[0.08]"
-                        style={{
-                            backgroundImage:
-                                "linear-gradient(to right, rgba(255,255,255,0.28) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.24) 1px, transparent 1px)",
-                            backgroundSize: "96px 96px",
-                        }}
-                    />
-                )}
-
-                {/* ── Rail vertical editorial (desktop) ── */}
-                <div
-                    aria-hidden="true"
-                    className="absolute left-6 top-0 z-10 hidden h-full flex-col items-center justify-center gap-6 lg:flex"
-                >
-                    <span className="h-20 w-px bg-gradient-to-b from-transparent to-[var(--color-accent)]/55" />
-                    <span className="property-tag-type [writing-mode:vertical-rl] rotate-180 text-white/55" style={{ letterSpacing: "0.3em" }}>
-                        {brand}
-                    </span>
-                    <span className="h-20 w-px bg-gradient-to-t from-transparent to-[var(--color-accent)]/55" />
-                </div>
-
-                {/* ── Contenido ── */}
-                <div className="relative z-10 mx-auto flex w-full max-w-[90rem] flex-1 flex-col justify-center px-6 py-12 sm:px-10 lg:px-20">
-                    <motion.div
-                        className="max-w-4xl"
-                        variants={heroGroup}
-                        initial={shouldReduceMotion ? false : "hidden"}
-                        animate="show"
-                    >
-                        <motion.div variants={heroChild} className="mb-5 flex items-center gap-3">
-                            <span className="h-px w-10 bg-[var(--color-accent)]/70" aria-hidden="true" />
-                            <p className="text-caption gold-ink">{brand}</p>
-                        </motion.div>
-
-                        <motion.h1 variants={headlineReveal} className="text-display-1 text-balance text-white">
-                            {headline}
-                        </motion.h1>
-
-                        <motion.span
-                            aria-hidden="true"
-                            variants={{
-                                hidden: { scaleX: 0 },
-                                show: { scaleX: 1, transition: { duration: 1, ease: EASE } },
-                            }}
-                            className="mt-6 block h-px w-44 origin-left bg-gradient-to-r from-[var(--color-accent)] via-[var(--color-gold-light)] to-transparent"
-                        />
-
-                        <motion.p variants={heroChild} className="mt-5 max-w-2xl text-body-lg leading-relaxed text-white/75">
-                            {subtitle}
-                        </motion.p>
-
-                        {highlights && highlights.length > 0 && (
-                            <motion.dl
-                                variants={heroChild}
-                                className="mt-8 grid max-w-2xl grid-cols-3 gap-px overflow-hidden border border-white/[0.08] bg-white/[0.06] sm:flex sm:w-fit"
-                            >
-                                {highlights.map((item) => (
-                                    <div key={`${item.value}-${item.label}`} className="min-w-0 bg-background/70 px-3 py-3 sm:min-w-32 sm:px-5">
-                                        <dt className="property-tag-type text-white/48">{item.label}</dt>
-                                        <dd className="mt-1 text-display-4 leading-tight text-white">{item.value}</dd>
-                                    </div>
-                                ))}
-                            </motion.dl>
-                        )}
-
-                        <motion.div variants={heroChild} className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-                            <Link href={primaryCta.href} className="w-full sm:w-auto">
-                                <Button className="brushed-gold premium-cta group/cta inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-none sm:w-auto">
-                                    {primaryCta.label}
-                                    <ArrowRight className="h-4 w-4 transition-transform duration-300 motion-safe:group-hover/cta:translate-x-1" aria-hidden="true" />
-                                </Button>
-                            </Link>
-                            {secondaryCta && (
-                                <Link
-                                    href={secondaryCta.href}
-                                    className="group inline-flex min-h-[52px] w-fit items-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)] sm:ml-2"
-                                >
-                                    <span className="property-tag-type relative pb-1">
-                                        {secondaryCta.label}
-                                        <span className="absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-current opacity-70 transition-transform duration-500 group-hover:scale-x-100" />
-                                    </span>
-                                    <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 motion-safe:group-hover:translate-x-1" aria-hidden="true" />
-                                </Link>
-                            )}
-                        </motion.div>
-                    </motion.div>
-                </div>
-
-                {/* ── Barra de búsqueda anclada al pie del hero ── */}
-                <div className="relative z-10 mx-auto w-full max-w-[90rem] px-6 pb-10 sm:px-10 lg:px-20">
-                    <motion.div
-                        initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.85, delay: 0.55, ease: EASE }}
-                    >
-                        {quickSearchForm}
-                    </motion.div>
+                <div className="mt-14 flex items-end justify-between gap-4 border-t border-white/25 pt-5 sm:mt-20">
+                    <p className="property-tag-type text-white/65">Baja California, México</p>
+                    {secondaryCta && <Link href={secondaryCta.href} className="group flex shrink-0 items-center gap-3 text-body-sm text-white/85 hover:text-white"><span className="hidden sm:inline">{secondaryCta.label}</span><span className="flex size-10 items-center justify-center rounded-full border border-white/35"><ArrowDown className="size-4 transition-transform motion-safe:group-hover:translate-y-1" aria-hidden="true" /></span><span className="sr-only sm:hidden">{secondaryCta.label}</span></Link>}
                 </div>
             </div>
         </section>

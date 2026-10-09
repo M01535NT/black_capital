@@ -1,14 +1,14 @@
 /**
  * SubBrandCTA — cierre de las 3 landings (Luxury, Business, Industrial).
  *
- * Banda final sin captura de datos: copy + acciones directas
- * (asesor / WhatsApp). El formulario de lead se retiro por decision
- * de producto; el contacto vive en las paginas de contacto por marca.
+ * Cierre fotográfico con acciones directas a asesoría y WhatsApp.
+ * El contacto conserva el contexto de cada marca.
  */
 
 import Link from "next/link";
-import { ArrowRight, Lock, Download, MessageCircle } from "lucide-react";
+import { ArrowUpRight, MessageCircle } from "lucide-react";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
+import { CinematicImage } from "@/components/visual/CinematicImage";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 export type SubBrand = "luxury" | "business" | "industrial";
@@ -44,91 +44,31 @@ export interface SubBrandCTAConfig {
     successMessage?: string;
 }
 
-const SECTION_SPACING = {
-    none: "py-0",
-    tight: "py-12 sm:py-14 lg:py-16",
-    default: "py-16 lg:py-24",
-    loose: "py-20 lg:py-28",
-} as const;
+const BRAND_PHOTO: Record<SubBrand, { src: string; alt: string }> = {
+    luxury: { src: "/line-residencial.webp", alt: "Arquitectura residencial contemporánea" },
+    business: { src: "/line-comercial.webp", alt: "Espacio comercial contemporáneo" },
+    industrial: { src: "/line-industrial.webp", alt: "Espacio industrial y logístico" },
+};
 
 export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
     const contactHref = `/contacto?brand=${config.brand}&objetivo=buscar-propiedad`;
-    const contactLabel = {
-        luxury: "Cuéntanos qué casa buscas",
-        business: "Cuéntanos qué necesita tu negocio",
-        industrial: "Comparte los requisitos de tu operación",
-    }[config.brand];
     const whatsappHref = `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(`Hola, busco asesoría de Black ${config.brand}. Quisiera compartir los requisitos de mi búsqueda.`)}`;
+    const photo = BRAND_PHOTO[config.brand];
 
     return (
-        <section
-            id={config.sectionId ?? `${config.brand}-cta`}
-            aria-label={`Contacto ${config.brand}`}
-            className={`relative w-full overflow-hidden border-y border-white/[0.06] bg-white/[0.02] ${SECTION_SPACING[config.spacing ?? "default"]}`}
-        >
-            <div
-                aria-hidden="true"
-                className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/40 to-transparent"
-            />
-            <div
-                aria-hidden="true"
-                className="absolute inset-0 opacity-50"
-                style={{
-                    background:
-                        "radial-gradient(ellipse at 50% 0%, rgba(210,167,60,0.14), transparent 55%)",
-                }}
-            />
-
-            <div className="relative mx-auto max-w-3xl px-6 text-center sm:px-10">
-                <ScrollReveal>
-                    <div className="mb-6 inline-flex items-center gap-2">
-                        {config.eyebrowIcon === "lock" ? (
-                            <Lock className="h-4 w-4 text-[var(--color-accent)]" aria-hidden="true" />
-                        ) : (
-                            <Download className="h-4 w-4 text-[var(--color-accent)]" aria-hidden="true" />
-                        )}
-                        <span className="text-caption text-white/70">{config.eyebrow}</span>
+        <section id={config.sectionId ?? `${config.brand}-cta`} aria-label={`Contacto ${config.brand}`} className="relative isolate flex min-h-[680px] w-full items-end overflow-hidden px-6 py-14 sm:px-10 lg:min-h-[800px] lg:px-20 lg:py-20">
+            <CinematicImage src={photo.src} alt={photo.alt} className="!absolute inset-0" />
+            <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,transparent_10%,rgba(0,0,0,.2)_35%,rgba(0,0,0,.85)_100%)]" />
+            <div className="relative mx-auto w-full max-w-[90rem]">
+                <ScrollReveal className="max-w-3xl">
+                    <p className="mb-6 text-caption text-white/80">{config.eyebrow}</p>
+                    <h2 className="text-display-2 text-balance text-white">{config.title}<span className="block text-[var(--color-accent)]">{config.titleHighlight}</span></h2>
+                    <p className="mt-5 max-w-md text-body text-white/75">{config.description}</p>
+                    <div className="mt-8 flex flex-wrap items-center gap-4">
+                        <Link href={contactHref} className="group inline-flex min-h-12 items-center gap-5 rounded-full bg-white px-6 py-3 text-body-sm font-medium text-black transition-colors hover:bg-[var(--color-accent)]">Hablemos<ArrowUpRight className="size-4 transition-transform motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5" aria-hidden="true" /></Link>
+                        <Link href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center gap-3 rounded-full border border-white/45 px-5 text-body-sm text-white transition-colors hover:bg-white/15"><MessageCircle className="size-4" aria-hidden="true" />WhatsApp</Link>
                     </div>
-
-                    <h2
-                        className="text-display-2 text-balance text-white"
-                        aria-label={`${config.title} ${config.titleHighlight}`}
-                    >
-                        {config.title}
-                        <span className="metallic-gold-static">{` ${config.titleHighlight}`}</span>
-                    </h2>
-
-                    <span
-                        aria-hidden="true"
-                        className="mx-auto mt-7 block h-px w-32 bg-gradient-to-r from-transparent via-[var(--color-accent)] to-transparent"
-                    />
-
-                    <p className="mx-auto mt-7 max-w-xl text-body leading-relaxed text-white/65">
-                        {config.description}
-                    </p>
-
-                    <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                        <Link href={contactHref} className="brushed-gold premium-cta group/cta inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-none px-5 sm:w-auto">
-                                {contactLabel}
-                                <ArrowRight className="h-4 w-4 transition-transform duration-300 motion-safe:group-hover/cta:translate-x-1" aria-hidden="true" />
-                        </Link>
-                        <Link
-                            href={whatsappHref}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group inline-flex min-h-[52px] w-full items-center justify-center gap-2 border border-white/15 px-7 text-white/85 transition-colors duration-300 hover:border-[var(--color-accent)]/40 hover:text-white sm:w-auto"
-                        >
-                            <MessageCircle className="h-4 w-4 text-[var(--color-accent)]" aria-hidden="true" />
-                            <span className="property-tag-type">WhatsApp</span>
-                        </Link>
-                    </div>
-
-                    {config.indicator && (
-                        <p className="mt-7 inline-flex items-center justify-center gap-2 footer-legal-type text-white/55">
-                            <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" aria-hidden="true" />
-                            {config.indicator}
-                        </p>
-                    )}
+                    {config.indicator && <p className="mt-7 flex items-center gap-2 footer-legal-type text-white/65"><span className="size-1.5 rounded-full bg-[var(--color-accent)]" aria-hidden="true" />{config.indicator}</p>}
                 </ScrollReveal>
             </div>
         </section>

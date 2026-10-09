@@ -1,4 +1,6 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowDown } from "lucide-react";
+import { CinematicImage } from "@/components/visual/CinematicImage";
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
@@ -114,33 +116,30 @@ async function InventoryContent() {
 export default function InventoryPage() {
     return (
         <div className="flex w-full flex-1 flex-col bg-background">
-            <header className="relative overflow-hidden border-b border-white/[0.08]">
-                <Image
+            <header className="relative flex min-h-[72svh] items-end overflow-hidden pb-12 pt-40 sm:min-h-[80svh] sm:pb-16">
+                <CinematicImage
                     src="/home-hero-bg.webp"
-                    alt=""
-                    aria-hidden="true"
-                    fill
+                    alt="Arquitectura residencial contemporánea en Tijuana"
                     priority
-                    sizes="100vw"
-                    className="object-cover opacity-[0.14]"
+                    className="absolute inset-0"
                 />
-                <div
-                    aria-hidden="true"
-                    className="absolute inset-0 bg-gradient-to-b from-background/75 via-background/85 to-background"
-                />
-                <div className="grain-overlay opacity-[0.08]" aria-hidden="true" />
-                <div className="relative mx-auto w-full max-w-[90rem] px-6 pb-10 pt-24 sm:px-10 sm:pt-28 lg:px-16 lg:pt-32">
-                    <div className="flex items-center gap-3">
-                        <span className="h-px w-6 bg-[var(--color-accent)]" aria-hidden="true" />
-                        <span className="property-tag-type gold-ink">Propiedades · Tijuana</span>
+                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-black/20" />
+                <div className="relative mx-auto flex w-full max-w-[90rem] flex-col justify-between gap-8 px-6 sm:px-10 lg:flex-row lg:items-end lg:px-16">
+                    <div className="max-w-4xl">
+                        <span className="property-tag-type text-white/75">Propiedades · Tijuana</span>
+                        <h1 className="mt-5 font-display text-display-1 leading-display tracking-headline text-white">
+                            Un lugar para<br />lo que sigue.
+                        </h1>
+                        <p className="mt-5 text-body text-white/75">
+                            Residencial. Comercial. Industrial.
+                        </p>
                     </div>
-                    <h1 className="mt-4 font-display text-display-2 font-extrabold uppercase leading-[1.02] tracking-headline text-white">
-                        Propiedades disponibles
-                    </h1>
-                    <p className="mt-3 max-w-xl text-body text-white/58">
-                        Residencial, comercial e industrial con valor comercial, revisión
-                        documental y ruta de cierre.
-                    </p>
+                    <Link href="#catalogo" className="group inline-flex w-fit items-center gap-4 property-tag-type text-white">
+                        Explorar propiedades
+                        <span className="flex size-12 items-center justify-center rounded-full border border-white/45 transition-colors group-hover:bg-white/15">
+                            <ArrowDown className="size-4" aria-hidden="true" />
+                        </span>
+                    </Link>
                 </div>
             </header>
 

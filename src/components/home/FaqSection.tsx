@@ -34,7 +34,7 @@ const whatsappHref = `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIC
 )}`;
 
 export function FaqSection() {
-  const [open, setOpen] = useState(0);
+  const [open, setOpen] = useState(-1);
 
   return (
     <section className="relative border-t border-white/[0.08]">
@@ -44,7 +44,7 @@ export function FaqSection() {
             Antes de empezar.
           </h2>
           <p className="mt-5 max-w-sm text-body text-white/58">
-            ¿Otra duda? Te respondemos por WhatsApp el mismo día hábil.
+            Resolvemos tus dudas.
           </p>
           <Link
             href={whatsappHref}

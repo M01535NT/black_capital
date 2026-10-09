@@ -133,7 +133,7 @@ export function CatalogFilter({ properties }: { properties: PropertyCardData[] }
             <div
               className={
                 view === "grid"
-                  ? "grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2 xl:grid-cols-3"
+                  ? "grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 md:gap-y-14"
                   : "flex flex-col gap-4"
               }
             >

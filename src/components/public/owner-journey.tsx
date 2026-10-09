@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, Plus } from "lucide-react";
 import { ContactLeadForm } from "@/components/public/contact-lead-form";
+import { CinematicImage } from "@/components/visual/CinematicImage";
 
 const services = [
   { title: "Opinión de valor", body: "Una referencia comercial para definir el precio de salida y revisar expectativas.", service: "opinion-de-valor" },
@@ -14,10 +14,10 @@ const services = [
   { title: "Fotografía y video", body: "Preparamos el material visual que ayuda a conocer los espacios y sus características.", service: "fotografia-video" },
 ];
 const steps = [
-  { title: "Conocemos tu inmueble", body: "Revisamos ubicación, características y lo que quieres lograr." },
-  { title: "Definimos la estrategia", body: "Acordamos condiciones, precio de salida y alcance del servicio." },
-  { title: "Presentamos y damos seguimiento", body: "Organizamos la difusión, las consultas y las visitas conforme al encargo." },
-  { title: "Acompañamos la operación", body: "Damos seguimiento a las propuestas, los acuerdos y los requisitos del cierre." },
+  { title: "Conocer", body: "Tu inmueble, su ubicación y tu objetivo." },
+  { title: "Definir", body: "Precio, condiciones y estrategia." },
+  { title: "Presentar", body: "Difusión, consultas y visitas." },
+  { title: "Acompañar", body: "Propuestas, acuerdos y cierre." },
 ];
 
 export function OwnerJourney() {
@@ -26,34 +26,48 @@ export function OwnerJourney() {
   const goalParam = goal === "Vender" ? "vender" : "rentar";
   return (
     <div className="w-full flex-1 bg-background">
-      <section className="relative overflow-hidden border-b border-white/10 pt-28 sm:pt-36">
-        <Image src="/hero-poster.webp" alt="" fill priority sizes="100vw" className="object-cover opacity-25" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
-        <div className="relative mx-auto max-w-[90rem] px-6 py-12 sm:px-10 lg:px-16 lg:py-20">
-          <p className="mb-5 property-tag-type text-[var(--color-accent)]">Para propietarios · Tijuana</p>
-          <h1 className="max-w-5xl text-display-1 leading-hero tracking-tight text-white text-balance">Vende o renta tu inmueble con una estrategia definida.</h1>
-          <p className="mt-6 max-w-2xl text-body-fluid leading-relaxed text-white/65">Partimos de tu objetivo, las condiciones del inmueble y su mercado para acordar cómo avanzar.</p>
-          <div className="mt-8 flex flex-wrap gap-3" role="group" aria-label="Qué quieres hacer con tu inmueble">
-            {["Vender", "Poner en renta"].map((option) => <button key={option} type="button" onClick={() => setGoal(option)} aria-pressed={goal === option} className={`inline-flex min-h-12 items-center gap-2 border px-6 text-body font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] ${goal === option ? "brushed-gold border-[var(--color-accent)] text-black" : "border-white/25 bg-black/30 text-white hover:border-[var(--color-accent)]"}`}>{goal === option && <Check className="h-4 w-4" aria-hidden="true" />}{option}</button>)}
+      <section aria-label="Para propietarios" className="relative">
+        <CinematicImage src="/hero-luxury.webp" alt="Arquitectura residencial contemporánea al atardecer" priority className="min-h-[92svh]">
+          <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/30 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background to-transparent" />
+          <div className="relative mx-auto flex min-h-[92svh] max-w-[90rem] flex-col justify-end px-6 pb-16 pt-36 sm:px-10 lg:px-16 lg:pb-24">
+            <p className="mb-5 property-tag-type text-[var(--color-accent)]">Para propietarios · Tijuana</p>
+            <h1 className="max-w-4xl text-display-1 leading-hero tracking-tight text-white text-balance">Tu inmueble.<br />Su siguiente capítulo.</h1>
+            <p className="mt-6 max-w-md text-body-fluid leading-relaxed text-white/75">Una estrategia para vender o rentar, desde el primer paso.</p>
+            <div className="mt-8 flex flex-wrap gap-3" role="group" aria-label="Qué quieres hacer con tu inmueble">
+              {["Vender", "Poner en renta"].map((option) => <button key={option} type="button" onClick={() => setGoal(option)} aria-pressed={goal === option} className={`inline-flex min-h-12 items-center gap-2 rounded-full border px-6 text-body font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] ${goal === option ? "brushed-gold border-[var(--color-accent)] text-black" : "border-white/35 bg-black/20 text-white backdrop-blur-sm hover:border-[var(--color-accent)]"}`}>{goal === option && <Check className="h-4 w-4" aria-hidden="true" />}{option}</button>)}
+            </div>
+            <a href="#solicitud" className="mt-5 inline-flex min-h-11 w-fit items-center gap-3 text-body-sm text-white/85">Hablar de mi inmueble<ArrowDown className="h-4 w-4" aria-hidden="true" /></a>
           </div>
-          <a href="#solicitud" className="mt-7 inline-flex min-h-11 items-center gap-2 text-body-sm text-[var(--color-accent)] underline underline-offset-4">Hablar de mi inmueble<ArrowRight className="h-4 w-4" aria-hidden="true" /></a>
+        </CinematicImage>
+      </section>
+
+      <section aria-labelledby="servicios-title" className="mx-auto grid max-w-[90rem] items-center gap-10 px-6 py-20 sm:px-10 lg:grid-cols-12 lg:gap-20 lg:px-16 lg:py-32">
+        <CinematicImage src="/line-residencial.webp" alt="Residencia en una ladera con vista a la ciudad" sizes="(min-width: 1024px) 45vw, 100vw" className="h-[420px] rounded-[1.25rem] sm:h-[540px] lg:col-span-6 lg:h-[700px]" />
+        <div className="lg:col-span-6">
+          <p className="mb-4 property-tag-type text-[var(--color-accent)]">A la medida de tu inmueble</p>
+          <h2 id="servicios-title" className="max-w-xl text-display-2 leading-display tracking-headline text-white">Cada propiedad pide una estrategia.</h2>
+          <p className="mt-5 max-w-md text-body leading-relaxed text-white/60">Acordamos contigo los servicios y su alcance.</p>
+          <div className="mt-9">{services.map((service, index) => <details key={service.service} className="group border-b border-white/15 py-1">
+            <summary className="flex min-h-20 cursor-pointer list-none items-center gap-4 py-5 text-body-lg font-medium text-white/90 transition-colors hover:text-[var(--color-accent)] focus-visible:outline focus-visible:outline-[var(--color-accent)] [&::-webkit-details-marker]:hidden"><span className="text-caption text-white/35">0{index + 1}</span><span className="flex-1">{service.title}</span><Plus className="h-4 w-4 shrink-0 text-[var(--color-accent)] transition-transform group-open:rotate-45 motion-reduce:transition-none" aria-hidden="true" /></summary>
+            <div className="pb-6 pl-8"><p className="max-w-md text-body leading-relaxed text-white/60">{service.body}</p><Link href={`/contacto?servicio=${service.service}&objetivo=${goalParam}`} className="mt-3 inline-flex min-h-11 items-center gap-2 text-body-sm text-[var(--color-accent)]">Consultar servicio<ArrowRight className="h-4 w-4" aria-hidden="true" /></Link></div>
+          </details>)}</div>
         </div>
       </section>
-      <section aria-labelledby="servicios-title" className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
-        <p className="mb-3 property-tag-type text-[var(--color-accent)]">Servicios</p>
-        <h2 id="servicios-title" className="max-w-3xl text-display-2 leading-display tracking-headline text-white">El apoyo que necesita tu operación.</h2>
-        <p className="mt-4 max-w-2xl text-body text-white/60">Definimos contigo cuáles aplican a tu inmueble y su alcance antes de comenzar.</p>
-        <div className="mt-9 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">{services.map((service) => <article key={service.service} className="flex flex-col border border-white/10 bg-white/[0.02] p-6"><h3 className="mb-4 text-body-lg font-semibold text-white">{service.title}</h3><p className="mb-6 text-body leading-relaxed text-white/55">{service.body}</p><Link href={`/contacto?servicio=${service.service}&objetivo=${goalParam}`} className="mt-auto inline-flex min-h-11 items-center gap-2 text-body-sm text-[var(--color-accent)]">Consultar servicio<ArrowRight className="h-4 w-4" aria-hidden="true" /></Link></article>)}</div>
+
+      <section aria-labelledby="proceso-title" className="px-3 sm:px-6">
+        <CinematicImage src="/closing-cta-bg.webp" alt="" className="rounded-[1.5rem]">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/10" />
+          <div className="relative mx-auto flex min-h-[620px] max-w-[90rem] flex-col justify-between gap-28 px-6 py-12 sm:px-10 lg:min-h-[700px] lg:px-16 lg:py-16">
+            <div><p className="mb-4 property-tag-type text-[var(--color-accent)]">Nuestro método</p><h2 id="proceso-title" className="max-w-xl text-display-2 leading-display tracking-headline text-white">De la intención<br />a la operación.</h2></div>
+            <ol className="grid gap-x-6 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">{steps.map((step, index) => <li key={step.title} className="border-t border-white/30 pt-5"><span className="property-tag-type text-[var(--color-accent)]">0{index + 1}</span><h3 className="mb-2 mt-4 text-display-3 text-white">{step.title}</h3><p className="max-w-xs text-body-sm leading-relaxed text-white/70">{step.body}</p></li>)}</ol>
+          </div>
+        </CinematicImage>
       </section>
-      <section aria-labelledby="proceso-title" className="border-y border-white/10 bg-white/[0.02]">
-        <div className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-20">
-          <p className="mb-3 property-tag-type text-[var(--color-accent)]">Proceso</p><h2 id="proceso-title" className="text-display-2 leading-display tracking-headline text-white">Un siguiente paso claro.</h2>
-          <ol className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">{steps.map((step, index) => <li key={step.title}><span className="property-tag-type text-[var(--color-accent)]">0{index + 1}</span><h3 className="mb-3 mt-4 text-body-lg font-semibold text-white">{step.title}</h3><p className="text-body leading-relaxed text-white/55">{step.body}</p></li>)}</ol>
-        </div>
-      </section>
-      <section id="solicitud" aria-labelledby="owner-form-title" className="mx-auto grid max-w-[90rem] scroll-mt-28 gap-10 px-6 py-16 sm:px-10 lg:grid-cols-2 lg:gap-16 lg:px-16 lg:py-20">
-        <div><p className="mb-3 property-tag-type text-[var(--color-accent)]">Para comenzar</p><h2 id="owner-form-title" className="text-display-2 leading-display tracking-headline text-white">Cuéntanos sobre tu inmueble.</h2><p className="mt-5 text-body leading-relaxed text-white/60">Con el tipo de inmueble, la zona y tu objetivo podemos iniciar una conversación. No necesitas subir documentos en este paso.</p><ul className="mt-7 space-y-4 text-body text-white/65">{["Tipo de inmueble y ubicación aproximada.", "Si buscas vender o poner en renta.", "Un correo para responderte; teléfono opcional."].map((item) => <li key={item} className="flex gap-3"><Check className="mt-1 h-4 w-4 shrink-0 text-[var(--color-accent)]" aria-hidden="true" />{item}</li>)}</ul></div>
-        <div className="min-w-0 border border-white/10 bg-white/[0.025] p-5 sm:p-8"><ContactLeadForm ownerGoal={goal} onOwnerGoalChange={setGoal} /></div>
+
+      <section id="solicitud" aria-labelledby="owner-form-title" className="mx-auto grid max-w-[90rem] scroll-mt-28 items-start gap-10 px-6 py-20 sm:px-10 lg:grid-cols-2 lg:gap-24 lg:px-16 lg:py-32">
+        <div><p className="mb-4 property-tag-type text-[var(--color-accent)]">Comencemos</p><h2 id="owner-form-title" className="max-w-lg text-display-2 leading-display tracking-headline text-white">Cuéntanos sobre tu inmueble.</h2><p className="mt-5 max-w-md text-body leading-relaxed text-white/60">Tipo de propiedad, zona y objetivo. Lo demás lo conversamos contigo.</p><p className="mt-6 text-body-sm text-white/45">Sin documentos en este primer paso.</p></div>
+        <div className="min-w-0 rounded-[1.5rem] bg-white/[0.035] p-5 sm:p-8"><ContactLeadForm ownerGoal={goal} onOwnerGoalChange={setGoal} /></div>
       </section>
     </div>
   );

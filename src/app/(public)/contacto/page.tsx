@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 import { ContactLeadForm } from "@/components/public/contact-lead-form";
+import { CinematicImage } from "@/components/visual/CinematicImage";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/contacto" },
@@ -25,31 +26,36 @@ const contactChannels = [
 
 export default function ContactoPage() {
   return (
-    <div className="w-full flex-1 bg-background pt-28 sm:pt-36">
-      <div className="mx-auto grid max-w-[90rem] items-start gap-10 px-6 pb-16 sm:px-10 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-8 lg:px-16 lg:pb-24">
+    <div className="w-full flex-1 bg-background pt-24 sm:pt-32">
+      <div className="mx-auto grid max-w-[90rem] items-start gap-10 px-6 pb-20 sm:px-10 lg:grid-cols-12 lg:gap-x-16 lg:gap-y-16 lg:px-16 lg:pb-28">
         <header className="min-w-0 lg:col-span-5">
-          <p className="mb-4 property-tag-type text-[var(--color-accent)]">Contacto directo · Tijuana</p>
-          <h1 className="text-display-1 leading-hero tracking-tight text-white text-balance">Hablemos de tu inmueble.</h1>
-          <p className="mt-5 max-w-2xl text-body-fluid leading-relaxed text-white/65">Comprar, vender, rentar o saber cuánto puede valer una propiedad. Comparte tu consulta o elige el canal que prefieras.</p>
-        </header>
-          <section id="solicitud" aria-labelledby="solicitud-title" className="min-w-0 scroll-mt-28 border border-white/10 bg-white/[0.025] p-5 sm:p-8 lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1">
-            <h2 id="solicitud-title" className="mb-3 text-display-2 leading-display tracking-headline text-white">Cuéntanos qué necesitas.</h2>
-            <p className="mb-7 text-body-sm leading-relaxed text-white/55">Usaremos tus datos para responder esta consulta. El teléfono es opcional.</p>
-            <Suspense fallback={<p className="text-body text-white/60">Cargando formulario…</p>}><ContactLeadForm /></Suspense>
-          </section>
-          <aside id="canales" aria-label="Canales de atención" className="min-w-0 lg:col-span-5 lg:row-start-2">
-            <h2 className="mb-6 text-display-2 leading-display tracking-headline text-white">También estamos aquí.</h2>
-            <div className="grid gap-5 sm:grid-cols-2">
-              {contactChannels.map(({ icon: Icon, title, lines, ...channel }) => (
-                <div key={title} className="min-w-0 border-t border-white/10 pt-4">
-                  <div className="min-w-0 [&>p+p]:mt-0"><h3 className="mb-2 flex items-center gap-3 text-display-3 text-white"><Icon className="h-5 w-5 shrink-0 text-[var(--color-accent)]" aria-hidden="true" />{title}</h3>
-                    {lines.map((line) => <p key={line} className="break-words text-body-sm leading-relaxed text-white/60 sm:text-body">{line}</p>)}
-                    {"href" in channel && <a href={channel.href} {...(channel.href?.startsWith("https:") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="mt-1 inline-flex min-h-11 items-center text-body-sm text-[var(--color-accent)] underline underline-offset-4">{channel.label}</a>}
-                  </div>
-                </div>
-              ))}
+          <CinematicImage src="/line-residencial.webp" alt="Arquitectura residencial con vistas al atardecer" priority sizes="(min-width: 1024px) 42vw, 100vw" className="h-[360px] rounded-[1.25rem] sm:h-[480px] lg:h-[720px]">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+              <p className="mb-4 property-tag-type text-[var(--color-accent)]">Contacto directo · Tijuana</p>
+              <h1 className="text-display-1 leading-hero tracking-tight text-white text-balance">Hola.</h1>
+              <p className="mt-5 max-w-sm text-body-fluid leading-relaxed text-white/75">Tu próximo paso empieza aquí.</p>
             </div>
-          </aside>
+          </CinematicImage>
+        </header>
+        <section id="solicitud" aria-labelledby="solicitud-title" className="min-w-0 scroll-mt-28 lg:col-span-7 lg:pt-7">
+          <p className="mb-4 property-tag-type text-[var(--color-accent)]">Comprar · Vender · Rentar</p>
+          <h2 id="solicitud-title" className="mb-4 text-display-2 leading-display tracking-headline text-white">Cuéntanos qué necesitas.</h2>
+          <p className="mb-8 max-w-md text-body-sm leading-relaxed text-white/55">Usaremos tus datos para responder tu consulta. El teléfono es opcional.</p>
+          <Suspense fallback={<p className="text-body text-white/60">Cargando formulario…</p>}><ContactLeadForm /></Suspense>
+        </section>
+        <aside id="canales" aria-label="Canales de atención" className="min-w-0 pt-4 lg:col-span-12">
+          <div className="mb-9 flex flex-wrap items-end justify-between gap-3"><h2 className="text-display-3 text-white">También estamos aquí.</h2><p className="property-tag-type text-white/40">Elige cómo conversar</p></div>
+          <div className="grid gap-x-9 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+            {contactChannels.map(({ icon: Icon, title, lines, ...channel }) => (
+              <div key={title} className="min-w-0 border-t border-white/15 pt-5">
+                <h3 className="mb-3 flex items-center gap-3 text-body-lg text-white"><Icon className="h-4 w-4 shrink-0 text-[var(--color-accent)]" aria-hidden="true" />{title}</h3>
+                {lines.map((line) => <p key={line} className="break-words text-body-sm leading-relaxed text-white/60">{line}</p>)}
+                {"href" in channel && <a href={channel.href} {...(channel.href?.startsWith("https:") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="mt-2 inline-flex min-h-11 items-center text-body-sm text-[var(--color-accent)] underline underline-offset-4">{channel.label}</a>}
+              </div>
+            ))}
+          </div>
+        </aside>
       </div>
     </div>
   );

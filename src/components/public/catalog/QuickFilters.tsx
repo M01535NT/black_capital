@@ -3,10 +3,10 @@
 import { USES, BUSINESS_TYPES } from "@/lib/property-constants";
 import { CURRENCY_OPTIONS, type Filters } from "./constants";
 
-const inputStyle = "mt-2 h-11 w-full min-w-0 border border-white/[0.1] bg-background px-3 text-body-sm text-white outline-none transition-colors focus:border-[var(--color-accent)] disabled:opacity-40";
+const inputStyle = "mt-2 h-11 w-full min-w-0 rounded-lg border border-white/[0.08] bg-white/[0.025] px-3 text-body-sm text-white outline-none transition-colors focus:border-[var(--color-accent)] disabled:opacity-40";
 
 export function QuickFilters({ filters, onUpdate }: { filters: Filters; onUpdate: (patch: Partial<Filters>) => void }) {
-  return <div aria-label="Filtros rápidos" className="mb-6 hidden grid-cols-3 gap-3 border-b border-white/[0.08] pb-6 lg:grid xl:grid-cols-6">
+  return <div aria-label="Filtros rápidos" className="mb-12 hidden grid-cols-3 gap-5 border-b border-white/[0.08] pb-8 lg:grid xl:grid-cols-6">
     <label className="property-tag-type text-white/60">Operación
       <select aria-label="Operación" value={filters.tipo || ""} onChange={e => onUpdate({ tipo: e.target.value || null })} className={inputStyle}>
         <option value="">Todas</option>{BUSINESS_TYPES.map(value => <option key={value}>{value}</option>)}

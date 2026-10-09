@@ -1,129 +1,83 @@
-import { expect, test, type Locator } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
-const routes = ["/black-luxury", "/black-business", "/black-industrial"] as const;
+const brands = [
+  { route: "/black-luxury", use: "Residencial", typeLabel: "Tipo de propiedad", type: "Casa", zoneLabel: "Zona residencial", zone: "Chapultepec", areaLabel: "Construcción mínima", area: "250" },
+  { route: "/black-business", use: "Comercial", typeLabel: "Formato comercial", type: "Oficina", zoneLabel: "Zona comercial", zone: "Otay", areaLabel: "Superficie mínima", area: "150" },
+  { route: "/black-industrial", use: "Industrial", typeLabel: "Tipo de nave", type: "Nave", zoneLabel: "Corredor logístico", zone: "Garita", areaLabel: "Rango de m²", area: "1500" },
+] as const;
+const gallerySelector = "[data-section='sub-brand-value-rail']";
 
-const railSelector = "[data-section='sub-brand-value-rail']";
-const cardSelector = `${railSelector} .sub-brand-value-card-shell`;
-
-async function cardWidths(cards: Locator) {
-  return cards.evaluateAll((elements) =>
-    elements.map((element) => Math.round(element.getBoundingClientRect().width)),
-  );
-}
-
-function expectEvenWidths(widths: number[]) {
-  const min = Math.min(...widths);
-  const max = Math.max(...widths);
-
-  expect(max - min, `Expected even card widths, received ${widths.join(", ")}`).toBeLessThanOrEqual(8);
-}
-
-test.describe("sub-brand value cards desktop interaction", () => {
-  test.use({
-    viewport: { width: 1440, height: 1000 },
-    isMobile: false,
-  });
-
-  for (const route of routes) {
-    test(`${route} starts even and expands the hovered card`, async ({ page }) => {
-      await page.goto(route, { waitUntil: "domcontentloaded" });
-      await expect(page.locator("main h1").first()).toBeVisible();
-      await page.evaluate(() => document.fonts.ready);
-
-      const rail = page.locator(railSelector);
-      await expect(rail).toHaveCount(1);
-      await rail.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(250);
-
-      const cards = page.locator(cardSelector);
-      await expect(cards).toHaveCount(3);
-
-      const initialWidths = await cardWidths(cards);
-      expectEvenWidths(initialWidths);
-
-      for (let activeIndex = 0; activeIndex < 3; activeIndex += 1) {
-        await cards.nth(activeIndex).hover();
-        await page.waitForTimeout(820);
-
-        const hoveredWidths = await cardWidths(cards);
-        const activeWidth = hoveredWidths[activeIndex];
-        const inactiveWidths = hoveredWidths.filter((_, index) => index !== activeIndex);
-
-        expect(activeWidth, `Expected active card ${activeIndex} to grow on ${route}; received ${hoveredWidths.join(", ")}`).toBeGreaterThan(
-          Math.max(...inactiveWidths) * 1.55,
-        );
-        expect(activeWidth, `Expected active card ${activeIndex} to grow beyond the even state on ${route}`).toBeGreaterThan(
-          initialWidths[activeIndex] * 1.35,
-        );
-        expect(Math.max(...inactiveWidths), `Expected inactive cards to shrink on ${route}`).toBeLessThan(
-          Math.max(...initialWidths) * 0.9,
-        );
-      }
-
-      await page.mouse.move(8, 8);
-      await page.waitForTimeout(820);
-      expectEvenWidths(await cardWidths(cards));
-    });
-
-    test(`${route} expands the focused card`, async ({ page }) => {
-      await page.goto(route, { waitUntil: "domcontentloaded" });
-      await expect(page.locator("main h1").first()).toBeVisible();
-      await page.evaluate(() => document.fonts.ready);
-
-      const rail = page.locator(railSelector);
-      await expect(rail).toHaveCount(1);
-      await rail.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(250);
-
-      const cards = page.locator(cardSelector);
-      await expect(cards).toHaveCount(3);
-
-      const initialWidths = await cardWidths(cards);
-      expectEvenWidths(initialWidths);
-
-      await cards.nth(1).locator("a").focus();
-      await page.waitForTimeout(820);
-
-      const focusedWidths = await cardWidths(cards);
-      expect(focusedWidths[1], `Expected focused card to grow on ${route}; received ${focusedWidths.join(", ")}`).toBeGreaterThan(
-        Math.max(focusedWidths[0], focusedWidths[2]) * 1.55,
-      );
+test.describe("brand photographic galleries", () => {
+  test.use({ viewport: { width: 1440, height: 1000 }, isMobile: false });
+  for (const brand of brands) {
+    test(`${brand.route} presents an asymmetric gallery with keyboard-accessible inventory links`, async ({ page }) => {
+      await page.goto(brand.route, { waitUntil: "domcontentloaded" });
+      const gallery = page.locator(gallerySelector);
+      await gallery.scrollIntoViewIfNeeded();
+      const links = gallery.getByRole("link");
+      await expect(links).toHaveCount(3);
+      const boxes = await links.evaluateAll(elements => elements.map(element => {
+        const { x, y, width, height } = element.getBoundingClientRect();
+        return { x, y, width, height };
+      }));
+      expect(boxes[0].height).toBeGreaterThan(boxes[1].height * 1.8);
+      expect(boxes[0].width).toBeGreaterThan(boxes[1].width);
+      expect(boxes[2].y).toBeGreaterThan(boxes[1].y + boxes[1].height);
+      await links.first().focus();
+      await expect(links.first()).toBeFocused();
+      await page.keyboard.press("Tab");
+      await expect(links.nth(1)).toBeFocused();
+      await page.keyboard.press("Tab");
+      await expect(links.nth(2)).toBeFocused();
+      await expect(links.nth(2)).toHaveAttribute("href", `/inventario?uso=${brand.use}`);
+      await expect(gallery.locator("img")).toHaveCount(3);
     });
   }
 });
 
-test.describe("sub-brand value rail mobile behavior", () => {
-  test.use({
-    viewport: { width: 390, height: 844 },
-    deviceScaleFactor: 2,
-    isMobile: true,
+for (const width of [320, 390]) {
+  test.describe(`brand search and layout at ${width}px`, () => {
+    test.use({ viewport: { width, height: 844 }, reducedMotion: "reduce" });
+    for (const brand of brands) {
+      test(`${brand.route} keeps its gallery in bounds and preserves every search filter`, async ({ page }) => {
+        await page.goto(brand.route, { waitUntil: "domcontentloaded" });
+        await expect(page.locator("main h1")).toBeVisible();
+        await expect(page.getByRole("form", { name: "Búsqueda rápida de inventario" })).toHaveCount(0);
+        const trigger = page.getByRole("button", { name: "Buscar", exact: true });
+        await trigger.focus();
+        await page.keyboard.press("Enter");
+        const dialog = page.getByRole("dialog");
+        await expect(dialog).toBeVisible();
+        await expect(dialog.getByRole("combobox")).toHaveCount(4);
+        await page.keyboard.press("Escape");
+        await expect(dialog).toHaveCount(0);
+        await expect(trigger).toBeFocused();
+
+        const gallery = page.locator(gallerySelector);
+        await gallery.scrollIntoViewIfNeeded();
+        const bounds = await gallery.getByRole("link").evaluateAll(elements => elements.map(element => {
+          const box = element.getBoundingClientRect();
+          return { left: box.left, right: box.right, height: box.height };
+        }));
+        for (const box of bounds) {
+          expect(box.left).toBeGreaterThanOrEqual(0);
+          expect(box.right).toBeLessThanOrEqual(width);
+          expect(box.height).toBeGreaterThanOrEqual(400);
+        }
+        const metrics = await page.evaluate(() => ({ body: document.body.scrollWidth, root: document.documentElement.scrollWidth, viewport: document.documentElement.clientWidth }));
+        expect(metrics.root).toBeLessThanOrEqual(metrics.viewport + 2);
+        expect(metrics.body).toBeLessThanOrEqual(metrics.viewport + 2);
+
+        await trigger.click();
+        await dialog.getByRole("combobox", { name: brand.typeLabel, exact: true }).selectOption(brand.type);
+        await dialog.getByRole("combobox", { name: brand.zoneLabel, exact: true }).selectOption(brand.zone);
+        await dialog.getByRole("combobox", { name: "Tipo", exact: true }).selectOption("Renta");
+        await dialog.getByRole("combobox", { name: brand.areaLabel, exact: true }).selectOption(brand.area);
+        await dialog.getByRole("button", { name: "Ver resultados" }).click();
+        await expect(page).toHaveURL(/\/inventario\?/);
+        const params = new URL(page.url()).searchParams;
+        expect(Object.fromEntries(params)).toEqual({ uso: brand.use, propiedad: brand.type, zona: brand.zone, tipo: "Renta", m2_min: brand.area });
+      });
+    }
   });
-
-  for (const route of routes) {
-    test(`${route} keeps the value rail horizontal on mobile without document overflow`, async ({ page }) => {
-      await page.goto(route, { waitUntil: "domcontentloaded" });
-      await expect(page.locator("main h1").first()).toBeVisible();
-      await page.evaluate(() => document.fonts.ready);
-
-      const rail = page.locator(railSelector);
-      await expect(rail).toHaveCount(1);
-      await rail.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(200);
-
-      const railMetrics = await rail.evaluate((element) => ({
-        clientWidth: element.clientWidth,
-        scrollWidth: element.scrollWidth,
-      }));
-
-      const documentMetrics = await page.evaluate(() => ({
-        bodyScrollWidth: document.body.scrollWidth,
-        rootClientWidth: document.documentElement.clientWidth,
-        rootScrollWidth: document.documentElement.scrollWidth,
-      }));
-
-      expect(railMetrics.scrollWidth).toBeGreaterThan(railMetrics.clientWidth);
-      expect(documentMetrics.rootScrollWidth).toBeLessThanOrEqual(documentMetrics.rootClientWidth + 2);
-      expect(documentMetrics.bodyScrollWidth).toBeLessThanOrEqual(documentMetrics.rootClientWidth + 2);
-    });
-  }
-});
+}

@@ -58,7 +58,7 @@ export function Header() {
         className={cn(
           "fixed inset-x-0 top-0 z-50",
           "transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-          scrolled ? "bg-background/80 backdrop-blur-xl" : "bg-background/30 backdrop-blur-md",
+          scrolled ? "bg-background/80 backdrop-blur-xl" : "bg-gradient-to-b from-black/35 to-transparent",
         )}
         role="banner"
       >
@@ -74,7 +74,7 @@ export function Header() {
 
             <Link
               href="/contacto"
-              className="premium-cta brushed-gold font-display hidden items-center gap-2 rounded-none transition-transform duration-300 hover:scale-[1.015] sm:inline-flex"
+              className="premium-cta brushed-gold font-display hidden items-center gap-2 rounded-full transition-transform duration-300 hover:scale-[1.015] sm:inline-flex"
             >
               <span>Asesoría</span>
               <span aria-hidden="true">→</span>
@@ -87,7 +87,7 @@ export function Header() {
               aria-label="Abrir navegación"
               aria-expanded={open}
               className={cn(
-                "group relative flex h-11 w-11 items-center justify-center overflow-hidden border transition-colors duration-300",
+                "group relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border transition-colors duration-300",
                 "border-white/12 text-foreground hover:border-[var(--color-accent)]/55 hover:bg-white/[0.06]",
               )}
             >

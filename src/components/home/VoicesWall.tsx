@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, type PanInfo } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { CinematicImage } from "@/components/visual/CinematicImage";
 import { EASE_OUT, Reveal } from "./_motion";
 
 const VOICES = [
@@ -52,25 +53,25 @@ export function VoicesWall() {
   return (
     <section
       aria-label="Voces de clientes Black Capital"
-      className="relative border-t border-white/[0.08] bg-white/[0.02]"
+      className="relative"
     >
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent"
       />
-      <div className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
+      <div className="mx-auto grid max-w-[100rem] items-center gap-10 px-6 py-16 sm:px-10 lg:grid-cols-[.85fr_1.15fr] lg:gap-16 lg:px-16 lg:py-24">
+        <CinematicImage src="/hero-luxury.webp" alt="Arquitectura y luz en un espacio residencial" className="hidden aspect-[4/5] rounded-[1.25rem] lg:block" sizes="40vw" />
+        <div>
         <Reveal className="mb-10 max-w-2xl">
           <h2 className="text-display-2 leading-display tracking-headline text-white">
             Ya confiaron en nosotros.
           </h2>
-          <p className="mt-4 max-w-md text-body leading-snug text-white/58">
-            Compraron, vendieron o evaluaron con mejor información.
-          </p>
+
         </Reveal>
 
         <div className="relative">
           {/* Área de la cita: min-height fija para evitar saltos de layout */}
-          <div className="relative min-h-[15rem] overflow-hidden border border-white/[0.1] bg-background/50 sm:min-h-[13rem]">
+          <div className="relative min-h-[15rem] overflow-hidden sm:min-h-[13rem]">
             <AnimatePresence mode="wait" custom={direction} initial={false}>
               <motion.blockquote
                 key={index}
@@ -85,7 +86,7 @@ export function VoicesWall() {
                 dragElastic={0.12}
                 onDragEnd={onDragEnd}
                 aria-live="polite"
-                className="flex h-full cursor-grab flex-col justify-center px-6 py-9 active:cursor-grabbing sm:px-10 lg:px-14"
+                className="flex h-full cursor-grab flex-col justify-center py-6 active:cursor-grabbing"
               >
                 <span aria-hidden="true" className="gold-ink font-display text-5xl font-extrabold leading-none opacity-30 lg:text-6xl">
                   &ldquo;
@@ -133,7 +134,7 @@ export function VoicesWall() {
                 type="button"
                 onClick={() => paginate(-1)}
                 aria-label="Testimonio anterior"
-                className="flex h-11 w-11 items-center justify-center border border-white/12 text-white/70 transition-colors duration-200 ease-out hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent)] active:scale-95"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white/70 transition-colors duration-200 ease-out hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent)] active:scale-95"
               >
                 <ArrowLeft className="h-4 w-4" />
               </button>
@@ -141,12 +142,13 @@ export function VoicesWall() {
                 type="button"
                 onClick={() => paginate(1)}
                 aria-label="Siguiente testimonio"
-                className="flex h-11 w-11 items-center justify-center border border-white/12 text-white/70 transition-colors duration-200 ease-out hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent)] active:scale-95"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 text-white/70 transition-colors duration-200 ease-out hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent)] active:scale-95"
               >
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </section>

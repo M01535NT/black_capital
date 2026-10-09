@@ -67,7 +67,7 @@ test("propietarios selecciona renta y captura información inicial sin archivos"
     await route.fulfill({ status: 201, json: { success: true } });
   });
   await page.goto("/propietarios");
-  await expect(page.getByRole("heading", { name: "Vende o renta tu inmueble con una estrategia definida." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Tu inmueble\.\s*Su siguiente capítulo\./ })).toBeVisible();
   await page.getByRole("button", { name: "Poner en renta", exact: true }).click();
   await expect(page.getByLabel("Objetivo")).toHaveValue("Poner en renta");
   await page.getByLabel("Tipo de inmueble").selectOption("Casa");

@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("home finder carries operation, use, zone and currency-specific price to inventory", async ({ page }) => {
   await page.goto("/");
+  await page.getByRole("button", { name: "Buscar propiedades", exact: true }).click();
   const finder = page.getByRole("search", { name: "Buscar propiedades" });
   await expect(finder).toBeVisible();
   await finder.getByLabel("Operación").selectOption("Renta");
@@ -18,21 +19,17 @@ test("home finder carries operation, use, zone and currency-specific price to in
   }
 });
 
-test("home presents inventory first and compact segments and process", async ({ page }) => {
+test("home leads with photography and keeps all business lines and process steps", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(/Cada\s*propiedad,\s*su\s*estrategia\./);
-  const sequence = await page.locator("#main-content section").evaluateAll(nodes => nodes.map(node => node.querySelector("h2")?.textContent?.trim() || node.getAttribute("aria-label")));
-  expect(sequence.indexOf("Inventario disponible.")).toBeLessThan(sequence.indexOf("Un método, tres líneas."));
-  expect(sequence.indexOf("Un método, tres líneas.")).toBeLessThan(sequence.indexOf("Tu propiedad, con una estrategia."));
-  expect(sequence.indexOf("Del diagnóstico a la firma.")).toBeLessThan(sequence.indexOf("Indicadores comerciales Black Capital"));
-  const segments = page.locator("[data-section='home-segments'] article");
-  await expect(segments).toHaveCount(3);
-  const tops = await segments.evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().top));
-  expect(Math.max(...tops) - Math.min(...tops)).toBeLessThan(2);
-  const method = page.locator("[data-section='home-methodology']");
-  await expect(method.locator("ol > li")).toHaveCount(4);
-  expect((await method.boundingBox())!.height).toBeLessThan(1100);
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expect(page.getByRole("heading", { level: 1 })).toHaveAttribute("aria-label", "Cada propiedad, su estrategia.");
+  const hero = page.locator("[data-section='cinematic-hero']");
+  await expect(hero.locator("img")).toBeVisible();
+  await expect(hero.getByRole("search")).toHaveCount(0);
+  const sequence = await page.locator("#main-content section").evaluateAll(nodes => nodes.map(node => node.id || node.getAttribute("data-section")));
+  expect(sequence.indexOf("seleccion")).toBeLessThan(sequence.indexOf("home-segments"));
+  await expect(page.locator("[data-section='home-segments'] article")).toHaveCount(3);
+  await expect(page.locator("[data-section='home-methodology'] ol > li")).toHaveCount(4);
 });
 
 test("featured properties scroll with accessible controls on mobile without page overflow", async ({ page }) => {
@@ -80,12 +77,15 @@ test("testimonial controls fit narrow mobile screens", async ({ page }) => {
 });
 
 test("hero words fit their column without clipping at narrow widths", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
   for (const width of [320, 1024]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/");
     const heading = page.getByRole("heading", { level: 1 });
+    await page.evaluate(async () => { await document.fonts.ready; });
     const bounds = await heading.boundingBox();
     for (const word of await heading.locator("span").all()) {
+      expect(await word.evaluate(el => el.scrollWidth - el.clientWidth)).toBeLessThanOrEqual(1);
       const wordBounds = await word.boundingBox();
       expect(wordBounds!.x + wordBounds!.width).toBeLessThanOrEqual(bounds!.x + bounds!.width + 1);
     }
