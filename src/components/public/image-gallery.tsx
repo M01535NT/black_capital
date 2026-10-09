@@ -38,6 +38,9 @@ export function ImageGallery({
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const lightboxRef = useRef<HTMLDivElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const thumbContainerRef = useRef<HTMLDivElement>(null);
 
   const handleImageError = (idx: number) => {
@@ -54,6 +57,7 @@ export function ImageGallery({
   };
 
   const openLightbox = useCallback((index: number) => {
+    returnFocusRef.current = document.activeElement as HTMLElement;
     setLightboxIndex(index);
     setLightboxOpen(true);
     document.body.style.overflow = "hidden";
@@ -62,6 +66,7 @@ export function ImageGallery({
   const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
     document.body.style.overflow = "";
+    returnFocusRef.current?.focus();
   }, []);
 
   const scrollThumbIntoView = useCallback((index: number) => {
@@ -102,6 +107,10 @@ export function ImageGallery({
     goTo(idx - 1);
   }, [lightboxOpen, lightboxIndex, activeIndex, goTo]);
 
+  useEffect(() => {
+    if (lightboxOpen) closeButtonRef.current?.focus();
+  }, [lightboxOpen]);
+
   // ── Keyboard navigation (only inside lightbox) ──
   useEffect(() => {
     if (!lightboxOpen) return;
@@ -109,6 +118,13 @@ export function ImageGallery({
       if (e.key === "ArrowRight") next();
       else if (e.key === "ArrowLeft") prev();
       else if (e.key === "Escape") closeLightbox();
+      else if (e.key === "Tab") {
+        const buttons = Array.from(lightboxRef.current?.querySelectorAll<HTMLButtonElement>("button") ?? []).filter(button => button.getClientRects().length > 0);
+        const first = buttons[0];
+        const last = buttons[buttons.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
@@ -308,6 +324,7 @@ export function ImageGallery({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center"
+            ref={lightboxRef}
             role="dialog"
             aria-modal="true"
             aria-label={`Galería de ${title}`}
@@ -316,6 +333,7 @@ export function ImageGallery({
             onTouchEnd={handleLightboxTouchEnd}
           >
             <button
+              ref={closeButtonRef}
               onClick={closeLightbox}
               className="absolute right-4 top-4 z-10 flex size-11 items-center justify-center rounded-full border border-white/10 bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 active:scale-95"
               aria-label="Cerrar galería"

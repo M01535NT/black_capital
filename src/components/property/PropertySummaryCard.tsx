@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MessageCircle, Phone, Mail, ArrowRight } from "lucide-react";
+import { propertyContactHref } from "@/lib/property-contact";
 import { formatPrice } from "@/lib/format";
 
 interface Fact {
@@ -25,6 +26,9 @@ interface PropertySummaryCardProps {
     agent?: SummaryAgent | null;
     whatsappFallback: string;
     propertyTitle: string;
+    propertyId: string;
+    address?: string | null;
+    brand?: string;
 }
 
 function waHref(phoneRaw: string, title: string) {
@@ -47,8 +51,12 @@ export function PropertySummaryCard({
     agent,
     whatsappFallback,
     propertyTitle,
+    propertyId,
+    address,
+    brand,
 }: PropertySummaryCardProps) {
     const whatsappPhone = agent?.phone || whatsappFallback;
+    const contact = { propertyId, propertyTitle, brand };
 
     return (
         <div className="border border-white/[0.1] bg-white/[0.02]">
@@ -63,6 +71,18 @@ export function PropertySummaryCard({
                 {pricePerM2 && (
                     <p className="mt-2 property-metadata-type text-white/45">{pricePerM2} por m²</p>
                 )}
+            </div>
+
+            {/* Contacto inmediato antes de los datos de apoyo. */}
+            <div className="space-y-2.5 p-6">
+                {address && <p className="property-metadata-type text-white/60">{address}</p>}
+                <Link href={propertyContactHref(contact)} className="brushed-gold premium-cta flex min-h-12 items-center justify-center gap-2 rounded-none px-3 active:scale-[0.98]">
+                    Consultar esta propiedad
+                    <ArrowRight className="size-3.5" aria-hidden="true" />
+                </Link>
+                <Link href={propertyContactHref({ ...contact, objective: "solicitar-visita" })} className="inline-flex min-h-11 w-full items-center justify-center gap-2 border border-white/[0.12] property-tag-type text-white/80 transition-colors duration-200 ease-out hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent)] active:scale-[0.98]">
+                    Solicitar visita
+                </Link>
             </div>
 
             {/* Datos clave */}
@@ -111,10 +131,10 @@ export function PropertySummaryCard({
                     href={waHref(whatsappPhone, propertyTitle)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="brushed-gold premium-cta flex min-h-12 items-center justify-center gap-2 rounded-none active:scale-[0.98]"
+                    className="inline-flex min-h-11 w-full items-center justify-center gap-2 property-tag-type text-white/80 hover:text-[var(--color-accent)]"
                 >
                     <MessageCircle className="size-4" aria-hidden="true" />
-                    Agendar visita
+                    Consultar por WhatsApp
                 </a>
                 <div className="grid grid-cols-2 gap-2.5">
                     {agent?.phone && (
@@ -136,13 +156,7 @@ export function PropertySummaryCard({
                         </a>
                     )}
                 </div>
-                <Link
-                    href={`/contacto?propiedad=${encodeURIComponent(propertyTitle)}&interes=inventario`}
-                    className="group mt-1 flex items-center justify-center gap-2 py-1 property-tag-type text-white/55 transition-colors duration-200 ease-out hover:text-[var(--color-accent)]"
-                >
-                    Solicitar información
-                    <ArrowRight className="size-3.5 transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true" />
-                </Link>
+
             </div>
         </div>
     );

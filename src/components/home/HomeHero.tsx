@@ -5,14 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
-import { EASE_OUT, SPRING, useScrollScale, useSectionRef } from "./_motion";
-
-const intentCtas = [
-  { label: "Comprar", href: "/contacto?objetivo=comprar" },
-  { label: "Vender", href: "/contacto?objetivo=vender" },
-  { label: "Rentar", href: "/inventario?tipo=Renta" },
-  { label: "Invertir", href: "/contacto?objetivo=invertir" },
-];
+import { EASE_OUT, useScrollScale, useSectionRef } from "./_motion";
 
 const headlineWords: { t: string; gold?: boolean }[] = [
   { t: "Cada" },
@@ -100,97 +93,103 @@ export function HomeHero() {
       <div className="grain-overlay" aria-hidden="true" />
 
       {/* Contenido */}
-      <div className="relative z-10 mx-auto flex w-full max-w-[90rem] flex-1 flex-col justify-center px-6 pb-10 pt-28 sm:px-10 lg:px-16 lg:pb-16">
-        <motion.div
-          className="mb-6 flex items-center gap-3"
-          initial={reduce ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-        >
-          <span className="h-px w-8 bg-[var(--color-accent)]" aria-hidden="true" />
-          <span className="property-tag-type gold-ink">Inmobiliaria en Tijuana</span>
-        </motion.div>
+      <div className="relative z-10 mx-auto flex w-full max-w-[90rem] flex-1 flex-col justify-center xl:grid xl:grid-cols-[1.5fr_1fr] xl:items-center xl:gap-10 px-6 pb-10 pt-28 sm:px-10 lg:px-16 lg:pb-16">
+        <div className="min-w-0">
+          <motion.div
+            className="mb-6 flex items-center gap-3"
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="h-px w-8 bg-[var(--color-accent)]" aria-hidden="true" />
+            <span className="property-tag-type gold-ink">Inmobiliaria en Tijuana</span>
+          </motion.div>
 
-        <motion.h1
-          className="max-w-4xl font-display text-[clamp(2.5rem,6.5vw,5.5rem)] font-extrabold uppercase leading-[0.98] tracking-tight text-white"
-          variants={reduce ? undefined : wordParent}
-          initial={reduce ? false : "hidden"}
-          animate={reduce ? false : "show"}
-        >
-          {headlineWords.map((w, i) => (
-            <motion.span
-              key={`${w.t}-${i}`}
-              variants={reduce ? undefined : wordChild}
-              className={`mr-[0.28em] inline-block ${w.gold ? "gold-ink" : ""}`}
-            >
-              {w.t}
-            </motion.span>
-          ))}
-        </motion.h1>
-
-        <motion.p
-          className="mt-6 max-w-xl text-body-lg text-white/70"
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.55, ease: EASE_OUT }}
-        >
-          Compra, venta y renta en Tijuana. Sin sorpresas en precio, papeles
-          ni cierre.
-        </motion.p>
-
-        {/* Selector de intención */}
-        <motion.div
-          className="mt-9 flex flex-wrap gap-2.5"
-          initial={reduce ? false : "hidden"}
-          animate={reduce ? false : "show"}
-          variants={
-            reduce
-              ? undefined
-              : { hidden: {}, show: { transition: { staggerChildren: 0.06, delayChildren: 0.7 } } }
-          }
-        >
-          {intentCtas.map((cta) => (
-            <motion.div
-              key={cta.label}
-              variants={
-                reduce ? undefined : { hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0, transition: SPRING } }
-              }
-            >
-              <Link
-                href={cta.href}
-                className="group inline-flex items-center gap-2 border border-white/[0.14] bg-black/20 px-5 py-2.5 text-[0.95rem] font-semibold text-white backdrop-blur-sm transition-colors duration-200 ease-out hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent)] active:scale-[0.98]"
+          <motion.h1
+            aria-label="Cada propiedad, su estrategia."
+            className="max-w-4xl max-[360px]:-mx-4 font-display text-[clamp(2.5rem,6.5vw,5.5rem)] font-extrabold uppercase leading-[0.98] tracking-tight text-white"
+            variants={reduce ? undefined : wordParent}
+            initial={reduce ? false : "hidden"}
+            animate={reduce ? false : "show"}
+          >
+            {headlineWords.map((w, i) => (
+              <motion.span
+                key={`${w.t}-${i}`}
+                variants={reduce ? undefined : wordChild}
+                className={`mr-[0.28em] inline-block max-w-full last:mr-0 [overflow-wrap:anywhere] ${w.gold ? "gold-ink" : ""}`}
               >
-                {cta.label}
-                <ArrowRight className="h-3.5 w-3.5 text-[var(--color-accent)] transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
+                {w.t}{i < headlineWords.length - 1 ? " " : null}
+              </motion.span>
+            ))}
+          </motion.h1>
 
-        <motion.div
-          className="mt-9 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-7"
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.95, ease: EASE_OUT }}
+          <motion.p
+            className="mt-6 max-w-xl text-body-lg text-white/70"
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.55, ease: EASE_OUT }}
+          >
+            Compra, venta y renta en Tijuana. Sin sorpresas en precio, papeles
+            ni cierre.
+          </motion.p>
+        </div>
+
+        <form
+          action="/inventario"
+          method="get"
+          role="search"
+          aria-label="Buscar propiedades"
+          className="mt-9 grid grid-cols-2 gap-4 border border-white/[0.14] bg-black/40 p-5 backdrop-blur-sm sm:grid-cols-3 xl:mt-0 xl:grid-cols-2"
         >
-          <Link
-            href="/inventario"
-            className="brushed-gold premium-cta inline-flex min-h-[52px] items-center justify-center gap-2 rounded-none active:scale-[0.98]"
-          >
-            Ver inventario
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-          <Link
-            href="/contacto"
-            className="group inline-flex w-fit items-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]"
-          >
-            <span className="property-tag-type relative pb-1">
-              Hablar con un asesor
-              <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
-            </span>
-            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-        </motion.div>
+          <label className="flex min-w-0 flex-col gap-2">
+            <span className="property-tag-type text-white/70">Operación</span>
+            <select name="tipo" defaultValue="Venta" className="min-h-11 w-full border border-white/[0.14] bg-background px-3 text-[0.95rem] font-semibold text-white focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]">
+              <option value="Venta">Venta</option>
+              <option value="Renta">Renta</option>
+            </select>
+          </label>
+          <label className="flex min-w-0 flex-col gap-2">
+            <span className="property-tag-type text-white/70">Uso</span>
+            <select name="uso" defaultValue="" className="min-h-11 w-full border border-white/[0.14] bg-background px-3 text-[0.95rem] font-semibold text-white focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]">
+              <option value="">Todos</option>
+              <option value="Residencial">Residencial</option>
+              <option value="Comercial">Comercial</option>
+              <option value="Industrial">Industrial</option>
+            </select>
+          </label>
+          <label className="flex min-w-0 flex-col gap-2">
+            <span className="property-tag-type text-white/70">Zona</span>
+            <input name="zona" type="search" placeholder="Ej. Zona Río" className="min-h-11 w-full min-w-0 border border-white/[0.14] bg-background px-3 text-[0.95rem] font-semibold text-white placeholder:text-white/40 focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]" />
+          </label>
+          <label className="flex min-w-0 flex-col gap-2">
+            <span className="property-tag-type text-white/70">Moneda</span>
+            <select name="moneda" defaultValue="MXN" className="min-h-11 w-full border border-white/[0.14] bg-background px-3 text-[0.95rem] font-semibold text-white focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]">
+              <option value="MXN">MXN</option>
+              <option value="USD">USD</option>
+            </select>
+          </label>
+          <label className="flex min-w-0 flex-col gap-2">
+            <span className="property-tag-type text-white/70">Precio mínimo</span>
+            <input name="precioMin" type="number" min="0" step="any" inputMode="decimal" placeholder="Desde" className="min-h-11 w-full min-w-0 border border-white/[0.14] bg-background px-3 text-[0.95rem] font-semibold text-white placeholder:text-white/40 focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]" />
+          </label>
+          <label className="flex min-w-0 flex-col gap-2">
+            <span className="property-tag-type text-white/70">Precio máximo</span>
+            <input name="precioMax" type="number" min="0" step="any" inputMode="decimal" placeholder="Hasta" className="min-h-11 w-full min-w-0 border border-white/[0.14] bg-background px-3 text-[0.95rem] font-semibold text-white placeholder:text-white/40 focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]" />
+          </label>
+          <div className="col-span-full flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between xl:flex-col xl:items-stretch">
+            <button type="submit" className="brushed-gold premium-cta inline-flex min-h-[52px] items-center justify-center gap-2 rounded-none active:scale-[0.98]">
+              Buscar propiedades
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </button>
+            <Link href="/propietarios" className="group inline-flex w-fit items-center gap-2 text-white/85 transition-colors duration-300 hover:text-[var(--color-accent)]">
+              <span className="property-tag-type relative pb-1">
+                Quiero vender o rentar mi propiedad
+                <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-45 transition-opacity duration-300 group-hover:opacity-100" />
+              </span>
+              <ArrowRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+            </Link>
+          </div>
+        </form>
       </div>
 
       {/* Marquee (firma conservada) */}

@@ -2,88 +2,35 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Reveal, RevealStagger, RevealItem } from "./_motion";
-
-const TOOLS = [
-  {
-    step: "01",
-    title: "Valuación comercial",
-    copy: "Estimamos valor de salida con comparables reales de la zona, no promedios genéricos. Es el punto de partida de toda operación.",
-    cta: "Solicitar valuación",
-    href: "/herramientas",
-    featured: true,
-  },
-  {
-    step: "02",
-    title: "Revisión documental",
-    copy: "Escrituras, predial, uso de suelo y adeudos revisados antes de avanzar.",
-    cta: "Revisar mis papeles",
-    href: "/herramientas",
-  },
-  {
-    step: "03",
-    title: "Comparables de zona",
-    copy: "Precio por m², tiempos de venta y demanda por corredor.",
-    cta: "Ver comparables",
-    href: "/herramientas",
-  },
-] as const;
+import { Reveal } from "./_motion";
 
 export function ToolsSection() {
-  const [featured, ...rest] = TOOLS;
-
   return (
     <section className="border-t border-white/[0.08] bg-white/[0.02]">
-      <div className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
-        <Reveal className="mb-12 max-w-2xl">
-          <h2 className="text-display-2 leading-display tracking-headline text-white">
-            Decide con números.
-          </h2>
-          <p className="mt-4 max-w-md text-body leading-snug text-white/58">
-            Lo que usamos antes de publicar, visitar u ofertar.
-          </p>
+      <div className="mx-auto grid max-w-[90rem] gap-10 px-6 py-16 sm:px-10 lg:grid-cols-2 lg:items-center lg:px-16 lg:py-24">
+        <Reveal className="max-w-2xl">
+          <p className="mb-3 property-tag-type gold-ink">Para propietarios</p>
+          <h2 className="text-display-2 leading-display tracking-headline text-white">Tu propiedad, con una estrategia.</h2>
+          <p className="mt-4 max-w-md text-body leading-snug text-white/58">Venta o renta con valor comercial, revisión documental y una ruta de cierre desde el inicio.</p>
+          <Link href="/propietarios" className="brushed-gold premium-cta mt-7 inline-flex min-h-[52px] items-center justify-center gap-2 rounded-none active:scale-[0.98]">
+            Vender o rentar mi propiedad
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
         </Reveal>
-
-        {/* Bento asimétrico: 1 destacada + 2 secundarias */}
-        <RevealStagger className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-          <RevealItem className="lg:col-span-3">
-            <Link
-              href={featured.href}
-              className="group flex h-full min-h-[18rem] flex-col justify-between border border-white/[0.1] bg-background/60 p-8 transition-colors duration-300 hover:border-[var(--color-accent)]/40 sm:p-10"
-            >
-              <span className="font-display text-sm font-extrabold gold-ink">{featured.step}</span>
-              <div className="mt-6">
-                <h3 className="font-display text-[clamp(1.6rem,3vw,2.5rem)] font-extrabold uppercase leading-tight text-white">
-                  {featured.title}
-                </h3>
-                <p className="mt-4 max-w-md text-body-lg text-white/60">{featured.copy}</p>
-                <span className="mt-7 inline-flex items-center gap-2 property-tag-type text-[var(--color-accent)]">
-                  {featured.cta}
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
-              </div>
+        <Reveal className="border border-white/[0.1] bg-background/60 p-7 sm:p-10">
+          <ul className="space-y-4 text-body-lg text-white/60">
+            <li>Valuación comercial con comparables de la zona.</li>
+            <li>Revisión de documentos antes de avanzar.</li>
+            <li>Promoción, visitas y negociación con seguimiento.</li>
+          </ul>
+          <div className="mt-7 border-t border-white/[0.1] pt-6">
+            <p className="text-body text-white/58">¿Quieres explorar los números de tu operación?</p>
+            <Link href="/herramientas" className="group mt-4 inline-flex items-center gap-2 property-tag-type text-[var(--color-accent)]">
+              Ver calculadoras
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
             </Link>
-          </RevealItem>
-
-          <div className="grid grid-cols-1 gap-4 lg:col-span-2">
-            {rest.map((tool) => (
-              <RevealItem key={tool.step}>
-                <Link
-                  href={tool.href}
-                  className="group flex h-full flex-col border border-white/[0.1] bg-background/60 p-7 transition-colors duration-300 hover:border-[var(--color-accent)]/40"
-                >
-                  <span className="mb-5 font-display text-sm font-extrabold gold-ink">{tool.step}</span>
-                  <h3 className="font-display text-display-4 font-extrabold text-white">{tool.title}</h3>
-                  <p className="mt-2 flex-1 text-body text-white/58">{tool.copy}</p>
-                  <span className="mt-5 inline-flex items-center gap-2 property-tag-type text-[var(--color-accent)]">
-                    {tool.cta}
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </span>
-                </Link>
-              </RevealItem>
-            ))}
           </div>
-        </RevealStagger>
+        </Reveal>
       </div>
     </section>
   );

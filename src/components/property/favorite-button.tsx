@@ -6,12 +6,16 @@ import { cn } from "@/lib/utils";
 
 interface FavoriteButtonProps {
   propertyId: string;
+  title?: string;
+  href?: string;
   variant?: "icon" | "pill";
   className?: string;
 }
 
 export function FavoriteButton({
   propertyId,
+  title,
+  href,
   variant = "icon",
   className,
 }: FavoriteButtonProps) {
@@ -21,7 +25,7 @@ export function FavoriteButton({
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    toggle(propertyId);
+    toggle(propertyId, title && href ? { title, href } : undefined);
   };
 
   if (variant === "pill") {

@@ -50,11 +50,11 @@ export default function HomePage() {
     // El <main> semántico vive en el layout público (#main-content); aquí un div evita <main> anidados.
     <div className="bg-background">
       <HomeHero />
-      <SignatureCounters />
-      <BusinessLines />
       <FeaturedInventory />
-      <MethodologyStack />
+      <BusinessLines />
       <ToolsSection />
+      <MethodologyStack />
+      <SignatureCounters />
       <VoicesWall />
       <FaqSection />
       <ClosingCTA />

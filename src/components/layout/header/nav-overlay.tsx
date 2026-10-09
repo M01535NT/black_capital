@@ -13,15 +13,16 @@ const EASE = [0.23, 1, 0.32, 1] as const;
 
 const primaryLinks = [
   { name: "Inicio", href: "/" },
-  { name: "Inventario", href: "/inventario" },
+  { name: "Propiedades", href: "/inventario" },
+  { name: "Para propietarios", href: "/propietarios" },
   { name: "Nosotros", href: "/nosotros" },
   { name: "Herramientas", href: "/herramientas" },
   { name: "Contacto", href: "/contacto" },
 ];
 
 const operations = [
-  { name: "Comprar", href: "/contacto?objetivo=comprar" },
-  { name: "Vender", href: "/contacto?objetivo=vender" },
+  { name: "Comprar", href: "/inventario?tipo=Venta" },
+  { name: "Vender", href: "/propietarios" },
   { name: "Rentar", href: "/inventario?tipo=Renta" },
   { name: "Invertir", href: "/contacto?objetivo=invertir" },
 ];
@@ -66,25 +67,36 @@ const whatsappHref = `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIC
 
 export function NavOverlay({ onClose, isActive }: NavOverlayProps) {
   const reduce = useReducedMotion();
+  const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
   // Bloqueo de scroll del body + Escape + foco inicial mientras el overlay vive.
   useEffect(() => {
+    const previousFocus = document.activeElement as HTMLElement | null;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     closeRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
+      if (e.key === "Tab") {
+        const elements = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex="0"]') || []).filter(el => el.getClientRects().length > 0);
+        const first = elements[0];
+        const last = elements.at(-1);
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
     };
     document.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prevOverflow;
       document.removeEventListener("keydown", onKey);
+      previousFocus?.focus();
     };
   }, [onClose]);
 
   return (
     <motion.div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label="Navegación principal"

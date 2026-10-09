@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Section } from "@/components/layout/Section";
 import { Eyebrow } from "@/components/shared/eyebrow";
-import { Shield, Users, TrendingUp, Award, ArrowRight } from "lucide-react";
+import { Shield, Users, TrendingUp, Award, Eye, Handshake, Target, Scale, Zap } from "lucide-react";
+import { NextStepCTA } from "@/components/shared/NextStepCTA";
 
 export const metadata: Metadata = {
-    title: "Nosotros | Black Capital",
+    title: "Nosotros",
     description:
         "Black Capital es una inmobiliaria en Tijuana para compra, venta y renta residencial, comercial e industrial.",
     alternates: {
@@ -36,21 +37,77 @@ const pillars = [
     },
 ];
 
-const subpaginas = [
+const miembros = [
     {
-        href: "/nosotros/equipo",
-        titulo: "Equipo",
-        descripcion: "Conoce a las personas detrás de Black Capital.",
+        nombre: "Moisés Núñez",
+        cargo: "Director General",
+        descripcion: "Define precio, estrategia y seguimiento con propietarios e inversionistas.",
     },
     {
-        href: "/nosotros/historia",
-        titulo: "Historia",
-        descripcion: "Nuestra evolución en el mercado inmobiliario de Tijuana.",
+        nombre: "Omar Medina Yañez",
+        cargo: "Asesor Senior",
+        descripcion: "Especialista en residencial y fraccionamientos privados.",
+    },
+];
+
+const hitos = [
+    {
+        anio: "2018",
+        titulo: "Inicio",
+        descripcion: "Nacemos en Tijuana con enfoque residencial.",
     },
     {
-        href: "/nosotros/valores",
-        titulo: "Valores",
-        descripcion: "Los principios que usamos para cuidar cada decisión.",
+        anio: "2020",
+        titulo: "Comercial",
+        descripcion: "Integramos locales y oficinas en zonas de flujo.",
+    },
+    {
+        anio: "2022",
+        titulo: "Industrial",
+        descripcion: "Sumamos naves y bodegas en corredores logísticos.",
+    },
+    {
+        anio: "2024",
+        titulo: "Método",
+        descripcion: "Mejoramos la revisión de precio, documentos y seguimiento.",
+    },
+    {
+        anio: "2026",
+        titulo: "Hoy",
+        descripcion: "Residencial, comercial e industrial con atención directa.",
+    },
+];
+
+const valores = [
+    {
+        icon: Eye,
+        titulo: "Transparencia",
+        descripcion: "Análisis claro, sin letra chica.",
+    },
+    {
+        icon: Handshake,
+        titulo: "Trato directo",
+        descripcion: "Una línea de comunicación.",
+    },
+    {
+        icon: Target,
+        titulo: "Seguimiento",
+        descripcion: "Acompañamiento hasta firma o decisión final.",
+    },
+    {
+        icon: Shield,
+        titulo: "Patrimonio",
+        descripcion: "Cuidamos información, precio y condiciones.",
+    },
+    {
+        icon: Scale,
+        titulo: "Revisión",
+        descripcion: "Verificación legal, fiscal y técnica cuando aplica.",
+    },
+    {
+        icon: Zap,
+        titulo: "Precisión",
+        descripcion: "Rapidez sin perder análisis.",
     },
 ];
 
@@ -79,52 +136,38 @@ export default function NosotrosPage() {
                 </div>
             </section>
 
-            {/* Subpáginas — links con hairlines (sin glass cards) */}
-            <Section id="subpaginas" label="Secciones" spacing="default" containerWidth="wide">
-                        <div className="flex items-end justify-between gap-8 mb-14 sm:mb-20">
-                            <div className="max-w-2xl">
-                                <Eyebrow label="Conoce más" />
-                                <h2 className="text-display-2 text-white leading-display tracking-headline">
-                                    Cómo trabajamos en Tijuana.
-                                </h2>
-                    </div>
-                </div>
+            <nav aria-label="Secciones de nosotros" className="mx-auto flex max-w-[90rem] flex-wrap gap-3 px-6 py-6 sm:px-10 lg:px-16">
+                {[
+                    ["#equipo", "Equipo"],
+                    ["#valores", "Cómo trabajamos"],
+                    ["#historia", "Trayectoria"],
+                    ["#contacto", "Contacto"],
+                ].map(([href, title]) => (
+                    <Link key={href} href={href} className="border border-white/[0.08] px-4 py-3 property-tag-type text-white/55 transition-colors hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)]">{title}</Link>
+                ))}
+            </nav>
 
-                <ul className="scrollbar-none -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto border-t border-white/[0.06] px-6 pb-2 sm:-mx-10 sm:px-10 md:mx-0 md:grid md:grid-cols-3 md:gap-0 md:overflow-visible md:px-0 md:pb-0" role="list">
-                    {subpaginas.map((s, i) => (
-                        <li
-                            key={s.href}
-                            className={
-                                "min-w-[76vw] snap-center border border-white/[0.06] md:min-w-0 md:border-b-0 md:border-l-0 md:border-t-0 " +
-                                (i < subpaginas.length - 1 ? "md:border-r md:border-white/[0.06] " : "")
-                            }
-                        >
-                            <Link
-                                href={s.href}
-                                className="group block p-8 sm:p-10 lg:p-12 transition-colors duration-500 hover:bg-white/[0.015]"
-                            >
-                                <span className="property-tag-type text-[var(--color-accent)]">
-                                    /{String(i + 1).padStart(2, "0")}
-                                </span>
-                                <h3 className="text-display-3 font-semibold text-white mt-4 mb-3 group-hover:text-[var(--color-accent-light)] transition-colors duration-300">
-                                    {s.titulo}
-                                </h3>
-                                <p className="text-body-sm text-white/60 leading-relaxed mb-6 max-w-xs">
-                                    {s.descripcion}
-                                </p>
-                                <span className="inline-flex items-center gap-2 footer-link-type property-tag-type text-white/55 group-hover:text-[var(--color-accent)] transition-colors duration-300">
-                                    Explorar
-                                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
-                                </span>
-                            </Link>
-                        </li>
+            <Section id="equipo" label="Equipo" spacing="tight" containerWidth="wide" className="scroll-mt-24">
+                <Eyebrow label="Nuestro equipo" />
+                <h2 className="text-display-2 text-white leading-display tracking-headline">Las personas detrás de Black Capital.</h2>
+                <p className="mt-4 text-body text-foreground/58 max-w-2xl">Equipo local, información clara y seguimiento directo.</p>
+                <div className="mt-8 grid grid-cols-1 gap-0 border-t border-white/[0.06] md:grid-cols-2">
+                    {miembros.map((m) => (
+                        <article key={m.nombre} className="border-b border-white/[0.06] bg-white/[0.01] p-5 sm:p-8 md:first:border-r">
+                            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-md border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 sm:h-16 sm:w-16" aria-hidden="true">
+                                <span className="text-lg font-bold text-[var(--color-accent)] sm:text-xl">{m.nombre.split(" ").map((n) => n[0]).join("")}</span>
+                            </div>
+                            <h3 className="text-display-3 font-semibold text-foreground mb-1">{m.nombre}</h3>
+                            <p className="text-foreground/50 text-body-sm mb-4">{m.cargo}</p>
+                            <p className="text-foreground/50 text-body">{m.descripcion}</p>
+                        </article>
                     ))}
-                </ul>
+                </div>
             </Section>
 
             {/* Pilares — 2×2 con líneas divisorias para lectura rápida. */}
-            <Section id="pilares" label="Pilares" spacing="default" containerWidth="wide">
-                <div className="flex items-end justify-between gap-8 mb-14 sm:mb-20">
+            <Section id="valores" label="Cómo trabajamos" spacing="tight" containerWidth="wide" className="scroll-mt-24">
+                <div className="flex items-end justify-between gap-8 mb-8 sm:mb-10">
                                 <div className="max-w-2xl">
                         <Eyebrow label="Pilares" />
                         <h2 className="text-display-2 text-white leading-display tracking-headline">
@@ -156,7 +199,7 @@ export default function NosotrosPage() {
                                 key={pillar.title}
                                 role="listitem"
                                 className={
-                                    "relative flex min-h-[250px] flex-col items-start p-5 sm:min-h-[270px] sm:p-8 lg:p-14 " +
+                                    "relative flex min-h-[250px] flex-col items-start p-5 sm:min-h-[270px] sm:p-8 " +
                                     (i < 2 ? "border-b md:border-b border-white/[0.06]" : "")
                                 }
                             >
@@ -176,7 +219,36 @@ export default function NosotrosPage() {
                         );
                     })}
                 </div>
+                <div className="mt-8 grid grid-cols-1 gap-0 border-t border-white/[0.06] sm:grid-cols-2 lg:grid-cols-3">
+                    {valores.map((v) => {
+                        const Icon = v.icon;
+                        return (
+                            <article key={v.titulo} className="border-b border-r border-white/[0.06] bg-white/[0.01] p-5 sm:p-8">
+                                <Icon className="mb-5 h-4 w-4 text-[var(--color-accent)] sm:h-5 sm:w-5" aria-hidden="true" />
+                                <h3 className="text-display-3 font-semibold text-foreground mb-3">{v.titulo}</h3>
+                                <p className="text-foreground/50 text-body leading-relaxed">{v.descripcion}</p>
+                            </article>
+                        );
+                    })}
+                </div>
             </Section>
+            <Section id="historia" label="Nuestra trayectoria" spacing="tight" containerWidth="wide" className="scroll-mt-24">
+                <Eyebrow label="Nuestra trayectoria" />
+                <h2 className="text-display-2 text-white leading-display tracking-headline">Una inmobiliaria hecha en Tijuana.</h2>
+                <p className="mt-4 text-body text-foreground/58 max-w-2xl">Crecimiento local, especialización y seguimiento directo.</p>
+                <ol className="mt-8 grid grid-cols-1 border-t border-white/[0.06] sm:grid-cols-2 lg:grid-cols-5">
+                    {hitos.map((h) => (
+                        <li key={h.anio} className="border-b border-r border-white/[0.06] p-5 sm:p-6">
+                            <span className="text-[var(--color-accent)] text-2xl tabular-nums">{h.anio}</span>
+                            <h3 className="mt-4 text-display-3 font-semibold text-foreground mb-2">{h.titulo}</h3>
+                            <p className="text-body text-foreground/50">{h.descripcion}</p>
+                        </li>
+                    ))}
+                </ol>
+            </Section>
+            <div id="contacto" className="scroll-mt-24">
+                <NextStepCTA description="Habla directo con el equipo: sin intermediarios y con respuesta clara." />
+            </div>
         </div>
     );
 }

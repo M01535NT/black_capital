@@ -15,6 +15,7 @@ import { StickyContactBar } from "@/components/property/StickyContactBar";
 import { ArrowLeft } from "lucide-react";
 import { PropertyJsonLd } from "@/components/property/PropertyJsonLd";
 import { PropertySummaryCard } from "@/components/property/PropertySummaryCard";
+import { ShareButton } from "@/components/property/ShareButton";
 import { FavoriteButton } from "@/components/property/favorite-button";
 import { MortgageCalculator } from "@/components/tools/mortgage-calculator";
 import { FadeIn } from "@/components/ui/motion";
@@ -192,6 +193,7 @@ export default async function PropertyDetailPage({
     }
 
     const isForSale = property.business_type === "Venta";
+    const brand = ({ Residencial: "luxury", Comercial: "business", Industrial: "industrial" } as Record<string, string>)[property.property_use];
 
     const technicalData = {
         title: property.title,
@@ -230,7 +232,8 @@ export default async function PropertyDetailPage({
     // Secciones de contenido (columna izquierda), numeradas desde 02 (Galería = 01).
     const contentSections = [
         { id: "propiedad", label: "Descripción" },
-        { id: "ficha-tecnica", label: "Ficha técnica" },
+        { id: "caracteristicas", label: "Características" },
+        { id: "condiciones", label: "Condiciones" },
         ...(property.address ? [{ id: "ubicacion", label: "Ubicación" }] : []),
         ...(isForSale ? [{ id: "financiamiento", label: "Financiamiento" }] : []),
         ...(documents.length > 0 ? [{ id: "documentos", label: "Documentos" }] : []),
@@ -270,7 +273,10 @@ export default async function PropertyDetailPage({
                                 <ArrowLeft className="size-3.5 transition-transform duration-200 ease-out group-hover:-translate-x-0.5" aria-hidden="true" />
                                 Volver a {property.business_type}
                             </Link>
-                            <FavoriteButton propertyId={property.id} variant="pill" />
+                            <div className="flex items-center gap-2">
+                                <ShareButton title={property.title} href={`/inventario/${property.slug || property.id}`} />
+                                <FavoriteButton propertyId={property.id} title={property.title} href={`/inventario/${property.slug || property.id}`} variant="pill" />
+                            </div>
                         </div>
                         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                             <div className="min-w-0">
@@ -299,26 +305,12 @@ export default async function PropertyDetailPage({
                     </div>
                 </header>
 
-                {/* 01 · Galería (full-width) */}
-                <section id="galeria" className="w-full overflow-x-clip border-b border-white/[0.06] scroll-mt-24">
-                    <div className="mx-auto min-w-0 max-w-[90rem] px-4 pb-8 pt-5 sm:px-10 lg:px-16">
-                        <MediaShowcase
-                            images={property.images || []}
-                            title={property.title}
-                            coverImage={property.cover_image}
-                            propertyUse={property.property_use}
-                            videoUrls={property.video_urls}
-                            tourEmbeds={property.tour_embeds}
-                        />
-                    </div>
-                </section>
-
-                {/* Dos columnas: contenido (izq) + resumen sticky (der) */}
-                <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-x-12 px-4 sm:px-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:px-16">
-                    {/* Resumen sticky. DOM-first → en móvil aparece arriba (precio/CTA temprano);
-                        en desktop se coloca explícitamente en la columna 2. */}
-                    <aside className="lg:col-start-2 lg:row-start-1">
-                        <div className="py-8 lg:sticky lg:top-24 lg:py-10">
+                <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-x-8 px-4 py-6 sm:px-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:px-16">
+                    <section id="galeria" className="min-w-0 scroll-mt-24 lg:col-start-1 lg:row-start-1">
+                        <MediaShowcase images={property.images || []} title={property.title} coverImage={property.cover_image} propertyUse={property.property_use} videoUrls={property.video_urls} tourEmbeds={property.tour_embeds} />
+                    </section>
+                    <aside aria-label="Resumen de la propiedad" className="mt-6 min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0">
+                        <div className="lg:sticky lg:top-24">
                             <PropertySummaryCard
                                 price={property.price}
                                 currency={property.currency}
@@ -328,12 +320,18 @@ export default async function PropertyDetailPage({
                                 agent={primaryAgent}
                                 whatsappFallback={CONTACT_CONFIG.phoneRaw}
                                 propertyTitle={property.title}
+                                propertyId={property.id}
+                                address={property.address}
+                                brand={brand}
                             />
                         </div>
                     </aside>
 
                     {/* Contenido */}
-                    <main className="min-w-0 space-y-12 py-8 md:space-y-14 lg:col-start-1 lg:row-start-1 lg:py-10 lg:pr-12">
+                    <main className="min-w-0 space-y-12 py-8 md:space-y-14 lg:col-start-1 lg:row-start-2 lg:py-10">
+                        <nav aria-label="Secciones de la propiedad" className="flex flex-wrap gap-x-5 gap-y-3 border-y border-white/[0.1] py-4">
+                            {contentSections.map(section => <a key={section.id} href={`#${section.id}`} className="property-tag-type text-white/60 transition-colors hover:text-[var(--color-accent)]">{section.label}</a>)}
+                        </nav>
                         <section id="propiedad" className="scroll-mt-24">
                             <ChapterLabel number={num("propiedad")} title="Descripción" />
                             <FadeIn direction="up">
@@ -349,14 +347,27 @@ export default async function PropertyDetailPage({
                             </FadeIn>
                         </section>
 
-                        <section id="ficha-tecnica" className="scroll-mt-24">
+                        <section id="caracteristicas" className="scroll-mt-24">
                             <div className="mb-7 flex flex-wrap items-center justify-between gap-4">
-                                <ChapterLabel number={num("ficha-tecnica")} title="Ficha técnica" className="mb-0" />
+                                <ChapterLabel number={num("caracteristicas")} title="Características" className="mb-0" />
                                 <FichaPdfButton data={technicalData} />
                             </div>
                             <FadeIn direction="up">
                                 <TechnicalSheet data={technicalData} />
                             </FadeIn>
+                        </section>
+
+                        <section id="condiciones" className="scroll-mt-24">
+                            <ChapterLabel number={num("condiciones")} title="Condiciones de operación" />
+                            <dl className="grid grid-cols-1 gap-x-12 sm:grid-cols-2">
+                                {[["Operación", property.business_type], ["Precio", formatPrice(property.price, property.currency)], ["Moneda", property.currency], ["Disponibilidad", STATUS_LABELS[property.status] || property.status]].map(([label, value]) => (
+                                    <div key={label} className="flex items-baseline justify-between gap-6 border-t border-white/[0.1] py-3">
+                                        <dt className="text-body-sm text-white/50">{label}</dt>
+                                        <dd className="text-right text-body-sm font-semibold text-white">{value}</dd>
+                                    </div>
+                                ))}
+                            </dl>
+                            <p className="mt-4 text-body leading-relaxed text-white/66">Confirma con tu asesor la disponibilidad, los requisitos y las condiciones de {property.business_type.toLowerCase()} antes de presentar una oferta.</p>
                         </section>
 
                         {property.address && (
@@ -458,16 +469,14 @@ export default async function PropertyDetailPage({
                 {/* Barra de acción fija (solo móvil/tablet; en desktop manda el resumen sticky) */}
                 <StickyContactBar
                     propertyId={property.id}
-                    agentPhone={agents?.[0]?.phone}
-                    agentEmail={agents?.[0]?.email}
-                    agentWhatsapp={CONTACT_CONFIG.phoneRaw}
+                    brand={brand}
                     propertyTitle={property.title}
                     priceLabel={formatShortPrice(property.price, property.currency, property.business_type)}
                     metaLabel={property.m2_construction ? formatArea(property.m2_construction, "") : undefined}
                 />
 
                 {/* Espaciador para que la barra fija (móvil) no tape el footer */}
-                <div className="h-16 lg:h-0" />
+                <div className="h-[calc(5rem+env(safe-area-inset-bottom,0px))] lg:h-0" aria-hidden="true" />
             </div>
         </>
     );

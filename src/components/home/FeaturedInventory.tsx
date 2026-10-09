@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, MoveHorizontal } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { PropertyCardData } from "@/components/property/PropertyCard";
 import { Reveal } from "./_motion";
@@ -89,7 +89,7 @@ export async function FeaturedInventory() {
 
   return (
     <section className="border-t border-white/[0.08] bg-white/[0.015]">
-      <div className="mx-auto max-w-[90rem] px-6 py-16 sm:px-10 lg:px-16 lg:py-24">
+      <div className="mx-auto max-w-[90rem] px-6 pb-4 pt-16 sm:px-10 lg:px-16 lg:pt-24">
         <Reveal className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-xl">
             <h2 className="text-display-2 leading-display tracking-headline text-white">
@@ -100,10 +100,6 @@ export async function FeaturedInventory() {
             </p>
           </div>
           <div className="flex items-center gap-6">
-            <span className="hidden items-center gap-2 property-tag-type text-white/35 sm:inline-flex">
-              <MoveHorizontal className="h-4 w-4" aria-hidden="true" />
-              Arrastra
-            </span>
             <Link
               href="/inventario"
               className="group inline-flex items-center gap-2 property-tag-type text-[var(--color-accent)]"

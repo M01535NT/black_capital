@@ -26,8 +26,9 @@ test.describe("sub-brand value cards desktop interaction", () => {
 
   for (const route of routes) {
     test(`${route} starts even and expands the hovered card`, async ({ page }) => {
-      await page.goto(route);
-      await page.waitForLoadState("networkidle");
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await expect(page.locator("main h1").first()).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
 
       const rail = page.locator(railSelector);
       await expect(rail).toHaveCount(1);
@@ -65,8 +66,9 @@ test.describe("sub-brand value cards desktop interaction", () => {
     });
 
     test(`${route} expands the focused card`, async ({ page }) => {
-      await page.goto(route);
-      await page.waitForLoadState("networkidle");
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await expect(page.locator("main h1").first()).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
 
       const rail = page.locator(railSelector);
       await expect(rail).toHaveCount(1);
@@ -99,8 +101,9 @@ test.describe("sub-brand value rail mobile behavior", () => {
 
   for (const route of routes) {
     test(`${route} keeps the value rail horizontal on mobile without document overflow`, async ({ page }) => {
-      await page.goto(route);
-      await page.waitForLoadState("networkidle");
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await expect(page.locator("main h1").first()).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
 
       const rail = page.locator(railSelector);
       await expect(rail).toHaveCount(1);

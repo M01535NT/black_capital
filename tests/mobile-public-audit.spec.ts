@@ -15,6 +15,7 @@ const publicRoutes = [
   "/black-business/contacto",
   "/black-industrial/contacto",
   "/contacto",
+  "/propietarios",
   "/herramientas",
   "/legal/aviso-privacidad",
   "/legal/terminos-condiciones",
@@ -27,8 +28,9 @@ const publicRoutes = [
 test.describe("mobile public pages audit", () => {
   for (const route of publicRoutes) {
     test(`${route} has no document-level horizontal overflow`, async ({ page }) => {
-      await page.goto(route);
-      await page.waitForLoadState("networkidle");
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await expect(page.locator("main h1").first()).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
 
       const overflow = await page.evaluate(() => {
         const root = document.documentElement;
@@ -69,8 +71,9 @@ test.describe("mobile public pages audit", () => {
 
   for (const route of ["/black-luxury", "/black-business", "/black-industrial"] as const) {
     test(`${route} brand inventory is horizontal on mobile`, async ({ page }) => {
-      await page.goto(route);
-      await page.waitForLoadState("networkidle");
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await expect(page.locator("main h1").first()).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
 
       const rail = page.locator("[data-section='brand-inventory-rail']");
       await expect(rail).toHaveCount(1);

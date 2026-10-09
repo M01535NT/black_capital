@@ -9,11 +9,12 @@ test.use({
 // El rediseño reemplazó la vieja "why section" por la metodología con reveal
 // por scroll (framer-motion: opacity/translateY/blur al entrar en viewport).
 // Este test protege que ese motion siga activo en móvil.
-test("home methodology reveals steps on scroll (motion active on mobile)", async ({ page }) => {
+test("home methodology heading reveals on scroll (motion active on mobile)", async ({ page }) => {
   await page.goto("/");
 
-  // Último paso: queda muy por debajo del fold al cargar, así que aún no se ha revelado.
-  const step = page.locator("[data-section='home-methodology'] ol > li:has(h3)").last();
+  // La introducción conserva reveal; los pasos compactos permanecen visibles.
+  const step = page.locator("[data-section='home-methodology'] h2").locator("..");
+  await expect(step).toBeAttached();
 
   const read = () =>
     step.evaluate((el) => {

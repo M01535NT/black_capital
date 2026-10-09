@@ -19,6 +19,7 @@ const PUBLIC_ROUTES = [
     "/black-business",
     "/black-industrial",
     "/inventario",
+    "/propietarios",
     "/herramientas",
     "/nosotros",
     "/nosotros/equipo",
@@ -44,6 +45,9 @@ test.describe(`Production smoke @ ${BASE}`, () => {
         expect(robots.status()).toBe(200);
         const sitemap = await request.get(BASE + "/sitemap.xml");
         expect(sitemap.status()).toBe(200);
+        const sitemapText = await sitemap.text();
+        expect(sitemapText).toContain("/propietarios</loc>");
+        expect(sitemapText).not.toContain("/nosotros/equipo</loc>");
         const og = await request.get(BASE + "/opengraph-image");
         expect(og.status()).toBe(200);
         expect(og.headers()["content-type"] || "").toContain("image");

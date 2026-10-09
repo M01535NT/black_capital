@@ -7,6 +7,8 @@ import { formatShortPrice, formatArea } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { getPropertyPlaceholderImage } from "@/lib/property-placeholder-image";
 import type { PropertyCardData } from "@/components/property/PropertyCard";
+import { FavoriteButton } from "@/components/property/favorite-button";
+import { ShareButton } from "@/components/property/ShareButton";
 import { STATUS_OPTIONS } from "./constants";
 
 export function PropertyRow({ property }: { property: PropertyCardData }) {
@@ -27,7 +29,7 @@ export function PropertyRow({ property }: { property: PropertyCardData }) {
   const imageAlt = hasCover ? `Fotografía de ${property.title}` : fallback.alt;
 
   return (
-    <article className="group flex flex-col border border-white/[0.09] bg-white/[0.02] transition-[border-color] duration-200 ease-out hover:border-[var(--color-accent)]/45 sm:flex-row">
+    <article className="group relative flex flex-col border border-white/[0.09] bg-white/[0.02] transition-[border-color] duration-200 ease-out hover:border-[var(--color-accent)]/45 sm:flex-row">
       <Link
         href={href}
         aria-label={`Ver detalles de ${property.title}`}
@@ -45,6 +47,10 @@ export function PropertyRow({ property }: { property: PropertyCardData }) {
           {property.business_type}
         </span>
       </Link>
+      <div className="absolute left-3 top-12 z-10 flex gap-2">
+        <FavoriteButton propertyId={property.id} title={property.title} href={href} />
+        <ShareButton title={property.title} href={href} />
+      </div>
 
       <div className="flex flex-1 flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
         <div className="min-w-0">
@@ -93,7 +99,7 @@ export function PropertyRow({ property }: { property: PropertyCardData }) {
               : formatShortPrice(property.price, property.currency, property.business_type)}
           </p>
           <span className="inline-flex shrink-0 items-center gap-2 property-tag-type text-white/65 transition-colors duration-200 ease-out group-hover:text-[var(--color-accent)]">
-            {property.isPlaceholder ? "Solicitar" : "Ver ficha"}
+            {property.isPlaceholder ? "Solicitar" : "Ver propiedad"}
             <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true" />
           </span>
         </Link>

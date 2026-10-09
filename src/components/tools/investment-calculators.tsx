@@ -89,7 +89,9 @@ function ToolShell({
   title,
   description,
   children,
+  assumptions,
 }: {
+  assumptions: string;
   id: string;
   icon: typeof Percent;
   category: string;
@@ -113,11 +115,12 @@ function ToolShell({
         </span>
       </header>
       <div className="grid grid-cols-1 gap-6 p-5 sm:p-6 lg:grid-cols-2">{children}</div>
+      <p className="border-t border-white/[0.08] p-5 text-body-sm leading-relaxed text-white/45 sm:p-6">{assumptions}</p>
     </article>
   );
 }
 
-function RoiCalculator() {
+export function RoiCalculator() {
   const [price, setPrice] = useState("1700000");
   const [rent, setRent] = useState("14000");
   const [expenses, setExpenses] = useState("28000");
@@ -133,10 +136,12 @@ function RoiCalculator() {
       id="roi"
       icon={Percent}
       category="Inversión"
-      title="Calculadora ROI"
+      title="Rendimiento de renta"
+      assumptions="Supuestos: 12 meses de renta; rendimiento sin plusvalía, financiamiento ni impuestos personales. Incluye en los gastos los periodos sin inquilino y demás costos que correspondan."
       description="Retorno anual estimado de una propiedad en renta: bruto y neto de gastos."
     >
       <div className="space-y-4">
+        <p className="property-tag-type text-white/48">Datos · MXN</p>
         <Field label="Precio de compra" value={price} onChange={setPrice} suffix="MXN" />
         <Field label="Renta mensual" value={rent} onChange={setRent} suffix="MXN" />
         <Field
@@ -147,6 +152,7 @@ function RoiCalculator() {
         />
       </div>
       <div aria-live="polite">
+        <p className="mb-3 property-tag-type text-white/48">Resultados estimados</p>
         <ResultRow label="Renta anual" value={mxn.format(annualRent)} />
         <ResultRow label="ROI bruto" value={pct(gross)} />
         <ResultRow label="ROI neto / cap rate" value={pct(net)} highlight />
@@ -155,7 +161,7 @@ function RoiCalculator() {
   );
 }
 
-function FlippingSimulator() {
+export function FlippingSimulator() {
   const [buy, setBuy] = useState("1500000");
   const [rehab, setRehab] = useState("250000");
   const [sale, setSale] = useState("2300000");
@@ -175,10 +181,12 @@ function FlippingSimulator() {
       id="flipping"
       icon={ArrowRightLeft}
       category="Inversión"
-      title="Simulador Flipping"
+      title="Compra y remodelación"
+      assumptions="Supuestos: compra, remodelación y cierre según los importes capturados; costos de venta como porcentaje del precio de salida. El retorno anualizado es una proyección simple, sin reinversión. Agrega todos los gastos e impuestos aplicables antes de decidir."
       description="Utilidad estimada al comprar, remodelar y vender."
     >
       <div className="space-y-4">
+        <p className="property-tag-type text-white/48">Datos · MXN</p>
         <Field label="Precio de compra" value={buy} onChange={setBuy} suffix="MXN" />
         <Field label="Remodelación y cierre" value={rehab} onChange={setRehab} suffix="MXN" />
         <Field label="Precio estimado de venta" value={sale} onChange={setSale} suffix="MXN" />
@@ -188,6 +196,7 @@ function FlippingSimulator() {
         </div>
       </div>
       <div aria-live="polite">
+        <p className="mb-3 property-tag-type text-white/48">Resultados estimados</p>
         <ResultRow label="Inversión total" value={mxn.format(totalIn)} />
         <ResultRow label="Costos de venta" value={mxn.format(sellCosts)} />
         <ResultRow label="Utilidad estimada" value={mxn.format(profit)} highlight />
@@ -198,7 +207,7 @@ function FlippingSimulator() {
   );
 }
 
-function IsaiCalculator() {
+export function IsaiCalculator() {
   const [value, setValue] = useState("1700000");
   const [rate, setRate] = useState("2");
 
@@ -210,19 +219,22 @@ function IsaiCalculator() {
       id="isai"
       icon={ReceiptText}
       category="Impuestos"
-      title="Calculadora ISAI"
+      title="Impuestos · ISAI"
+      assumptions="Supuestos: base capturada por tasa capturada. El 2% inicial es un ejemplo editable, no una tarifa vigente verificada. No incluye ISR, honorarios notariales ni otros gastos de cierre."
       description="Estimación inicial del impuesto de adquisición al comprar en Tijuana."
     >
       <div className="space-y-4">
+        <p className="property-tag-type text-white/48">Datos · MXN</p>
         <Field label="Valor de compra" value={value} onChange={setValue} suffix="MXN" />
         <Field label="Tasa aplicable" value={rate} onChange={setRate} suffix="%" />
         <p className="text-body-sm leading-relaxed text-white/45">
-          La tasa referencial en Tijuana ronda el 2% sobre el valor más alto
-          entre precio, valor catastral y avalúo. El cálculo notarial final puede
-          variar por actualización de tarifas y del valor catastral.
+          Confirma con tu notaría la base gravable y la tasa aplicable a tu
+          operación. El precio de compra por sí solo puede no ser la base
+          definitiva; también pueden intervenir el valor catastral y el avalúo.
         </p>
       </div>
       <div aria-live="polite">
+        <p className="mb-3 property-tag-type text-white/48">Resultados estimados</p>
         <ResultRow label="Base gravable" value={mxn.format(v)} />
         <ResultRow label="ISAI estimado" value={mxn.format(isai)} highlight />
       </div>

@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
-import { Phone } from "lucide-react";
 import { Logo } from "../Logo";
 import { cn } from "@/lib/utils";
-import { CONTACT_CONFIG } from "@/lib/contact-config";
+import { SavedProperties } from "@/components/property/SavedProperties";
 import { NavOverlay } from "./nav-overlay";
 
 /**
@@ -20,6 +19,7 @@ export function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const closeMenu = useCallback(() => setOpen(false), []);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -66,16 +66,11 @@ export function Header() {
           <Logo href="/" variant="mark" size="md" tone="gold" className="flex-shrink-0" />
 
           <div className="flex flex-shrink-0 items-center gap-3">
-            <a
-              href={`tel:${CONTACT_CONFIG.phoneRaw}`}
-              className="group hidden items-center gap-2 text-white/65 transition-colors duration-300 hover:text-[var(--color-accent)] xl:inline-flex"
-              aria-label={`Llamar al ${CONTACT_CONFIG.phone}`}
-            >
-              <Phone className="h-3.5 w-3.5" aria-hidden="true" />
-              <span className="property-tag-type tabular-nums">{CONTACT_CONFIG.phone}</span>
-            </a>
-
-            <span aria-hidden="true" className="hidden h-5 w-px bg-white/12 xl:block" />
+            <nav aria-label="Accesos principales" className="hidden items-center gap-6 lg:flex">
+              <Link href="/inventario" aria-current={isActive("/inventario") ? "page" : undefined} className="property-tag-type text-white/65 transition-colors hover:text-[var(--color-accent)]">Propiedades</Link>
+              <Link href="/propietarios" aria-current={isActive("/propietarios") ? "page" : undefined} className="property-tag-type text-white/65 transition-colors hover:text-[var(--color-accent)]">Para propietarios</Link>
+            </nav>
+            <SavedProperties />
 
             <Link
               href="/contacto"
@@ -119,7 +114,7 @@ export function Header() {
       </header>
 
       <AnimatePresence>
-        {open && <NavOverlay onClose={() => setOpen(false)} isActive={isActive} />}
+        {open && <NavOverlay onClose={closeMenu} isActive={isActive} />}
       </AnimatePresence>
     </>
   );

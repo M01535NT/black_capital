@@ -9,12 +9,7 @@ import { cn } from "@/lib/utils";
 
 type MediaTab = "fotos" | "video" | "360";
 
-/**
- * Galería unificada de la ficha de propiedad (plantilla "Propiedad Editorial
- * Black"): un solo componente con los 3 botones Fotos / Video / 360° siempre
- * presentes. Si la propiedad no tiene video o recorrido, el panel muestra una
- * leyenda "no disponible" en lugar de ocultar el botón.
- */
+/** Media controls are shown only for assets available on this property. */
 export function MediaShowcase({
     images,
     coverImage,
@@ -39,26 +34,37 @@ export function MediaShowcase({
         { key: "video", label: "Video", icon: Play, available: hasVideo },
         { key: "360", label: "360°", icon: Rotate3d, available: hasTour },
     ];
+    const availableTabs = tabs.filter(({ available }) => available);
 
     return (
-        <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-            {/* Tabs: horizontal arriba en móvil, columna vertical a la izquierda en sm+.
-                Al salir del tope, la media sube y gana alto (se ve más cuadrada). */}
+        <div className="flex flex-col gap-3">
             <div
                 role="tablist"
                 aria-label="Tipo de medio"
-                className="flex shrink-0 flex-row gap-1 self-start border border-white/[0.12] p-1 sm:flex-col"
+                className="flex shrink-0 flex-row gap-1 self-start border border-white/[0.12] p-1"
             >
-                {tabs.map(({ key, label, icon: Icon }) => {
+                {availableTabs.map(({ key, label, icon: Icon }, index) => {
                     const active = tab === key;
                     return (
                         <button
                             key={key}
                             type="button"
                             role="tab"
+                            id={`media-tab-${key}`}
+                            tabIndex={active ? 0 : -1}
                             aria-selected={active}
                             aria-controls={`media-panel-${key}`}
                             onClick={() => setTab(key)}
+                            onKeyDown={(event) => {
+                                const next = event.key === "ArrowRight" ? (index + 1) % availableTabs.length
+                                    : event.key === "ArrowLeft" ? (index - 1 + availableTabs.length) % availableTabs.length
+                                    : event.key === "Home" ? 0 : event.key === "End" ? availableTabs.length - 1 : -1;
+                                if (next < 0) return;
+                                event.preventDefault();
+                                const nextKey = availableTabs[next].key;
+                                setTab(nextKey);
+                                document.getElementById(`media-tab-${nextKey}`)?.focus();
+                            }}
                             className={cn(
                                 "inline-flex min-h-10 items-center gap-2 px-4 font-display text-[0.7rem] font-bold uppercase tracking-[0.08em] transition-colors duration-200 ease-out active:scale-[0.98] sm:w-full sm:justify-start",
                                 active
@@ -74,7 +80,7 @@ export function MediaShowcase({
             </div>
 
             <div className="min-w-0 flex-1">
-                <div id="media-panel-fotos" role="tabpanel" hidden={tab !== "fotos"}>
+                <div id="media-panel-fotos" role="tabpanel" aria-labelledby="media-tab-fotos" hidden={tab !== "fotos"}>
                     <ImageGallery
                         images={images}
                         title={title}
@@ -83,31 +89,9 @@ export function MediaShowcase({
                     />
                 </div>
 
-                <div id="media-panel-video" role="tabpanel" hidden={tab !== "video"}>
-                    {hasVideo ? (
-                        <VideoEmbed urls={videoUrls || []} bare />
-                    ) : (
-                        <MediaUnavailable label="Video no disponible" />
-                    )}
-                </div>
-
-                <div id="media-panel-360" role="tabpanel" hidden={tab !== "360"}>
-                    {hasTour ? (
-                        <TourEmbed urls={tourEmbeds || []} bare />
-                    ) : (
-                        <MediaUnavailable label="360 no disponible" />
-                    )}
-                </div>
+                {hasVideo && <div id="media-panel-video" role="tabpanel" aria-labelledby="media-tab-video" hidden={tab !== "video"}><VideoEmbed urls={videoUrls || []} bare /></div>}
+                {hasTour && <div id="media-panel-360" role="tabpanel" aria-labelledby="media-tab-360" hidden={tab !== "360"}><TourEmbed urls={tourEmbeds || []} bare /></div>}
             </div>
-        </div>
-    );
-}
-
-/** Leyenda simple cuando la propiedad no tiene ese medio cargado. */
-function MediaUnavailable({ label }: { label: string }) {
-    return (
-        <div className="flex min-h-[220px] items-center justify-center border border-white/[0.08] bg-white/[0.02] px-6">
-            <p className="property-tag-type text-white/40">{label}</p>
         </div>
     );
 }

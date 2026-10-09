@@ -14,25 +14,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { url: `${SITE_URL}/black-business`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
         { url: `${SITE_URL}/black-industrial`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
 
-        // ── Sub-rutas de división ──
-        { url: `${SITE_URL}/black-luxury/inventario`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
-        { url: `${SITE_URL}/black-luxury/contacto`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-        { url: `${SITE_URL}/black-business/inventario`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
-        { url: `${SITE_URL}/black-business/contacto`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-        { url: `${SITE_URL}/black-industrial/inventario`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
-        { url: `${SITE_URL}/black-industrial/contacto`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-
         // ── Catálogo unificado ──
         { url: `${SITE_URL}/inventario`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
 
         // ── Herramientas ──
         { url: `${SITE_URL}/herramientas`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
 
-        // ── Nosotros + subpáginas ──
+        // ── Nosotros ──
         { url: `${SITE_URL}/nosotros`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-        { url: `${SITE_URL}/nosotros/equipo`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
-        { url: `${SITE_URL}/nosotros/historia`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
-        { url: `${SITE_URL}/nosotros/valores`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
+
+        { url: `${SITE_URL}/propietarios`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
 
         // ── Contacto ──
         { url: `${SITE_URL}/contacto`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },

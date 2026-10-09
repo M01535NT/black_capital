@@ -6,13 +6,11 @@ test.use({
   isMobile: true,
 });
 
-// Tras el rediseño editorial, la sección de metodología del home es un timeline
-// VERTICAL en móvil (pósters apilados por paso), no un rail horizontal. Este test
-// protege ese layout: pasos apilados, alineados a la izquierda y sin overflow.
-test("home methodology section stacks vertically on mobile", async ({ page }) => {
+// Los cuatro pasos compactos se apilan en móvil, alineados y sin overflow.
+test("home methodology section stacks vertically on mobile", async ({ page }, testInfo) => {
   await page.goto("/");
 
-  const heading = page.getByRole("heading", { name: /De valor estimado a cierre/i });
+  const heading = page.getByRole("heading", { name: /Del diagnóstico a la firma/i });
   await heading.scrollIntoViewIfNeeded();
   await page.waitForTimeout(200);
 
@@ -45,7 +43,7 @@ test("home methodology section stacks vertically on mobile", async ({ page }) =>
   expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth + 2);
 
   await page.screenshot({
-    path: "test-results/home-methodology-mobile-vertical.png",
+    path: testInfo.outputPath("home-methodology-mobile-vertical.png"),
     fullPage: false,
   });
 });

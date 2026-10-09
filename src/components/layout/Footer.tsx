@@ -9,7 +9,6 @@ import {
     MessageCircle,
 } from "lucide-react";
 import { Logo } from "./Logo";
-import { Reveal } from "@/components/home/_motion";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 
 /* ── Google Maps link derived from the human-readable address ── */
@@ -30,6 +29,8 @@ const brandLinks = [
 ];
 
 const corpLinks = [
+    { name: "Propiedades", href: "/inventario" },
+    { name: "Para propietarios", href: "/propietarios" },
     { name: "Nosotros", href: "/nosotros" },
     { name: "Herramientas", href: "/herramientas" },
     { name: "Aviso de Privacidad", href: "/legal/aviso-privacidad" },
@@ -60,19 +61,7 @@ export function Footer() {
             />
 
             <div className="relative mx-auto max-w-[90rem] px-6 pb-8 pt-16 sm:px-10 sm:pt-20 lg:px-16">
-                {/* Franja-statement */}
-                <Reveal className="mb-14 flex flex-col gap-6 border-b border-white/[0.06] pb-12 lg:flex-row lg:items-end lg:justify-between">
-                    <p className="max-w-3xl text-[clamp(1.6rem,4vw,3rem)] font-extrabold uppercase leading-[1.04] tracking-headline text-white">
-                        Bienes raíces{" "}
-                        <span className="gold-ink">con criterio</span>.
-                    </p>
-                    <p className="property-tag-type text-white/40 lg:text-right">
-                        Residencial · Comercial · Industrial
-                    </p>
-                </Reveal>
-
-                <Reveal
-                    y={18}
+                <div
                     className="mb-16 grid grid-cols-2 gap-10 md:grid-cols-12 lg:gap-12"
                 >
                     {/* Brand */}
@@ -191,7 +180,7 @@ export function Footer() {
                             </li>
                         </ul>
                     </div>
-                </Reveal>
+                </div>
 
                 {/* Compliance */}
                 <p className="footer-legal-type mb-6 max-w-3xl leading-relaxed text-white/55">

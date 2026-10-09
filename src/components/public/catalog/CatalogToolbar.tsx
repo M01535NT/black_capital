@@ -8,6 +8,7 @@ import { SORT_OPTIONS, type Filters } from "./constants";
 export type View = "grid" | "list";
 
 interface CatalogToolbarProps {
+  filterButtonRef: React.Ref<HTMLButtonElement>;
   filters: Filters;
   resultCount: number;
   panelCount: number;
@@ -19,6 +20,7 @@ interface CatalogToolbarProps {
 }
 
 export function CatalogToolbar({
+  filterButtonRef,
   filters,
   resultCount,
   panelCount,
@@ -85,7 +87,7 @@ export function CatalogToolbar({
               className="h-10 w-full appearance-none border border-white/[0.1] bg-background/70 pl-4 pr-9 property-tag-type text-white/70 outline-none transition-colors duration-200 ease-out focus:border-[var(--color-accent)] sm:w-auto"
             >
               {SORT_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value} className="bg-background text-white">
+                <option disabled={!filters.moneda && opt.value.startsWith("price_")} key={opt.value} value={opt.value} className="bg-background text-white">
                   {opt.label}
                 </option>
               ))}
@@ -96,11 +98,12 @@ export function CatalogToolbar({
           {/* Filtros */}
           <button
             type="button"
+            ref={filterButtonRef}
             onClick={onOpenFilters}
             className="inline-flex h-10 shrink-0 items-center gap-2 border border-white/[0.1] bg-background/70 px-4 property-tag-type text-white/80 transition-colors duration-200 ease-out hover:border-[var(--color-accent)]/50 hover:text-[var(--color-accent)] active:scale-[0.98]"
           >
             <SlidersHorizontal className="size-4" aria-hidden="true" />
-            <span className="hidden sm:inline">Filtros</span>
+            <span>Filtros</span>
             {panelCount > 0 && (
               <span className="gold-gradient flex h-5 min-w-5 items-center justify-center px-1 text-[0.7rem] font-bold leading-none text-black">
                 {panelCount}

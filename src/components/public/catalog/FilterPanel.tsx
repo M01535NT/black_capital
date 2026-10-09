@@ -131,6 +131,10 @@ export function FilterPanel({
           </Section>
         )}
 
+        <Section label="Zona">
+          <input type="text" aria-label="Zona" placeholder="Colonia o zona" value={filters.zona} onChange={e => onUpdate({ zona: e.target.value })} className={numberInput} />
+        </Section>
+
         <Section label="Estatus">
           <PillGroup
             options={STATUS_OPTIONS.map((s) => ({ label: s.label, value: s.value }))}
@@ -150,12 +154,14 @@ export function FilterPanel({
           />
         </Section>
 
-        <Section label="Precio">
+        <Section label={filters.moneda ? `Precio en ${filters.moneda}` : "Precio"}>
+          {!filters.moneda && <p className="mb-3 text-body-sm text-white/60">Selecciona una moneda para filtrar por precio.</p>}
           <div className="grid grid-cols-2 gap-2">
             <input
               type="number"
               min="0"
               inputMode="numeric"
+              disabled={!filters.moneda}
               placeholder="Mínimo"
               aria-label="Precio mínimo"
               value={filters.precioMin}
@@ -166,6 +172,7 @@ export function FilterPanel({
               type="number"
               min="0"
               inputMode="numeric"
+              disabled={!filters.moneda}
               placeholder="Máximo"
               aria-label="Precio máximo"
               value={filters.precioMax}
@@ -207,7 +214,7 @@ export function FilterPanel({
           onClick={onClose}
           className="brushed-gold premium-cta ml-auto inline-flex min-h-11 flex-1 items-center justify-center rounded-none active:scale-[0.98]"
         >
-          Ver {resultCount} {resultCount === 1 ? "resultado" : "resultados"}
+          Ver {resultCount} {resultCount === 1 ? "propiedad" : "propiedades"}
         </button>
       </div>
     </div>

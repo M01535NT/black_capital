@@ -26,6 +26,7 @@ export const PAGE_SIZE = 12;
 /** Estado de todos los filtros del catálogo. Refleja los searchParams de la URL. */
 export interface Filters {
   q: string;
+  zona: string;
   tipo: string | null; // operación (Venta/Renta) — URL: tipo
   uso: string | null; // Residencial/Comercial/Industrial — URL: uso
   propiedad: string | null; // tipo de inmueble (Casa/Local/…) — URL: propiedad
@@ -39,6 +40,7 @@ export interface Filters {
 
 export const EMPTY_FILTERS: Filters = {
   q: "",
+  zona: "",
   tipo: null,
   uso: null,
   propiedad: null,
@@ -56,13 +58,14 @@ export function parseFilters(sp: ReadonlyURLSearchParams | URLSearchParams): Fil
   const brandUse = brand ? BRAND_TO_USE[brand] ?? null : null;
   return {
     q: sp.get("q") ?? "",
+    zona: sp.get("zona") ?? "",
     tipo: sp.get("tipo"),
     uso: sp.get("uso") ?? brandUse,
     propiedad: sp.get("propiedad"),
     estatus: sp.get("estatus"),
     moneda: sp.get("moneda"),
-    precioMin: sp.get("precio_min") ?? "",
-    precioMax: sp.get("precio_max") ?? "",
+    precioMin: sp.get("precio_min") ?? sp.get("precioMin") ?? "",
+    precioMax: sp.get("precio_max") ?? sp.get("precioMax") ?? "",
     m2Min: sp.get("m2_min") ?? "",
     orden: sp.get("orden") ?? "newest",
   };
@@ -71,6 +74,7 @@ export function parseFilters(sp: ReadonlyURLSearchParams | URLSearchParams): Fil
 /** Serializa los filtros a query string (omite vacíos y `brand`). */
 export function serializeFilters(f: Filters): string {
   const sp = new URLSearchParams();
+  if (f.zona) sp.set("zona", f.zona);
   if (f.q) sp.set("q", f.q);
   if (f.tipo) sp.set("tipo", f.tipo);
   if (f.uso) sp.set("uso", f.uso);
@@ -86,7 +90,7 @@ export function serializeFilters(f: Filters): string {
 
 /** Nº de filtros activos dentro del panel (excluye búsqueda y orden del toolbar). */
 export function panelActiveCount(f: Filters): number {
-  return [f.tipo, f.uso, f.propiedad, f.estatus, f.moneda, f.precioMin, f.precioMax, f.m2Min].filter(
+  return [f.zona, f.tipo, f.uso, f.propiedad, f.estatus, f.moneda, f.precioMin, f.precioMax, f.m2Min].filter(
     Boolean,
   ).length;
 }
@@ -109,6 +113,7 @@ export interface ActiveChip {
 /** Deriva los chips de filtros activos (removibles individualmente). */
 export function buildChips(f: Filters): ActiveChip[] {
   const chips: ActiveChip[] = [];
+  if (f.zona) chips.push({ key: "zona", label: `Zona: ${f.zona}` });
   if (f.q) chips.push({ key: "q", label: `“${f.q}”` });
   if (f.tipo) chips.push({ key: "tipo", label: f.tipo });
   if (f.uso) chips.push({ key: "uso", label: f.uso });
@@ -130,7 +135,7 @@ export function buildChips(f: Filters): ActiveChip[] {
 
 /** Valor "vacío" por clave, para remover un chip individual. */
 export function clearedValue(key: keyof Filters): string | null {
-  if (key === "q" || key === "precioMin" || key === "precioMax" || key === "m2Min") return "";
+  if (key === "zona" || key === "q" || key === "precioMin" || key === "precioMax" || key === "m2Min") return "";
   if (key === "orden") return "newest";
   return null;
 }

@@ -5,6 +5,7 @@ import { Share2, Check } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface ShareButtonProps {
+  href?: string
   title: string
   description?: string
   variant?: 'icon' | 'pill'
@@ -13,6 +14,7 @@ interface ShareButtonProps {
 
 export function ShareButton({
   title,
+  href,
   description,
   variant = 'icon',
   className = '',
@@ -20,7 +22,7 @@ export function ShareButton({
   const [copied, setCopied] = useState(false)
 
   const handleShare = async () => {
-    const url = window.location.href
+    const url = href ? new URL(href, window.location.origin).href : window.location.href
 
     // Try Web Share API first (mobile native share sheet)
     if (navigator.share) {

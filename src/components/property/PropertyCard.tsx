@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Building2, Maximize2, MapPin, MessageCircle } from "lucide-react";
+import { ArrowRight, Building2, Maximize2, MapPin } from "lucide-react";
 import { formatShortPrice, formatArea } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { getPropertyPlaceholderImage } from "@/lib/property-placeholder-image";
@@ -65,10 +65,6 @@ export function PropertyCard({
     const href = property.isPlaceholder
         ? `/contacto?interes=${encodeURIComponent(property.property_use.toLowerCase())}`
         : `/inventario/${property.slug || property.id}`;
-    const contactHref = `/contacto?propiedad=${encodeURIComponent(property.title)}&interes=${encodeURIComponent(
-        property.property_use.toLowerCase(),
-    )}`;
-
     const isCompact = variant === "similar";
     const isAvailable = (property.status || "Available") === "Available";
     const statusLabel = STATUS_LABELS[property.status || ""] || property.status || "Disponible";
@@ -169,7 +165,7 @@ export function PropertyCard({
                             : formatShortPrice(property.price, property.currency, property.business_type)}
                     </p>
                     <span className="inline-flex shrink-0 items-center gap-2 property-tag-type text-white/65 transition-colors duration-200 ease-out group-hover:text-[var(--color-accent)]">
-                        {property.isPlaceholder ? "Solicitar" : "Ver ficha"}
+                        {property.isPlaceholder ? "Solicitar" : "Ver propiedad"}
                         <ArrowRight
                             className="h-3.5 w-3.5 transition-transform duration-200 ease-out group-hover:translate-x-1"
                             aria-hidden="true"
@@ -177,24 +173,14 @@ export function PropertyCard({
                     </span>
                 </Link>
 
-                {!isCompact && (
-                    <Link
-                        href={contactHref}
-                        className="group/cta mt-4 inline-flex min-h-10 items-center gap-2 self-start text-white/70 transition-colors duration-200 ease-out hover:text-[var(--color-accent)]"
-                    >
-                        <MessageCircle className="h-4 w-4 shrink-0 text-[var(--color-accent)]" aria-hidden="true" />
-                        <span className="property-tag-type relative pb-0.5">
-                            Solicitar información
-                            <span className="absolute bottom-0 left-0 h-px w-full bg-current opacity-40 transition-opacity duration-200 group-hover/cta:opacity-100" />
-                        </span>
-                    </Link>
-                )}
+
             </div>
 
             {/* Acciones flotantes (fuera del Link para no anidar interactivos) */}
             <div className="absolute right-3 top-3 z-20 flex items-center gap-2">
-                <FavoriteButton propertyId={property.id} variant="icon" className="h-10 w-10 sm:h-9 sm:w-9" />
+                <FavoriteButton propertyId={property.id} title={property.title} href={href} variant="icon" className="h-10 w-10 sm:h-9 sm:w-9" />
                 <ShareButton
+                    href={href}
                     title={property.title}
                     description={property.address || undefined}
                     variant="icon"

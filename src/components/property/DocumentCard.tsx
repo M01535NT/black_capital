@@ -153,6 +153,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
             <button
                 type="button"
                 onClick={startRequestFromSession}
+                aria-label={`Solicitar documento: ${doc.label}`}
                 className="group flex w-full items-center gap-3 border border-white/[0.08] bg-white/[0.025] p-3 text-left transition-all hover:border-[var(--color-accent)]/25 hover:bg-[var(--color-accent)]/[0.04]"
             >
                 <span className="flex size-9 shrink-0 items-center justify-center border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10">
@@ -168,7 +169,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
                     </span>
                 </span>
                 <span className="shrink-0 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--color-accent)]">
-                    Pedir
+                    Solicitar
                 </span>
             </button>
 
@@ -176,7 +177,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
                 <DialogContent className="border-white/[0.08] bg-[#080808] text-white sm:max-w-xl">
                     <DialogHeader>
                         <DialogTitle className="text-display-3 leading-tight text-white">
-                            Pedir documentos
+                            Solicitar documento
                         </DialogTitle>
                         <DialogDescription className="text-body text-white/58">
                             {doc.label} · {propertyTitle}
@@ -227,7 +228,7 @@ export function DocumentCard({ doc, propertyId, propertyTitle }: DocumentCardPro
                                 </label>
                             </div>
                             <Button type="submit" className="brushed-gold min-h-11 w-full rounded-full px-5 text-black">
-                                Pedir documentos
+                                Solicitar documento
                             </Button>
                         </form>
                     )}

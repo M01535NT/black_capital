@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useSearchParams, usePathname } from "next/navigation";
 import { ArrowRight, Search } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { PropertyCard, type PropertyCardData } from "@/components/property/PropertyCard";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { CatalogToolbar, type View } from "./catalog/CatalogToolbar";
+import { filterProperties } from "./catalog/filter-properties";
+import { QuickFilters } from "./catalog/QuickFilters";
 import { FilterPanel } from "./catalog/FilterPanel";
 import { ActiveChips } from "./catalog/ActiveChips";
 import { PropertyRow } from "./catalog/PropertyRow";
@@ -26,12 +28,12 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function CatalogFilter({ properties }: { properties: PropertyCardData[] }) {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const pathname = usePathname();
   const reduce = useReducedMotion();
 
-  const [filters, setFilters] = useState<Filters>(() => parseFilters(searchParams));
+  const filters = useMemo(() => parseFilters(searchParams), [searchParams]);
   const [view, setView] = useState<View>("grid");
+  const filterButtonRef = useRef<HTMLButtonElement>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
@@ -45,17 +47,6 @@ export function CatalogFilter({ properties }: { properties: PropertyCardData[] }
     setVisibleCount(PAGE_SIZE);
   }
 
-  // Sincroniza la URL con los filtros (debounced). Solo reemplaza si cambió;
-  // esto también limpia el parámetro `brand` tras el deep-link inicial.
-  useEffect(() => {
-    const current = searchParams.toString();
-    if (current === filtersKey) return;
-    const t = setTimeout(() => {
-      router.replace(`${pathname}${filtersKey ? `?${filtersKey}` : ""}`, { scroll: false });
-    }, 250);
-    return () => clearTimeout(t);
-  }, [filtersKey, pathname, router, searchParams]);
-
   const availableTypes = useMemo(
     () =>
       Array.from(
@@ -64,44 +55,25 @@ export function CatalogFilter({ properties }: { properties: PropertyCardData[] }
     [properties],
   );
 
-  const filtered = useMemo(() => {
-    const q = filters.q.toLowerCase();
-    const result = properties.filter((p) => {
-      const searchable = `${p.title} ${p.address ?? ""} ${p.property_use} ${p.property_type ?? ""} ${p.business_type}`.toLowerCase();
-      if (q && !searchable.includes(q)) return false;
-      if (filters.propiedad && !(p.property_type ?? "").toLowerCase().includes(filters.propiedad.toLowerCase())) return false;
-      if (filters.tipo && p.business_type.toLowerCase() !== filters.tipo.toLowerCase()) return false;
-      if (filters.uso && p.property_use !== filters.uso) return false;
-      if (filters.estatus && p.status !== filters.estatus) return false;
-      if (filters.moneda && p.currency !== filters.moneda) return false;
-      if (filters.precioMin && p.price < Number(filters.precioMin)) return false;
-      if (filters.precioMax && p.price > Number(filters.precioMax)) return false;
-      const area = Math.max(p.m2_terrain || 0, p.m2_construction || 0);
-      if (filters.m2Min && area < Number(filters.m2Min)) return false;
-      return true;
-    });
-
-    if (filters.orden === "price_asc") result.sort((a, b) => a.price - b.price);
-    else if (filters.orden === "price_desc") result.sort((a, b) => b.price - a.price);
-    else if (filters.orden === "terrain_desc") result.sort((a, b) => (b.m2_terrain || 0) - (a.m2_terrain || 0));
-    else if (filters.orden === "construction_desc") result.sort((a, b) => (b.m2_construction || 0) - (a.m2_construction || 0));
-    else if (filters.orden === "featured") result.sort((a, b) => Number(Boolean(b.is_featured)) - Number(Boolean(a.is_featured)));
-
-    return result;
-  }, [properties, filters]);
+  const filtered = useMemo(() => filterProperties(properties, filters), [properties, filters]);
 
   const chips = buildChips(filters);
   const panelCount = panelActiveCount(filters);
   const visible = filtered.slice(0, visibleCount);
   const remaining = filtered.length - visible.length;
 
-  const update = (patch: Partial<Filters>) => setFilters((prev) => ({ ...prev, ...patch }));
+  const setFilters = (next: Filters) => {
+    const query = serializeFilters(next);
+    window.history.replaceState(null, "", `${pathname}${query ? `?${query}` : ""}`);
+  };
+  const update = (patch: Partial<Filters>) => setFilters({ ...filters, ...patch });
   const clearFilter = (key: keyof Filters) => update({ [key]: clearedValue(key) } as Partial<Filters>);
   const clearAll = () => setFilters(EMPTY_FILTERS);
 
   return (
     <div className="w-full">
       <CatalogToolbar
+        filterButtonRef={filterButtonRef}
         filters={filters}
         resultCount={filtered.length}
         panelCount={panelCount}
@@ -113,6 +85,10 @@ export function CatalogFilter({ properties }: { properties: PropertyCardData[] }
       />
 
       <div className="mx-auto max-w-[90rem] px-6 pb-16 pt-6 sm:px-10 lg:px-16">
+        <QuickFilters filters={filters} onUpdate={update} />
+        {!filters.moneda && (filters.precioMin || filters.precioMax || filters.orden.startsWith("price_")) && (
+          <p role="status" className="mb-6 text-body-sm gold-ink">Elige MXN o USD para aplicar el rango u ordenar por precio.</p>
+        )}
         {chips.length > 0 && (
           <div className="mb-6">
             <ActiveChips chips={chips} onRemove={clearFilter} onClearAll={clearAll} />
@@ -157,7 +133,7 @@ export function CatalogFilter({ properties }: { properties: PropertyCardData[] }
             <div
               className={
                 view === "grid"
-                  ? "grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"
+                  ? "grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2 xl:grid-cols-3"
                   : "flex flex-col gap-4"
               }
             >
@@ -196,9 +172,10 @@ export function CatalogFilter({ properties }: { properties: PropertyCardData[] }
       </div>
 
       {/* Panel de filtros slide-over */}
-      <Drawer direction="right" open={drawerOpen} onOpenChange={setDrawerOpen}>
+      <Drawer autoFocus direction="right" open={drawerOpen} onOpenChange={setDrawerOpen}>
         <DrawerContent
           accessibleTitle="Filtros del catálogo"
+          onCloseAutoFocus={event => { event.preventDefault(); filterButtonRef.current?.focus(); }}
           className="w-[88%] border-l border-[var(--color-accent)]/15 bg-[#0a0a0a] sm:max-w-md"
         >
           <FilterPanel

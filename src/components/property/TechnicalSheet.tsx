@@ -37,17 +37,16 @@ function publishedLabel(d: TechnicalSheetData): string | null {
     return date.toLocaleDateString("es-MX", { year: "numeric", month: "long" });
 }
 
-function buildRows(d: TechnicalSheetData): [string, string][] {
+function buildRows(d: TechnicalSheetData, includeConditions = true): [string, string][] {
     const perM2 = pricePerM2(d);
     const published = publishedLabel(d);
     return [
-        ["Modalidad", d.businessType],
+        ...(includeConditions ? [["Modalidad", d.businessType] as [string, string]] : []),
         ["Uso", d.propertyUse],
         ...(d.propertyType ? ([["Tipo", d.propertyType]] as [string, string][]) : []),
-        ["Estatus", d.statusLabel],
-        ["Precio", formatPrice(d.price, d.currency)],
-        ...(perM2 ? ([["Precio por m² construido", perM2]] as [string, string][]) : []),
-        ["Moneda", d.currency === "USD" ? "Dólares (USD)" : "Pesos (MXN)"],
+        ...(includeConditions ? [["Estatus", d.statusLabel], ["Precio", formatPrice(d.price, d.currency)]] as [string, string][] : []),
+        ...(includeConditions && perM2 ? ([["Precio por m² construido", perM2]] as [string, string][]) : []),
+        ...(includeConditions ? [["Moneda", d.currency === "USD" ? "Dólares (USD)" : "Pesos (MXN)"]] as [string, string][] : []),
         ...(d.m2Terrain ? ([["Terreno", formatArea(d.m2Terrain, "")]] as [string, string][]) : []),
         ...(d.m2Construction ? ([["Construcción", formatArea(d.m2Construction, "")]] as [string, string][]) : []),
         ...(d.address ? ([["Zona", d.address]] as [string, string][]) : []),
@@ -107,15 +106,12 @@ export function FichaPdfButton({ data }: { data: TechnicalSheetData }) {
  * y filas clave-valor a dos columnas con hairlines, como la plantilla.
  */
 export function TechnicalSheet({ data }: { data: TechnicalSheetData }) {
-    const rows = buildRows(data);
-    const perM2 = pricePerM2(data);
+    const rows = buildRows(data, false);
     // Strip glanceable: flex-wrap para que llene la fila sin celdas vacías,
     // sin importar cuántos datos existan. Estatus y referencia siempre están.
     const stats: { label: string; value: string }[] = [
         ...(data.m2Terrain ? [{ label: "Terreno", value: formatArea(data.m2Terrain, "") }] : []),
         ...(data.m2Construction ? [{ label: "Construcción", value: formatArea(data.m2Construction, "") }] : []),
-        ...(perM2 ? [{ label: "Precio por m²", value: perM2.replace(" / m²", "") }] : []),
-        { label: "Estatus", value: data.statusLabel },
         { label: "Referencia", value: data.reference },
     ];
 

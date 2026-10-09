@@ -8,7 +8,8 @@ import type { PropertyCardData } from "@/components/property/PropertyCard";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-    title: "Inventario en Tijuana | Black Capital",
+    title: "Propiedades en Tijuana",
+    alternates: { canonical: "/inventario" },
     description:
         "Explora residencias, locales, oficinas y naves en Tijuana. Filtra por operación, uso, tipo, precio y superficie.",
 };
@@ -131,7 +132,7 @@ export default function InventoryPage() {
                 <div className="relative mx-auto w-full max-w-[90rem] px-6 pb-10 pt-24 sm:px-10 sm:pt-28 lg:px-16 lg:pt-32">
                     <div className="flex items-center gap-3">
                         <span className="h-px w-6 bg-[var(--color-accent)]" aria-hidden="true" />
-                        <span className="property-tag-type gold-ink">Inventario · Tijuana</span>
+                        <span className="property-tag-type gold-ink">Propiedades · Tijuana</span>
                     </div>
                     <h1 className="mt-4 font-display text-display-2 font-extrabold uppercase leading-[1.02] tracking-headline text-white">
                         Propiedades disponibles

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, type PanInfo } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { EASE_OUT, Reveal } from "./_motion";
@@ -23,12 +23,9 @@ const VOICES = [
   },
 ];
 
-const AUTOPLAY_MS = 6500;
-
 export function VoicesWall() {
   const reduce = useReducedMotion();
   const [[index, direction], setState] = useState<[number, number]>([0, 0]);
-  const [paused, setPaused] = useState(false);
 
   const paginate = useCallback((dir: number) => {
     setState(([current]) => [(current + dir + VOICES.length) % VOICES.length, dir]);
@@ -38,13 +35,6 @@ export function VoicesWall() {
     (target: number) => setState(([current]) => [target, target > current ? 1 : -1]),
     [],
   );
-
-  // Auto-avance; se pausa en hover/drag y bajo reduced-motion.
-  useEffect(() => {
-    if (paused || reduce) return;
-    const id = setTimeout(() => paginate(1), AUTOPLAY_MS);
-    return () => clearTimeout(id);
-  }, [index, paused, reduce, paginate]);
 
   const onDragEnd = (_e: unknown, info: PanInfo) => {
     if (info.offset.x < -60 || info.velocity.x < -300) paginate(1);
@@ -78,13 +68,7 @@ export function VoicesWall() {
           </p>
         </Reveal>
 
-        <div
-          className="relative"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-          onFocusCapture={() => setPaused(true)}
-          onBlurCapture={() => setPaused(false)}
-        >
+        <div className="relative">
           {/* Área de la cita: min-height fija para evitar saltos de layout */}
           <div className="relative min-h-[15rem] overflow-hidden border border-white/[0.1] bg-background/50 sm:min-h-[13rem]">
             <AnimatePresence mode="wait" custom={direction} initial={false}>
@@ -99,7 +83,6 @@ export function VoicesWall() {
                 drag={reduce ? false : "x"}
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={0.12}
-                onDragStart={() => setPaused(true)}
                 onDragEnd={onDragEnd}
                 aria-live="polite"
                 className="flex h-full cursor-grab flex-col justify-center px-6 py-9 active:cursor-grabbing sm:px-10 lg:px-14"
@@ -121,16 +104,15 @@ export function VoicesWall() {
 
           {/* Controles: puntos + flechas */}
           <div className="mt-6 flex items-center justify-between">
-            <div className="flex items-center gap-2.5" role="tablist" aria-label="Testimonios">
+            <div className="flex items-center gap-2.5" role="group" aria-label="Testimonios">
               {VOICES.map((v, i) => (
                 <button
                   key={v.attribution}
                   type="button"
-                  role="tab"
-                  aria-selected={i === index}
+                  aria-pressed={i === index}
                   aria-label={`Ver testimonio ${i + 1} de ${VOICES.length}`}
                   onClick={() => goTo(i)}
-                  className="group flex h-6 items-center"
+                  className="group flex h-11 min-w-11 items-center justify-center"
                 >
                   <span
                     className={`h-1.5 rounded-full transition-[width,background-color] duration-200 ease-out ${

@@ -77,7 +77,7 @@ function CounterItem({
         index % 2 === 0 ? "border-r" : ""
       } ${index < 2 ? "border-b lg:border-b-0" : ""} lg:border-r lg:last:border-r-0`}
     >
-      <p className="flex items-baseline gap-0.5">
+      <p className="flex flex-wrap items-baseline gap-0.5">
         <span className="font-display text-[clamp(2.25rem,5vw,3.5rem)] font-extrabold leading-none tabular-nums text-white">
           {formatCount(count)}
         </span>

@@ -8,7 +8,6 @@
 
 import Link from "next/link";
 import { ArrowRight, Lock, Download, MessageCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
 
@@ -53,8 +52,13 @@ const SECTION_SPACING = {
 } as const;
 
 export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
-    const contactHref = `/black-${config.brand}/contacto`;
-    const whatsappHref = `https://wa.me/${CONTACT_CONFIG.phoneRaw}`;
+    const contactHref = `/contacto?brand=${config.brand}&objetivo=buscar-propiedad`;
+    const contactLabel = {
+        luxury: "Cuéntanos qué casa buscas",
+        business: "Cuéntanos qué necesita tu negocio",
+        industrial: "Comparte los requisitos de tu operación",
+    }[config.brand];
+    const whatsappHref = `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(`Hola, busco asesoría de Black ${config.brand}. Quisiera compartir los requisitos de mi búsqueda.`)}`;
 
     return (
         <section
@@ -104,11 +108,9 @@ export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
                     </p>
 
                     <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                        <Link href={contactHref} className="w-full sm:w-auto">
-                            <Button className="brushed-gold premium-cta group/cta inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-none sm:w-auto">
-                                Hablar con un asesor
+                        <Link href={contactHref} className="brushed-gold premium-cta group/cta inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-none px-5 sm:w-auto">
+                                {contactLabel}
                                 <ArrowRight className="h-4 w-4 transition-transform duration-300 motion-safe:group-hover/cta:translate-x-1" aria-hidden="true" />
-                            </Button>
                         </Link>
                         <Link
                             href={whatsappHref}
