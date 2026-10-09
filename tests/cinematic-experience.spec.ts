@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test('GSAP scroll sequence changes images and cleans up when leaving home', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  const stage = page.locator('[data-segment-stage]');
+  const stage = page.locator('#main-content [data-segment-stage]');
   await expect(stage).toHaveAttribute('data-pinned', 'true');
   await page.getByRole('button', { name: '02 · Comercial', exact: true }).click();
   await expect(stage).toHaveAttribute('data-active-scene', '1');
@@ -11,14 +11,14 @@ test('GSAP scroll sequence changes images and cleans up when leaving home', asyn
   await expect(stage.locator('[data-scene]').first()).toHaveAttribute('inert', '');
   await page.getByRole('navigation', { name: 'Accesos principales' }).getByRole('link', { name: 'Propiedades', exact: true }).click();
   await expect(page).toHaveURL(/\/inventario$/);
-  await expect(page.locator('[data-segment-stage]')).toHaveCount(0);
+  await expect(page.locator('#main-content [data-segment-stage]')).toHaveCount(0);
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
 });
 
 test('large photographic planes move with scroll', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  const plane = page.locator('[data-section="cinematic-hero"] [data-image-plane]');
+  const plane = page.locator('#main-content [data-section="cinematic-hero"] [data-image-plane]');
   await expect.poll(() => plane.evaluate(el => getComputedStyle(el).transform)).not.toBe('none');
   const before = await plane.evaluate(el => getComputedStyle(el).transform);
   await page.evaluate(() => window.scrollTo(0, 600));
@@ -26,6 +26,8 @@ test('large photographic planes move with scroll', async ({ page }) => {
 });
 
 test('reduced motion keeps all scenes readable and unpinned', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
@@ -40,13 +42,15 @@ test('reduced motion keeps all scenes readable and unpinned', async ({ page }) =
     await expect(scene).not.toHaveAttribute('aria-hidden', 'true');
     await expect(scene.getByRole('link')).toBeVisible();
   }
-  await expect(page.locator('[data-section="cinematic-hero"] [data-image-plane]')).toHaveCSS('transform', 'none');
+  await expect(page.locator('#main-content [data-section="cinematic-hero"] [data-image-plane]')).toHaveCSS('transform', 'none');
+  expect(errors).toEqual([]);
 });
 
 for (const width of [320, 390]) {
   test(`image-led home fits ${width}px and search controls remain usable`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
     await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('#main-content [data-section="cinematic-hero"] [data-image-plane]')).not.toHaveCSS('transform', 'none');
     await page.getByRole('button', { name: 'Buscar propiedades', exact: true }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
@@ -64,7 +68,7 @@ for (const width of [320, 390]) {
  test('selecting a scene with the keyboard transfers focus to its destination', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('[data-segment-stage]')).toHaveAttribute('data-pinned', 'true');
+  await expect(page.locator('#main-content [data-segment-stage]')).toHaveAttribute('data-pinned', 'true');
   const control = page.getByRole('button', { name: '02 · Comercial', exact: true });
   await control.focus();
   await page.keyboard.press('Enter');

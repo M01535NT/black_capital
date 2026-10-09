@@ -82,6 +82,7 @@ test("hero words fit their column without clipping at narrow widths", async ({ p
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/");
     const heading = page.getByRole("heading", { level: 1 });
+    await expect(heading).toBeVisible();
     await page.evaluate(async () => { await document.fonts.ready; });
     const bounds = await heading.boundingBox();
     for (const word of await heading.locator("span").all()) {

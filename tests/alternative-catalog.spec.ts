@@ -45,7 +45,7 @@ test('card shares its destination rather than catalog URL', async ({ page }) => 
   await expect(card).toBeVisible();
   const href = await card.locator('a').first().getAttribute('href');
   await card.getByRole('button', { name: 'Compartir propiedad' }).click();
-  await expect.poll(() => page.evaluate(() => (window as unknown as { shared?: ShareData }).shared?.url)).toBe(new URL(href!, 'http://localhost:3000').href);
+  await expect.poll(() => page.evaluate(() => (window as unknown as { shared?: ShareData }).shared?.url)).toBe(new URL(href!, page.url()).href);
 });
 
 test('navigation traps keyboard focus and returns it on Escape', async ({ page }) => {
