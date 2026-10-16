@@ -1,0 +1,77 @@
+name: black-capital-isolated
+services:
+  db:
+    image: postgres:17-alpine@sha256:b0f9560a2de083e2cc7382e75f808c7381a32852a7ec49117deedb300e552b24
+    container_name: black-capital-isolated-db
+    environment:
+      POSTGRES_PASSWORD: ${BLACK_CAPITAL_LOCAL_DB_PASSWORD:?local environment required}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/10-black-capital.sh:ro
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U postgres"]
+      interval: 2s
+      retries: 40
+  auth:
+    image: supabase/gotrue:v2.197.0
+    depends_on:
+      db: {condition: service_healthy}
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: 9999
+      API_EXTERNAL_URL: http://127.0.0.1:54321/auth/v1
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${BLACK_CAPITAL_LOCAL_DB_PASSWORD}@db:5432/postgres
+      GOTRUE_SITE_URL: http://127.0.0.1:3100
+      GOTRUE_URI_ALLOW_LIST: http://127.0.0.1:3100/**
+      GOTRUE_JWT_SECRET: ${BLACK_CAPITAL_LOCAL_JWT_SECRET:?local environment required}
+      GOTRUE_JWT_EXP: 3600
+      GOTRUE_JWT_ADMIN_ROLES: service_role
+      GOTRUE_JWT_AUD: authenticated
+      GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
+      GOTRUE_DISABLE_SIGNUP: "true"
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
+      GOTRUE_MAILER_AUTOCONFIRM: "true"
+  rest:
+    image: public.ecr.aws/supabase/postgrest:v14.5
+    depends_on:
+      db: {condition: service_healthy}
+    environment:
+      PGRST_DB_URI: postgres://authenticator:${BLACK_CAPITAL_LOCAL_DB_PASSWORD}@db:5432/postgres
+      PGRST_DB_SCHEMAS: public
+      PGRST_DB_EXTRA_SEARCH_PATH: public,extensions
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: ${BLACK_CAPITAL_LOCAL_JWT_SECRET}
+  storage:
+    image: public.ecr.aws/supabase/storage-api:v1.41.8
+    depends_on:
+      db: {condition: service_healthy}
+    environment:
+      ANON_KEY: ${BLACK_CAPITAL_LOCAL_ANON_KEY:?local environment required}
+      SERVICE_KEY: ${BLACK_CAPITAL_LOCAL_SERVICE_KEY:?local environment required}
+      POSTGREST_URL: http://rest:3000
+      PGRST_JWT_SECRET: ${BLACK_CAPITAL_LOCAL_JWT_SECRET}
+      AUTH_JWT_SECRET: ${BLACK_CAPITAL_LOCAL_JWT_SECRET}
+      DATABASE_URL: postgres://supabase_storage_admin:${BLACK_CAPITAL_LOCAL_DB_PASSWORD}@db:5432/postgres
+      FILE_SIZE_LIMIT: 15728640
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      TENANT_ID: black-capital-isolated
+      REGION: local
+      GLOBAL_S3_BUCKET: isolated
+      ENABLE_IMAGE_TRANSFORMATION: "false"
+    volumes: [storage-data:/var/lib/storage]
+  gateway:
+    image: public.ecr.aws/supabase/kong:2.8.1
+    depends_on: [auth, rest, storage]
+    ports: ["127.0.0.1:54321:8000"]
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /var/lib/kong/isolated.yml
+      KONG_PROXY_ACCESS_LOG: "off"
+      KONG_ADMIN_ACCESS_LOG: "off"
+      KONG_LOG_LEVEL: error
+    volumes: ["./gateway.yml:/var/lib/kong/isolated.yml:ro"]
+volumes:
+  db-data:
+  storage-data:

@@ -6,11 +6,22 @@ import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { CinematicImage } from "@/components/visual/CinematicImage";
 import { PropertyFinder } from "./PropertyFinder";
 import { EASE_OUT } from "./_motion";
+import { useState, useSyncExternalStore } from "react";
 
-export function HomeHero() {
+function subscribeMotion(callback: () => void) {
+  const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+  query.addEventListener("change", callback);
+  return () => query.removeEventListener("change", callback);
+}
+function motionAllowed() { return !window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+
+export function HomeHero({ imageUrl = "", videoUrl = "" }: { imageUrl?: string; videoUrl?: string }) {
   const reduce = useReducedMotion();
+  const allowVideo = useSyncExternalStore(subscribeMotion, motionAllowed, () => false);
+  const [failedVideo, setFailedVideo] = useState("");
   return <section data-section="cinematic-hero" className="relative isolate flex min-h-[48rem] flex-col justify-end overflow-hidden bg-background pb-7 pt-32 sm:min-h-[56rem] lg:h-[100svh] lg:min-h-[46rem]">
-    <CinematicImage src="/home-hero-bg.webp" alt="Arquitectura residencial contemporánea en Tijuana al atardecer" priority className="absolute inset-0 -z-20" imageClassName="object-[57%_center]" />
+    <CinematicImage src={imageUrl || "/home-hero-bg.webp"} alt="Arquitectura residencial contemporánea en Tijuana al atardecer" priority className="absolute inset-0 -z-20" imageClassName="object-[57%_center]" />
+    {allowVideo && videoUrl && failedVideo !== videoUrl && <video src={videoUrl} autoPlay muted loop playsInline aria-hidden="true" className="absolute inset-0 -z-10 h-full w-full object-cover" onError={() => setFailedVideo(videoUrl)} />}
     <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/10 to-black/20" />
     <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
 

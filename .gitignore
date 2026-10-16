@@ -75,3 +75,6 @@ tsconfig.tsbuildinfo
 
 .vercel
 .codex-remote-attachments/
+
+# Isolated backend credentials, execution logs and local test artifacts
+/.superpowers/

@@ -12,7 +12,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
-    const formData = await req.formData();
+    const contentLength = Number(req.headers.get("content-length") || 0);
+    if (contentLength > 11 * 1024 * 1024) {
+      return NextResponse.json({ error: "Archivo demasiado grande (máx 10 MB)" }, { status: 400 });
+    }
+    let formData: FormData;
+    try {
+      formData = await req.formData();
+    } catch {
+      return NextResponse.json({ error: "Archivo inválido o demasiado grande (máx 10 MB)" }, { status: 400 });
+    }
     const file = formData.get("file") as File | null;
     const propertyId = formData.get("propertyId") as string | null;
     const purpose = (formData.get("purpose") as string | null) || "property";

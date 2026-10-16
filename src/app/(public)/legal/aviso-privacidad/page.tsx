@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/ui/motion";
-import { CONTACT_CONFIG } from "@/lib/contact-config";
+import { getSiteSettings } from "@/lib/site-settings";
+import { contactFromSettings } from "@/lib/site-settings-schema";
 
 export const metadata: Metadata = {
     title: "Aviso de Privacidad | Black Capital",
@@ -11,7 +12,8 @@ export const metadata: Metadata = {
     },
 };
 
-export default function PrivacidadPage() {
+export default async function PrivacidadPage() {
+    const CONTACT_CONFIG = contactFromSettings(await getSiteSettings());
     return (
         <div className="w-full flex-1 bg-background">
             <div className="bg-zinc-950 py-16 border-b border-[var(--color-accent)]/20 relative overflow-hidden">

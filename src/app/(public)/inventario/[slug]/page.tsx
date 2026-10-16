@@ -20,7 +20,8 @@ import { FavoriteButton } from "@/components/property/favorite-button";
 import { MortgageCalculator } from "@/components/tools/mortgage-calculator";
 import { FadeIn } from "@/components/ui/motion";
 
-import { CONTACT_CONFIG } from "@/lib/contact-config";
+import { getSiteSettings } from "@/lib/site-settings";
+import { contactFromSettings } from "@/lib/site-settings-schema";
 import { getPropertyDocuments, toVisibleDocuments } from "@/lib/document-access";
 import { formatPrice, formatShortPrice, formatArea } from "@/lib/format";
 import { STATUS_LABELS } from "@/lib/property-constants";
@@ -129,6 +130,7 @@ export default async function PropertyDetailPage({
 }: {
     params: Promise<{ slug: string }>;
 }) {
+    const CONTACT_CONFIG = contactFromSettings(await getSiteSettings());
     const { slug } = await params;
     const supabase = await createClient();
 

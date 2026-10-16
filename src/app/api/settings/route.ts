@@ -3,58 +3,10 @@ import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isAdmin, requireApiProfile } from "@/lib/auth";
 
-export interface AppSettings {
-  heroVideoUrl?: string;
-  heroImageUrl?: string;
-  luxuryHeroTitle?: string;
-  luxuryHeroSubtitle?: string;
-  businessHeroTitle?: string;
-  businessHeroSubtitle?: string;
-  industrialHeroTitle?: string;
-  industrialHeroSubtitle?: string;
-  contactPhone?: string;
-  contactEmail?: string;
-  contactAddress?: string;
-  whatsAppTemplate?: string;
-}
-
-const ALLOWED_KEYS = new Set([
-  "heroVideoUrl", "heroImageUrl",
-  "luxuryHeroTitle", "luxuryHeroSubtitle",
-  "businessHeroTitle", "businessHeroSubtitle",
-  "industrialHeroTitle", "industrialHeroSubtitle",
-  "contactPhone", "contactEmail", "contactAddress",
-  "whatsAppTemplate",
-]);
-
-const DEFAULTS: AppSettings = {
-  heroVideoUrl: "",
-  heroImageUrl: "",
-  luxuryHeroTitle: "Black Luxury",
-  luxuryHeroSubtitle: "Casas y residencias",
-  businessHeroTitle: "Black Business",
-  businessHeroSubtitle: "Espacios comerciales",
-  industrialHeroTitle: "Black Industrial",
-  industrialHeroSubtitle: "Naves y bodegas",
-  contactPhone: "+52 (664) 104 9491",
-  contactEmail: "contacto@blackmx.vercel.app",
-  contactAddress: "Tijuana, Baja California, México",
-  whatsAppTemplate: "Hola, estoy interesado en sus servicios.",
-};
-
-async function readSettings(): Promise<AppSettings> {
-  const supabase = createAdminClient();
-  const { data, error } = await supabase
-    .from("app_settings")
-    .select("value")
-    .eq("key", "site")
-    .maybeSingle();
-  if (error) {
-    logger.error("API/settings", "[Settings] Error reading settings:", error);
-    return { ...DEFAULTS };
-  }
-  return { ...DEFAULTS, ...((data?.value as AppSettings | null) || {}) };
-}
+export type { SiteSettings as AppSettings } from "@/lib/site-settings-schema";
+import { normalizeSiteSettings, siteSettingsPatchSchema } from "@/lib/site-settings-schema";
+import { getSiteSettings } from "@/lib/site-settings";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -63,7 +15,7 @@ export async function GET() {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
-    const settings = await readSettings();
+    const settings = await getSiteSettings();
     return NextResponse.json(settings);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Error interno del servidor";
@@ -79,18 +31,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
-    const body = await req.json();
+    const parsed = siteSettingsPatchSchema.safeParse(await req.json());
+    if (!parsed.success) return NextResponse.json({ error: "Configuración inválida", details: parsed.error.flatten().fieldErrors }, { status: 400 });
+    const sanitized = parsed.data;
 
-    // Only allow known keys — prevents stored XSS via arbitrary keys
-    const sanitized: Partial<AppSettings> = {};
-    for (const key of Object.keys(body)) {
-      if (ALLOWED_KEYS.has(key)) {
-        (sanitized as Record<string, unknown>)[key] = body[key];
-      }
-    }
-
-    const existing = await readSettings();
-    const merged = { ...existing, ...sanitized };
+    const existing = await getSiteSettings();
+    const merged = normalizeSiteSettings({ ...existing, ...sanitized });
     const supabase = createAdminClient();
     const { error } = await supabase
       .from("app_settings")
@@ -109,6 +55,7 @@ export async function POST(req: NextRequest) {
       metadata: { keys: Object.keys(sanitized) },
     });
 
+    revalidatePath("/", "layout");
     return NextResponse.json(merged);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Error interno del servidor";

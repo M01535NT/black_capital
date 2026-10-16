@@ -7,47 +7,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Save, Image as ImageIcon, Type, Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import { AdminPageHeader } from "@/components/admin/admin-ui";
-import { CONTACT_CONFIG } from "@/lib/contact-config";
-
-interface AppSettings {
-    heroVideoUrl: string;
-    heroImageUrl: string;
-    luxuryHeroTitle: string;
-    luxuryHeroSubtitle: string;
-    businessHeroTitle: string;
-    businessHeroSubtitle: string;
-    industrialHeroTitle: string;
-    industrialHeroSubtitle: string;
-    contactPhone: string;
-    contactEmail: string;
-    contactAddress: string;
-    whatsAppTemplate: string;
-}
+import { DEFAULT_SITE_SETTINGS as DEFAULTS, normalizeSiteSettings, type SiteSettings as AppSettings } from "@/lib/site-settings-schema";
 
 const STORAGE_KEY = "black-capital-settings";
 const LEGACY_STORAGE_KEY = "black-corporativo-settings";
-
-const DEFAULTS: AppSettings = {
-    heroVideoUrl: "",
-    heroImageUrl: "",
-    luxuryHeroTitle: "Black Luxury",
-    luxuryHeroSubtitle: "Casas y residencias",
-    businessHeroTitle: "Black Business",
-    businessHeroSubtitle: "Espacios comerciales",
-    industrialHeroTitle: "Black Industrial",
-    industrialHeroSubtitle: "Naves y bodegas",
-    contactPhone: CONTACT_CONFIG.phone,
-    contactEmail: CONTACT_CONFIG.email,
-    contactAddress: CONTACT_CONFIG.address,
-    whatsAppTemplate: "Hola, estoy interesado en sus servicios.",
-};
 
 function loadFromStorage(): AppSettings {
     if (typeof window === "undefined") return DEFAULTS;
     try {
         const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
         if (raw) {
-            const settings = { ...DEFAULTS, ...JSON.parse(raw) };
+            const settings = normalizeSiteSettings(JSON.parse(raw));
             localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
             return settings;
         }
@@ -57,7 +27,7 @@ function loadFromStorage(): AppSettings {
 
 function saveToStorage(settings: AppSettings) {
     if (typeof window === "undefined") return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(settings)); } catch { /* Remote persistence remains authoritative. */ }
 }
 
 export function SettingsForm() {
@@ -65,6 +35,7 @@ export function SettingsForm() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState(false);
+    const [saveError, setSaveError] = useState("");
 
     useEffect(() => {
         async function load() {
@@ -93,6 +64,7 @@ export function SettingsForm() {
 
     const handleSave = async () => {
         setSaving(true);
+        setSaveError("");
         setSaved(false);
         try {
             const res = await fetch("/api/settings", {
@@ -100,17 +72,14 @@ export function SettingsForm() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(settings),
             });
-            if (res.ok) {
-                const data = await res.json();
-                setSettings({ ...DEFAULTS, ...data });
-                saveToStorage({ ...DEFAULTS, ...data });
-            } else {
-                saveToStorage(settings);
-            }
+            if (!res.ok) throw new Error("No se pudo guardar la configuración. Tus cambios se conservan en el formulario.");
+            const data = await res.json();
+            const persisted = normalizeSiteSettings(data);
+            setSettings(persisted);
+            saveToStorage(persisted);
             setSaved(true);
         } catch {
-            saveToStorage(settings);
-            setSaved(true);
+            setSaveError("No se pudo guardar la configuración. Revisa los datos e intenta de nuevo.");
         } finally {
             setSaving(false);
             setTimeout(() => setSaved(false), 3000);
@@ -127,6 +96,7 @@ export function SettingsForm() {
 
     return (
         <div className="mx-auto max-w-4xl space-y-6">
+            {saveError && <p role="alert" data-testid="settings-save-error" className="text-sm text-red-400">{saveError}</p>}
             <AdminPageHeader
                 eyebrow="Sistema"
                 title="Configuración"
@@ -143,7 +113,7 @@ export function SettingsForm() {
                     <div>
                         <label className="text-body-sm font-medium mb-1 block">URL de Video (Hero)</label>
                         <Input
-                            placeholder="https://youtube.com/embed/..."
+                            placeholder="https://.../portada.webm"
                             value={settings.heroVideoUrl}
                             onChange={e => update("heroVideoUrl", e.target.value)}
                         />

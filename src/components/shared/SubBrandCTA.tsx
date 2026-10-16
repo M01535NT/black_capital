@@ -9,7 +9,8 @@ import Link from "next/link";
 import { ArrowUpRight, MessageCircle } from "lucide-react";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { CinematicImage } from "@/components/visual/CinematicImage";
-import { CONTACT_CONFIG } from "@/lib/contact-config";
+import { getSiteSettings } from "@/lib/site-settings";
+import { contactFromSettings } from "@/lib/site-settings-schema";
 
 export type SubBrand = "luxury" | "business" | "industrial";
 
@@ -50,9 +51,10 @@ const BRAND_PHOTO: Record<SubBrand, { src: string; alt: string }> = {
     industrial: { src: "/line-industrial.webp", alt: "Espacio industrial y logístico" },
 };
 
-export function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
+export async function SubBrandCTA({ config }: { config: SubBrandCTAConfig }) {
+    const CONTACT_CONFIG = contactFromSettings(await getSiteSettings());
     const contactHref = `/contacto?brand=${config.brand}&objetivo=buscar-propiedad`;
-    const whatsappHref = `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(`Hola, busco asesoría de Black ${config.brand}. Quisiera compartir los requisitos de mi búsqueda.`)}`;
+    const whatsappHref = `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(`${CONTACT_CONFIG.whatsAppTemplate} Segmento: ${config.brand}.`)}`;
     const photo = BRAND_PHOTO[config.brand];
 
     return (

@@ -17,6 +17,7 @@ const eslintConfig = defineConfig([
     // Artefactos de test:
     "playwright-report/**",
     "test-results/**",
+    ".superpowers/**",
   ]),
 ]);
 

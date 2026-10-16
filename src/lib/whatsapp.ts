@@ -1,4 +1,5 @@
 import { logger } from "@/lib/logger";
+import { sendOperationalRequest } from "@/lib/operational-transport";
 
 type SendWhatsappVerificationCodeInput = {
     to: string;
@@ -59,7 +60,7 @@ export async function sendWhatsappVerificationCode({
         };
 
     try {
-        const response = await fetch(`https://graph.facebook.com/${apiVersion}/${phoneNumberId}/messages`, {
+        const response = await sendOperationalRequest("whatsapp", `https://graph.facebook.com/${apiVersion}/${phoneNumberId}/messages`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,

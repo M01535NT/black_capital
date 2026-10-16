@@ -7,10 +7,11 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { logger } from "@/lib/logger";
 
-export async function getLeadsCount(status?: string) {
+export async function getLeadsCount(status?: string, assignedAgentId?: string) {
   const supabase = createAdminClient();
   let query = supabase.from("leads").select("*", { count: "exact", head: true });
   if (status) query = query.eq("status", status);
+  if (assignedAgentId !== undefined) query = query.eq("assigned_agent_id", assignedAgentId);
   const { count, error } = await query;
   if (error) {
     logger.error("data-layer", "[data] getLeadsCount error:", error);

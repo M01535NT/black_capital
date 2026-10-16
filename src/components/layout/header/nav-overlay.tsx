@@ -6,7 +6,7 @@ import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowUpRight, Phone, MessageCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CONTACT_CONFIG } from "@/lib/contact-config";
+import { usePublicContact } from "@/components/public/site-settings-provider";
 import { verticales } from "./constants";
 
 const EASE = [0.23, 1, 0.32, 1] as const;
@@ -61,11 +61,11 @@ interface NavOverlayProps {
   isActive: (href: string) => boolean;
 }
 
-const whatsappHref = `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(
-  "Hola, quiero asesoría sobre un inmueble en Tijuana.",
-)}`;
+
 
 export function NavOverlay({ onClose, isActive }: NavOverlayProps) {
+  const CONTACT_CONFIG = usePublicContact();
+  const whatsappHref = `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(CONTACT_CONFIG.whatsAppTemplate)}`;
   const reduce = useReducedMotion();
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
-import { CONTACT_CONFIG } from "@/lib/contact-config";
+import { usePublicContact } from "@/components/public/site-settings-provider";
 import { Reveal } from "./_motion";
 
 const FAQS = [
@@ -29,11 +29,11 @@ const FAQS = [
   },
 ];
 
-const whatsappHref = `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(
-  "Hola, tengo una duda sobre un inmueble.",
-)}`;
+
 
 export function FaqSection() {
+  const CONTACT_CONFIG = usePublicContact();
+  const whatsappHref = `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(CONTACT_CONFIG.whatsAppTemplate)}`;
   const [open, setOpen] = useState(-1);
 
   return (

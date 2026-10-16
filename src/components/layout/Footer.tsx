@@ -9,12 +9,9 @@ import {
     MessageCircle,
 } from "lucide-react";
 import { Logo } from "./Logo";
+import { getSiteSettings } from "@/lib/site-settings";
+import { contactFromSettings } from "@/lib/site-settings-schema";
 import { CONTACT_CONFIG } from "@/lib/contact-config";
-
-/* ── Google Maps link derived from the human-readable address ── */
-const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    CONTACT_CONFIG.address,
-)}`;
 
 const socialLinks = [
     { name: "LinkedIn", icon: Linkedin, href: CONTACT_CONFIG.social.linkedin },
@@ -37,10 +34,12 @@ const corpLinks = [
     { name: "Términos de Uso", href: "/legal/terminos-condiciones" },
 ];
 
-export function Footer() {
+export async function Footer() {
+    const CONTACT_CONFIG = contactFromSettings(await getSiteSettings());
+    const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT_CONFIG.address)}`;
     const phoneRaw = CONTACT_CONFIG.phoneRaw;
     const whatsappHref = `https://wa.me/${phoneRaw}?text=${encodeURIComponent(
-        "Hola, me gustaría recibir información sobre propiedades en Tijuana.",
+        CONTACT_CONFIG.whatsAppTemplate,
     )}`;
 
     return (

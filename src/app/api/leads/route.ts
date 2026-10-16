@@ -12,7 +12,7 @@ export async function GET() {
     if (!profile) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
-    const newCount = await getLeadsCount("new");
+    const newCount = await getLeadsCount("new", isAdmin(profile) ? undefined : profile.agent_id || "00000000-0000-0000-0000-000000000000");
     return NextResponse.json({ newCount });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Error interno del servidor";

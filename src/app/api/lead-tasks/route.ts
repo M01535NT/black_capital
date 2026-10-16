@@ -23,8 +23,8 @@ export async function POST(req: NextRequest) {
     .from("lead_tasks")
     .insert({
       lead_id: leadId,
-      assigned_profile_id: body.assigned_profile_id || profile.id,
-      assigned_agent_id: body.assigned_agent_id || profile.agent_id || null,
+      assigned_profile_id: profile.role === "admin" ? body.assigned_profile_id || profile.id : profile.id,
+      assigned_agent_id: profile.role === "admin" ? body.assigned_agent_id || profile.agent_id || null : profile.agent_id,
       title: String(body.title || "").trim(),
       description: body.description || null,
       due_at: body.due_at || null,

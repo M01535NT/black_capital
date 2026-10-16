@@ -85,7 +85,8 @@ export async function POST(req: NextRequest) {
         notes: data.notes,
         property_id: data.property_id,
         privacy_accepted: data.privacy_accepted,
-        downloaded_at: raw.downloaded_at || null,
+        // Preserve the confirmed schema's NOT NULL/default contract. Actual
+        // documentary delivery is recorded by the verified download endpoint.
       })
       .select("id")
       .single();

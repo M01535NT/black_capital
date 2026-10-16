@@ -1,4 +1,5 @@
 import { logger } from "@/lib/logger";
+import { sendOperationalRequest } from "@/lib/operational-transport";
 
 export async function sendOperationalEmail({
   to,
@@ -15,7 +16,7 @@ export async function sendOperationalEmail({
     return { skipped: true, reason: "RESEND_API_KEY no está configurada." };
   }
 
-  const response = await fetch("https://api.resend.com/emails", {
+  const response = await sendOperationalRequest("resend", "https://api.resend.com/emails", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,

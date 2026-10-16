@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --incremental false",
-    "check": "npm run lint && npm run typecheck"
+    "check": "npm run lint && npm run typecheck",
+    "test:isolated": "node scripts/run-isolated-tests.mjs",
+    "test:isolated:unit": "playwright test --config=playwright.isolated.config.ts tests/isolated/target-guard.spec.ts tests/isolated/operational-transport.spec.ts tests/isolated/preview-readonly.spec.ts"
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.9",

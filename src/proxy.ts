@@ -18,6 +18,17 @@ const PUBLIC_API_PATHS = ["/api/public-leads", "/api/document-access"];
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Preview inherits project variables on Vercel. Keep every administrative and
+  // API path closed until a separate, reachable backend is provisioned.
+  if (process.env.VERCEL_ENV === "preview") {
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Esta vista previa es de solo lectura. Los envíos están desactivados." }, { status: 503 });
+    }
+    if (pathname.startsWith("/admin")) {
+      return NextResponse.redirect(new URL("/?preview=readonly", request.url));
+    }
+  }
+
   // Only handle /admin and /api routes
   const isAdmin = pathname.startsWith("/admin");
   const isApi = pathname.startsWith("/api");

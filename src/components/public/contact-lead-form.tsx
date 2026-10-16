@@ -7,6 +7,7 @@ import { ArrowRight, CheckCircle2, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { leadSchema } from "@/lib/validations/lead";
+import { useReadOnlyPreview } from "./site-settings-provider";
 
 const interestOptions = ["Comprar", "Vender", "Rentar", "Consultar una propiedad", "Solicitar una visita", "Asesoría", "Saber cuánto puede valer", "Revisar factibilidad", "Preparar venta", "Fotos y video para vender"];
 const services: Record<string, string> = {
@@ -28,6 +29,7 @@ export function ContactLeadForm({ ownerGoal, onOwnerGoalChange }: {
   ownerGoal?: string;
   onOwnerGoalChange?: (goal: string) => void;
 }) {
+  const readOnly = useReadOnlyPreview();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -58,6 +60,7 @@ export function ContactLeadForm({ ownerGoal, onOwnerGoalChange }: {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (readOnly) return;
     const formData = new FormData(event.currentTarget);
     const notes = [
       isOwner ? "Solicitud de propietario" : "Contacto web",
@@ -136,8 +139,9 @@ export function ContactLeadForm({ ownerGoal, onOwnerGoalChange }: {
         <input name="privacy_accepted" type="checkbox" required className="mt-1 h-4 w-4 shrink-0 accent-[var(--color-accent)]" />
         <span>Acepto el <Link href="/legal/aviso-privacidad" className="underline underline-offset-4">aviso de privacidad</Link> y autorizo que me contacten sobre este mensaje.</span>
       </label>
+      {readOnly && <p role="status" className="text-body-sm text-white/65">Los envíos están desactivados en esta vista previa.</p>}
       {status === "error" && <p role="alert" className="text-body text-red-400">{errorMessage} Tus datos se conservan.</p>}
-      <Button type="submit" disabled={status === "submitting"} className="brushed-gold min-h-11 w-full rounded-full px-7 text-body-sm font-bold sm:min-h-[48px] sm:w-auto sm:text-body">
+      <Button type="submit" disabled={readOnly || status === "submitting"} className="brushed-gold min-h-11 w-full rounded-full px-7 text-body-sm font-bold sm:min-h-[48px] sm:w-auto sm:text-body">
         {status === "submitting" ? <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" /> : null}
         {status === "submitting" ? "Enviando" : isOwner ? "Solicitar orientación" : "Enviar mensaje"}
         {status !== "submitting" && <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />}

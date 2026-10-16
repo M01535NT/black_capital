@@ -1,3 +1,4 @@
+import { getSiteSettings } from "@/lib/site-settings";
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { HomeHero } from "@/components/home/HomeHero";
@@ -45,11 +46,12 @@ const ORGANIZATION_SCHEMA = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const settings = await getSiteSettings();
   return (
     // El <main> semántico vive en el layout público (#main-content); aquí un div evita <main> anidados.
     <div className="bg-background">
-      <HomeHero />
+      <HomeHero imageUrl={settings.heroImageUrl} videoUrl={settings.heroVideoUrl} />
       <FeaturedInventory />
       <BusinessLines />
       <ToolsSection />
@@ -58,7 +60,7 @@ export default function HomePage() {
       <VoicesWall />
       <FaqSection />
       <ClosingCTA />
-      <JsonLd id="ld-org" data={ORGANIZATION_SCHEMA} />
+      <JsonLd id="ld-org" data={{ ...ORGANIZATION_SCHEMA, telephone: settings.contactPhone, email: settings.contactEmail, address: { ...ORGANIZATION_SCHEMA.address, streetAddress: settings.contactAddress } }} />
     </div>
   );
 }

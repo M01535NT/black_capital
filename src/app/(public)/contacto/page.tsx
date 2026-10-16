@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
-import { CONTACT_CONFIG } from "@/lib/contact-config";
+import { getSiteSettings } from "@/lib/site-settings";
+import { contactFromSettings } from "@/lib/site-settings-schema";
 import { ContactLeadForm } from "@/components/public/contact-lead-form";
 import { CinematicImage } from "@/components/visual/CinematicImage";
 
@@ -17,14 +18,16 @@ export const metadata: Metadata = {
   },
 };
 
+export default async function ContactoPage() {
+  const CONTACT_CONFIG = contactFromSettings(await getSiteSettings());
 const contactChannels = [
-  { icon: Phone, title: "WhatsApp", lines: [CONTACT_CONFIG.phone], href: `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent("Hola, quiero orientación sobre una propiedad.")}`, label: "Escribir por WhatsApp" },
+  { icon: Phone, title: "WhatsApp", lines: [CONTACT_CONFIG.phone], href: `https://wa.me/${CONTACT_CONFIG.phoneRaw}?text=${encodeURIComponent(CONTACT_CONFIG.whatsAppTemplate)}`, label: "Escribir por WhatsApp" },
   { icon: Mail, title: "Correo", lines: [CONTACT_CONFIG.email], href: `mailto:${CONTACT_CONFIG.email}`, label: "Enviar correo" },
   { icon: MapPin, title: "Ubicación", lines: CONTACT_CONFIG.addressLines },
   { icon: Clock, title: "Horario", lines: CONTACT_CONFIG.hours },
 ];
 
-export default function ContactoPage() {
+
   return (
     <div className="w-full flex-1 bg-background pt-24 sm:pt-32">
       <div className="mx-auto grid max-w-[90rem] items-start gap-10 px-6 pb-20 sm:px-10 lg:grid-cols-12 lg:gap-x-16 lg:gap-y-16 lg:px-16 lg:pb-28">
