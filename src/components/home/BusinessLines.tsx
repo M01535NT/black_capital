@@ -22,7 +22,7 @@ export function BusinessLines() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const media = gsap.matchMedia();
-    media.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+    media.add("(prefers-reduced-motion: no-preference)", () => {
       const node = stage.current!;
       const slides = gsap.utils.toArray<HTMLElement>("[data-scene]", node);
       const dots = gsap.utils.toArray<HTMLButtonElement>("[data-scene-control]", root.current!);
@@ -92,7 +92,7 @@ export function BusinessLines() {
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/85 via-transparent to-black/10" />
           <span className="absolute left-6 top-6 property-tag-type text-white/90 sm:left-10 sm:top-10 lg:left-16 lg:top-12">0{i + 1} / 03 · {line.category}</span>
           <div className="flex items-end justify-between gap-6">
-            <div><p className="mb-4 text-body-lg text-white/75">{line.copy}</p><h3 className="max-w-xl font-display text-[clamp(1.75rem,4vw,3rem)] font-extrabold uppercase leading-tight text-white">{line.title}</h3></div>
+            <div className="min-w-0 flex-1"><p className="mb-4 text-body-lg text-white/75">{line.copy}</p><h3 className="max-w-xl font-display text-[clamp(1.5rem,4vw,3rem)] font-extrabold uppercase leading-tight text-white">{line.title}</h3></div>
             <Link href={line.href} aria-label={`Explorar ${line.category}`} className="group flex size-14 shrink-0 items-center justify-center rounded-full border border-white/70 text-white transition-colors duration-500 hover:bg-white hover:text-black sm:size-20"><ArrowUpRight className="size-6 transition-transform duration-500 group-hover:rotate-45" aria-hidden="true" /></Link>
           </div>
         </article>)}

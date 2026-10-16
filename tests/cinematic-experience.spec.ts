@@ -77,3 +77,24 @@ for (const width of [320, 390]) {
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/black-business$/);
 });
+
+for (const width of [320, 390]) {
+  test.describe(`touch scroll sequence at ${width}px`, () => {
+    test.use({ viewport: { width, height: 844 }, isMobile: true, hasTouch: true });
+
+    test('mobile uses the desktop reveal and its active link responds to touch', async ({ page }) => {
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      const stage = page.locator('[data-segment-stage]');
+      await expect(stage).toHaveAttribute('data-pinned', 'true');
+      await page.getByRole('button', { name: '02 · Comercial', exact: true }).tap();
+      await expect(stage).toHaveAttribute('data-active-scene', '1');
+      await expect(stage.locator('[data-scene]').first()).toHaveAttribute('inert', '');
+      const link = stage.getByRole('link', { name: 'Explorar Comercial', exact: true });
+      await expect(link).toBeVisible();
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(2);
+      await link.tap();
+      await expect(page).toHaveURL(/\/black-business$/);
+      await expect(page.locator('.pin-spacer')).toHaveCount(0);
+    });
+  });
+}
