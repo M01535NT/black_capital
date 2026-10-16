@@ -37,7 +37,7 @@ test.describe("brand photographic galleries", () => {
 
 for (const width of [320, 390]) {
   test.describe(`brand search and layout at ${width}px`, () => {
-    test.use({ viewport: { width, height: 844 }, reducedMotion: "reduce" });
+    test.use({ viewport: { width, height: 844 }, contextOptions: { reducedMotion: "reduce" } });
     for (const brand of brands) {
       test(`${brand.route} keeps its gallery in bounds and preserves every search filter`, async ({ page }) => {
         await page.goto(brand.route, { waitUntil: "domcontentloaded" });
