@@ -1,6 +1,6 @@
 # Preparación de Black Capital para cambios verificables
 
-Fecha: 16 de octubre de 2026. Estado: alcance solicitado para planificación; implementación pendiente.
+Fecha: 16 de octubre de 2026. Estado: implementación autorizada por la instrucción del usuario «Ejecuta el plan».
 
 ## Resultado esperado
 
@@ -27,7 +27,7 @@ Disponer de una base reproducible, una identificación comprobada del sitio publ
 
 ## Restricciones
 
-- La autorización de este encargo es preparar el plan y sus documentos; no ejecutar todavía sus fases.
+- El usuario autorizó ejecutar las seis fases. Se conserva la exclusión de escrituras y promoción de producción; la restricción inicial de solo planificación queda sustituida por esa instrucción.
 - Durante la ejecución, descubrir primero los destinos remotos. No equiparar la rama local con producción ni una URL de vista previa con datos aislados.
 - No escribir datos, alterar usuarios, ejecutar migraciones ni promover despliegues en producción como parte de las pruebas.
 - No usar `/api/seed`, `tests/seed-db.ts` ni datos personales reales para preparar pruebas.

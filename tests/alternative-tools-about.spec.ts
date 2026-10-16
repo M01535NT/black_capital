@@ -46,12 +46,15 @@ test.describe("Alternativa Black: herramientas y nosotros", () => {
     test(`legacy nosotros/${section} redirects into the consolidated page`, async ({ page }) => {
       await page.goto(`/nosotros/${section}`);
       await expect(page).toHaveURL(new RegExp(`/nosotros#${section}$`));
-      // Route transitions briefly retain the outgoing tree; verify it settles to one destination.
-      await expect(page.locator(`#${section}`)).toHaveCount(1);
-      await expect(page.locator(`#${section}`)).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Moisés Núñez" })).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Omar Medina Yañez" })).toBeVisible();
-      await expect(page.locator("#historia")).toContainText("2018");
+      // Next's streamed redirect briefly retains a hidden outgoing tree. Retry
+      // the complete destination contract; a persistent duplicate still fails.
+      await expect(async () => {
+        await expect(page.locator(`#${section}`)).toHaveCount(1);
+        await expect(page.locator(`#${section}`)).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Moisés Núñez" })).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Omar Medina Yañez" })).toBeVisible();
+        await expect(page.locator("#historia")).toContainText("2018");
+      }).toPass({ timeout: 15000 });
     });
   }
 });

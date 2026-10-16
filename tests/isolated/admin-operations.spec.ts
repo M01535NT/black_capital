@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { expect, test, type APIRequestContext } from "@playwright/test";
-import { cleanupTestFixtures, createTestFixtures, isolatedAdmin, type TestFixtures } from "../support/isolated-fixtures";
+import { cleanupTestFixtures, createTestFixtures, recordFixture, isolatedAdmin, type TestFixtures } from "../support/isolated-fixtures";
 import { actorRequest } from "../support/isolated-session";
 
 let fixtures: TestFixtures, admin: APIRequestContext, agent: APIRequestContext;
@@ -12,7 +12,7 @@ test("admin creates, updates, assigns and deletes a property", async () => {
   const response = await admin.post("/api/properties", { data: { title: `Fixture CRUD ${id}`, slug: `fixture-crud-${id}`, description: "Synthetic property for isolated administrative tests.", property_use: "Residencial", property_type: "Casa", business_type: "Venta", price: 1100000, currency: "MXN", status: "Available", agent_ids: [fixtures.agentA.agentId] } });
   expect(response.status()).toBe(201);
   const propertyId = (await response.json()).property.id;
-  fixtures.created.properties.push(propertyId);
+  recordFixture(fixtures, "properties", propertyId);
   expect((await admin.put("/api/properties", { data: { id: propertyId, price: 1200000 } })).status()).toBe(200);
   expect((await admin.delete(`/api/properties?id=${propertyId}`)).status()).toBe(200);
   expect((await isolatedAdmin().from("properties").select("id").eq("id", propertyId)).data).toEqual([]);

@@ -553,4 +553,3 @@ GRANT TRIGGER ON public."document_access_requests" TO "service_role";
 CREATE POLICY "Authenticated can read secure-brochures" ON storage."objects" AS PERMISSIVE FOR SELECT TO "authenticated" USING ((bucket_id = 'secure-brochures'::text));
 CREATE POLICY "Authenticated can manage secure-brochures" ON storage."objects" AS PERMISSIVE FOR ALL TO "authenticated" USING ((bucket_id = 'secure-brochures'::text)) WITH CHECK ((bucket_id = 'secure-brochures'::text));
 COMMIT;
-

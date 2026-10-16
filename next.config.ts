@@ -14,6 +14,8 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig: NextConfig = {
+  // Allow multipart overhead around the API's 10 MiB file limit.
+  experimental: { proxyClientMaxBodySize: "11mb" },
   turbopack: {},
   ...(process.env.NEXT_DIST_DIR ? { distDir: process.env.NEXT_DIST_DIR } : {}),
   async headers() {
@@ -37,7 +39,7 @@ const nextConfig: NextConfig = {
               "img-src 'self' data: blob: https://images.unsplash.com https://*.supabase.co https://res.cloudinary.com",
               "font-src 'self' data:",
               "connect-src 'self' https://*.supabase.co https://*.posthog.com https://*.i.posthog.com https://api.resend.com https://vitals.vercel-insights.com",
-              "media-src 'self' https://*.supabase.co",
+              "media-src 'self' https://*.supabase.co https://res.cloudinary.com",
               "frame-src 'self' https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com https://kuula.co https://*.kuula.co",
               "object-src 'none'",
               "base-uri 'self'",

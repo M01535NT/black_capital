@@ -2,94 +2,155 @@
   "project_id": "black-capital-preparacion-2026-10-16",
   "title": "Preparación de Black Capital para cambios verificables",
   "updated_at": "2026-10-16",
-  "status": "planificado",
-  "authorized_scope": "Preparar plan y documentos; implementación pendiente de instrucción de ejecución.",
+  "status": "en_curso",
+  "authorized_scope": "Ejecutar el plan por instrucción explícita del usuario; sin escrituras ni publicación en producción.",
   "goal": "Base reproducible, despliegue identificado, esquema contrastado y validación aislada antes de conectar contenido administrable.",
   "plan": "docs/superpowers/plans/2026-10-16-preparacion-black-capital.md",
   "spec": "docs/superpowers/specs/2026-10-16-preparacion-black-capital.md",
   "owner": "Usuario: decisiones de producto y aceptación",
-  "technical_owner": "Codex, al iniciar ejecución",
+  "technical_owner": "Codex",
   "approach": "incremental",
   "work_in_progress_limit": 1,
-  "execution_order": [1, 2, 3, 6, 4, 5],
-  "next_action": "Al iniciar ejecución: reconfirmar instrucciones y Git, sincronizar dependencias y establecer lint/tipos/build correctos.",
+  "execution_order": [
+    1,
+    2,
+    3,
+    6,
+    4,
+    5
+  ],
+  "next_action": "Publicar y verificar la vista previa de solo lectura; cambios y validaciones aisladas terminados.",
   "deliverables": [
     {
       "id": 1,
       "title": "Base técnica limpia",
-      "status": "lista",
+      "status": "verificado",
       "owner": "Codex",
       "reviewer": "Usuario",
       "dependencies": [],
       "acceptance": "Instalación reproducible; lint, tipos y build correctos; sin degradar validaciones.",
       "target_window": "Primer hito al iniciar ejecución",
-      "evidence": []
+      "evidence": [
+        "docs/verification/2026-10-16-base-tecnica.md"
+      ]
     },
     {
       "id": 2,
       "title": "Producción y preview identificados",
-      "status": "pendiente",
+      "status": "en_curso",
       "owner": "Codex",
       "reviewer": "Usuario",
-      "dependencies": [1],
+      "dependencies": [
+        1
+      ],
       "acceptance": "Procedencia de producción y preview contrastadas con Vercel, SHA registrado y destinos separados.",
       "target_window": "Después del hito 1 y acceso a Vercel",
-      "evidence": []
+      "evidence": [
+        "docs/verification/2026-10-16-despliegue.md"
+      ]
     },
     {
       "id": 3,
       "title": "Esquema contrastado",
-      "status": "pendiente",
+      "status": "verificado",
       "owner": "Codex",
       "reviewer": "Usuario",
-      "dependencies": [2],
+      "dependencies": [
+        2
+      ],
       "acceptance": "Diferencias entre remoto, migraciones y tipos documentadas; sin escrituras productivas.",
       "target_window": "Después del hito 2 y acceso de lectura a metadata",
-      "evidence": []
+      "evidence": [
+        "docs/verification/2026-10-16-esquema.md"
+      ]
     },
     {
       "id": 4,
       "title": "Permisos y operaciones validados",
-      "status": "pendiente",
+      "status": "verificado",
       "owner": "Codex",
       "reviewer": "Usuario",
-      "dependencies": [3, 6],
+      "dependencies": [
+        3,
+        6
+      ],
       "acceptance": "Matriz de roles y casos críticos pasan en infraestructura aislada, sin omisiones críticas.",
       "target_window": "Después del hito 6",
-      "evidence": []
+      "evidence": [
+        "docs/verification/2026-10-16-permisos.md"
+      ]
     },
     {
       "id": 5,
       "title": "Contenido administrable conectado",
-      "status": "pendiente",
+      "status": "verificado",
       "owner": "Codex",
       "reviewer": "Usuario",
-      "dependencies": [1, 3, 4, 6],
+      "dependencies": [
+        1,
+        3,
+        4,
+        6
+      ],
       "acceptance": "Matriz de contenido definida; ajustes persisten y se ven públicamente con permisos, respaldo y regresiones verificados.",
       "target_window": "Después de validar permisos y definir contenido",
-      "evidence": []
+      "evidence": [
+        "docs/content/matriz-contenido.md"
+      ]
     },
     {
       "id": 6,
       "title": "Entorno y datos aislados",
-      "status": "pendiente",
+      "status": "verificado",
       "owner": "Codex",
       "reviewer": "Usuario",
-      "dependencies": [2, 3],
+      "dependencies": [
+        2,
+        3
+      ],
       "acceptance": "Destino permitido comprobado, fixtures sintéticos, proveedores simulados del lado servidor y limpieza acotada repetible.",
       "target_window": "Después del hito 3, antes de 4 y 5",
-      "evidence": []
+      "evidence": [
+        "docs/testing/entorno-aislado.md"
+      ]
     }
   ],
   "decisions": [
-    {"id": "D1", "status": "propuesta", "description": "Ejecutar secuencialmente con un agente; sin delegación ni promoción a producción."},
-    {"id": "D2", "status": "propuesta", "description": "Primer incremento de contenido limitado a ajustes ya presentes en el panel; confirmar matriz antes de implementar."},
-    {"id": "D3", "status": "pendiente", "description": "Elegir Supabase local o proyecto desechable según capacidad comprobada; no reutilizar datos productivos."}
+    {
+      "id": "D1",
+      "status": "aplicada",
+      "description": "Ejecución secuencial por el mismo agente; revisión final independiente requerida por el flujo de ejecución, sin promoción a producción."
+    },
+    {
+      "id": "D2",
+      "status": "aplicada",
+      "description": "Primer incremento limitado a campos existentes del panel, definido en docs/content/matriz-contenido.md."
+    },
+    {
+      "id": "D3",
+      "status": "aplicada",
+      "description": "Stack Docker local PostgreSQL/Auth/PostgREST/Storage/Kong, datos sintéticos y proveedores de mensajería simulados en servidor."
+    }
   ],
   "risks": [
-    {"id": "R1", "owner": "Codex", "trigger": "Preview comparte servicios con producción", "response": "Impedir escrituras hasta comprobar destino aislado."},
-    {"id": "R2", "owner": "Codex", "trigger": "Migraciones no reconstruyen el esquema", "response": "Preparar base estructural documentada en destino desechable sin copiar filas de negocio."},
-    {"id": "R3", "owner": "Usuario", "trigger": "Falta decisión sobre contenido público", "response": "Revisar matriz concreta antes de implementar el entregable 5."}
+    {
+      "id": "R1",
+      "owner": "Codex",
+      "trigger": "Preview comparte servicios con producción",
+      "response": "Impedir escrituras hasta comprobar destino aislado."
+    },
+    {
+      "id": "R2",
+      "owner": "Codex",
+      "trigger": "Migraciones no reconstruyen el esquema",
+      "response": "Preparar base estructural documentada en destino desechable sin copiar filas de negocio."
+    },
+    {
+      "id": "R3",
+      "owner": "Usuario",
+      "trigger": "Ampliar contenido más allá de los campos existentes del panel",
+      "response": "El primer incremento está definido; ampliaciones requieren otra decisión de producto."
+    }
   ],
   "validation": {
     "format": "Registro operativo local",

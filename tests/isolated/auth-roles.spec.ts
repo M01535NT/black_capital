@@ -1,6 +1,6 @@
 import { expect, test, type APIRequestContext } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
-import { cleanupTestFixtures, createTestFixtures, type TestFixtures } from "../support/isolated-fixtures";
+import { cleanupTestFixtures, createTestFixtures, isolatedAdmin, type TestFixtures } from "../support/isolated-fixtures";
 import { actorRequest } from "../support/isolated-session";
 
 let fixtures: TestFixtures;
@@ -31,10 +31,25 @@ test("admin sees both fixtures; agent sees only assigned property", async () => 
 });
 
 test("agent cannot change another agent's lead, task or configuration", async () => {
+  const client = isolatedAdmin();
+  const before = (await client.from("leads").select("notes,assigned_agent_id").eq("id", fixtures.leadB).single()).data;
+  const created = await admin.post("/api/lead-tasks", { data: { lead_id: fixtures.leadB, title: "Protected task", assigned_profile_id: fixtures.agentB.id, assigned_agent_id: fixtures.agentB.agentId } });
+  expect(created.status()).toBe(201);
+  const task = (await created.json()).task;
   expect((await agent.put("/api/leads", { data: { id: fixtures.leadB, notes: "Forbidden edit" } })).status()).toBe(403);
   expect((await agent.post("/api/lead-tasks", { data: { lead_id: fixtures.leadB, title: "Forbidden" } })).status()).toBe(403);
+  expect((await agent.patch("/api/lead-tasks", { data: { id: task.id, status: "done", title: "Forbidden task edit" } })).status()).toBe(403);
   expect((await agent.post("/api/settings", { data: { contactEmail: "wrong@example.test" } })).status()).toBe(401);
   expect((await agent.post("/api/properties", { data: { title: "Forbidden property" } })).status()).toBe(401);
+  expect((await client.from("leads").select("notes,assigned_agent_id").eq("id", fixtures.leadB).single()).data).toEqual(before);
+  expect((await client.from("lead_tasks").select("id,title,status,assigned_profile_id,assigned_agent_id").eq("lead_id", fixtures.leadB)).data).toEqual([{ id: task.id, title: task.title, status: task.status, assigned_profile_id: task.assigned_profile_id, assigned_agent_id: task.assigned_agent_id }]);
+});
+
+test("directly opening another agent's lead page does not expose it", async ({ page }) => {
+  await page.context().addCookies((await agent.storageState()).cookies);
+  await page.goto(`/admin/leads/${fixtures.leadB}`, { waitUntil: "domcontentloaded" });
+  await expect(page.getByText(`lead-${fixtures.leadB}@example.test`, { exact: true })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: /404|no encontrad/i }).first()).toBeVisible();
 });
 
 test("agent's new-lead counter is scoped to that agent", async () => {

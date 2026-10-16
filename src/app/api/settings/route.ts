@@ -35,9 +35,14 @@ export async function POST(req: NextRequest) {
     if (!parsed.success) return NextResponse.json({ error: "Configuración inválida", details: parsed.error.flatten().fieldErrors }, { status: 400 });
     const sanitized = parsed.data;
 
-    const existing = await getSiteSettings();
-    const merged = normalizeSiteSettings({ ...existing, ...sanitized });
     const supabase = createAdminClient();
+    // Public rendering may fall back to defaults; saving must read the real value.
+    const { data: current, error: readError } = await supabase.from("app_settings").select("value").eq("key", "site").maybeSingle();
+    if (readError) {
+      logger.error("API/settings", "[Settings POST] Cannot read existing settings", readError);
+      return NextResponse.json({ error: "No se pudo leer la configuración actual. Intenta de nuevo." }, { status: 503 });
+    }
+    const merged = normalizeSiteSettings({ ...normalizeSiteSettings(current?.value), ...sanitized });
     const { error } = await supabase
       .from("app_settings")
       .upsert({ key: "site", value: merged, updated_by: profile.id, updated_at: new Date().toISOString() });

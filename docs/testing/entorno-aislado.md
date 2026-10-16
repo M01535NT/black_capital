@@ -24,6 +24,8 @@ El lanzador comprueba `API_URL` antes de crear clientes o iniciar Next: solo adm
 
 `createTestFixtures(runId)` crea un admin, dos agentes, un perfil inactivo, propiedades, leads y PDF sintéticos. Las credenciales de usuario se mantienen en memoria. La limpieza usa solo IDs/rutas creados por la ejecución y es repetible; un registro centinela comprueba que no borra datos ajenos. No usar `/api/seed` ni `tests/seed-db.ts`.
 
+Cada recurso se registra en un manifiesto local ignorado `fixtures/<runId>.json`, sin credenciales. `cleanupFixtureManifest(runId)` permite retomar una limpieza interrumpida usando únicamente esos IDs; se valida el destino local y el formato de identificadores/rutas antes de borrar. La prueba elimina primero una propiedad y luego recupera desde el manifiesto, preservando un centinela. Los números de pruebas documentales se reservan en un lead propio antes de llamar al formulario; una coincidencia con un número preexistente obliga a elegir otro.
+
 Las sesiones de prueba utilizan cookies SSR reales de Supabase, conservadas en memoria. Las grabaciones, screenshots y traces administrativos están desactivados. No compartir el archivo local de estado, cookies, contraseñas o enlaces firmados. Los informes publicados contienen resultados y metadata estructural, no valores sensibles.
 
 El entorno local reproduce las interfaces usadas por la aplicación; no reproduce extensiones administradas ni todos los componentes internos del servicio alojado. PostgreSQL local 17.11 y remoto 17.6 comparten versión mayor; la validación específica del servicio alojado sigue siendo una comprobación de despliegue separada.

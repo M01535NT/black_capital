@@ -18,6 +18,8 @@ El esquema compartido valida el POST en el servidor y descarta claves ajenas al 
 
 La caché React es únicamente por render para deduplicar lecturas. Tras guardar se invalidan las rutas del layout; un visitante nuevo observa los ajustes sin depender del almacenamiento local del editor. Un fallo remoto se anuncia como error y conserva el formulario; no muestra guardado exitoso.
 
+La lectura pública usa defaults ante una indisponibilidad; el POST no puede usar ese respaldo como estado anterior. Si falla la lectura real, devuelve 503 antes de intentar guardar, conservando la fila. Se comprobó retirando temporalmente el permiso de lectura del cliente privilegiado exclusivamente en el stack local y restaurándolo al terminar.
+
 ## Contenido que conserva su módulo o requiere otra decisión
 
 - Propiedades, agentes asociados a fichas y FAQ mantienen sus módulos actuales.

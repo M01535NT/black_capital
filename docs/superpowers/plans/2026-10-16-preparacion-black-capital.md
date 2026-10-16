@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-- Esta entrega es planificación. Ninguna fase de implementación está iniciada.
+- Implementación autorizada el 16 de octubre de 2026 por «Ejecuta el plan». El avance comprobado se registra en `estado-proyecto.json` y `docs/verification/`.
 - No escribir datos, alterar usuarios, ejecutar migraciones ni promover despliegues en producción como parte de las pruebas.
 - No usar `/api/seed`, `tests/seed-db.ts` ni datos personales reales para preparar pruebas.
 - No guardar secretos, cookies, enlaces firmados ni credenciales en Git, informes o artefactos compartidos.
@@ -31,7 +31,7 @@
 
 ## Responsabilidad, secuencia y control
 
-- Responsable técnico propuesto: Codex, al recibir la instrucción de ejecutar.
+- Responsable técnico: Codex, ejecución autorizada por el usuario.
 - Responsable de decisiones de producto y aceptación: usuario.
 - Enfoque: incremental, con descubrimiento inicial y decisiones de contenido antes del cambio público.
 - Trabajo en curso: un entregable principal. Tras cada uno, registrar evidencia, limitaciones y siguiente acción.
@@ -54,16 +54,16 @@
 
 **Interfaces:** Consume el checkout y el lockfile actuales. Produce instalación alineada, scripts `typecheck` y `check` y un informe de base técnica.
 
-- [ ] Reconfirmar instrucciones, estado de Git, rama, SHA y procesos que usan `node_modules`; preservar cambios ajenos y no interrumpir servidores ajenos.
-- [ ] Comprobar versión de Node/npm, campo `engines` si existe y scripts de instalación de dependencias antes de ejecutarlos. Leer la política de red del entorno si hay descargas.
-- [ ] Registrar el resultado inicial de `npm ls gsap --depth=0` y `npx --no-install tsc --noEmit --incremental false` sin presentar errores como corregidos.
-- [ ] Ejecutar `npm ci`; si falla por inconsistencia entre manifiesto y lockfile, diagnosticar y explicar el diff antes de actualizar versiones. Si necesita reconstruir dependencias en uso, hacerlo en un checkout aislado.
-- [ ] Comprobar que GSAP coincide con la versión bloqueada. Repetir tipos para separar errores de instalación de errores del código.
-- [ ] Cambiar el `test.use` incompatible a `contextOptions: { reducedMotion: "reduce" }`, conservando viewport y las aserciones existentes; confirmar contra los tipos de Playwright instalado.
-- [ ] Añadir `typecheck: "tsc --noEmit --incremental false"` y `check: "npm run lint && npm run typecheck"` en `package.json`. No debilitar `strict`, excluir pruebas ni añadir supresiones para ocultar errores.
-- [ ] Ejecutar `npm run check` y `npx --no-install playwright test tests/subbrand-value-hover.spec.ts --list`; resultado esperado: código 0 y pruebas descubiertas.
-- [ ] Ejecutar `npm run build` con configuración apropiada y registrar los archivos generados por Next/PWA; restaurar únicamente los artefactos derivados de esta ejecución que no deban versionarse.
-- [ ] Registrar comandos, versiones y salidas resumidas. Revisar el diff y preparar un commit limitado a este entregable, sin push a `main`.
+- [x] Reconfirmar instrucciones, estado de Git, rama, SHA y procesos que usan `node_modules`; preservar cambios ajenos y no interrumpir servidores ajenos.
+- [x] Comprobar versión de Node/npm, campo `engines` si existe y scripts de instalación de dependencias antes de ejecutarlos. Leer la política de red del entorno si hay descargas.
+- [x] Registrar el resultado inicial de `npm ls gsap --depth=0` y `npx --no-install tsc --noEmit --incremental false` sin presentar errores como corregidos.
+- [x] Ejecutar `npm ci`; si falla por inconsistencia entre manifiesto y lockfile, diagnosticar y explicar el diff antes de actualizar versiones. Si necesita reconstruir dependencias en uso, hacerlo en un checkout aislado.
+- [x] Comprobar que GSAP coincide con la versión bloqueada. Repetir tipos para separar errores de instalación de errores del código.
+- [x] Cambiar el `test.use` incompatible a `contextOptions: { reducedMotion: "reduce" }`, conservando viewport y las aserciones existentes; confirmar contra los tipos de Playwright instalado.
+- [x] Añadir `typecheck: "tsc --noEmit --incremental false"` y `check: "npm run lint && npm run typecheck"` en `package.json`. No debilitar `strict`, excluir pruebas ni añadir supresiones para ocultar errores.
+- [x] Ejecutar `npm run check` y `npx --no-install playwright test tests/subbrand-value-hover.spec.ts --list`; resultado esperado: código 0 y pruebas descubiertas.
+- [x] Ejecutar `npm run build` con configuración apropiada y registrar los archivos generados por Next/PWA; restaurar únicamente los artefactos derivados de esta ejecución que no deban versionarse.
+- [x] Registrar comandos, versiones y salidas resumidas. Revisar el diff y preparar un commit limitado a este entregable, sin push a `main`.
 
 **Aceptación:** instalación reproducible, lint/tipos/build correctos y prueba incompatible corregida sin reducir cobertura. Un fallo de red o configuración se registra como bloqueo, no como aprobación del build.
 
@@ -73,10 +73,10 @@
 
 **Interfaces:** Produce un registro `production` y `preview`, cada uno con `project_id`, `deployment_id`, `url`, `git_branch`, `git_sha`, `status`, `checked_at` y fuente de evidencia. Usar `null` y causa cuando el proveedor no exponga un campo; nunca inventarlo.
 
-- [ ] Consultar Vercel en modo lectura; identificar cuenta/equipo, proyecto y repositorio conectado a `blackmx.vercel.app`.
-- [ ] Resolver el alias de producción al despliegue efectivo y consultar su metadato Git; no confundir el último despliegue creado con el que sirve producción.
-- [ ] Comparar su SHA/rama con el checkout y registrar la diferencia. Si el despliegue carece de procedencia Git, contrastar con su fuente y dejar explícita la limitación.
-- [ ] Revisar nombres y separación de variables de Production/Preview sin exportar valores; comprobar qué proyecto Supabase y proveedores de mensajería usaría preview.
+- [x] Consultar Vercel en modo lectura; identificar cuenta/equipo, proyecto y repositorio conectado a `blackmx.vercel.app`.
+- [x] Resolver el alias de producción al despliegue efectivo y consultar su metadato Git; no confundir el último despliegue creado con el que sirve producción.
+- [x] Comparar su SHA/rama con el checkout y registrar la diferencia. Si el despliegue carece de procedencia Git, contrastar con su fuente y dejar explícita la limitación.
+- [x] Revisar nombres y separación de variables de Production/Preview sin exportar valores; comprobar qué proyecto Supabase y proveedores de mensajería usaría preview.
 - [ ] Preparar una rama de trabajo propia sin alterar `main`; usar la convención del repositorio y registrar su nombre real. No asumir que `work` está conectado a un despliegue.
 - [ ] Crear preview del SHA validado. Si aún no existe backend aislado, usar configuración de preview sin escrituras ni credenciales privilegiadas de producción y registrar las funciones no disponibles.
 - [ ] Verificar que el despliegue terminó correctamente y que su SHA coincide con el commit previsto; comprobar portada, catálogo y redirección del admin sin enviar formularios.
@@ -90,14 +90,14 @@
 
 **Interfaces:** Produce una matriz `objeto | código | migraciones | remoto | diferencia | impacto | acción`, incluyendo tablas, columnas, enums, FK, índices, RLS y buckets. Produce un snapshot estructural sin filas de negocio ni secretos, en ubicación ignorada de trabajo.
 
-- [ ] Confirmar la identidad del proyecto remoto; usar solo consultas de catálogo/metadata o herramientas equivalentes de lectura. No descargar filas de clientes, usuarios ni documentos.
-- [ ] Comparar las tablas operativas, `document_access_requests`, `properties.faqs`, `system_logs`, `admin_access_requests`, las políticas y los buckets con el código y los 18 archivos SQL.
-- [ ] Consultar el historial de migraciones disponible y distinguir existencia de un objeto de aplicación comprobada de una migración.
-- [ ] Generar tipos a un archivo temporal y compararlos con `database.types.ts`; no sobrescribir hasta revisar el diff. El nombre del archivo temporal no debe quedar incluido por el `tsconfig` del proyecto.
-- [ ] Incorporar al archivo generado solo tipos que correspondan al esquema confirmado. Examinar si los clientes necesitan `Database` como genérico; separar cualquier cambio amplio de tipado del ajuste mínimo.
-- [ ] Actualizar el documento de divergencias distinguiendo evidencia actual de su historial. No ejecutar automáticamente SQL para igualar una de las versiones.
-- [ ] Clasificar cada diferencia: documentación, tipos, migración futura o decisión de modelo. Para migraciones futuras, describir precondiciones, compatibilidad y recuperación sin aplicarlas en producción.
-- [ ] Ejecutar `npm run check` después de cambios de tipos y revisar el diff. Preparar commit de documentación/tipos sin datos.
+- [x] Confirmar la identidad del proyecto remoto; usar solo consultas de catálogo/metadata o herramientas equivalentes de lectura. No descargar filas de clientes, usuarios ni documentos.
+- [x] Comparar las tablas operativas, `document_access_requests`, `properties.faqs`, `system_logs`, `admin_access_requests`, las políticas y los buckets con el código y los 18 archivos SQL.
+- [x] Consultar el historial de migraciones disponible y distinguir existencia de un objeto de aplicación comprobada de una migración.
+- [x] Generar tipos a un archivo temporal y compararlos con `database.types.ts`; no sobrescribir hasta revisar el diff. El nombre del archivo temporal no debe quedar incluido por el `tsconfig` del proyecto.
+- [x] Incorporar al archivo generado solo tipos que correspondan al esquema confirmado. Examinar si los clientes necesitan `Database` como genérico; separar cualquier cambio amplio de tipado del ajuste mínimo.
+- [x] Actualizar el documento de divergencias distinguiendo evidencia actual de su historial. No ejecutar automáticamente SQL para igualar una de las versiones.
+- [x] Clasificar cada diferencia: documentación, tipos, migración futura o decisión de modelo. Para migraciones futuras, describir precondiciones, compatibilidad y recuperación sin aplicarlas en producción.
+- [x] Ejecutar `npm run check` después de cambios de tipos y revisar el diff. Preparar commit de documentación/tipos sin datos.
 
 **Aceptación:** cada diferencia relevante tiene evidencia y tratamiento. La fase puede concluir con divergencias pendientes documentadas; no implica autorización para corregir producción ni garantiza que la cadena SQL sea reproducible.
 
@@ -107,15 +107,15 @@
 
 **Interfaces:** `assertIsolatedTarget(config): void` falla antes de conexiones si no hay modo de prueba, referencia exacta permitida y host permitido o si coincide con producción. `createTestFixtures(runId): Promise<TestFixtures>` y `cleanupTestFixtures(fixtures): Promise<void>` manejan solo IDs y rutas que devuelve esa ejecución. `TestFixtures` contiene IDs de dos agentes, admin, usuarios activos/inactivo, propiedades asignadas/no asignadas, leads y documentos; credenciales solo en memoria o secretos del entorno. `sendOperationalRequest(service: "resend" | "whatsapp", url: string, init: RequestInit): Promise<Response>` centraliza únicamente el transporte de los dos proveedores; el modo normal mantiene su comportamiento y destinos actuales.
 
-- [ ] Elegir Supabase local o proyecto desechable según capacidades comprobadas. Si el esquema no puede reconstruirse con las migraciones actuales, preparar una base estructural compatible en el destino aislado, registrar su procedencia y verificar RLS; no usar una copia de filas productivas.
-- [ ] Crear la configuración Playwright separada con salida de artefactos ignorada y secretos externos al repositorio. `test:isolated` ejecutará `playwright test --config=playwright.isolated.config.ts`.
-- [ ] Escribir y ejecutar pruebas de la guarda: destino productivo, host ajeno, modo ausente o referencia vacía deben fallar antes de cualquier solicitud; destino aislado explícito debe aceptarse.
-- [ ] Implementar la guarda e invocarla antes de configurar clientes, crear usuarios, iniciar el servidor de prueba, realizar operaciones y limpiar datos.
-- [ ] Crear fixtures sintéticos identificados por `runId`; relaciones entre dos agentes para comprobar acceso cruzado, un usuario inactivo, documentos privados y leads por estado. No incluir correos/teléfonos reales.
-- [ ] Encauzar las llamadas existentes de Resend y WhatsApp por `sendOperationalRequest`; activar respuestas simuladas solo con modo aislado explícito y `assertIsolatedTarget` aprobado. Interceptar únicamente solicitudes del navegador no basta para impedir envíos del servidor. Sin modo aislado, mantener el transporte real y sus controles actuales; con modo aislado mal configurado, fallar cerrado sin enviar. Probar ambos modos y comprobar cero envíos reales durante la suite.
-- [ ] Probar limpieza tras éxito y fallo: eliminar por los IDs/rutas de la ejecución y comprobar que sobrevive un registro centinela ajeno. No borrar tablas completas ni invocar seeds existentes.
-- [ ] Verificar acceso real a Auth/DB/Storage en el entorno aislado, separándolo de pruebas que simulan proveedores. Registrar bootstrap, repetición y recuperación de limpieza interrumpida.
-- [ ] Revisar artefactos para excluir cookies, contraseñas, enlaces firmados y datos sensibles; preparar commit del soporte reproducible.
+- [x] Elegir Supabase local o proyecto desechable según capacidades comprobadas. Si el esquema no puede reconstruirse con las migraciones actuales, preparar una base estructural compatible en el destino aislado, registrar su procedencia y verificar RLS; no usar una copia de filas productivas.
+- [x] Crear la configuración Playwright separada con salida de artefactos ignorada y secretos externos al repositorio. `test:isolated` ejecutará `playwright test --config=playwright.isolated.config.ts`.
+- [x] Escribir y ejecutar pruebas de la guarda: destino productivo, host ajeno, modo ausente o referencia vacía deben fallar antes de cualquier solicitud; destino aislado explícito debe aceptarse.
+- [x] Implementar la guarda e invocarla antes de configurar clientes, crear usuarios, iniciar el servidor de prueba, realizar operaciones y limpiar datos.
+- [x] Crear fixtures sintéticos identificados por `runId`; relaciones entre dos agentes para comprobar acceso cruzado, un usuario inactivo, documentos privados y leads por estado. No incluir correos/teléfonos reales.
+- [x] Encauzar las llamadas existentes de Resend y WhatsApp por `sendOperationalRequest`; activar respuestas simuladas solo con modo aislado explícito y `assertIsolatedTarget` aprobado. Interceptar únicamente solicitudes del navegador no basta para impedir envíos del servidor. Sin modo aislado, mantener el transporte real y sus controles actuales; con modo aislado mal configurado, fallar cerrado sin enviar. Probar ambos modos y comprobar cero envíos reales durante la suite.
+- [x] Probar limpieza tras éxito y fallo: eliminar por los IDs/rutas de la ejecución y comprobar que sobrevive un registro centinela ajeno. No borrar tablas completas ni invocar seeds existentes.
+- [x] Verificar acceso real a Auth/DB/Storage en el entorno aislado, separándolo de pruebas que simulan proveedores. Registrar bootstrap, repetición y recuperación de limpieza interrumpida.
+- [x] Revisar artefactos para excluir cookies, contraseñas, enlaces firmados y datos sensibles; preparar commit del soporte reproducible.
 
 **Aceptación:** suite repetible con datos propios, servicios externos simulados en el servidor y limpieza acotada. Sin infraestructura aislada, las pruebas UI con mocks pueden avanzar, pero permisos/RLS/integración quedan pendientes explícitos.
 
@@ -125,15 +125,15 @@
 
 **Interfaces:** Consume `TestFixtures` y la configuración aislada. Produce matriz `actor | recurso propio/ajeno | operación | resultado esperado | resultado observado | evidencia`.
 
-- [ ] Definir matriz para visitante, admin, agente A, agente B y perfil inactivo. Admin gestiona inventario/equipo/configuración; agentes consultan propiedades asignadas y gestionan sus leads/tareas; visitante accede solo a flujos públicos.
-- [ ] Escribir pruebas de páginas y API directas para sesión ausente, perfil inactivo, cierre de sesión, expiración y renovación. Un fallo debe denegar la operación y no modificar filas.
-- [ ] Escribir pruebas de lectura y modificación de lead/tarea propia frente a ajena, asignación reservada a admin y ausencia de elevación de rol mediante payloads.
-- [ ] Comprobar alcance de contadores y notificaciones: el contador `/api/leads` de un agente debe corresponder a sus leads, no al total global. Si negocio necesita indicadores globales, documentar esa decisión antes de cambiar el contrato.
-- [ ] Probar CRUD administrativo, asignación de agentes, archivos permitidos y rechazos por rol; para operaciones sensibles conservar la confirmación de contraseña existente.
-- [ ] Probar documentos: privacidad/NDA, código incorrecto/vencido, verificación válida, sesión documental vencida, cookie ajena y descarga desde bucket privado. Comprobar contenido/permiso del archivo, no solo una redirección.
-- [ ] Intentar lecturas/escrituras directas con claves públicas y sesiones de prueba según las políticas esperadas; diferenciar protección API de protección RLS/Storage.
-- [ ] Ejecutar las tres suites aisladas, corregir defectos comprobados con ciclo fallo → cambio mínimo → aprobación y repetir `npm run check`. No aceptar omisiones en casos críticos de autorización.
-- [ ] Registrar resultados y residuos de datos; verificar limpieza y preparar commits por defecto o conjunto coherente de pruebas.
+- [x] Definir matriz para visitante, admin, agente A, agente B y perfil inactivo. Admin gestiona inventario/equipo/configuración; agentes consultan propiedades asignadas y gestionan sus leads/tareas; visitante accede solo a flujos públicos.
+- [x] Escribir pruebas de páginas y API directas para sesión ausente, perfil inactivo, cierre de sesión, expiración y renovación. Un fallo debe denegar la operación y no modificar filas.
+- [x] Escribir pruebas de lectura y modificación de lead/tarea propia frente a ajena, asignación reservada a admin y ausencia de elevación de rol mediante payloads.
+- [x] Comprobar alcance de contadores y notificaciones: el contador `/api/leads` de un agente debe corresponder a sus leads, no al total global. Si negocio necesita indicadores globales, documentar esa decisión antes de cambiar el contrato.
+- [x] Probar CRUD administrativo, asignación de agentes, archivos permitidos y rechazos por rol; para operaciones sensibles conservar la confirmación de contraseña existente.
+- [x] Probar documentos: privacidad/NDA, código incorrecto/vencido, verificación válida, sesión documental vencida, cookie ajena y descarga desde bucket privado. Comprobar contenido/permiso del archivo, no solo una redirección.
+- [x] Intentar lecturas/escrituras directas con claves públicas y sesiones de prueba según las políticas esperadas; diferenciar protección API de protección RLS/Storage.
+- [x] Ejecutar las tres suites aisladas, corregir defectos comprobados con ciclo fallo → cambio mínimo → aprobación y repetir `npm run check`. No aceptar omisiones en casos críticos de autorización.
+- [x] Registrar resultados y residuos de datos; verificar limpieza y preparar commits por defecto o conjunto coherente de pruebas.
 
 **Aceptación:** operaciones permitidas funcionan, las prohibidas no exponen ni cambian datos y los casos críticos pasan en infraestructura real aislada. Pruebas con mocks no acreditan este entregable.
 
@@ -143,15 +143,15 @@
 
 **Interfaces:** `SiteSettings` valida solo las claves públicas existentes. `getSiteSettings(): Promise<SiteSettings>` vive en un módulo `server-only`, lee `app_settings['site']` y completa valores predeterminados. Los componentes cliente reciben props serializables, nunca el cliente privilegiado. `normalizeSiteSettings(value: unknown): SiteSettings` valida valores persistidos y conserva defaults seguros.
 
-- [ ] Completar y presentar la matriz `campo | editor | fuente | consumidores | validación | visibilidad | política de respaldo`. Confirmar el primer incremento propuesto en la especificación antes de implementarlo; la definición de contenido forma parte de esta fase.
-- [ ] Fijar consumidores: contacto en Header/Footer/CTA/fichas y contacto; títulos/subtítulos en las tres páginas de segmento; imagen/video en HomeHero. Inspeccionar todos los usos de `CONTACT_CONFIG` para evitar inconsistencias y conservar datos estructurados coherentes.
-- [ ] Definir el contrato de `heroVideoUrl`: propuesta de URL de archivo HTTPS de host permitido y portada alternativa, con reproducción silenciosa y sin movimiento cuando el usuario lo reduzca. Si se conserva YouTube, especificar por separado su embed y privacidad antes de implementar; no aceptar ambos contratos implícitamente.
-- [ ] Escribir pruebas que fallen: admin guarda y visitante nuevo observa el cambio tras recargar; agente no puede guardar; texto se representa como texto; URL/esquema/host no permitido se rechaza; configuración vacía/parcial o lectura fallida usa defaults sin filtrar datos internos.
-- [ ] Extraer esquema y defaults compartidos, validar el POST de ajustes del lado servidor y persistir únicamente claves permitidas. Un error remoto al guardar debe mostrarse como error; el respaldo local no debe anunciar una publicación exitosa.
-- [ ] Leer ajustes en componentes servidor y pasarlos por props; no convertir la API privilegiada en un endpoint público general ni consultar secretos desde el navegador.
-- [ ] Invalidar contenido después de una escritura exitosa. Si se usa caché, definir una única etiqueta `site-settings` y probar que una sesión pública nueva ve el cambio tras la siguiente navegación completa.
-- [ ] Conectar consumidores y conservar el layout, búsquedas y valores predeterminados. No agregar a esta fase equipo, testimonios, textos legales ni preferencias de cuenta sin una decisión registrada.
-- [ ] Ejecutar `npm run check`, build, suite aislada de ajustes y regresiones públicas de contacto, segmentos y portada. Comparar 390 y 1440 px y movimiento reducido; evitar envíos reales.
+- [x] Completar y presentar la matriz `campo | editor | fuente | consumidores | validación | visibilidad | política de respaldo`. Confirmar el primer incremento propuesto en la especificación antes de implementarlo; la definición de contenido forma parte de esta fase.
+- [x] Fijar consumidores: contacto en Header/Footer/CTA/fichas y contacto; títulos/subtítulos en las tres páginas de segmento; imagen/video en HomeHero. Inspeccionar todos los usos de `CONTACT_CONFIG` para evitar inconsistencias y conservar datos estructurados coherentes.
+- [x] Definir el contrato de `heroVideoUrl`: propuesta de URL de archivo HTTPS de host permitido y portada alternativa, con reproducción silenciosa y sin movimiento cuando el usuario lo reduzca. Si se conserva YouTube, especificar por separado su embed y privacidad antes de implementar; no aceptar ambos contratos implícitamente.
+- [x] Escribir pruebas que fallen: admin guarda y visitante nuevo observa el cambio tras recargar; agente no puede guardar; texto se representa como texto; URL/esquema/host no permitido se rechaza; configuración vacía/parcial o lectura fallida usa defaults sin filtrar datos internos.
+- [x] Extraer esquema y defaults compartidos, validar el POST de ajustes del lado servidor y persistir únicamente claves permitidas. Un error remoto al guardar debe mostrarse como error; el respaldo local no debe anunciar una publicación exitosa.
+- [x] Leer ajustes en componentes servidor y pasarlos por props; no convertir la API privilegiada en un endpoint público general ni consultar secretos desde el navegador.
+- [x] Invalidar contenido después de una escritura exitosa. Si se usa caché, definir una única etiqueta `site-settings` y probar que una sesión pública nueva ve el cambio tras la siguiente navegación completa.
+- [x] Conectar consumidores y conservar el layout, búsquedas y valores predeterminados. No agregar a esta fase equipo, testimonios, textos legales ni preferencias de cuenta sin una decisión registrada.
+- [x] Ejecutar `npm run check`, build, suite aislada de ajustes y regresiones públicas de contacto, segmentos y portada. Comparar 390 y 1440 px y movimiento reducido; evitar envíos reales.
 - [ ] Publicar únicamente preview del commit probado, verificar SHA y registrar capturas/resultados sin secretos. Preparar commit y ficha de cambios para revisión de producto.
 
 **Aceptación:** un ajuste válido persiste y aparece al visitante sin depender de localStorage; errores, permisos y respaldo están probados. La matriz deja explícitos los campos aún gestionados por código.
