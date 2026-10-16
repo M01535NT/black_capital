@@ -19,7 +19,7 @@ test("home finder carries operation, use, zone and currency-specific price to in
   }
 });
 
-test("home leads with photography and keeps all business lines and process steps", async ({ page }) => {
+test("home leads with photography and keeps all business lines and four live indicators", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expect(page.getByRole("heading", { level: 1 })).toHaveAttribute("aria-label", "Tu propiedad, vendida como debe ser.");
@@ -29,7 +29,7 @@ test("home leads with photography and keeps all business lines and process steps
   const sequence = await page.locator("#main-content section").evaluateAll(nodes => nodes.map(node => node.id || node.getAttribute("data-section")));
   expect(sequence.indexOf("seleccion")).toBeLessThan(sequence.indexOf("home-segments"));
   await expect(page.locator("[data-section='home-segments'] article")).toHaveCount(3);
-  await expect(page.locator("[data-section='home-methodology'] ol > li")).toHaveCount(4);
+  await expect(page.locator("[data-section='home-methodology'] [data-method-counter]")).toHaveCount(4);
 });
 
 test("featured properties scroll with accessible controls on mobile without page overflow", async ({ page }) => {

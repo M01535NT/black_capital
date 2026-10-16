@@ -6,14 +6,14 @@ test.use({
   isMobile: true,
 });
 
-// El rediseño reemplazó la vieja "why section" por la metodología con reveal
-// por scroll (framer-motion: opacity/translateY/blur al entrar en viewport).
-// Este test protege que ese motion siga activo en móvil.
+// El manifiesto revela líneas con GSAP y el contacto con Motion.
 test("home methodology heading reveals on scroll (motion active on mobile)", async ({ page }) => {
   await page.goto("/");
 
-  // La introducción conserva reveal; los pasos compactos permanecen visibles.
-  const step = page.locator("[data-section='home-methodology'] h2").locator("..");
+  // El nuevo manifiesto usa GSAP para revelar sus líneas al entrar en pantalla.
+  const step = page.locator("[data-section='home-methodology'] [data-method-line]").first();
+  const contact = page.locator("[data-method-contact]");
+  const contactBefore = await contact.evaluate(el => ({ opacity: getComputedStyle(el).opacity, transform: getComputedStyle(el).transform }));
   await expect(step).toBeAttached();
 
   const read = () =>
@@ -43,5 +43,9 @@ test("home methodology heading reveals on scroll (motion active on mobile)", asy
   // Antes de entrar al viewport el paso está oculto/desplazado; al revelarse cambia.
   expect(Number(after.opacity)).toBeGreaterThan(Number(before.opacity));
   expect(after.transform).not.toBe(before.transform);
-  expect(after.filter).not.toBe(before.filter);
+  await expect(page.locator("[data-section='home-methodology'] h2")).toBeVisible();
+  await contact.scrollIntoViewIfNeeded();
+  await expect(contact).toHaveCSS("opacity", "1");
+  expect(contactBefore.opacity).toBe("0");
+  expect(await contact.evaluate(el => getComputedStyle(el).transform)).not.toBe(contactBefore.transform);
 });

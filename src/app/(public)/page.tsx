@@ -2,7 +2,7 @@ import { getSiteSettings } from "@/lib/site-settings";
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { HomeHero } from "@/components/home/HomeHero";
-import { SignatureCounters } from "@/components/home/SignatureCounters";
+import { getHomeMetrics } from "@/lib/home-metrics";
 import { BusinessLines } from "@/components/home/BusinessLines";
 import { FeaturedInventory } from "@/components/home/FeaturedInventory";
 import { MethodologyStack } from "@/components/home/MethodologyStack";
@@ -47,7 +47,7 @@ const ORGANIZATION_SCHEMA = {
 };
 
 export default async function HomePage() {
-  const settings = await getSiteSettings();
+  const [settings, metrics] = await Promise.all([getSiteSettings(), getHomeMetrics()]);
   return (
     // El <main> semántico vive en el layout público (#main-content); aquí un div evita <main> anidados.
     <div className="bg-background">
@@ -55,8 +55,7 @@ export default async function HomePage() {
       <FeaturedInventory />
       <BusinessLines />
       <ToolsSection />
-      <MethodologyStack />
-      <SignatureCounters />
+      <MethodologyStack metrics={metrics} />
       <VoicesWall />
       <FaqSection />
       <ClosingCTA />
