@@ -4,17 +4,14 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
+import { Grid3X3 } from "lucide-react";
+import { brandFont } from "@/lib/brand-font";
 import { Logo } from "../Logo";
 import { cn } from "@/lib/utils";
 import { SavedProperties } from "@/components/property/SavedProperties";
 import { NavOverlay } from "./nav-overlay";
 
-/**
- * Navbar editorial con menú por hamburguesa en TODOS los dispositivos (firma de
- * marca conservada). La barra es glass translúcida; al hacer scroll (>24px) se
- * solidifica y aparece el hairline dorado inferior. La hamburguesa abre un
- * overlay full-screen animado (framer-motion) con la navegación completa.
- */
+/** Compact editorial navigation; the same routes and touch controls on every screen. */
 export function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -55,62 +52,28 @@ export function Header() {
   return (
     <>
       <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-50",
-          "transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-          scrolled ? "bg-background/80 backdrop-blur-xl" : "bg-gradient-to-b from-black/35 to-transparent",
-        )}
+        className={cn("fixed inset-x-0 top-0 z-50 border-b border-white/10 transition-colors duration-300", scrolled ? "bg-[#080808]/95 backdrop-blur-xl" : "bg-[#080808]")}
         role="banner"
       >
-        <div className="mx-auto flex h-16 max-w-[90rem] items-center justify-between gap-4 px-6 sm:px-10 lg:h-[4.5rem] lg:px-16">
-          <Logo href="/" variant="mark" size="md" tone="gold" className="flex-shrink-0" />
-
-          <div className="flex flex-shrink-0 items-center gap-3">
-            <nav aria-label="Accesos principales" className="hidden items-center gap-6 lg:flex">
-              <Link href="/inventario" aria-current={isActive("/inventario") ? "page" : undefined} className="property-tag-type text-white/65 transition-colors hover:text-[var(--color-accent)]">Propiedades</Link>
-              <Link href="/propietarios" aria-current={isActive("/propietarios") ? "page" : undefined} className="property-tag-type text-white/65 transition-colors hover:text-[var(--color-accent)]">Para propietarios</Link>
-            </nav>
-            <SavedProperties />
-
-            <Link
-              href="/contacto"
-              className="premium-cta brushed-gold font-display hidden items-center gap-2 rounded-full transition-transform duration-300 hover:scale-[1.015] sm:inline-flex"
-            >
-              <span>Asesoría</span>
-              <span aria-hidden="true">→</span>
-            </Link>
-
-            {/* Hamburguesa — visible en TODOS los dispositivos (firma) */}
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              aria-label="Abrir navegación"
-              aria-expanded={open}
-              className={cn(
-                "group relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border transition-colors duration-300",
-                "border-white/12 text-foreground hover:border-[var(--color-accent)]/55 hover:bg-white/[0.06]",
-              )}
-            >
-              <span
-                aria-hidden="true"
-                className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--color-accent)_0%,transparent_62%)] opacity-0 transition-opacity duration-300 group-hover:opacity-10"
-              />
-              <span className="relative flex h-4 w-5 flex-col justify-between" aria-hidden="true">
-                <span className="h-px w-5 bg-current transition-transform duration-300 group-hover:translate-x-0.5" />
-                <span className="h-px w-3.5 self-end bg-current transition-[width] duration-200 ease-out group-hover:w-5" />
-                <span className="h-px w-5 bg-current transition-transform duration-300 group-hover:translate-x-0.5" />
-              </span>
+        <div className={`${brandFont.className} mx-auto flex h-16 max-w-[100rem] items-center justify-between gap-3 px-5 sm:px-8 lg:grid lg:h-20 lg:grid-cols-[1fr_auto_1fr] lg:gap-6 lg:px-10`}>
+          <Logo href="/" variant="mark" size="md" tone="gold" className="shrink-0 lg:col-start-2 lg:row-start-1" />
+          <nav aria-label="Accesos principales" className="hidden items-center gap-5 lg:col-start-1 lg:row-start-1 lg:flex xl:gap-7">
+            {[
+              { name: "Propiedades", href: "/inventario" },
+              { name: "Residencial", href: "/black-luxury" },
+              { name: "Comercial", href: "/black-business" },
+              { name: "Industrial", href: "/black-industrial" },
+            ].map(link => <Link key={link.href} href={link.href} aria-current={isActive(link.href) ? "page" : undefined} className="inline-flex min-h-11 items-center text-[11px] font-semibold uppercase tracking-[0.16em] text-white/75 transition-colors hover:text-[#e4c078] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e4c078] aria-[current=page]:text-[#e4c078]">{link.name}</Link>)}
+          </nav>
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3 lg:col-start-3 lg:row-start-1 lg:justify-self-end">
+            <Link href="/herramientas" className="hidden min-h-11 items-center text-[11px] font-semibold uppercase tracking-[0.16em] text-white/75 transition-colors hover:text-[#e4c078] xl:inline-flex">Herramientas</Link>
+            <Link href="/contacto" className="hidden min-h-11 items-center px-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/75 transition-colors hover:text-[#e4c078] sm:inline-flex">Contacto</Link>
+            <SavedProperties compact />
+            <button type="button" onClick={() => setOpen(true)} aria-label="Abrir navegación" aria-expanded={open} aria-controls="primary-navigation-dialog" className="flex h-11 w-11 items-center justify-center border border-white/20 text-[#f5f2eb] transition-colors hover:border-[#d2a73c] hover:text-[#e4c078] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e4c078]">
+              <Grid3X3 className="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
         </div>
-
-        <div
-          aria-hidden="true"
-          className={cn(
-            "h-px w-full bg-gradient-to-r from-transparent via-[var(--color-accent)]/45 to-transparent transition-opacity duration-500",
-            scrolled ? "opacity-100" : "opacity-0",
-          )}
-        />
       </header>
 
       <AnimatePresence>

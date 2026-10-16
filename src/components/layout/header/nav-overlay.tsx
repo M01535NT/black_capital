@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowUpRight, Phone, MessageCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { brandFont } from "@/lib/brand-font";
 import { usePublicContact } from "@/components/public/site-settings-provider";
 import { verticales } from "./constants";
 
@@ -97,25 +98,19 @@ export function NavOverlay({ onClose, isActive }: NavOverlayProps) {
   return (
     <motion.div
       ref={dialogRef}
+      id="primary-navigation-dialog"
       role="dialog"
       aria-modal="true"
       aria-label="Navegación principal"
-      className="fixed inset-0 z-[60] overflow-y-auto bg-[#060606]/95 backdrop-blur-2xl"
+      className={`${brandFont.className} fixed inset-0 z-[60] overflow-y-auto bg-[#080808]`}
       variants={reduce ? undefined : backdrop}
       initial={reduce ? { opacity: 1 } : "hidden"}
       animate={reduce ? { opacity: 1 } : "show"}
       exit={reduce ? { opacity: 0 } : "exit"}
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-40 right-0 h-[36rem] w-[36rem] rounded-full opacity-[0.10] blur-[100px]"
-        style={{ background: "var(--gradient-gold)" }}
-      />
-      <div className="grain-overlay opacity-[0.08]" aria-hidden="true" />
-
       <div className="relative mx-auto flex min-h-[100dvh] max-w-[90rem] flex-col px-6 pb-10 pt-5 sm:px-10 lg:px-16">
         {/* Barra superior del overlay */}
-        <div className="flex items-center justify-between">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-white/10 bg-[#080808] py-3">
           <span className="property-tag-type gold-ink">Menú</span>
           <button
             ref={closeRef}
@@ -146,10 +141,10 @@ export function NavOverlay({ onClose, isActive }: NavOverlayProps) {
                     isActive(link.href) ? "text-white" : "text-white/70 hover:text-white",
                   )}
                 >
-                  <span className="property-tag-type w-7 shrink-0 text-white/30">
+                  <span className="w-7 shrink-0 text-xs tracking-[0.15em] text-[#d2a73c]">
                     0{i + 1}
                   </span>
-                  <span className="font-display text-[clamp(1.9rem,6vw,3.75rem)] font-extrabold uppercase leading-none tracking-tight">
+                  <span className="min-w-0 flex-1 text-[clamp(1.75rem,6vw,4rem)] font-semibold uppercase leading-[1.05] tracking-[0.015em]">
                     {link.name}
                   </span>
                   <ArrowUpRight className="ml-auto h-6 w-6 shrink-0 text-[var(--color-accent)] opacity-0 transition-[transform,opacity] duration-200 ease-out group-hover:translate-x-1 group-hover:opacity-100" />
@@ -195,7 +190,7 @@ export function NavOverlay({ onClose, isActive }: NavOverlayProps) {
                       className="object-cover opacity-70 transition-[transform,opacity] duration-300 ease-out group-hover:scale-105 group-hover:opacity-100"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                    <span className="absolute inset-x-0 bottom-0 p-3 font-display text-[0.8rem] font-bold uppercase leading-tight text-white">
+                    <span className="absolute inset-x-0 bottom-0 p-3 text-sm font-semibold uppercase leading-tight tracking-[0.03em] text-white">
                       {line.name.replace("Black ", "")}
                     </span>
                   </Link>
