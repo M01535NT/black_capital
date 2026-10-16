@@ -1,8 +1,8 @@
 {
   "project_id": "black-capital-preparacion-2026-10-16",
   "title": "Preparación de Black Capital para cambios verificables",
-  "updated_at": "2026-10-16",
-  "status": "en_curso",
+  "updated_at": "2026-10-16T21:12:52Z",
+  "status": "completado_para_revision",
   "authorized_scope": "Ejecutar el plan por instrucción explícita del usuario; sin escrituras ni publicación en producción.",
   "goal": "Base reproducible, despliegue identificado, esquema contrastado y validación aislada antes de conectar contenido administrable.",
   "plan": "docs/superpowers/plans/2026-10-16-preparacion-black-capital.md",
@@ -19,7 +19,7 @@
     4,
     5
   ],
-  "next_action": "Publicar y verificar la vista previa de solo lectura; cambios y validaciones aisladas terminados.",
+  "next_action": "Revisión de producto del preview; despliegue y migración de producción quedan como una liberación separada.",
   "deliverables": [
     {
       "id": 1,
@@ -31,13 +31,14 @@
       "acceptance": "Instalación reproducible; lint, tipos y build correctos; sin degradar validaciones.",
       "target_window": "Primer hito al iniciar ejecución",
       "evidence": [
-        "docs/verification/2026-10-16-base-tecnica.md"
+        "docs/verification/2026-10-16-base-tecnica.md",
+        "docs/verification/2026-10-16-resultados.md"
       ]
     },
     {
       "id": 2,
       "title": "Producción y preview identificados",
-      "status": "en_curso",
+      "status": "verificado",
       "owner": "Codex",
       "reviewer": "Usuario",
       "dependencies": [
@@ -46,7 +47,8 @@
       "acceptance": "Procedencia de producción y preview contrastadas con Vercel, SHA registrado y destinos separados.",
       "target_window": "Después del hito 1 y acceso a Vercel",
       "evidence": [
-        "docs/verification/2026-10-16-despliegue.md"
+        "docs/verification/2026-10-16-despliegue.md",
+        "docs/verification/2026-10-16-resultados.md"
       ]
     },
     {
@@ -61,7 +63,8 @@
       "acceptance": "Diferencias entre remoto, migraciones y tipos documentadas; sin escrituras productivas.",
       "target_window": "Después del hito 2 y acceso de lectura a metadata",
       "evidence": [
-        "docs/verification/2026-10-16-esquema.md"
+        "docs/verification/2026-10-16-esquema.md",
+        "docs/verification/2026-10-16-resultados.md"
       ]
     },
     {
@@ -77,7 +80,8 @@
       "acceptance": "Matriz de roles y casos críticos pasan en infraestructura aislada, sin omisiones críticas.",
       "target_window": "Después del hito 6",
       "evidence": [
-        "docs/verification/2026-10-16-permisos.md"
+        "docs/verification/2026-10-16-permisos.md",
+        "docs/verification/2026-10-16-resultados.md"
       ]
     },
     {
@@ -95,7 +99,8 @@
       "acceptance": "Matriz de contenido definida; ajustes persisten y se ven públicamente con permisos, respaldo y regresiones verificados.",
       "target_window": "Después de validar permisos y definir contenido",
       "evidence": [
-        "docs/content/matriz-contenido.md"
+        "docs/content/matriz-contenido.md",
+        "docs/verification/2026-10-16-resultados.md"
       ]
     },
     {
@@ -111,7 +116,8 @@
       "acceptance": "Destino permitido comprobado, fixtures sintéticos, proveedores simulados del lado servidor y limpieza acotada repetible.",
       "target_window": "Después del hito 3, antes de 4 y 5",
       "evidence": [
-        "docs/testing/entorno-aislado.md"
+        "docs/testing/entorno-aislado.md",
+        "docs/verification/2026-10-16-resultados.md"
       ]
     }
   ],
@@ -156,5 +162,40 @@
     "format": "Registro operativo local",
     "official_skill_schema": "No disponible; no se afirma conformidad con el esquema de la skill.",
     "checks": "Validar JSON, IDs únicos, dependencias existentes, orden acíclico y rutas de documentos."
+  },
+  "deployment": {
+    "production": {
+      "url": "https://blackmx.vercel.app",
+      "branch": "main",
+      "sha": "836187c0fa30a77a55c5288c0393452ab926da6e",
+      "status": "READY",
+      "changed": false
+    },
+    "preview": {
+      "url": "https://blackcapital-ranpxi7jh-tonala.vercel.app",
+      "deployment_id": "dpl_F4YEG6LdatyciG6jonAKXkJaKBFd",
+      "branch": "codex/preparacion-black-capital",
+      "sha": "2b068179265a504db364c8c2ac8e2afc29e343cc",
+      "status": "READY",
+      "read_only": true,
+      "checked_at": "2026-10-16T21:12:52Z"
+    }
+  },
+  "verification": {
+    "check": "passed",
+    "build": "passed",
+    "isolated": {
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0
+    },
+    "public": {
+      "passed": 96,
+      "failed": 0,
+      "skipped": 0
+    },
+    "pending_production": [
+      "supabase/migrations/20261016205400_restrict_private_document_storage.sql"
+    ]
   }
 }

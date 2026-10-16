@@ -1,6 +1,6 @@
 # Black Capital: preparación para cambios — Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Establecer una base reproducible y un entorno de validación aislado antes de conectar contenido administrable y continuar el desarrollo de Black Capital.
 
@@ -77,10 +77,10 @@
 - [x] Resolver el alias de producción al despliegue efectivo y consultar su metadato Git; no confundir el último despliegue creado con el que sirve producción.
 - [x] Comparar su SHA/rama con el checkout y registrar la diferencia. Si el despliegue carece de procedencia Git, contrastar con su fuente y dejar explícita la limitación.
 - [x] Revisar nombres y separación de variables de Production/Preview sin exportar valores; comprobar qué proyecto Supabase y proveedores de mensajería usaría preview.
-- [ ] Preparar una rama de trabajo propia sin alterar `main`; usar la convención del repositorio y registrar su nombre real. No asumir que `work` está conectado a un despliegue.
-- [ ] Crear preview del SHA validado. Si aún no existe backend aislado, usar configuración de preview sin escrituras ni credenciales privilegiadas de producción y registrar las funciones no disponibles.
-- [ ] Verificar que el despliegue terminó correctamente y que su SHA coincide con el commit previsto; comprobar portada, catálogo y redirección del admin sin enviar formularios.
-- [ ] Documentar URL, acceso, destino de servicios, fallos y procedimiento para volver al último preview correcto. Revisar y preparar commit de documentación.
+- [x] Preparar una rama de trabajo propia sin alterar `main`; usar la convención del repositorio y registrar su nombre real. No asumir que `work` está conectado a un despliegue.
+- [x] Crear preview del SHA validado. Si aún no existe backend aislado, usar configuración de preview sin escrituras ni credenciales privilegiadas de producción y registrar las funciones no disponibles.
+- [x] Verificar que el despliegue terminó correctamente y que su SHA coincide con el commit previsto; comprobar portada, catálogo y redirección del admin sin enviar formularios.
+- [x] Documentar URL, acceso, destino de servicios, fallos y procedimiento para volver al último preview correcto. Revisar y preparar commit de documentación.
 
 **Aceptación:** producción tiene procedencia identificada o una limitación demostrada; preview abre, corresponde al SHA registrado y no permite pruebas contra datos productivos. No promover a producción.
 
@@ -152,16 +152,16 @@
 - [x] Invalidar contenido después de una escritura exitosa. Si se usa caché, definir una única etiqueta `site-settings` y probar que una sesión pública nueva ve el cambio tras la siguiente navegación completa.
 - [x] Conectar consumidores y conservar el layout, búsquedas y valores predeterminados. No agregar a esta fase equipo, testimonios, textos legales ni preferencias de cuenta sin una decisión registrada.
 - [x] Ejecutar `npm run check`, build, suite aislada de ajustes y regresiones públicas de contacto, segmentos y portada. Comparar 390 y 1440 px y movimiento reducido; evitar envíos reales.
-- [ ] Publicar únicamente preview del commit probado, verificar SHA y registrar capturas/resultados sin secretos. Preparar commit y ficha de cambios para revisión de producto.
+- [x] Publicar únicamente preview del commit probado, verificar SHA y registrar capturas/resultados sin secretos. Preparar commit y ficha de cambios para revisión de producto.
 
 **Aceptación:** un ajuste válido persiste y aparece al visitante sin depender de localStorage; errores, permisos y respaldo están probados. La matriz deja explícitos los campos aún gestionados por código.
 
 ## Cierre y evidencia
 
-- [ ] Comprobar cobertura de los seis requisitos y actualizar `estado-proyecto.json` con evidencia real; no marcar aceptado un entregable solo porque existe código.
-- [ ] Entregar URLs de producción y preview, SHA correspondiente, resultados de checks y suites, mapa de diferencias de datos y matriz de contenido/permisos.
-- [ ] Registrar pendientes, limitaciones y recuperación: último commit/preview correcto, limpieza por runId y política ante cambio de esquema. Cualquier futura migración de producción tendrá su propio respaldo, ensayo y recuperación comprobados.
-- [ ] Dejar la promoción de producción como operación separada y revisable. Este plan termina con una vista previa validada.
+- [x] Comprobar cobertura de los seis requisitos y actualizar `estado-proyecto.json` con evidencia real; no marcar aceptado un entregable solo porque existe código.
+- [x] Entregar URLs de producción y preview, SHA correspondiente, resultados de checks y suites, mapa de diferencias de datos y matriz de contenido/permisos.
+- [x] Registrar pendientes, limitaciones y recuperación: último commit/preview correcto, limpieza por runId y política ante cambio de esquema. Cualquier futura migración de producción tendrá su propio respaldo, ensayo y recuperación comprobados.
+- [x] Dejar la promoción de producción como operación separada y revisable. Este plan termina con una vista previa validada.
 
 ## Comprobación del propio plan
 
@@ -169,3 +169,7 @@
 - No hay secretos ni identificadores remotos inventados; la primera acción es técnica y comprobable.
 - Las fechas de ejecución dependen de accesos aún no evaluados. No hay compromiso de calendario externo.
 - Los recursos auxiliares `estado-proyecto.schema.json`, `seleccion-enfoque.md` y `validar_proyecto.py` de la skill de gestión no pudieron recuperarse mediante skills ni localizarse en las rutas disponibles. El registro adjunto usa un formato operativo local; su sintaxis/coherencia se valida localmente, sin afirmar conformidad con ese esquema no disponible.
+
+## Ejecución cerrada
+
+Comprobaciones y suites aprobadas (51 aisladas y 96 públicas), preview READY del SHA `2b068179265a504db364c8c2ac8e2afc29e343cc`. Evidencias: `docs/verification/2026-10-16-resultados.md` y `2026-10-16-despliegue.md`. La aceptación de producto y cualquier publicación o migración productiva son posteriores; no se declaran realizadas.

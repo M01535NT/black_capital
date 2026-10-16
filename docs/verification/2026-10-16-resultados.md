@@ -28,3 +28,5 @@ Los tests de redirección y movimiento reducido esperan que termine el árbol tr
 - El preview es de solo lectura porque hereda variables de servicios potencialmente productivos. Panel, API y formularios operativos se validaron en el stack aislado.
 
 Los logs y manifiestos se conservan únicamente en `.superpowers/`, ignorado por Git; no forman parte de la entrega. No se comparten credenciales, cookies ni enlaces firmados.
+
+Cierre: preview READY y SHA contrastado; sin manifiestos pendientes. Consultas de conteo locales confirmaron cero usuarios `bc-…@example.test` y cero propiedades `fixture-…` restantes tras la suite. El checkout quedó limpio antes del registro final de documentación.
