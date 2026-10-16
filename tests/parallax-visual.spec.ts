@@ -13,6 +13,8 @@ test("home methodology heading reveals on scroll (motion active on mobile)", asy
   // El nuevo manifiesto usa GSAP para revelar sus líneas al entrar en pantalla.
   const step = page.locator("[data-section='home-methodology'] [data-method-line]").first();
   const contact = page.locator("[data-method-contact]");
+  await expect(contact).toHaveCSS("opacity", "0");
+  await expect(step).toHaveCSS("opacity", "0");
   const contactBefore = await contact.evaluate(el => ({ opacity: getComputedStyle(el).opacity, transform: getComputedStyle(el).transform }));
   await expect(step).toBeAttached();
 

@@ -30,9 +30,9 @@ test("reports tall mobile sections on public pages", async ({ page }) => {
     await page.evaluate(async () => { await document.fonts.ready; });
 
     if (route === "/") {
-      const steps = page.locator("[data-section='home-methodology'] ol > li");
-      await expect(steps).toHaveCount(4);
-      const heights = await steps.evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().height));
+      const indicators = page.locator("[data-section='home-methodology'] [data-method-counter]");
+      await expect(indicators).toHaveCount(4);
+      const heights = await indicators.evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().height));
       for (const height of heights) expect(height).toBeLessThan(844 * 0.65);
     }
 

@@ -84,7 +84,7 @@ for (const width of [320, 390]) {
 
     test('mobile uses the desktop reveal and its active link responds to touch', async ({ page }) => {
       await page.goto('/', { waitUntil: 'domcontentloaded' });
-      const stage = page.locator('[data-segment-stage]');
+      const stage = page.locator('#main-content [data-segment-stage]');
       await expect(stage).toHaveAttribute('data-pinned', 'true');
       await page.getByRole('button', { name: '02 · Comercial', exact: true }).tap();
       await expect(stage).toHaveAttribute('data-active-scene', '1');

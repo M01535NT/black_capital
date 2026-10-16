@@ -162,7 +162,7 @@ export function NavOverlay({ onClose, isActive }: NavOverlayProps) {
                   key={op.name}
                   href={op.href}
                   onClick={onClose}
-                  className="inline-flex items-center gap-1.5 border border-white/[0.12] px-4 py-2 property-tag-type text-white/75 transition-colors duration-300 hover:border-[var(--color-accent)]/45 hover:text-[var(--color-accent)]"
+                  className="inline-flex min-h-11 items-center gap-1.5 border border-white/[0.12] px-4 py-2 property-tag-type text-white/75 transition-colors duration-300 hover:border-[var(--color-accent)]/45 hover:text-[var(--color-accent)]"
                 >
                   {op.name}
                 </Link>
@@ -204,7 +204,7 @@ export function NavOverlay({ onClose, isActive }: NavOverlayProps) {
             >
               <a
                 href={`tel:${CONTACT_CONFIG.phoneRaw}`}
-                className="group inline-flex items-center gap-3 text-white/75 transition-colors hover:text-[var(--color-accent)]"
+                className="group inline-flex min-h-11 items-center gap-3 text-white/75 transition-colors hover:text-[var(--color-accent)]"
               >
                 <Phone className="h-4 w-4 text-[var(--color-accent)]" aria-hidden="true" />
                 <span className="text-body-sm tabular-nums">{CONTACT_CONFIG.phone}</span>
@@ -213,7 +213,7 @@ export function NavOverlay({ onClose, isActive }: NavOverlayProps) {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-3 text-white/75 transition-colors hover:text-[var(--color-accent)]"
+                className="group inline-flex min-h-11 items-center gap-3 text-white/75 transition-colors hover:text-[var(--color-accent)]"
               >
                 <MessageCircle className="h-4 w-4 text-[var(--color-accent)]" aria-hidden="true" />
                 <span className="text-body-sm">Escríbenos por WhatsApp</span>
@@ -226,7 +226,7 @@ export function NavOverlay({ onClose, isActive }: NavOverlayProps) {
                   key={l.name}
                   href={l.href}
                   onClick={onClose}
-                  className="footer-legal-type text-white/40 transition-colors hover:text-white/70"
+                  className="inline-flex min-h-11 items-center text-xs text-white/40 transition-colors hover:text-white/70"
                 >
                   {l.name}
                 </Link>
