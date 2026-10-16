@@ -25,4 +25,23 @@ Los nombres y destinos de variables de Vercel se revisaron sin descifrar valores
 
 ## Despliegue
 
-Se construirá una versión con destino Production desde el SHA probado; no se promoverá directamente el build Preview, que tiene envíos y administración bloqueados por diseño. Producción anterior para recuperación: `dpl_FhT63V8RJ7Z3Eur4W6wJdMVeeuUa`, SHA `836187c0fa30a77a55c5288c0393452ab926da6e`.
+Producción se compiló con destino Production desde el SHA probado; no se promovió el build Preview, que tiene envíos y administración bloqueados por diseño.
+
+| Campo | Valor verificado |
+|---|---|
+| URL pública | https://blackmx.vercel.app |
+| Despliegue | `dpl_FLCRZcnE7dwJi7kPgze67p1AwEJn` |
+| Estado / destino | READY / production |
+| Rama / SHA | `main` / `6f668ae61a6b85d960dafe9190b60a9c0c09d209` |
+| Preview inmutable del mismo código | https://blackcapital-nkedgy78v-tonala.vercel.app |
+| Preview / estado | `dpl_EhP2DK38nJGQaa4Wute8VLc5bAnM` / READY |
+
+El avance de `main` fue fast-forward y sin force. El push no generó un build productivo automático; se solicitó explícitamente a Vercel un build Production del SHA exacto mediante su conexión Git existente. El alias público se contrastó con el ID de ese despliegue.
+
+El smoke público pasó en 1440 y 390 px: hero, menú, revelado, cuatro indicadores, ausencia de desbordamiento y ausencia del aviso Preview. Inventario, contacto y las tres categorías devolvieron 200. El formulario inválido devolvió 400 antes de insertar; la descarga sin sesión devolvió 403; la API administrativa sin sesión devolvió 401; `/admin` redirigió al login. No hubo errores JavaScript ni escrituras de negocio. Una lectura HTTPS con curl, sin desactivar la validación del certificado, devolvió 200; Chromium necesitó aceptar el certificado del proxy del workspace.
+
+Muestra de carga, sin limitación de red y a través del proxy del entorno: DOMContentLoaded alrededor de 1,36 s en ambos anchos y transferencia observada de 755–873 KiB. Es una muestra técnica de esta sesión, no una medición de Core Web Vitals ni una garantía para redes móviles.
+
+La comprobación de GitHub “Supabase Preview” falló por versiones de migraciones remotas ausentes del directorio local, coherente con la divergencia documentada. No se reparó el historial ni se ejecutaron migraciones para cambiar ese resultado. Tras publicar siguen existiendo 11 migraciones remotas y las dos políticas originales de Storage; la corrección de políticas continúa pendiente de aplicación separada.
+
+Producción anterior para recuperación: `dpl_FhT63V8RJ7Z3Eur4W6wJdMVeeuUa`, SHA `836187c0fa30a77a55c5288c0393452ab926da6e`.

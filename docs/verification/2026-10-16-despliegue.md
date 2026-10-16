@@ -1,5 +1,7 @@
 # Despliegue comprobado — 16 de octubre de 2026
 
+Este informe registra la comprobación inicial. La publicación posterior de la portada y su SHA vigente se documentan en [la liberación de portada](./2026-10-16-liberacion-portada.md).
+
 ## Producción
 
 Fuente: consultas autenticadas de Vercel `get_alias`, `get_deployment` y `get_project`.
