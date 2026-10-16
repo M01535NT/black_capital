@@ -22,7 +22,7 @@ test("home finder carries operation, use, zone and currency-specific price to in
 test("home leads with photography and keeps all business lines and process steps", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expect(page.getByRole("heading", { level: 1 })).toHaveAttribute("aria-label", "Cada propiedad, su estrategia.");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveAttribute("aria-label", "Tu propiedad, vendida como debe ser.");
   const hero = page.locator("[data-section='cinematic-hero']");
   await expect(hero.locator("img")).toBeVisible();
   await expect(hero.getByRole("search")).toHaveCount(0);
