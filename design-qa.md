@@ -32,4 +32,14 @@ La comparación conjunta permite leer los titulares, proporciones y composición
 - La comprobación local de consola detectó errores de certificado del proxy al cargar `https://va.vercel-scripts.com`; se separan de errores JavaScript de la aplicación, que no aparecieron. No se desactivó la validación TLS para enviar eventos de analítica.
 - No se publicaron cambios de base de datos ni se enviaron formularios a servicios reales. La vista previa Vercel conserva el bloqueo de envíos y administración.
 
+## Comprobaciones finales
+
+- Regresión pública: 101 casos aprobados en una ejecución completa. La primera ejecución se interrumpió por compilación fría del servidor de desarrollo; se repitió con un directorio de build aislado y el proxy/CA del entorno configurados explícitamente.
+- Landing: 9 casos adicionales aprobados, incluidos escritorio a 1024/1440 px, contexto táctil a 320/390 px, geometría sin solapamientos, filtros reales en el catálogo, contacto contextual y animación activa.
+- Ajustes administrativos: 6 casos aislados aprobados, incluidos rótulos heredados, títulos personalizados como texto y persistencia segura ante fallos.
+- `npm run check` y build optimizado aprobados. Fixtures aislados limpiados, sin manifiestos pendientes.
+- Preview inmutable comprobado: https://blackcapital-1rnuu6av2-tonala.vercel.app/black-luxury
+- Despliegue `dpl_7H5nauAm9Rbb4zo2LdUsisy1uox8`, READY / Preview; rama `codex/black-luxury-opcion-2`; código `254a8aad9a4201dda8a136d495432daf5b6b288a`.
+- Lectura autenticada del preview: landing 200 con las tres cabeceras correctas, catálogo filtrado 200 (estado sin coincidencias permitido) y API de envíos 503 por bloqueo intencional. La verificación visual y de interacciones se realizó en Chromium local con ese mismo código. Producción no se modificó.
+
 final result: passed
