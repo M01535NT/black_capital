@@ -1,7 +1,6 @@
 import { expect, test } from "@playwright/test";
 
 const brands = [
-  { route: "/black-luxury", use: "Residencial", typeLabel: "Tipo de propiedad", type: "Casa", zoneLabel: "Zona residencial", zone: "Chapultepec", areaLabel: "Construcción mínima", area: "250" },
   { route: "/black-business", use: "Comercial", typeLabel: "Formato comercial", type: "Oficina", zoneLabel: "Zona comercial", zone: "Otay", areaLabel: "Superficie mínima", area: "150" },
   { route: "/black-industrial", use: "Industrial", typeLabel: "Tipo de nave", type: "Nave", zoneLabel: "Corredor logístico", zone: "Garita", areaLabel: "Rango de m²", area: "1500" },
 ] as const;

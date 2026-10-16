@@ -1,0 +1,89 @@
+.page { --residential-gold: #d2a73c; --residential-pale: #e4c078; --residential-ivory: #f3efe6; padding-top: 64px; background: #050505; color: #f6f3ec; }
+.page h1, .page h2, .page h3, .eyebrow, .primaryButton, .advisorLink, .heroSignature, .photoCaption, .searchField > span, .searchButton, .contactButton { font-family: var(--font-residential-display), "Oswald", sans-serif; }
+.hero { display: grid; }
+.heroContent { display: flex; min-width: 0; flex-direction: column; justify-content: center; padding: 64px 24px 32px; }
+.eyebrow { margin: 0; color: var(--residential-pale); font-size: 12px; font-weight: 600; letter-spacing: .23em; line-height: 1.6; text-transform: uppercase; }
+.heroTitle { margin: 32px 0 0; max-width: 100%; font-size: clamp(42px, 12vw, 76px); font-weight: 600; line-height: 1.06; letter-spacing: -.015em; text-transform: uppercase; overflow-wrap: anywhere; }
+.heroTitle span { color: var(--residential-pale); }
+.heroDescription { max-width: 420px; margin-top: 28px; font-size: 16px; line-height: 1.65; color: #d9d7d1; }
+.heroActions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; margin-top: 36px; }
+.primaryButton, .contactButton, .searchButton { display: inline-flex; min-height: 60px; align-items: center; justify-content: center; padding: 16px 32px; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-align: center; text-transform: uppercase; transition: background-color .2s, color .2s; }
+.primaryButton, .searchButton { background: var(--residential-pale); color: #080808; }
+.primaryButton:hover, .searchButton:hover { background: #f1d493; }
+.advisorLink { display: inline-flex; min-height: 44px; align-items: center; gap: 20px; border-bottom: 1px solid #8c897e; font-size: 14px; font-weight: 400; color: #e4e1d9; transition: color .2s; }
+.advisorLink:hover { color: var(--residential-pale); }
+.heroSignature { display: flex; justify-content: space-between; gap: 24px; margin-top: 56px; color: #aaa69b; font-size: 10px; line-height: 1.6; letter-spacing: .2em; text-transform: uppercase; }
+.heroSignature > span:last-child { text-align: right; }
+.heroPhoto { position: relative; min-width: 0; aspect-ratio: 4 / 5; overflow: hidden; }
+.heroImage { position: absolute; inset: 0; }
+.photoCaption { position: absolute; right: 32px; bottom: 28px; padding: 6px 10px; background: #050505b3; color: #fff; font-size: 10px; letter-spacing: .24em; text-transform: uppercase; }
+.container { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: 24px; }
+.discovery { padding-block: 64px; background: var(--residential-ivory); color: #13130f; scroll-margin-top: 80px; }
+.discovery .eyebrow { color: #86651f; }
+.sectionTitle { margin-top: 20px; font-size: clamp(36px, 5.2vw, 76px); font-weight: 600; line-height: 1.1; letter-spacing: -.015em; text-transform: uppercase; }
+.discoveryDescription { max-width: 660px; margin-top: 20px; font-size: 16px; line-height: 1.65; }
+.search { display: grid; margin-top: 32px; border: 1px solid #797366; background: transparent; }
+.searchField { position: relative; display: flex; min-width: 0; flex-direction: column; justify-content: center; gap: 8px; min-height: 100px; padding: 18px 24px; }
+.searchField + .searchField { border-top: 1px solid #aaa394; }
+.searchField > span { color: #635d52; font-size: 11px; font-weight: 500; line-height: 1.5; letter-spacing: .2em; text-transform: uppercase; }
+.searchField select { min-height: 44px; width: 100%; padding-right: 28px; border: 0; border-radius: 0; appearance: none; background: transparent; color: #13130f; color-scheme: light; font: inherit; font-size: 16px; cursor: pointer; }
+.searchField select option { background: #f3efe6; color: #13130f; }
+.searchField svg { position: absolute; right: 24px; bottom: 34px; pointer-events: none; }
+.searchButton { min-height: 64px; border: 0; cursor: pointer; background: var(--residential-gold); }
+.collections { display: grid; gap: 40px; margin-top: 32px; }
+.collections > div { min-width: 0; }
+.collection { display: block; }
+.collectionPhoto { position: relative; aspect-ratio: 1.6; overflow: hidden; }
+.collectionImage { object-fit: cover; transition: transform .6s; }
+.collection:hover .collectionImage { transform: scale(1.035); }
+.collection h3 { margin-top: 14px; font-size: clamp(24px, 2.1vw, 32px); font-weight: 600; line-height: 1.3; letter-spacing: .015em; text-transform: uppercase; }
+.collection p { display: flex; width: fit-content; max-width: 100%; align-items: center; gap: 16px; min-height: 44px; padding-block: 6px; border-bottom: 1px solid #a77d28; color: #535046; font-size: 14px; line-height: 1.6; }
+.collection p svg { flex-shrink: 0; }
+.contact { position: relative; isolation: isolate; scroll-margin-top: 80px; }
+.contactImage { z-index: -2; object-fit: cover; object-position: 50% 53%; }
+.contactShade { position: absolute; inset: 0; z-index: -1; background: #050505d9; }
+.contactContent { display: flex; min-height: 300px; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px; padding-block: 48px; }
+.contactContent h2 { font-size: clamp(30px, 3.7vw, 52px); font-weight: 600; line-height: 1.15; text-transform: uppercase; }
+.contactContent h2 span { color: var(--residential-pale); }
+.contactButton { min-width: 240px; border: 1px solid var(--residential-pale); background: #050505; color: var(--residential-pale); }
+.contactButton:hover { background: var(--residential-pale); color: #050505; }
+.page a:focus-visible, .page button:focus-visible, .page select:focus-visible { outline: 2px solid #b58320; outline-offset: 5px; }
+@media (min-width: 768px) {
+  .container { padding-inline: 48px; }
+  .heroContent { padding-inline: 48px; }
+  .heroPhoto { max-height: 720px; }
+  .collections { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+  .search { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr) 180px; }
+  .searchField + .searchField { border-top: 0; border-left: 1px solid #aaa394; }
+  .discovery { padding-block: 76px; }
+}
+@media (min-width: 1024px) {
+  .page { padding-top: 80px; }
+  .hero { grid-template-columns: 44.5% 55.5%; min-height: clamp(700px, 65.3vw, 940px); }
+  .heroContent { justify-content: space-between; padding: clamp(80px, 8.9vw, 128px) 40px 40px; }
+  .heroTitle { font-size: clamp(64px, 7vw, 104px); letter-spacing: -.035em; }
+  .heroTitle span { font-size: .9em; white-space: nowrap; }
+  .heroPhoto { min-height: 0; max-height: none; aspect-ratio: auto; }
+  .heroSignature { margin-top: 48px; }
+  .heroDescription { margin-top: 32px; }
+  .discovery { padding-block: 76px 64px; }
+  .contactContent { min-height: 280px; }
+}
+@media (min-width: 1280px) {
+  .container { padding-inline: 64px; }
+  .heroContent { padding-left: 64px; padding-right: 32px; }
+  .heroActions { gap: 24px; }
+  .heroDescription { max-width: 460px; font-size: 20px; }
+  .eyebrow { font-size: 14px; }
+  .heroSignature, .photoCaption { font-size: 12px; }
+  .primaryButton { min-width: 284px; padding-inline: 28px; font-size: 14px; }
+  .advisorLink { font-family: inherit; font-size: 16px; }
+  .sectionTitle { font-size: clamp(76px, 5.6vw, 80px); }
+  .discoveryDescription { max-width: 860px; font-size: 20px; }
+  .collection p { font-size: 16px; }
+  .contactContent h2 { font-size: 64px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page *, .page *::before, .page *::after { scroll-behavior: auto; transition: none; }
+  .collection:hover .collectionImage { transform: none; }
+}

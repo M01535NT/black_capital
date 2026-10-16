@@ -53,7 +53,7 @@ test('property mobile action remains visible without horizontal overflow', async
   await expect(bar).toBeVisible();
 });
 
-for (const brand of ['luxury', 'business', 'industrial']) {
+for (const brand of ['business', 'industrial']) {
   test(`${brand} puts inventory before criteria and keeps contextual contact`, async ({ page }) => {
     await page.goto(`/black-${brand}`);
     const inventory = page.locator(`#${brand}-inventory`);

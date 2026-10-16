@@ -30,18 +30,15 @@ export function ScrollReveal({
 }) {
   const shouldReduceMotion = useReducedMotion();
 
-  if (shouldReduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
   return (
     <motion.div
       className={className}
       variants={variant === "image-mask" ? imageMask : fadeUp}
       initial="hidden"
+      animate={shouldReduceMotion ? "show" : undefined}
       whileInView="show"
       viewport={{ once, margin: "-12% 0px -12% 0px" }}
-      transition={{ duration: variant === "image-mask" ? 0.9 : 0.72, delay, ease: EASE }}
+      transition={{ duration: shouldReduceMotion ? 0 : variant === "image-mask" ? 0.9 : 0.72, delay: shouldReduceMotion ? 0 : delay, ease: EASE }}
     >
       {children}
     </motion.div>

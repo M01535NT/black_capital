@@ -69,7 +69,7 @@ test.describe("mobile public pages audit", () => {
     });
   }
 
-  for (const route of ["/black-luxury", "/black-business", "/black-industrial"] as const) {
+  for (const route of ["/black-business", "/black-industrial"] as const) {
     test(`${route} brand inventory is horizontal on mobile`, async ({ page }) => {
       await page.goto(route, { waitUntil: "domcontentloaded" });
       await expect(page.locator("main h1").first()).toBeVisible();
