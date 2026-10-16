@@ -1,5 +1,11 @@
 # SCHEMA DRIFT — Historial de divergencias
 
+## Verificación de 16 de octubre de 2026
+
+Se contrastaron catálogos y tipos con el proyecto remoto, sin leer filas de negocio ni ejecutar escrituras. Hay 12 tablas públicas con RLS y 11 entradas de migración remota. El remoto contiene `admin_access_requests` y las tablas operativas; no contiene `system_logs`. Los tipos se regeneraron desde ese esquema. La cadena local sigue incompleta para una base virgen; no ejecutar sus migraciones suponiendo equivalencia con producción.
+
+La evidencia actual y las acciones separadas de migración están en `docs/verification/2026-10-16-esquema.md`. Las afirmaciones posteriores de este archivo describen revisiones históricas; no sustituyen ese contraste.
+
 Este documento explica por qué las migraciones locales difieren del
 schema real en producción (ref `tewfdfmicifpdecxcpfy`).
 

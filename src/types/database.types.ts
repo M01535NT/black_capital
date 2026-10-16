@@ -14,6 +14,130 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_access_requests: {
+        Row: {
+          age: number | null
+          created_at: string
+          current_company: string | null
+          email: string
+          full_name: string
+          id: string
+          internal_reference: string | null
+          metadata: Json
+          operating_city: string | null
+          phone: string | null
+          profile_photo_url: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          social_instagram: string | null
+          social_linkedin: string | null
+          social_tiktok: string | null
+          specialties: string[] | null
+          status: string
+          updated_at: string
+          years_experience: number | null
+        }
+        Insert: {
+          age?: number | null
+          created_at?: string
+          current_company?: string | null
+          email: string
+          full_name: string
+          id?: string
+          internal_reference?: string | null
+          metadata?: Json
+          operating_city?: string | null
+          phone?: string | null
+          profile_photo_url?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          social_instagram?: string | null
+          social_linkedin?: string | null
+          social_tiktok?: string | null
+          specialties?: string[] | null
+          status?: string
+          updated_at?: string
+          years_experience?: number | null
+        }
+        Update: {
+          age?: number | null
+          created_at?: string
+          current_company?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          internal_reference?: string | null
+          metadata?: Json
+          operating_city?: string | null
+          phone?: string | null
+          profile_photo_url?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          social_instagram?: string | null
+          social_linkedin?: string | null
+          social_tiktok?: string | null
+          specialties?: string[] | null
+          status?: string
+          updated_at?: string
+          years_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_access_requests_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "admin_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_profiles: {
+        Row: {
+          agent_id: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          invited_at: string | null
+          is_active: boolean
+          last_seen_at: string | null
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          agent_id?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id: string
+          invited_at?: string | null
+          is_active?: boolean
+          last_seen_at?: string | null
+          role: string
+          updated_at?: string
+        }
+        Update: {
+          agent_id?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          invited_at?: string | null
+          is_active?: boolean
+          last_seen_at?: string | null
+          role?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_profiles_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agents: {
         Row: {
           bio: string | null
@@ -52,6 +176,73 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      app_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_settings_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "admin_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          actor_profile_id: string | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          id: string
+          metadata: Json
+        }
+        Insert: {
+          action: string
+          actor_profile_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          metadata?: Json
+        }
+        Update: {
+          action?: string
+          actor_profile_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          metadata?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_actor_profile_id_fkey"
+            columns: ["actor_profile_id"]
+            isOneToOne: false
+            referencedRelation: "admin_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       document_access_requests: {
         Row: {
@@ -140,14 +331,129 @@ export type Database = {
           },
         ]
       }
+      lead_activities: {
+        Row: {
+          actor_profile_id: string | null
+          body: string | null
+          created_at: string
+          id: string
+          lead_id: string
+          metadata: Json
+          title: string
+          type: string
+        }
+        Insert: {
+          actor_profile_id?: string | null
+          body?: string | null
+          created_at?: string
+          id?: string
+          lead_id: string
+          metadata?: Json
+          title: string
+          type: string
+        }
+        Update: {
+          actor_profile_id?: string | null
+          body?: string | null
+          created_at?: string
+          id?: string
+          lead_id?: string
+          metadata?: Json
+          title?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_activities_actor_profile_id_fkey"
+            columns: ["actor_profile_id"]
+            isOneToOne: false
+            referencedRelation: "admin_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_activities_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lead_tasks: {
+        Row: {
+          assigned_agent_id: string | null
+          assigned_profile_id: string | null
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          due_at: string | null
+          id: string
+          lead_id: string
+          priority: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_agent_id?: string | null
+          assigned_profile_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          lead_id: string
+          priority?: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_agent_id?: string | null
+          assigned_profile_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          lead_id?: string
+          priority?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_tasks_assigned_agent_id_fkey"
+            columns: ["assigned_agent_id"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_tasks_assigned_profile_id_fkey"
+            columns: ["assigned_profile_id"]
+            isOneToOne: false
+            referencedRelation: "admin_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_tasks_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           assigned_agent_id: string | null
           company: string | null
           created_at: string | null
-          downloaded_at: string
           document_access_expires_at: string | null
           document_access_session_token_hash: string | null
+          downloaded_at: string
           email: string
           full_name: string
           id: string
@@ -171,9 +477,9 @@ export type Database = {
           assigned_agent_id?: string | null
           company?: string | null
           created_at?: string | null
-          downloaded_at?: string
           document_access_expires_at?: string | null
           document_access_session_token_hash?: string | null
+          downloaded_at?: string
           email: string
           full_name: string
           id?: string
@@ -197,9 +503,9 @@ export type Database = {
           assigned_agent_id?: string | null
           company?: string | null
           created_at?: string | null
-          downloaded_at?: string
           document_access_expires_at?: string | null
           document_access_session_token_hash?: string | null
+          downloaded_at?: string
           email?: string
           full_name?: string
           id?: string
@@ -232,6 +538,47 @@ export type Database = {
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          href: string | null
+          id: string
+          read_at: string | null
+          recipient_profile_id: string | null
+          title: string
+          type: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          href?: string | null
+          id?: string
+          read_at?: string | null
+          recipient_profile_id?: string | null
+          title: string
+          type?: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          href?: string | null
+          id?: string
+          read_at?: string | null
+          recipient_profile_id?: string | null
+          title?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_recipient_profile_id_fkey"
+            columns: ["recipient_profile_id"]
+            isOneToOne: false
+            referencedRelation: "admin_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -356,30 +703,6 @@ export type Database = {
           },
         ]
       }
-      system_logs: {
-        Row: {
-          action_type: string
-          admin_uuid: string
-          id: string
-          target_table: string
-          timestamp: string
-        }
-        Insert: {
-          action_type: string
-          admin_uuid: string
-          id?: string
-          target_table: string
-          timestamp?: string
-        }
-        Update: {
-          action_type?: string
-          admin_uuid?: string
-          id?: string
-          target_table?: string
-          timestamp?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
@@ -421,12 +744,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -450,11 +773,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -475,11 +798,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -500,11 +823,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -517,11 +840,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -556,3 +879,4 @@ export const Constants = {
     },
   },
 } as const
+
