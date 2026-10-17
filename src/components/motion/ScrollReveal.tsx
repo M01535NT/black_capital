@@ -32,6 +32,7 @@ export function ScrollReveal({
 
   return (
     <motion.div
+      data-scroll-reveal
       className={className}
       variants={variant === "image-mask" ? imageMask : fadeUp}
       initial="hidden"

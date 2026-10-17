@@ -10,6 +10,9 @@ for (const width of [1440, 1024, 390, 320]) {
       await page.goto("/black-business", { waitUntil: "domcontentloaded" });
       await expect(page.locator("main h1")).toHaveText(/La ubicación.*también es.*estrategia/);
       await page.evaluate(() => document.fonts.ready);
+      const reveals = page.locator("[data-commercial-landing] [data-scroll-reveal]");
+      await expect(reveals).toHaveCount(5);
+      for (const reveal of await reveals.all()) await expect(reveal).toHaveCSS("opacity", "1");
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(2);
       const categories = page.locator("[data-section=commercial-categories]");
       await expect(categories.getByRole("link")).toHaveCount(3);

@@ -13,6 +13,7 @@
 1. [P2, corregido] Titulares y etiquetas demasiado pequeños frente al boceto. Se amplió la escala de escritorio, preservando el salto de tres líneas del hero y la adaptación móvil.
 2. [P2, corregido] El recurso panorámico anterior perdía nitidez en hero y recortes verticales. Se generó una fotografía arquitectónica independiente a partir del boceto y se codificó en WebP (`public/business-retail-plaza.webp`, unos 455 KiB). Se usa en el hero y en dos recortes de categorías; oficinas conserva el recurso del proyecto.
 3. Se revisaron las capturas posteriores en cinco anchuras: cero desbordamiento horizontal, sin errores JavaScript, texto e imágenes visibles con movimiento reducido.
+4. [P1, corregido] Una captura posterior mostró revelados ocultos durante hidratación con movimiento reducido. Se añadió un marcador semántico al componente y una regla CSS de accesibilidad que hace visible todo el contenido incluso antes de hidratar. Las pruebas verifican ahora las cinco zonas de revelado, incluidas las que están fuera de pantalla. La recaptura y comparación conjunta posteriores muestran introducción, tres categorías y cierre visibles, tanto en escritorio como en celular.
 
 ## Superficies revisadas
 
