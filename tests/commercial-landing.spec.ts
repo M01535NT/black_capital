@@ -50,8 +50,8 @@ for (const width of [1440, 1024, 390, 320]) {
 test("commercial photography and categories reveal with motion enabled", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/black-business", { waitUntil: "domcontentloaded" });
-  await expect(page.locator("[data-section=commercial-hero] [data-image-plane]")).not.toHaveCSS("transform", "none");
-  const firstCategory = page.locator("[data-section=commercial-categories] > div").first();
+  await expect(page.locator("#main-content [data-section=commercial-hero] [data-image-plane]")).not.toHaveCSS("transform", "none");
+  const firstCategory = page.locator("#main-content [data-section=commercial-categories] > div").first();
   await firstCategory.scrollIntoViewIfNeeded();
   await expect(firstCategory).toHaveCSS("opacity", "1");
 });

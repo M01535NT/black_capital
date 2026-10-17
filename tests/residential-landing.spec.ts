@@ -56,11 +56,11 @@ for (const width of [1440, 1024, 390, 320]) {
 test("residential photography and text reveal with motion enabled", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/black-luxury", { waitUntil: "domcontentloaded" });
-  await expect(page.locator("[data-section=residential-hero] [data-image-plane]")).not.toHaveCSS("transform", "none");
-  const title = page.locator("#residential-discovery-title");
+  await expect(page.locator("#main-content [data-section=residential-hero] [data-image-plane]")).not.toHaveCSS("transform", "none");
+  const title = page.locator("#main-content #residential-discovery-title");
   await title.scrollIntoViewIfNeeded();
   await expect(title.locator("..")).toHaveCSS("opacity", "1");
-  const firstCollection = page.locator("[data-section=residential-collections] > div").first();
+  const firstCollection = page.locator("#main-content [data-section=residential-collections] > div").first();
   await firstCollection.scrollIntoViewIfNeeded();
   await expect(firstCollection).toHaveCSS("opacity", "1");
 });
