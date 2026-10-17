@@ -20,20 +20,25 @@ test.afterAll(async () => {
   await admin?.dispose();
 });
 
-test("legacy residential brand labels use the selected editorial defaults", async ({ page }) => {
-  expect((await admin.post("/api/settings", { data: { luxuryHeroTitle: "Black Luxury", luxuryHeroSubtitle: "Inmuebles Residenciales" } })).status()).toBe(200);
+test("legacy segment labels use the selected editorial defaults", async ({ page }) => {
+  expect((await admin.post("/api/settings", { data: { luxuryHeroTitle: "Black Luxury", luxuryHeroSubtitle: "Inmuebles Residenciales", businessHeroTitle: "Black Business", businessHeroSubtitle: "Espacios Comerciales" } })).status()).toBe(200);
   await page.goto("/black-luxury", { waitUntil: "domcontentloaded" });
   await expect(page.locator("main h1")).toHaveText(/Vivir bien.*Elegir.*con criterio/);
   await expect(page.getByText("Te ayudamos a comparar zona, precio y condiciones antes de visitar.", { exact: false })).toBeVisible();
+  await page.goto("/black-business", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("main h1")).toHaveText(/La ubicación.*también es.*estrategia/);
 });
 
 test("saved contact, segment copy and cover reach a new public visitor", async ({ page }) => {
-  const response = await admin.post("/api/settings", { data: { contactEmail: "isolated-team@example.test", contactPhone: "+52 000 000 0000", contactAddress: "Dirección sintética", luxuryHeroTitle: "<b>Residencias de prueba</b>", heroImageUrl: "/brand-luxury.webp" } });
+  const response = await admin.post("/api/settings", { data: { contactEmail: "isolated-team@example.test", contactPhone: "+52 000 000 0000", contactAddress: "Dirección sintética", luxuryHeroTitle: "<b>Residencias de prueba</b>", businessHeroTitle: "<b>Comercio de prueba</b>", heroImageUrl: "/brand-luxury.webp" } });
   expect(response.status()).toBe(200);
   await page.goto("/contacto", { waitUntil: "domcontentloaded" });
   await expect(page.getByRole("link", { name: "isolated-team@example.test", exact: true }).first()).toBeVisible();
   await page.goto("/black-luxury", { waitUntil: "domcontentloaded" });
   await expect(page.locator("main h1")).toHaveText("<b>Residencias de prueba</b>");
+  await expect(page.locator("main h1 b")).toHaveCount(0);
+  await page.goto("/black-business", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("main h1")).toHaveText("<b>Comercio de prueba</b>");
   await expect(page.locator("main h1 b")).toHaveCount(0);
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await expect(page.locator("[data-section=cinematic-hero] img")).toHaveAttribute("src", /brand-luxury/);

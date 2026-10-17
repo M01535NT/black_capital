@@ -1,45 +1,36 @@
-# Black Luxury — opción 2
+# Black Business — boceto 1
 
-## Fuente y evidencia
+## Referencia y evidencia
 
-- Referencia seleccionada: `/workspace/generated_images/exec-bc82d80b-c861-4d6c-9bfc-c7e883bf72c1.png` (971 × 1619 px).
-- Implementación: `/black-luxury`, Chromium del entorno, capturas `/tmp/black-luxury-{1440,1024,768,390,320}.png`.
-- Comparación conjunta: `/tmp/black-luxury-comparison-final.png`. Fuente y captura se normalizaron a 720 px de ancho cada una, sin deformar proporciones; implementación recortada al final de la landing, antes del footer existente. La landing mide 1440 × 2412 CSS px, densidad 1; la referencia a ese ancho equivale aproximadamente a 1440 × 2401 px.
-- Estado visual: movimiento reducido, página sin filtros elegidos. Se comprobaron también las animaciones activas y la interacción con búsqueda, colecciones y contacto en Playwright.
-- Browser conectado: herramienta de control no expuesta en esta sesión, igual que en la exploración previa. Se utilizó Chromium/Playwright instalado en el workspace para la validación renderizada, sin acceder al navegador personal.
+- Selección explícita: opción 1, hero fotográfico y página negra.
+- Fuente: `/workspace/generated_images/exec-e6535442-6680-4e88-8792-c17c07e55560.png`, 924 × 1703 px.
+- Implementación: `/black-business`; capturas `/tmp/black-business-{1440,1024,768,390,320}.png`, densidad 1.
+- Comparación conjunta: `/tmp/black-business-comparison-final.png`. Referencia e implementación normalizadas a 720 px de ancho cada una; recorte de implementación hasta el final de la landing, excluyendo el footer corporativo.
+- Navegador: Chromium/Playwright instalado en el workspace. La herramienta de control del plugin Browser no está expuesta en esta sesión. No se accedió al navegador personal.
 
-## Comparación y correcciones
+## Fidelidad y correcciones
 
-1. [P1, corregido] El componente compartido de revelado cambiaba de tipo de nodo al hidratar con movimiento reducido. Dejaba estilos iniciales ocultos en textos e imágenes. Mantiene ahora el mismo nodo Motion y muestra el estado final con duración cero. La captura posterior contiene introducción, ambas colecciones y cierre de contacto.
-2. [P2, corregido] La altura mínima de la fotografía imponía 384 px de ancho en pantallas de 320 px. Se retiró esa restricción; las cinco anchuras revisadas tienen cero desbordamiento horizontal.
-3. [P2, corregido] El titular inicial era pequeño y demasiado bajo; al ampliarlo, el acento se partía en dos líneas. Se ajustaron posición, tamaño y escala del acento. La captura final conserva las tres líneas del boceto.
-4. [P2, corregido] En la revisión adicional de 1024 px, la fila del hero podía crecer por encima de su altura fija y solapar la introducción. Se sustituyó la altura fija por una altura mínima fluida y se añadió una comprobación de geometría entre fotografía e introducción. La nueva captura de 1024 px muestra la firma sobre negro y la introducción completamente debajo de ambas columnas; se recapturaron además las otras cuatro anchuras.
+1. [P2, corregido] Titulares y etiquetas demasiado pequeños frente al boceto. Se amplió la escala de escritorio, preservando el salto de tres líneas del hero y la adaptación móvil.
+2. [P2, corregido] El recurso panorámico anterior perdía nitidez en hero y recortes verticales. Se generó una fotografía arquitectónica independiente a partir del boceto y se codificó en WebP (`public/business-retail-plaza.webp`, unos 455 KiB). Se usa en el hero y en dos recortes de categorías; oficinas conserva el recurso del proyecto.
+3. Se revisaron las capturas posteriores en cinco anchuras: cero desbordamiento horizontal, sin errores JavaScript, texto e imágenes visibles con movimiento reducido.
 
-## Superficies de fidelidad
+## Superficies revisadas
 
-- Tipografía: Oswald servido por `next/font` para titulares y controles; Public Sans existente para cuerpo. Familia renderizada comprobada en el navegador, titulares sin recorte. Ajuste óptico del acento dorado para conservar una sola línea en escritorio.
-- Ritmo y composición: hero 44,5/55,5 %, introducción clara, buscador horizontal, dos imágenes y cierre negro. En celular se apilan contenido, imagen y controles; no se usa desplazamiento horizontal para esconder contenido.
-- Color: negro, marfil `#f3efe6`, dorado `#d2a73c` y dorado claro `#e4c078`. Texto oscuro y controles nativos con esquema claro en el buscador.
-- Fotografías: los mismos recursos arquitectónicos utilizados al generar el boceto. Son enlaces a búsquedas por ciudad, sin inventar inmuebles, precios o disponibilidad.
-- Contenido: titular y subtítulo predeterminados adaptados al boceto. Los rótulos genéricos heredados «Black Luxury» e «Inmuebles Residenciales», confirmados mediante lectura remota limitada a esos dos campos públicos, pasan a la nueva composición sin modificar la base de datos. Otros valores personalizados desde administración se conservan y se renderizan como texto. CTA al catálogo residencial y contacto con `brand=luxury`.
+- Tipografía: Oswald del proyecto en titulares, navegación y acciones; Georgia en el cuerpo editorial, siguiendo la referencia serif. Sin texto rasterizado dentro de la interfaz.
+- Composición: encabezado existente, hero a sangre con sombreado para contraste, mensaje en tres líneas, CTA principal y enlace al cierre; después tres columnas de categorías y contacto con regla dorada. En celular las categorías se apilan completamente.
+- Color: negro, marfil y dorado claro `#e4c078`; contraste suficiente sobre la fotografía mediante una capa oscura de lectura.
+- Imágenes: fotografía comercial ilustrativa en hero/locales/plazas y arquitectura de oficinas del proyecto. No se muestran inventarios, precios o disponibilidad ficticios. Los pequeños cambios de encuadre respecto al mock generativo son P3.
+- Contenido: se reconocen únicamente los rótulos genéricos heredados y los valores predeterminados para mostrar el nuevo titular. Otros títulos/subtítulos del panel siguen siendo texto configurable, sin interpretar HTML.
+- Interacción: CTA al catálogo con `uso=Comercial`; categorías con `propiedad=Local`, `Oficina` y `Plaza`; enlace de asesor al ancla de contacto; cierre a `/contacto?brand=business&objetivo=buscar-propiedad`.
 
-La comparación conjunta permite leer los titulares, proporciones y composición. Los controles y cuerpo se revisaron además en las capturas originales de 1440 y 390 px, sin reducirlas a miniaturas.
+La comparación conjunta revisa jerarquía, ritmo y proporciones; las capturas originales de escritorio y móvil permiten revisar texto, botones y controles a escala real.
 
-## Diferencias intencionales y límites
+## Verificación
 
-- Se conservan encabezado y footer reales, incluidos navegación, guardados y datos de contacto. El boceto muestra solo el fragmento principal de la landing.
-- Se usan tipografías web reales, iconos existentes y fotografías originales; el boceto generativo tiene pequeñas diferencias de glifos y encuadre (P3).
-- La comprobación local de consola detectó errores de certificado del proxy al cargar `https://va.vercel-scripts.com`; se separan de errores JavaScript de la aplicación, que no aparecieron. No se desactivó la validación TLS para enviar eventos de analítica.
-- No se publicaron cambios de base de datos ni se enviaron formularios a servicios reales. La vista previa Vercel conserva el bloqueo de envíos y administración.
-
-## Comprobaciones finales
-
-- Regresión pública: 101 casos aprobados en una ejecución completa. La primera ejecución se interrumpió por compilación fría del servidor de desarrollo; se repitió con un directorio de build aislado y el proxy/CA del entorno configurados explícitamente.
-- Landing: 9 casos adicionales aprobados, incluidos escritorio a 1024/1440 px, contexto táctil a 320/390 px, geometría sin solapamientos, filtros reales en el catálogo, contacto contextual y animación activa.
-- Ajustes administrativos: 6 casos aislados aprobados, incluidos rótulos heredados, títulos personalizados como texto y persistencia segura ante fallos.
-- `npm run check` y build optimizado aprobados. Fixtures aislados limpiados, sin manifiestos pendientes.
-- Preview inmutable comprobado: https://blackcapital-1rnuu6av2-tonala.vercel.app/black-luxury
-- Despliegue `dpl_7H5nauAm9Rbb4zo2LdUsisy1uox8`, READY / Preview; rama `codex/black-luxury-opcion-2`; código `254a8aad9a4201dda8a136d495432daf5b6b288a`.
-- Lectura autenticada del preview: landing 200 con las tres cabeceras correctas, catálogo filtrado 200 (estado sin coincidencias permitido) y API de envíos 503 por bloqueo intencional. La verificación visual y de interacciones se realizó en Chromium local con ese mismo código. Producción no se modificó.
+- Regresión pública: 107 casos aprobados.
+- Landing comercial: 9 casos específicos aprobados antes del ajuste visual final; se repiten contra el código final.
+- Los nuevos casos cubren 1440/1024 px, contexto táctil 390/320 px, navegación por teclado, filtros reales del catálogo, contacto y movimiento activo/reducido.
+- No se cambiaron dependencias, API, esquema ni datos alojados. Los envíos de prueba se limitaron al stack aislado.
+- Se conservan el encabezado y footer corporativos. La landing residencial de la rama sigue disponible; su revisión anterior se conserva en [Black Luxury](./docs/verification/black-luxury-design-qa.md).
 
 final result: passed
