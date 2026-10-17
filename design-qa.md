@@ -28,10 +28,20 @@ La comparación conjunta revisa jerarquía, ritmo y proporciones; las capturas o
 
 ## Verificación
 
-- Regresión pública: 107 casos aprobados.
-- Landing comercial: 9 casos específicos aprobados antes del ajuste visual final; se repiten contra el código final.
+- Regresión pública inicial: 107 casos aprobados. Después de la regla CSS de accesibilidad, 106 de 107 pasaron; el caso restante encontraba una copia temporal de streaming fuera del contenido principal. Se acotó el selector a `#main-content` y las 18 pruebas de landings residencial/comercial pasaron al repetirlas.
+- Ajustes del panel: 6 casos aislados aprobados, incluidos rótulos genéricos de ambas marcas, títulos personalizados como texto y recuperación ante fallos.
+- Build optimizado, ESLint y TypeScript aprobados. Manifiestos de fixtures vacíos al terminar.
 - Los nuevos casos cubren 1440/1024 px, contexto táctil 390/320 px, navegación por teclado, filtros reales del catálogo, contacto y movimiento activo/reducido.
 - No se cambiaron dependencias, API, esquema ni datos alojados. Los envíos de prueba se limitaron al stack aislado.
 - Se conservan el encabezado y footer corporativos. La landing residencial de la rama sigue disponible; su revisión anterior se conserva en [Black Luxury](./docs/verification/black-luxury-design-qa.md).
+
+## Vista previa verificada
+
+- URL: https://blackcapital-fidbdyt0o-tonala.vercel.app/black-business
+- Despliegue: `dpl_vDArsQV2YS1BuxPrvT33pL8P7rY1`, READY / Preview.
+- Rama: `codex/black-business-opcion-1`; SHA de código: `be81833aa838659ad54e6fdde870b3a789d9fcf8`.
+- Landing 200 con titular, secciones y nueva fotografía; catálogo filtrado por Comercial/Oficina 200; API de envíos 503 por bloqueo intencional de Preview. No se enviaron formularios reales.
+- Una compilación anterior de Vercel falló al resolver Oswald en Turbopack; la siguiente compilación del mismo código de aplicación terminó correctamente, sin cambiar fuentes ni configuración del proyecto.
+- Las comprobaciones de contenido del despliegue usaron la lectura autenticada de Vercel; puede solicitar inicio de sesión al abrirlo. La revisión visual y de interacciones se hizo en Chromium local sobre el mismo código. No se movió el dominio de producción.
 
 final result: passed
